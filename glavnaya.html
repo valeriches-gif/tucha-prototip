@@ -194,6 +194,34 @@ a { color: inherit; text-decoration: none; }
 .svobodno .sv-ico { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 8px;
   background: #EAF6F0; display: flex; align-items: center; justify-content: center; }
 @media (max-width: 700px) { .svobodno { margin: 0 16px 26px; } }
+
+.vhody { max-width: 1180px; margin: 34px auto 0; padding: 0 24px; }
+.vhody-zag { margin-bottom: 14px; }
+.vhody-zag b { font-size: 20px; color: #1E3A5F; letter-spacing: -.01em;
+  display: block; }
+.vhody-zag span { font-size: 14px; color: #7C8AA0; }
+.vhody-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vhod-kart { display: flex; align-items: center; gap: 14px; text-decoration: none;
+  background: #fff; border: 1px solid rgba(30,58,95,.1); border-radius: 14px;
+  padding: 18px 20px; transition: border-color .18s ease, transform .18s ease,
+  box-shadow .18s ease; }
+.vhod-kart:hover { border-color: #1E90D2; transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(30,58,95,.09); }
+.vhod-ico { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; }
+.vhod-ico.biz { background: #EAF4FB; }
+.vhod-ico.per { background: #EAF6F0; }
+.vhod-txt { flex: 1; }
+.vhod-txt b { display: block; font-size: 16px; color: #1E3A5F; }
+.vhod-txt span { display: block; font-size: 13.5px; color: #7C8AA0;
+  line-height: 1.4; margin-top: 2px; }
+.vhod-go { flex: 0 0 auto; color: #EF7F1A; font-size: 19px; font-weight: 700; }
+.vhody-niz { margin-top: 12px; font-size: 13.5px; color: #7C8AA0; }
+.vhody-niz a { color: #EF7F1A; font-weight: 600; text-decoration: none; }
+.vhody-niz a:hover { text-decoration: underline; }
+@media (max-width: 760px) {
+  .vhody-row { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -259,6 +287,46 @@ a { color: inherit; text-decoration: none; }
       </span>
     </a>
   </div>
+
+<div class="vhody rise">
+  <div class="vhody-zag">
+    <b>Уже работаете с нами?</b>
+    <span>Один телефон открывает оба кабинета — переключаются в меню профиля</span>
+  </div>
+  <div class="vhody-row">
+    <a class="vhod-kart" href="vhod.html">
+      <span class="vhod-ico biz">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#1E90D2"
+             stroke-width="1.7"><path d="M3 21V9l9-6 9 6v12" stroke-linejoin="round"/>
+        <path d="M9 21v-7h6v7"/></svg>
+      </span>
+      <span class="vhod-txt">
+        <b>Кабинет компании</b>
+        <span>Остатки, приёмки и отгрузки, витрина, счета и документы</span>
+      </span>
+      <span class="vhod-go">→</span>
+    </a>
+    <a class="vhod-kart" href="vhod.html">
+      <span class="vhod-ico per">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#3F9D6B"
+             stroke-width="1.7"><circle cx="12" cy="8" r="3.4"/>
+        <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke-linecap="round"/></svg>
+      </span>
+      <span class="vhod-txt">
+        <b>Личный кабинет</b>
+        <span>Вещи на хранении, покупки на витрине, документы и выдача</span>
+      </span>
+      <span class="vhod-go">→</span>
+    </a>
+  </div>
+  <div class="vhody-niz">
+    Ещё нет кабинета?
+    <a href="registraciya.html">Завести за две минуты</a>
+    <span>— нужен только телефон. Компаниям договор подпишем при первой
+      поставке, частным лицам он не нужен</span>
+  </div>
+</div>
+
 
   <div class="link-band rise">
     <b>Хранение и продажа в одном месте</b>
