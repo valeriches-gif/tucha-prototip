@@ -596,7 +596,7 @@ a.man-row:hover b { color: var(--orange); }
   .proto a:hover { background: rgba(255,255,255,.13); color: #FFF; }
   .proto a.on { background: #EF7F1A; color: #FFF; font-weight: 600; }
 </style>
-<div class="proto"><b>Прототип</b><a href="glavnaya.html">Главная</a><a href="hranenie.html">Хранение</a><a href="vitrina.html">Витрина</a><a href="korzina.html">Корзина</a><a href="kabinet.html">ЛК юрлица</a><a class="on" href="kabinet-lichnyy.html">ЛК физлица</a></div>
+<div class="proto"><b>Прототип</b><a href="glavnaya.html">Главная</a><a href="hranenie.html">Хранение</a><a href="vitrina.html">Витрина</a><a href="korzina.html">Корзина</a><a href="vhod.html">Вход</a><a href="oplata.html">Оплата</a><a href="svyaz.html">Связаться</a><a href="kabinet.html">ЛК юрлица</a><a class="on" href="kabinet-lichnyy.html">ЛК физлица</a></div>
 
 <!-- who-open -->
 <!-- ozhivlenie -->
@@ -849,9 +849,19 @@ window.KORZINA = (function () {
 (function () {
   /* куда ведут кнопки, у которых есть своя страница */
   var GO = {
-    'войти': 'kabinet.html',
-    'зарегистрироваться': 'kabinet.html',
-    'регистрация': 'kabinet.html',
+    'заказать звонок': 'svyaz.html',
+    'написать нам': 'svyaz.html',
+    'связаться': 'svyaz.html',
+    'оставить заявку': 'svyaz.html',
+    'получить расчёт': 'svyaz.html',
+    'подобрать путь': 'svyaz.html',
+    'оплатить картой': 'oplata.html',
+    'перейти к оплате': 'oplata.html',
+    'оплатить': 'oplata.html',
+    'создать аккаунт': 'registraciya.html',
+    'войти': 'vhod.html',
+    'зарегистрироваться': 'registraciya.html',
+    'регистрация': 'registraciya.html',
     'условия и цены': 'hranenie.html',
     'посмотреть условия': 'hranenie.html',
     'смотреть каталог': 'vitrina.html',

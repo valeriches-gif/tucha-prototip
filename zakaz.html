@@ -568,7 +568,7 @@ section { padding: 34px 40px 0; }
       </div>
       <div class="top-acts">
         <a class="act" href="korzina.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.7"><path d="M4 7h16l-1.5 11H5.5z" stroke-linejoin="round"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg><span>Корзина</span><i data-cart-count>0</i></a>
-        <a class="act" href="kabinet-vitrina.html">
+        <a class="act" href="vhod.html">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.7">
             <circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke-linecap="round"/>
           </svg><span>Войти</span>
@@ -684,7 +684,7 @@ section { padding: 34px 40px 0; }
   body::after { content: "proto-space"; display: block; height: 74px;
     font-size: 0; color: transparent; }
 </style>
-<div class="proto"><b>Прототип</b><a href="glavnaya.html">Главная</a><a href="hranenie.html">Хранение</a><a href="vitrina.html">Витрина</a><a class="on" href="korzina.html">Корзина</a><a href="kabinet.html">ЛК юрлица</a><a href="kabinet-lichnyy.html">ЛК физлица</a></div>
+<div class="proto"><b>Прототип</b><a href="glavnaya.html">Главная</a><a href="hranenie.html">Хранение</a><a href="vitrina.html">Витрина</a><a class="on" href="korzina.html">Корзина</a><a href="vhod.html">Вход</a><a href="oplata.html">Оплата</a><a href="svyaz.html">Связаться</a><a href="kabinet.html">ЛК юрлица</a><a href="kabinet-lichnyy.html">ЛК физлица</a></div>
 <!-- ozhivlenie -->
 <!-- tovary -->
 <script>
@@ -1063,6 +1063,8 @@ window.KORZINA = (function () {
   document.getElementById('next').addEventListener('click', function () {
     if (!check()) return;
     if (step < 3) { step += 1; paintSteps(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    /* картой платят на отдельном экране: там карта и подтверждение банка */
+    if (pay === 'card') { location.href = 'oplata.html'; return; }
     document.getElementById('orderBox').style.display = 'none';
     document.getElementById('stepsLine').style.display = 'none';
     document.getElementById('okpage').style.display = '';
@@ -1201,9 +1203,19 @@ window.KORZINA = (function () {
 (function () {
   /* куда ведут кнопки, у которых есть своя страница */
   var GO = {
-    'войти': 'kabinet.html',
-    'зарегистрироваться': 'kabinet.html',
-    'регистрация': 'kabinet.html',
+    'заказать звонок': 'svyaz.html',
+    'написать нам': 'svyaz.html',
+    'связаться': 'svyaz.html',
+    'оставить заявку': 'svyaz.html',
+    'получить расчёт': 'svyaz.html',
+    'подобрать путь': 'svyaz.html',
+    'оплатить картой': 'oplata.html',
+    'перейти к оплате': 'oplata.html',
+    'оплатить': 'oplata.html',
+    'создать аккаунт': 'registraciya.html',
+    'войти': 'vhod.html',
+    'зарегистрироваться': 'registraciya.html',
+    'регистрация': 'registraciya.html',
     'условия и цены': 'hranenie.html',
     'услуги': 'hranenie.html',
     'как считаемся': 'hranenie.html',
