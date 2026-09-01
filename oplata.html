@@ -168,6 +168,21 @@ textarea { min-height: 104px; resize: vertical; }
   font-size: 13px; color: rgba(255,255,255,.8); }
 .tri { display: grid; grid-template-columns: 1fr 124px 124px; gap: 14px; }
 
+.komu { margin: 24px 0 22px; }
+.komu-zag { display: block; font-size: 13px; font-weight: 600; color: var(--navy);
+  margin-bottom: 9px; }
+.komu-row { display: flex; gap: 10px; }
+.komu-row button { flex: 1; font: inherit; cursor: pointer; text-align: left;
+  background: var(--white); border: 1.5px solid var(--line); border-radius: 11px;
+  padding: 13px 16px; transition: border-color .16s ease, background .16s ease; }
+.komu-row button b { display: block; color: var(--navy); font-size: 15px; }
+.komu-row button span { display: block; color: var(--mute); font-size: 12.5px;
+  margin-top: 2px; }
+.komu-row button.on { border-color: var(--sky); background: #F4FAFE; }
+.komu-note { font-size: 12.5px; color: var(--mute); line-height: 1.5;
+  margin: 10px 0 0; }
+.sposob button.nelzya { opacity: .45; }
+
 /* способы */
 .sposob { display: flex; gap: 10px; margin-bottom: 22px; }
 .sposob button { flex: 1; font: inherit; cursor: pointer; text-align: left;
@@ -260,6 +275,19 @@ textarea { min-height: 104px; resize: vertical; }
         <h1>Оплата заказа № 4180</h1>
         <p class="sub">Деньги спишутся только после подтверждения. До этого момента
           заказ держим за вами два часа.</p>
+
+        <div class="komu" id="komu">
+          <span class="komu-zag">На кого оформить документы</span>
+          <div class="komu-row">
+            <button class="on" data-komu="self"><b>На себя</b>
+              <span>чек на почту, договор не нужен</span></button>
+            <button data-komu="firma"><b>На компанию</b>
+              <span>счёт, УПД и накладная</span></button>
+          </div>
+          <p class="komu-note" id="komuNote">Компания может платить и картой — тогда
+            документы будут на человека. Выбор ни к чему не привязан: в следующий
+            раз можно оформить иначе.</p>
+        </div>
 
         <div class="sposob" id="sposob">
           <button class="on" data-sp="card"><b>Картой</b><span>спишем сразу, чек на почту</span></button>
@@ -424,6 +452,40 @@ document.querySelectorAll('input[data-phone]').forEach(function (el) {
 });
 
 var sposob = 'card';
+
+/* На кого документы — от этого зависят способы, но не запрещается ничего:
+   компания вправе заплатить картой, как обычный человек. */
+var komu = 'self';
+document.querySelectorAll('#komu button').forEach(function (b) {
+  b.onclick = function () {
+    document.querySelectorAll('#komu button').forEach(function (x) {
+      x.classList.remove('on');
+    });
+    b.classList.add('on');
+    komu = b.dataset.komu;
+    var firma = komu === 'firma';
+
+    var schetBtn = document.querySelector('#sposob [data-sp="bill"]');
+    schetBtn.classList.toggle('nelzya', !firma);
+    schetBtn.querySelector('span').textContent = firma
+      ? 'УПД и накладная, 3 дня на оплату'
+      : 'только для компаний — переключите выше';
+
+    document.getElementById('komuNote').textContent = firma
+      ? 'Счёт выставим на ООО «Северный ветер». Картой тоже можно — тогда '
+        + 'документы будут на человека, а не на компанию.'
+      : 'Компания может платить и картой — тогда документы будут на человека. '
+        + 'Выбор ни к чему не привязан: в следующий раз можно оформить иначе.';
+
+    /* выбран счёт, а платит человек — возвращаем на карту */
+    if (!firma && sposob === 'bill') {
+      document.querySelector('#sposob [data-sp="card"]').click();
+    }
+  };
+});
+/* по умолчанию платит человек — счёт до выбора компании неактивен */
+document.querySelector('#komu [data-komu="self"]').click();
+
 function pokazat(id) {
   ['s1', 's2', 's3'].forEach(function (x) {
     document.getElementById(x).classList.toggle('hide', x !== id);
@@ -443,6 +505,9 @@ document.querySelectorAll('#sposob button').forEach(function (b) {
       x.classList.remove('on');
     });
     b.classList.add('on');
+    if (b.dataset.sp === 'bill' && komu !== 'firma') {
+      document.querySelector('#komu [data-komu="firma"]').click();
+    }
     sposob = b.dataset.sp;
     document.getElementById('cardBox').classList.toggle('hide', sposob !== 'card');
     document.getElementById('billBox').classList.toggle('hide', sposob !== 'bill');

@@ -164,6 +164,11 @@ textarea { min-height: 104px; resize: vertical; }
 .inn-found { margin-top: 10px; padding: 12px 14px; border-radius: 10px;
   background: #F2F8F5; border: 1px solid #CFE6DA; font-size: 13.5px; color: #2F6B4F; }
 .inn-found b { display: block; color: #1E5138; font-size: 14.5px; }
+.firma-box { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
+.firma-box .pick { cursor: pointer; }
+.firma-box .pick i { border-radius: 5px; }
+.firma-box .pick.on i::after { border-radius: 2px; }
+
 
 .proto { position: fixed; left: 50%; bottom: 16px; translate: -50% 0; z-index: 200;
   display: flex; align-items: center; gap: 4px; padding: 7px 10px;
@@ -192,83 +197,34 @@ textarea { min-height: 104px; resize: vertical; }
   <div>
     <div class="card">
       <div class="steps" id="steps">
-        <b class="on" data-s="1"><i>1</i>Кто вы</b><s></s>
-        <b data-s="2"><i>2</i>Данные</b><s></s>
-        <b data-s="3"><i>3</i>Подтверждение</b><s></s>
+        <b class="on" data-s="1"><i>1</i>Телефон</b><s></s>
+        <b data-s="2"><i>2</i>Код</b><s></s>
+        <b data-s="3"><i>3</i>Пара уточнений</b><s></s>
         <b data-s="4"><i>4</i>Готово</b>
       </div>
 
-      <!-- шаг 1 -->
       <div id="s1">
         <h1>Регистрация</h1>
-        <p class="sub">Два разных кабинета — выберите, с чем пришли.
-          Второй можно завести потом на тот же номер.</p>
-        <div class="picks" id="tipPick">
-          <label class="pick on" data-tip="ur">
-            <i></i>
-            <span><b>Компания или ИП</b>
-              <span>Хранение, витрина, документы. Договор подпишем при первой поставке</span></span>
-          </label>
-          <label class="pick" data-tip="fiz">
-            <i></i>
-            <span><b>Частное лицо</b>
-              <span>Вещи на время ремонта и покупки на витрине. Договор не нужен</span></span>
-          </label>
-        </div>
-        <div class="row-btn"><button class="btn" id="go1">Дальше</button></div>
-      </div>
-
-      <!-- шаг 2 -->
-      <div id="s2" class="hide">
-        <h1 id="h2">Данные компании</h1>
-        <p class="sub" id="p2">Название и адрес подтянем из реестра — вводить руками не нужно.</p>
-
-        <div id="polyaUr">
-          <label class="field">
-            <span>ИНН <span class="note">10 цифр у компании, 12 у ИП</span></span>
-            <input type="text" inputmode="numeric" id="inn" placeholder="7714345678"
-                   maxlength="12">
-            <span class="err" id="innErr">Нужно 10 или 12 цифр</span>
-          </label>
-          <div id="innOk" class="inn-found hide">
-            <b>ООО «Северный ветер»</b>
-            Москва, Дмитровское шоссе, 100 · ИНН <span id="innEcho"></span> · действующая
-          </div>
-        </div>
-
-        <div class="pair">
-          <label class="field"><span>Имя и фамилия</span>
-            <input type="text" id="fio" placeholder="Ирина Соколова"></label>
-          <label class="field"><span>Телефон</span>
-            <input type="tel" data-phone id="tel2" placeholder="+7 (___) ___-__-__"></label>
-        </div>
+        <p class="sub">Нужен только телефон. Компания вы или частное лицо —
+          спросим потом, и то не обязательно: смотреть и покупать можно и так.</p>
         <label class="field">
-          <span>Почта <span class="note">на неё придут счета и документы</span></span>
-          <input type="email" id="mail" placeholder="sklad@severnyveter.ru"></label>
-
-        <label class="field" id="chtoBox">
-          <span>Что собираетесь делать</span>
-          <select id="chto">
-            <option>Хранить товар и отгружать заказы</option>
-            <option>Хранить и продавать через витрину</option>
-            <option>Только продавать — товар уже у вас</option>
-            <option>Пока присматриваюсь</option>
-          </select>
+          <span>Номер телефона</span>
+          <input type="tel" data-phone id="tel2" placeholder="+7 (___) ___-__-__"
+                 autocomplete="tel">
+          <span class="err" id="telErr">Введите номер целиком — 11 цифр</span>
         </label>
-
         <div class="row-btn">
           <button class="btn" id="go2">Выслать код</button>
-          <button class="link" id="back1">Назад</button>
+          <a class="link" href="vhod.html">У меня уже есть кабинет</a>
         </div>
         <p class="legal">Регистрируясь, вы соглашаетесь с
           <a href="info.html">условиями</a> и обработкой персональных данных.</p>
       </div>
 
-      <!-- шаг 3 -->
-      <div id="s3" class="hide">
-        <h1>Подтвердите номер</h1>
+      <div id="s2" class="hide">
+        <h1>Код из СМС</h1>
         <p class="sub">Отправили четыре цифры на <b id="telEcho2"></b>.
-          <button class="link" id="back2">Изменить</button></p>
+          <button class="link" id="back1">Изменить номер</button></p>
         <div class="code-row">
           <input type="text" inputmode="numeric" maxlength="1" data-code>
           <input type="text" inputmode="numeric" maxlength="1" data-code>
@@ -278,35 +234,73 @@ textarea { min-height: 104px; resize: vertical; }
         <p class="timer" id="timer2">Выслать снова можно через <b>45</b> с</p>
       </div>
 
-      <!-- шаг 4 -->
+      <div id="s3" class="hide">
+        <h1>Пара уточнений</h1>
+        <p class="sub">Всё это можно пропустить и заполнить потом — кабинет
+          уже работает.</p>
+
+        <label class="field"><span>Как к вам обращаться</span>
+          <input type="text" id="fio" placeholder="Ирина Соколова"></label>
+
+        <label class="field">
+          <span>Почта <span class="note">на неё придут чеки и документы</span></span>
+          <input type="email" id="mail" placeholder="irina@pochta.ru"></label>
+
+        <div class="firma-box">
+          <div class="pick" id="firmaTog">
+            <i></i>
+            <span><b>Буду работать от компании</b>
+              <span>тогда сможем выставлять счета, УПД и накладные</span></span>
+          </div>
+          <div id="polyaUr" class="hide">
+            <label class="field">
+              <span>ИНН <span class="note">10 цифр у компании, 12 у ИП</span></span>
+              <input type="text" inputmode="numeric" id="inn" placeholder="7714345678"
+                     maxlength="12"></label>
+            <div id="innOk" class="inn-found hide">
+              <b>ООО «Северный ветер»</b>
+              Москва, Дмитровское шоссе, 100 · ИНН <span id="innEcho"></span> · действующая
+            </div>
+          </div>
+        </div>
+
+        <div class="row-btn">
+          <button class="btn" id="go3">Готово</button>
+          <button class="link" id="propustit">Пропустить</button>
+        </div>
+      </div>
+
       <div id="s4" class="hide">
-        <div class="done-mark">✓</div>
+        <div class="done-mark">&#10003;</div>
         <h1>Кабинет готов</h1>
-        <p class="sub" id="gotovoTxt">Пётр Ким уже видит вашу заявку и позвонит,
-          чтобы согласовать первую поставку.</p>
+        <p class="sub" id="gotovoTxt">Можно идти на витрину или привозить вещи
+          на склад.</p>
         <div class="facts">
-          <div><span>Кабинет</span><span id="ktoItog">ООО «Северный ветер»</span></div>
+          <div><span>Кабинет</span><span id="ktoItog">Ирина Соколова</span></div>
           <div><span>Телефон</span><span id="telItog">+7 (916) 402-18-77</span></div>
-          <div><span>Ведёт вас</span><span>Пётр Ким · склад в Химках</span></div>
-          <div><span>Договор</span><span id="dogovor">подпишем при первой поставке</span></div>
+          <div><span>Документы</span><span id="dogovor">чеки на человека</span></div>
+          <div><span>Появится компания</span><span>добавьте ИНН в кабинете &mdash;
+            начнём выставлять счета</span></div>
         </div>
         <div class="row-btn">
           <button class="btn" id="vKabinet">Перейти в кабинет</button>
-          <a class="btn-line" href="hranenie.html">Сначала посчитать стоимость</a>
+          <a class="btn-line" href="vitrina.html">Сначала на витрину</a>
         </div>
       </div>
     </div>
   </div>
 
   <div class="aside">
-    <h3>Что дальше</h3>
+    <h3>Что даёт кабинет</h3>
     <ul>
-      <li><span class="tick">1</span><span><b>Звонок в тот же день</b>
-        <span>подберём места и посчитаем по вашему товару</span></span></li>
-      <li><span class="tick">2</span><span><b>Первая поставка</b>
-        <span>привозите сами или забираем — примем и разместим</span></span></li>
-      <li><span class="tick">3</span><span><b>Договор при поставке</b>
-        <span>подписываем на месте, электронно тоже можно</span></span></li>
+      <li><span class="tick">&#10003;</span><span><b>Покупки на витрине</b>
+        <span>история, повтор заказа, избранное</span></span></li>
+      <li><span class="tick">&#10003;</span><span><b>Вещи и товар на хранении</b>
+        <span>остатки, сроки, выдача по заявке</span></span></li>
+      <li><span class="tick">&#10003;</span><span><b>Счета и документы</b>
+        <span>появятся, когда добавите ИНН компании</span></span></li>
+      <li><span class="tick">&#10003;</span><span><b>Свой человек на складе</b>
+        <span>Пётр Ким отвечает в чате</span></span></li>
     </ul>
     <p class="mini">Уже есть кабинет? <a href="vhod.html">Войти</a></p>
   </div>
@@ -337,7 +331,7 @@ document.querySelectorAll('input[data-phone]').forEach(function (el) {
   el.addEventListener('focus', function () { if (!el.value) { el.value = '+7 ('; } });
 });
 
-var tip = 'ur';
+var firma = false;
 function pokazat(id) {
   ['s1', 's2', 's3', 's4'].forEach(function (x) {
     document.getElementById(x).classList.toggle('hide', x !== id);
@@ -351,60 +345,20 @@ function pokazat(id) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-document.querySelectorAll('#tipPick .pick').forEach(function (p) {
-  p.onclick = function () {
-    document.querySelectorAll('#tipPick .pick').forEach(function (x) {
-      x.classList.remove('on');
-    });
-    p.classList.add('on');
-    tip = p.dataset.tip;
-  };
-});
-
-document.getElementById('go1').onclick = function () {
-  var ur = tip === 'ur';
-  document.getElementById('h2').textContent = ur ? 'Данные компании' : 'Ваши данные';
-  document.getElementById('p2').textContent = ur
-    ? 'Название и адрес подтянем из реестра — вводить руками не нужно.'
-    : 'Только имя и телефон. Паспорт и договор для частных вещей не нужны.';
-  document.getElementById('polyaUr').classList.toggle('hide', !ur);
-  document.getElementById('chtoBox').classList.toggle('hide', !ur);
-  document.getElementById('mail').placeholder = ur
-    ? 'sklad@severnyveter.ru' : 'irina@pochta.ru';
-  pokazat('s2');
-};
-document.getElementById('back1').onclick = function () { pokazat('s1'); };
-document.getElementById('back2').onclick = function () { pokazat('s2'); };
-
-/* ИНН: как только цифр достаточно, показываем найденную компанию */
-var inn = document.getElementById('inn');
-inn.addEventListener('input', function () {
-  inn.value = inn.value.replace(/\D/g, '').slice(0, 12);
-  var ok = inn.value.length === 10 || inn.value.length === 12;
-  document.getElementById('innOk').classList.toggle('hide', !ok);
-  document.getElementById('innEcho').textContent = inn.value;
-  if (ok) {
-    inn.classList.remove('bad');
-    document.getElementById('innErr').classList.remove('on');
-  }
-});
-
+var tel = document.getElementById('tel2');
 var tikanie2;
 document.getElementById('go2').onclick = function () {
-  var tel = document.getElementById('tel2');
-  var plohо = false;
-  if (tip === 'ur' && inn.value.length !== 10 && inn.value.length !== 12) {
-    inn.classList.add('bad');
-    document.getElementById('innErr').classList.add('on');
-    plohо = true;
+  if (tel.dataset.full !== '1') {
+    tel.classList.add('bad');
+    document.getElementById('telErr').classList.add('on');
+    tel.focus();
+    return;
   }
-  if (tel.dataset.full !== '1') { tel.classList.add('bad'); plohо = true; }
-  else tel.classList.remove('bad');
-  if (plohо) return;
-
+  tel.classList.remove('bad');
+  document.getElementById('telErr').classList.remove('on');
   document.getElementById('telEcho2').textContent = tel.value;
   document.getElementById('telItog').textContent = tel.value;
-  pokazat('s3');
+  pokazat('s2');
   document.querySelector('[data-code]').focus();
 
   var ost = 45;
@@ -420,6 +374,7 @@ document.getElementById('go2').onclick = function () {
     }
   }, 1000);
 };
+document.getElementById('back1').onclick = function () { pokazat('s1'); };
 
 var kletki = document.querySelectorAll('[data-code]');
 kletki.forEach(function (k, i) {
@@ -428,7 +383,7 @@ kletki.forEach(function (k, i) {
     if (k.value && kletki[i + 1]) kletki[i + 1].focus();
     if (Array.prototype.every.call(kletki, function (x) { return x.value; })) {
       clearInterval(tikanie2);
-      setTimeout(gotovo, 260);
+      setTimeout(function () { pokazat('s3'); }, 260);
     }
   });
   k.addEventListener('keydown', function (e) {
@@ -436,21 +391,39 @@ kletki.forEach(function (k, i) {
   });
 });
 
+/* Компания — не развилка на входе, а галочка в конце. Её можно поставить
+   потом, из кабинета: человек и компания живут на одном номере. */
+document.getElementById('firmaTog').onclick = function () {
+  firma = !firma;
+  this.classList.toggle('on', firma);
+  document.getElementById('polyaUr').classList.toggle('hide', !firma);
+};
+
+var inn = document.getElementById('inn');
+inn.addEventListener('input', function () {
+  inn.value = inn.value.replace(/\D/g, '').slice(0, 12);
+  var ok = inn.value.length === 10 || inn.value.length === 12;
+  document.getElementById('innOk').classList.toggle('hide', !ok);
+  document.getElementById('innEcho').textContent = inn.value;
+});
+
 function gotovo() {
-  var ur = tip === 'ur';
   var fio = document.getElementById('fio').value.trim();
-  document.getElementById('ktoItog').textContent = ur
+  var svoya = firma && (inn.value.length === 10 || inn.value.length === 12);
+  document.getElementById('ktoItog').textContent = svoya
     ? 'ООО «Северный ветер»' : (fio || 'Ирина Соколова');
-  document.getElementById('dogovor').textContent = ur
-    ? 'подпишем при первой поставке' : 'не нужен';
-  document.getElementById('gotovoTxt').textContent = ur
-    ? 'Пётр Ким уже видит вашу заявку и позвонит, чтобы согласовать первую поставку.'
-    : 'Можно сразу заказывать вывоз вещей или идти за покупками на витрину.';
+  document.getElementById('dogovor').textContent = svoya
+    ? 'счета, УПД и накладные' : 'чеки на человека';
+  document.getElementById('gotovoTxt').textContent = svoya
+    ? 'Пётр Ким видит вашу заявку и позвонит, чтобы согласовать первую поставку.'
+    : 'Можно идти на витрину или привозить вещи на склад.';
   document.getElementById('vKabinet').onclick = function () {
-    location.href = ur ? 'kabinet.html' : 'kabinet-lichnyy.html';
+    location.href = svoya ? 'kabinet.html' : 'kabinet-lichnyy.html';
   };
   pokazat('s4');
 }
+document.getElementById('go3').onclick = gotovo;
+document.getElementById('propustit').onclick = gotovo;
 
 </script>
 </body>
