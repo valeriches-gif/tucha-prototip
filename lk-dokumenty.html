@@ -968,5 +968,335 @@ window.KORZINA = (function () {
     .forEach(function (el) { el.dataset.own = '1'; });
 })();
 </script>
+<script>
+
+/* Помощник Тучи: диалог внизу справа.
+   Ответы заготовлены и подбираются по ключевым словам — на живом сайте
+   здесь будет модель, а темы и переходы останутся те же. */
+(function () {
+  if (window.innerWidth < 720) return;      /* на телефоне занимает пол-экрана */
+
+  var LICO = 'data:image/webp;base64,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';
+  var MALOE = 'data:image/webp;base64,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';
+
+  /* Что помощник умеет отвечать. Порядок важен: ищем сверху вниз. */
+  var ZNANIYA = [
+    { k: ['сколько стоит', 'цена', 'стоимость', 'почём', 'тариф', 'прайс'],
+      o: 'Хранение — от 16,42 ₽ за паллето-место в сутки. Точная ставка '
+       + 'зависит от габаритов и оборачиваемости. Посчитайте сами: объём, '
+       + 'срок и услуги — цена появится сразу, без запроса.',
+      go: ['Посчитать', 'raschet.html'] },
+
+    { k: ['минимальн', 'от скольки', 'одна паллета', 'мало', 'небольшой объём'],
+      o: 'Принимаем от одной паллеты. Срок не ограничиваем: можно на месяц, '
+       + 'можно на два года. Заберёте в середине месяца — пересчитаем по дням.',
+      go: ['Условия хранения', 'hranenie.html'] },
+
+    { k: ['витрин', 'продавать', 'продажа', 'выставить товар', 'стать продавц'],
+      o: 'Витрина — отдельная услуга: продаёте то, что уже лежит у нас, или '
+       + 'привозите товар специально под неё. Сборкой и отгрузкой занимаемся '
+       + 'мы, выплата раз в неделю. Подключает менеджер — сначала смотрит '
+       + 'товар и согласует цены.',
+      go: ['Как подключить', 'kabinet-vitrina-start.html'] },
+
+    { k: ['купить', 'опт', 'заказать товар', 'каталог', 'что есть в продаже'],
+      o: '2 840 позиций от 34 продавцов, и всё физически лежит у нас в Химках. '
+       + 'Цена сразу видна за штуку, короб и паллету. Забрать можно сегодня '
+       + 'или в течение недели.',
+      go: ['На витрину', 'vitrina.html'] },
+
+    { k: ['доставк', 'привез', 'привоз', 'забрать', 'самовывоз', 'машин'],
+      o: 'Три пути: забрать самому в Химках, попуткой (машина в вашу сторону '
+       + 'уже идёт — платите долю рейса) или отдельной машиной в удобное '
+       + 'время. Купленное неделю ждёт на складе бесплатно.',
+      go: ['Доставка и оплата', 'info.html'] },
+
+    { k: ['документ', 'счёт', 'счет', 'упд', 'накладн', 'договор', 'ндс',
+          'бухгалтер', 'отсрочк'],
+      o: 'Компаниям выставляем счёт, УПД и накладную, на оплату три дня; '
+       + 'отсрочка обсуждается от 300 000 ₽ в месяц. Частному лицу договор '
+       + 'не нужен — чек приходит на почту. Договор на хранение подписываем '
+       + 'при первой поставке, за 20 минут.',
+      go: ['Оплата', 'oplata.html'] },
+
+    { k: ['маркировк', 'честный знак', 'чз', 'fbs', 'fbo', 'маркетплейс',
+          'вайлдберриз', 'озон', 'wildberries', 'ozon'],
+      o: 'Маркируем и вводим коды в оборот сами — 24 ₽ за единицу. Сборка '
+       + 'заказов FBS на маркетплейсы — 46 ₽. Требования площадок к упаковке '
+       + 'и этикеткам держим в кабинете продавца, чтобы не ловить штрафы.',
+      go: ['Посчитать с услугами', 'raschet.html'] },
+
+    { k: ['возврат', 'вернуть', 'не подошло', 'брак'],
+      o: 'Товар возвращается на тот же склад, откуда уехал, — поэтому дешевле '
+       + 'и быстрее обычного. Заявка оформляется в кабинете, статус и деньги '
+       + 'видны там же. Если отказались при погрузке — товар просто '
+       + 'возвращается на полку продавца.',
+      go: ['Как это работает', 'info.html'] },
+
+    { k: ['адрес', 'как проехать', 'где вы', 'где склад', 'химки', 'доехать'],
+      o: 'Химки, деревня Подолино, промзона 2Б — десять минут от МКАД и '
+       + 'Шереметьева. Будни с 9:00 до 18:00, без записи: приезжайте и '
+       + 'посмотрите склад своими глазами.',
+      go: ['Связаться', 'svyaz.html'] },
+
+    { k: ['вещи', 'переезд', 'ремонт', 'квартир', 'мебель', 'физлиц',
+          'частное лицо', 'не компания'],
+      o: 'Да, храним и личные вещи: мебель, коробки, технику. Договор для '
+       + 'этого не нужен, при приёмке составляем опись с фотографиями. '
+       + 'Забрать можно в любой будний день — скажите за сутки.',
+      go: ['Посчитать хранение вещей', 'raschet.html'] },
+
+    { k: ['кабинет', 'регистрац', 'зарегистр', 'войти', 'аккаунт', 'логин'],
+      o: 'Для регистрации нужен только телефон — ни ИНН, ни договора на входе. '
+       + 'Если считали стоимость, расчёт сохранится в кабинет, и менеджер '
+       + 'увидит его ещё до звонка. Компанию можно добавить потом, когда '
+       + 'понадобятся счета.',
+      go: ['Завести кабинет', 'registraciya.html'] },
+
+    { k: ['зона', 'температур', 'холод', 'тёплая', 'теплая', 'класс склада'],
+      o: 'Классы A, B и C, тёплая зона и холодная — плюс 5…15 °C. Есть '
+       + 'напольная зона под негабарит: технику, длинномер, тяжёлое.',
+      go: ['Условия', 'hranenie.html'] },
+
+    { k: ['остат', 'сколько лежит', 'инвентар', 'отчёт', 'отчет', 'сверк'],
+      o: 'Остатки видны в кабинете в реальном времени: сколько лежит, где '
+       + 'стоит, что уехало. Акт сверки, движения и опись скачиваются сами — '
+       + 'без письма и ожидания.',
+      go: ['Отчёты', 'kabinet-otchety.html'] },
+
+    { k: ['человек', 'менеджер', 'позвонить', 'связаться', 'телефон',
+          'написать', 'консультац'],
+      o: 'Ваш склад ведёт закреплённый человек — Пётр Ким. Он принимает '
+       + 'поставки, отвечает в чате и открывает витрину. Телефон склада: '
+       + '+7 (495) 665-82-42, будни с 9:00 до 18:00.',
+      go: ['Оставить заявку', 'svyaz.html'] },
+
+    { k: ['акци', 'скидк', 'дешевле', 'выгодн'],
+      o: 'Сейчас: −12 % на упаковку при заказе от паллеты до 31 августа. '
+       + 'Скидка за срок — до 3 % при оплате вперёд. Постоянным клиентам '
+       + 'ступени дают дополнительные условия.',
+      go: ['Смотреть на витрине', 'vitrina.html'] }
+  ];
+
+  /* С чего начать разговор — зависит от страницы */
+  var STRANICA = (location.pathname.split('/').pop() || 'glavnaya.html');
+  var PODSKAZKI = {
+    'vitrina.html':   ['Как забрать заказ?', 'Есть скидки?', 'Можно приехать?'],
+    'tovar.html':     ['Сколько осталось?', 'Как забрать?', 'Дадите счёт?'],
+    'korzina.html':   ['Как считается доставка?', 'Дадите счёт?', 'Сколько ждёт товар?'],
+    'zakaz.html':     ['Когда привезёте?', 'Дадите счёт?', 'Можно самовывоз?'],
+    'oplata.html':    ['Нужен счёт на компанию', 'Можно картой?', 'Когда отгрузите?'],
+    'hranenie.html':  ['Сколько стоит?', 'От скольки принимаете?', 'Какие зоны есть?'],
+    'raschet.html':   ['Что входит в цену?', 'Нужен ли договор?', 'Когда примете?'],
+    'kabinet-vitrina-start.html': ['Как подключить витрину?', 'Какая комиссия?',
+                                   'Кто собирает заказы?'],
+    'kabinet.html':   ['Где мои остатки?', 'Как получить акт сверки?', 'Хочу продавать'],
+    'kabinet-lichnyy.html': ['Как забрать вещи?', 'Сколько ещё оплачено?',
+                             'Где опись?']
+  };
+  var podskazki = PODSKAZKI[STRANICA]
+    || ['Сколько стоит хранение?', 'Хочу продавать со склада', 'Как забрать заказ?'];
+
+  var PRIVET = {
+    'kabinet': 'Подскажу по вашему складу: остатки, документы, витрина.',
+    'lk-': 'Подскажу по вещам и заказам.',
+    'vitrina': 'Помогу с товаром: цены, остатки, доставка.',
+    'korzina': 'Помогу с заказом: доставка, оплата, сроки.'
+  };
+  var privet = 'Спрашивайте — отвечу про склад, витрину и цены.';
+  for (var kl in PRIVET) if (STRANICA.indexOf(kl) === 0) privet = PRIVET[kl];
+
+  var css = document.createElement('style');
+  css.textContent =
+    '.pom-knopka{position:fixed;right:18px;bottom:14px;z-index:120;width:104px;' +
+    'height:80px;border:0;background:none;cursor:pointer;padding:0;' +
+    'transition:transform .22s cubic-bezier(.2,.8,.3,1)}' +
+    '.pom-knopka:hover{transform:translateY(-4px) scale(1.04)}' +
+    '.pom-knopka img{width:100%;display:block;' +
+    'filter:drop-shadow(0 8px 18px rgba(30,58,95,.22))}' +
+    '.pom-tochka{position:absolute;right:6px;top:2px;width:11px;height:11px;' +
+    'border-radius:50%;background:#EF7F1A;border:2px solid #fff;' +
+    'box-shadow:0 0 0 0 rgba(239,127,26,.5);animation:pomPuls 2.4s infinite}' +
+    '@keyframes pomPuls{0%{box-shadow:0 0 0 0 rgba(239,127,26,.5)}' +
+    '70%{box-shadow:0 0 0 9px rgba(239,127,26,0)}' +
+    '100%{box-shadow:0 0 0 0 rgba(239,127,26,0)}}' +
+
+    '.pom{position:fixed;right:18px;bottom:14px;z-index:121;width:372px;' +
+    'max-height:min(640px,86vh);display:flex;flex-direction:column;' +
+    'background:#fff;border:1px solid #E3EAF2;border-radius:18px;' +
+    'box-shadow:0 22px 60px rgba(30,58,95,.24);overflow:hidden;' +
+    'font-family:"Golos Text",Arial,sans-serif;opacity:0;' +
+    'transform:translateY(18px) scale(.97);pointer-events:none;' +
+    'transition:opacity .24s ease,transform .24s cubic-bezier(.2,.8,.3,1)}' +
+    '.pom.open{opacity:1;transform:none;pointer-events:auto}' +
+
+    '.pom-verh{display:flex;align-items:center;gap:11px;padding:13px 15px;' +
+    'background:linear-gradient(135deg,#1E3A5F,#2C5C8A);color:#fff;flex:0 0 auto}' +
+    '.pom-verh img{width:46px;display:block;flex:0 0 auto}' +
+    '.pom-verh b{display:block;font-size:15px;font-weight:600}' +
+    '.pom-verh span{display:block;font-size:11.5px;color:rgba(255,255,255,.72)}' +
+    '.pom-verh .est{display:inline-flex;align-items:center;gap:5px}' +
+    '.pom-verh .est::before{content:"";width:6px;height:6px;border-radius:50%;' +
+    'background:#7BD3A0}' +
+    '.pom-x{margin-left:auto;background:none;border:0;color:rgba(255,255,255,.7);' +
+    'font-size:19px;cursor:pointer;padding:2px 4px;line-height:1;font-family:inherit}' +
+    '.pom-x:hover{color:#fff}' +
+
+    '.pom-lenta{flex:1 1 auto;overflow-y:auto;padding:16px 15px 6px;' +
+    'background:#F7FAFD;display:flex;flex-direction:column;gap:10px}' +
+    '.pom-msg{max-width:86%;font-size:13.5px;line-height:1.5;padding:10px 13px;' +
+    'border-radius:13px}' +
+    '.pom-msg.on{align-self:flex-start;background:#fff;color:#24354B;' +
+    'border:1px solid #E7EEF6;border-bottom-left-radius:5px}' +
+    '.pom-msg.ya{align-self:flex-end;background:#1E3A5F;color:#fff;' +
+    'border-bottom-right-radius:5px}' +
+    '.pom-msg a{display:inline-block;margin-top:8px;font-size:13px;' +
+    'font-weight:600;color:#1E90D2;text-decoration:none}' +
+    '.pom-msg a:hover{text-decoration:underline}' +
+    '.pom-pech{align-self:flex-start;display:flex;gap:4px;padding:12px 14px;' +
+    'background:#fff;border:1px solid #E7EEF6;border-radius:13px}' +
+    '.pom-pech i{width:6px;height:6px;border-radius:50%;background:#B9C6D6;' +
+    'animation:pomTochka 1.1s infinite}' +
+    '.pom-pech i:nth-child(2){animation-delay:.18s}' +
+    '.pom-pech i:nth-child(3){animation-delay:.36s}' +
+    '@keyframes pomTochka{0%,60%,100%{opacity:.3;transform:translateY(0)}' +
+    '30%{opacity:1;transform:translateY(-3px)}}' +
+
+    '.pom-bystro{display:flex;flex-wrap:wrap;gap:6px;padding:10px 15px 0;' +
+    'background:#F7FAFD;flex:0 0 auto}' +
+    '.pom-bystro button{font:inherit;font-size:12.5px;color:#1E3A5F;' +
+    'background:#fff;border:1px solid #E3EAF2;border-radius:16px;' +
+    'padding:7px 13px;cursor:pointer;transition:border-color .16s ease}' +
+    '.pom-bystro button:hover{border-color:#1E90D2}' +
+
+    '.pom-niz{flex:0 0 auto;display:flex;gap:8px;padding:12px 15px;' +
+    'background:#fff;border-top:1px solid #EDF2F7}' +
+    '.pom-niz input{flex:1;font:inherit;font-size:13.5px;color:#24354B;' +
+    'background:#F7FAFD;border:1.5px solid #E3EAF2;border-radius:10px;' +
+    'padding:10px 13px}' +
+    '.pom-niz input:focus{outline:none;background:#fff;border-color:#1E90D2;' +
+    'box-shadow:0 0 0 3px rgba(30,144,210,.12)}' +
+    '.pom-niz button{flex:0 0 auto;border:0;border-radius:10px;background:#EF7F1A;' +
+    'color:#fff;width:42px;cursor:pointer;font-size:16px;font-family:inherit}' +
+    '.pom-niz button:hover{filter:brightness(1.06)}' +
+    '.pom-snoska{font-size:11px;color:#A6B2C2;text-align:center;padding:0 15px 10px;' +
+    'background:#fff}' +
+    '@media print{.pom,.pom-knopka{display:none}}';
+  document.head.appendChild(css);
+
+  var knopka = document.createElement('button');
+  knopka.className = 'pom-knopka';
+  knopka.setAttribute('aria-label', 'Спросить помощника');
+  knopka.innerHTML = '<span class="pom-tochka"></span><img src="' + LICO + '" alt="">';
+
+  var okno = document.createElement('div');
+  okno.className = 'pom';
+  okno.innerHTML =
+    '<div class="pom-verh"><img src="' + MALOE + '" alt="">' +
+    '<span><b>Помощник Тучи</b><span class="est">отвечает сразу</span></span>' +
+    '<button class="pom-x" aria-label="Закрыть">×</button></div>' +
+    '<div class="pom-lenta" id="pomLenta"></div>' +
+    '<div class="pom-bystro" id="pomBystro"></div>' +
+    '<div class="pom-niz">' +
+    '<input type="text" id="pomVvod" placeholder="Спросите что угодно про склад">' +
+    '<button id="pomOtpr" aria-label="Отправить">→</button></div>' +
+    '<div class="pom-snoska">Отвечает по складу и витрине. Если не хватит — ' +
+    'позовём Петра Кима.</div>';
+
+  document.body.appendChild(knopka);
+  document.body.appendChild(okno);
+
+  var lenta = okno.querySelector('#pomLenta');
+  var bystro = okno.querySelector('#pomBystro');
+  var vvod = okno.querySelector('#pomVvod');
+
+  function skazat(tekst, ssylka) {
+    var d = document.createElement('div');
+    d.className = 'pom-msg on';
+    d.innerHTML = tekst + (ssylka
+      ? '<br><a href="' + ssylka[1] + '">' + ssylka[0] + ' →</a>' : '');
+    lenta.appendChild(d);
+    lenta.scrollTop = lenta.scrollHeight;
+  }
+  function sprosit(tekst) {
+    var d = document.createElement('div');
+    d.className = 'pom-msg ya';
+    d.textContent = tekst;
+    lenta.appendChild(d);
+    lenta.scrollTop = lenta.scrollHeight;
+  }
+  function pechataet() {
+    var d = document.createElement('div');
+    d.className = 'pom-pech';
+    d.innerHTML = '<i></i><i></i><i></i>';
+    lenta.appendChild(d);
+    lenta.scrollTop = lenta.scrollHeight;
+    return d;
+  }
+
+  function otvet(vopros) {
+    var v = vopros.toLowerCase();
+    for (var i = 0; i < ZNANIYA.length; i++) {
+      for (var j = 0; j < ZNANIYA[i].k.length; j++) {
+        if (v.indexOf(ZNANIYA[i].k[j]) >= 0) return ZNANIYA[i];
+      }
+    }
+    return { o: 'Такого пока не знаю — но знает Пётр Ким, он ведёт склад. '
+             + 'Оставьте номер, перезвонит в течение дня.',
+             go: ['Оставить заявку', 'svyaz.html'] };
+  }
+
+  function otpravit(tekst) {
+    tekst = (tekst || vvod.value).trim();
+    if (!tekst) return;
+    sprosit(tekst);
+    vvod.value = '';
+    bystro.innerHTML = '';
+    var p = pechataet();
+    setTimeout(function () {
+      p.remove();
+      var z = otvet(tekst);
+      skazat(z.o, z.go);
+      risovatBystro();
+    }, 620 + Math.random() * 380);
+  }
+
+  function risovatBystro() {
+    bystro.innerHTML = '';
+    podskazki.forEach(function (t) {
+      var b = document.createElement('button');
+      b.textContent = t;
+      b.onclick = function () { otpravit(t); };
+      bystro.appendChild(b);
+    });
+  }
+
+  var zapushchen = false;
+  function otkryt() {
+    okno.classList.add('open');
+    knopka.style.display = 'none';
+    if (!zapushchen) {
+      zapushchen = true;
+      skazat('Здравствуйте! ' + privet);
+      risovatBystro();
+    }
+    setTimeout(function () { vvod.focus(); }, 260);
+  }
+  function zakryt() {
+    okno.classList.remove('open');
+    knopka.style.display = '';
+  }
+
+  knopka.onclick = otkryt;
+  okno.querySelector('.pom-x').onclick = zakryt;
+  okno.querySelector('#pomOtpr').onclick = function () { otpravit(); };
+  vvod.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') otpravit();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && okno.classList.contains('open')) zakryt();
+  });
+})();
+</script>
 </body>
 </html>
