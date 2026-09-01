@@ -254,7 +254,46 @@ a { color: inherit; text-decoration: none; }
 
   
 
-<div class="doors">
+<div class="entries rise">
+    <a class="entry" href="vhod.html">
+      <span class="entry-ico">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#1E90D2" stroke-width="1.7">
+          <path d="M3 21V9l9-6 9 6v12" stroke-linejoin="round"/><path d="M9 21v-7h6v7"/>
+        </svg>
+      </span>
+      <span>
+        <b>Бизнес-аккаунт</b>
+        <span>Компаниям и ИП: остатки, приёмки, отгрузки, документы и счета</span>
+      </span>
+      <span class="entry-go">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#EF7F1A" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+    <a class="entry" href="vhod.html">
+      <span class="entry-ico">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#1E90D2" stroke-width="1.7">
+          <circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span>
+        <b>Личный вход</b>
+        <span>Частным лицам: вещи на время ремонта, покупки на витрине, доставка</span>
+      </span>
+      <span class="entry-go">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#EF7F1A" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+  </div>
+
+  <div class="entry-note rise">
+    <span>Ещё нет аккаунта?</span>
+    <a href="registraciya.html">Зарегистрироваться за 2 минуты</a>
+    <span class="dim">— нужен только телефон. Компаниям договор подпишем при первой поставке, частным лицам он не нужен</span>
+  </div>
+
+  <div class="doors">
     <a class="door keep rise" href="hranenie.html">
       <span class="lbl">Склад ответственного хранения</span>
       <h2>Хранение</h2>
@@ -288,44 +327,7 @@ a { color: inherit; text-decoration: none; }
     </a>
   </div>
 
-<div class="vhody rise">
-  <div class="vhody-zag">
-    <b>Уже работаете с нами?</b>
-    <span>Один телефон открывает оба кабинета — переключаются в меню профиля</span>
-  </div>
-  <div class="vhody-row">
-    <a class="vhod-kart" href="vhod.html">
-      <span class="vhod-ico biz">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#1E90D2"
-             stroke-width="1.7"><path d="M3 21V9l9-6 9 6v12" stroke-linejoin="round"/>
-        <path d="M9 21v-7h6v7"/></svg>
-      </span>
-      <span class="vhod-txt">
-        <b>Кабинет компании</b>
-        <span>Остатки, приёмки и отгрузки, витрина, счета и документы</span>
-      </span>
-      <span class="vhod-go">→</span>
-    </a>
-    <a class="vhod-kart" href="vhod.html">
-      <span class="vhod-ico per">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#3F9D6B"
-             stroke-width="1.7"><circle cx="12" cy="8" r="3.4"/>
-        <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke-linecap="round"/></svg>
-      </span>
-      <span class="vhod-txt">
-        <b>Личный кабинет</b>
-        <span>Вещи на хранении, покупки на витрине, документы и выдача</span>
-      </span>
-      <span class="vhod-go">→</span>
-    </a>
-  </div>
-  <div class="vhody-niz">
-    Ещё нет кабинета?
-    <a href="registraciya.html">Завести за две минуты</a>
-    <span>— нужен только телефон. Компаниям договор подпишем при первой
-      поставке, частным лицам он не нужен</span>
-  </div>
-</div>
+
 
 
   <div class="link-band rise">
@@ -1080,7 +1082,7 @@ window.KORZINA = (function () {
     'border:0;background:none;cursor:pointer;padding:0;' +
     'transition:transform .26s cubic-bezier(.2,.8,.3,1)}' +
     '.pom-knopka:hover{transform:translateY(-6px)}' +
-    '.pom-knopka img{width:100%;display:block;' +
+    '.pom-knopka img{width:100%;display:block;transform:scaleX(-1);' +
     'filter:drop-shadow(0 8px 18px rgba(30,58,95,.22))}' +
     '.pom-tochka{position:absolute;right:16px;top:6px;width:12px;height:12px;' +
     'border-radius:50%;background:#EF7F1A;border:2px solid #fff;' +
