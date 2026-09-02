@@ -219,6 +219,31 @@ a { color: inherit; text-decoration: none; }
   padding: 11px 0; border-bottom: 1px solid #EDF2F7; font-size: 14.5px; }
 .rfakty div span:first-child { color: #7C8AA0; }
 .rfakty div span:last-child { color: #1E3A5F; font-weight: 600; text-align: right; }
+
+.kab-menu { position: relative; }
+.kab-knopka { display: inline-flex; align-items: center; gap: 7px; }
+.kab-strelka { transition: transform .18s ease; opacity: .6; }
+.kab-menu.open .kab-strelka { transform: rotate(180deg); }
+.kab-spisok { position: absolute; right: 0; top: calc(100% + 8px); z-index: 90;
+  width: 286px; background: #fff; border: 1px solid rgba(30,58,95,.12);
+  border-radius: 14px; padding: 8px; box-shadow: 0 18px 44px rgba(30,58,95,.18);
+  opacity: 0; transform: translateY(-6px); pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease; }
+.kab-menu.open .kab-spisok { opacity: 1; transform: none; pointer-events: auto; }
+.kab-str { display: flex; gap: 12px; align-items: center; padding: 11px 12px;
+  border-radius: 10px; text-decoration: none; transition: background .16s ease; }
+.kab-str:hover { background: #F6F9FC; }
+.kab-ico { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; }
+.kab-ico.biz { background: #EAF4FB; }
+.kab-ico.per { background: #EAF6F0; }
+.kab-str b { display: block; font-size: 14.5px; color: #1E3A5F; }
+.kab-str span span { display: block; font-size: 12.5px; color: #7C8AA0;
+  line-height: 1.35; margin-top: 1px; }
+.kab-linia { height: 1px; background: rgba(30,58,95,.08); margin: 6px 12px; }
+.kab-reg { display: block; padding: 9px 12px 6px; font-size: 13px;
+  color: #EF7F1A; font-weight: 600; text-decoration: none; }
+.kab-reg:hover { text-decoration: underline; }
 </style>
 </head>
 
@@ -327,8 +352,36 @@ a { color: inherit; text-decoration: none; }
       <a href="info.html">Контакты</a>
     </nav>
     <div class="top-right">
-      <div class="phone"><b class="num">+7 (495) 665-82-42</b><span>пн–пт 9:00–18:00</span></div>
-      <a href="vhod.html"><button class="btn-line">Войти</button></a>
+      <div class="phone"><b class="num">+7 (495) 665-82-42</b><span>склад 24/7 · менеджеры пн–пт 9:00–18:00</span></div>
+      <div class="kab-menu">
+  <button class="btn-line kab-knopka" id="kabKnopka">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.9"><circle cx="12" cy="8" r="3.4"/>
+      <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke-linecap="round"/></svg>
+    Кабинет
+    <svg class="kab-strelka" width="12" height="12" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+      stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="kab-spisok" id="kabSpisok">
+    <a class="kab-str" href="vhod.html">
+      <span class="kab-ico biz">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1E90D2"
+          stroke-width="1.8"><path d="M3 21V9l9-6 9 6v12" stroke-linejoin="round"/>
+          <path d="M9 21v-7h6v7"/></svg></span>
+      <span><b>Компании и ИП</b><span>склад, витрина, закупки, счета</span></span>
+    </a>
+    <a class="kab-str" href="vhod.html">
+      <span class="kab-ico per">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3F9D6B"
+          stroke-width="1.8"><circle cx="12" cy="8" r="3.4"/>
+          <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke-linecap="round"/></svg></span>
+      <span><b>Частным лицам</b><span>вещи на хранении и покупки</span></span>
+    </a>
+    <div class="kab-linia"></div>
+    <a class="kab-reg" href="registraciya.html">Ещё нет кабинета — завести →</a>
+  </div>
+</div>
     </div>
   </div>
 
@@ -1445,6 +1498,24 @@ a { color: inherit; text-decoration: none; }
     amolchit = true;
   };
   setTimeout(pokazatAkciyu, 6500);
+})();
+</script>
+
+<script>
+/* Выпадающий список кабинетов в шапке. Закрывается по клику мимо и по Esc —
+   иначе он перекрывает страницу и мешает. */
+(function () {
+  var m = document.querySelector('.kab-menu');
+  if (!m) return;
+  var k = document.getElementById('kabKnopka');
+  k.addEventListener('click', function (e) {
+    e.stopPropagation();
+    m.classList.toggle('open');
+  });
+  document.addEventListener('click', function () { m.classList.remove('open'); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') m.classList.remove('open');
+  });
 })();
 </script>
 </body>

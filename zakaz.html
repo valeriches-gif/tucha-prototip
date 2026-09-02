@@ -431,6 +431,27 @@ section { padding: 34px 40px 0; }
 }
   /* панель прототипа не перекрывает нижний блок */
   .wrap { padding-bottom: 84px; }
+
+.kab-menu { position: relative; }
+.kab-spisok { position: absolute; right: 0; top: calc(100% + 10px); z-index: 90;
+  width: 286px; background: #fff; border: 1px solid rgba(30,58,95,.12);
+  border-radius: 14px; padding: 8px; box-shadow: 0 18px 44px rgba(30,58,95,.18);
+  opacity: 0; transform: translateY(-6px); pointer-events: none; text-align: left;
+  transition: opacity .18s ease, transform .18s ease; }
+.kab-menu.open .kab-spisok { opacity: 1; transform: none; pointer-events: auto; }
+.kab-str { display: flex; gap: 12px; align-items: center; padding: 11px 12px;
+  border-radius: 10px; text-decoration: none; transition: background .16s ease; }
+.kab-str:hover { background: #F6F9FC; }
+.kab-ico { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; }
+.kab-ico.biz { background: #EAF4FB; }
+.kab-ico.per { background: #EAF6F0; }
+.kab-str b { display: block; font-size: 14.5px; color: #1E3A5F; }
+.kab-str span span { display: block; font-size: 12.5px; color: #7C8AA0;
+  line-height: 1.35; margin-top: 1px; }
+.kab-linia { height: 1px; background: rgba(30,58,95,.08); margin: 6px 12px; }
+.kab-reg { display: block; padding: 9px 12px 6px; font-size: 13px;
+  color: #EF7F1A; font-weight: 600; text-decoration: none; }
 </style>
 </head>
 
@@ -568,11 +589,31 @@ section { padding: 34px 40px 0; }
       </div>
       <div class="top-acts">
         <a class="act" href="korzina.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.7"><path d="M4 7h16l-1.5 11H5.5z" stroke-linejoin="round"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg><span>Корзина</span><i data-cart-count>0</i></a>
-        <a class="act" href="vhod.html">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.7">
-            <circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke-linecap="round"/>
-          </svg><span>Войти</span>
-        </a>
+        <div class="kab-menu">
+  <button class="act kab-knopka" id="kabKnopka" style="border:0;background:none;cursor:pointer;font-family:inherit">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F"
+      stroke-width="1.7"><circle cx="12" cy="8" r="3.4"/>
+      <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke-linecap="round"/></svg>
+    <span>Кабинет</span>
+  </button>
+  <div class="kab-spisok" id="kabSpisok">
+    <a class="kab-str" href="vhod.html">
+      <span class="kab-ico biz"><svg width="17" height="17" viewBox="0 0 24 24"
+        fill="none" stroke="#1E90D2" stroke-width="1.8">
+        <path d="M3 21V9l9-6 9 6v12" stroke-linejoin="round"/>
+        <path d="M9 21v-7h6v7"/></svg></span>
+      <span><b>Компании и ИП</b><span>склад, витрина, закупки, счета</span></span>
+    </a>
+    <a class="kab-str" href="vhod.html">
+      <span class="kab-ico per"><svg width="17" height="17" viewBox="0 0 24 24"
+        fill="none" stroke="#3F9D6B" stroke-width="1.8"><circle cx="12" cy="8" r="3.4"/>
+        <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" stroke-linecap="round"/></svg></span>
+      <span><b>Частным лицам</b><span>вещи на хранении и покупки</span></span>
+    </a>
+    <div class="kab-linia"></div>
+    <a class="kab-reg" href="registraciya.html">Ещё нет кабинета — завести →</a>
+  </div>
+</div>
       </div>
     </div>
   </div>
@@ -1816,6 +1857,23 @@ window.KORZINA = (function () {
     amolchit = true;
   };
   setTimeout(pokazatAkciyu, 6500);
+})();
+</script>
+
+<script>
+(function () {
+  var m = document.querySelector('.kab-menu');
+  if (!m) return;
+  var k = document.getElementById('kabKnopka');
+  if (!k) return;
+  k.addEventListener('click', function (e) {
+    e.preventDefault(); e.stopPropagation();
+    m.classList.toggle('open');
+  });
+  document.addEventListener('click', function () { m.classList.remove('open'); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') m.classList.remove('open');
+  });
 })();
 </script>
 </body>
