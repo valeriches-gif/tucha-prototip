@@ -643,25 +643,7 @@ a.man-row:hover b { color: var(--orange); }
     </div>
     <div class="grid">
       <div class="col">
-        <div class="card rise">
-          <div class="card-head">
-            <h2>Профиль</h2>
-            <span class="note">данные для доставки и документов</span>
-          </div>
-          <div class="prof-rows">
-            <div class="prof-row"><span>Имя</span><b>Ирина Соколова</b><span class="edit">изменить</span></div>
-            <div class="prof-row"><span>Телефон</span><b>+7 (916) 402-18-77</b><span class="edit">изменить</span></div>
-            <div class="prof-row"><span>Почта</span><b>i.sokolova@mail.ru</b><span class="edit">изменить</span></div>
-            <div class="prof-row"><span>Уведомления</span><b>почта и SMS</b><span class="edit">настроить</span></div>
-          </div>
-
-          <div class="card-head" style="margin: 24px 0 14px;">
-            <h2 style="font-size: 16px;">Адреса доставки</h2>
-            <span class="note">чтобы не вводить каждый раз</span>
-          </div>
-          <div id="addrs"></div>
-          <button class="addr-add">Добавить адрес</button>
-        </div>
+        
 
         <div class="card rise">
           <div class="card-head">
@@ -677,16 +659,7 @@ a.man-row:hover b { color: var(--orange); }
             или повредится, отвечаем мы. Доступ к вещам — по будням с 9:00 до 18:00.</div>
         </div>
 
-        <div class="card rise">
-          <div class="card-head">
-            <h2>Покупки на витрине</h2>
-            <span class="note">купленное можно не увозить</span>
-            <a href="vitrina.html">За покупками</a>
-          </div>
-          <div id="orders"></div>
-          <div class="foot">После оплаты товар неделю ждёт вас бесплатно. Нужно дольше —
-            добавим к вашему хранению, отдельный договор не нужен.</div>
-        </div>
+        
 
         
       </div>
@@ -1166,7 +1139,8 @@ window.KORZINA = (function () {
      Блоки со своей анимацией — карта тучи, галочки условий, квоты, лестница цен —
      сюда не входят: они оживают собственным кодом страницы. */
   var ROWS = '.ways, .steps, .refs, .packs, .quests, .calc, .goods, .cats, ' +
-             '.doors, .entries, .facts';
+             '.doors, .entries, .facts, .tri-put, .kak-shagi, .pravila, ' +
+             '.plus3, .reg, .kanaly, .picks, .sposob, .otkuda';
 
   function ready() {
     var blocks = [], seen = [];
@@ -1179,6 +1153,8 @@ window.KORZINA = (function () {
     }
 
     document.querySelectorAll('.rise').forEach(add);
+    // карточки новых страниц: каждая выплывает сама
+    document.querySelectorAll('.card, .vs-card, .zk-card').forEach(add);
     document.querySelectorAll(ROWS).forEach(add);
 
     // секции верхнего уровня — для макета, где никаких классов нет
@@ -1273,6 +1249,9 @@ window.KORZINA = (function () {
 (function () {
   /* куда ведут кнопки, у которых есть своя страница */
   var GO = {
+    'приведи под тучу': 'partnerstvo.html',
+    'партнёрская программа': 'partnerstvo.html',
+    'посоветовать склад': 'partnerstvo.html',
     'заказать звонок': 'svyaz.html',
     'написать нам': 'svyaz.html',
     'связаться': 'svyaz.html',

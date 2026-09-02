@@ -1803,7 +1803,7 @@ body { margin: 0; }
     </div>
     <div class="subhead rise">
       <h3>«Приведи под тучу»</h3>
-      <p>Склад выбирают по совету того, кто уже там хранит. Получают оба — и вы, и тот, кого привели.</p>
+      <p>Склад выбирают по совету того, кто уже там хранит. Получают оба — и вы, и тот, кого привели. <a href="partnerstvo.html" style="color:#EF7F1A;font-weight:600">Все условия программы →</a></p>
     </div>
 
     <div class="refs">
@@ -2745,7 +2745,8 @@ window.__logic = startDC(Component);
      Блоки со своей анимацией — карта тучи, галочки условий, квоты, лестница цен —
      сюда не входят: они оживают собственным кодом страницы. */
   var ROWS = '.ways, .steps, .refs, .packs, .quests, .calc, .goods, .cats, ' +
-             '.doors, .entries, .facts';
+             '.doors, .entries, .facts, .tri-put, .kak-shagi, .pravila, ' +
+             '.plus3, .reg, .kanaly, .picks, .sposob, .otkuda';
 
   function ready() {
     var blocks = [], seen = [];
@@ -2758,6 +2759,8 @@ window.__logic = startDC(Component);
     }
 
     document.querySelectorAll('.rise').forEach(add);
+    // карточки новых страниц: каждая выплывает сама
+    document.querySelectorAll('.card, .vs-card, .zk-card').forEach(add);
     document.querySelectorAll(ROWS).forEach(add);
 
     // секции верхнего уровня — для макета, где никаких классов нет
@@ -2852,6 +2855,9 @@ window.__logic = startDC(Component);
 (function () {
   /* куда ведут кнопки, у которых есть своя страница */
   var GO = {
+    'приведи под тучу': 'partnerstvo.html',
+    'партнёрская программа': 'partnerstvo.html',
+    'посоветовать склад': 'partnerstvo.html',
     'заказать звонок': 'svyaz.html',
     'написать нам': 'svyaz.html',
     'связаться': 'svyaz.html',
