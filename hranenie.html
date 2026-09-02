@@ -121,40 +121,40 @@ body { margin: 0; }
 
 /* ==== добавленные разделы ==== */
 .dop {
-.dop   --orange: #EF7F1A;
-.dop   --navy: #16305A;
-.dop   --ink: #1B2432;
-.dop   --grey: #5A6472;
-.dop   --mute: #8A97A8;
-.dop   --pale: #F4F7FA;
-.dop   --line: rgba(22, 48, 90, .14);
-.dop   --pad: 96px;
+--orange: #EF7F1A;
+--navy: #16305A;
+--ink: #1B2432;
+--grey: #5A6472;
+--mute: #8A97A8;
+--pale: #F4F7FA;
+--line: rgba(22, 48, 90, .14);
+--pad: 96px;
 }
 .dop * { box-sizing: border-box; }
 .dop body {
-.dop   margin: 0; background: #FFFFFF; color: var(--ink);
-.dop   font-family: 'Golos Text', 'Helvetica Neue', Arial, sans-serif;
-.dop   -webkit-font-smoothing: antialiased;
+margin: 0; background: #FFFFFF; color: var(--ink);
+font-family: 'Golos Text', 'Helvetica Neue', Arial, sans-serif;
+-webkit-font-smoothing: antialiased;
 }
 .dop .page { width: 1440px; max-width: 100%; margin: 0 auto; }
 
 .dop .lbl {
-.dop   font-size: 13px; font-weight: 700; letter-spacing: .18em;
-.dop   text-transform: uppercase; color: var(--orange);
+font-size: 13px; font-weight: 700; letter-spacing: .18em;
+text-transform: uppercase; color: var(--orange);
 }
 .dop .eyebrow { display: flex; align-items: center; gap: 16px; }
 .dop .eyebrow::before { content: ''; width: 38px; height: 2px; background: var(--orange); flex: 0 0 auto; }
 
 .dop h2 {
-.dop   margin: 0; font-size: 54px; font-weight: 700; letter-spacing: -.032em;
-.dop   line-height: 1.03; color: var(--navy); text-wrap: pretty;
+margin: 0; font-size: 54px; font-weight: 700; letter-spacing: -.032em;
+line-height: 1.03; color: var(--navy); text-wrap: pretty;
 }
 .dop .lead {
-.dop   margin: 0; font-size: 19px; line-height: 1.58; color: var(--grey);
-.dop   max-width: 720px; text-wrap: pretty;
+margin: 0; font-size: 19px; line-height: 1.58; color: var(--grey);
+max-width: 720px; text-wrap: pretty;
 }
 .dop .num {
-.dop   font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+font-variant-numeric: tabular-nums; letter-spacing: -.02em;
 }
 
 .dop section { padding: 92px var(--pad); }
@@ -164,12 +164,12 @@ body { margin: 0; }
 .dop /* --- три пути --- */
 .dop .ways { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
 .dop .way {
-.dop   background: #FFFFFF; border: 1px solid var(--line); border-radius: 4px;
-.dop   padding: 34px 34px 30px; display: flex; flex-direction: column; gap: 18px;
-.dop   transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+background: #FFFFFF; border: 1px solid var(--line); border-radius: 4px;
+padding: 34px 34px 30px; display: flex; flex-direction: column; gap: 18px;
+transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
 }
 .dop .way:hover { border-color: rgba(22,48,90,.3); transform: translateY(-3px);
-.dop   box-shadow: 0 14px 34px rgba(22, 48, 90, .09); }
+box-shadow: 0 14px 34px rgba(22, 48, 90, .09); }
 .dop .way.pick { border: 2px solid var(--orange); padding: 33px 33px 29px; }
 .dop .way.pick:hover { border-color: var(--orange); box-shadow: 0 14px 34px rgba(239, 127, 26, .18); }
 .dop .way-top { display: flex; align-items: baseline; gap: 12px; }
@@ -177,32 +177,32 @@ body { margin: 0; }
 .dop .way.pick .way-top .lbl { color: var(--orange); }
 .dop .way-who { margin-left: auto; font-size: 14px; color: var(--mute); text-align: right; }
 .dop .way h3 { margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -.03em;
-.dop   line-height: 1.08; color: var(--navy); }
+line-height: 1.08; color: var(--navy); }
 .dop .way p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--grey); }
 .dop .way dl { margin: auto 0 0; display: flex; flex-direction: column; }
 .dop .way .row {
-.dop   display: flex; align-items: baseline; gap: 14px;
-.dop   padding: 13px 0; border-top: 1px solid rgba(22,48,90,.1);
+display: flex; align-items: baseline; gap: 14px;
+padding: 13px 0; border-top: 1px solid rgba(22,48,90,.1);
 }
 .dop .way .row dt { font-size: 14px; color: var(--mute); flex: 0 0 auto; }
 .dop .way .row dd { margin: 0 0 0 auto; font-size: 14px; font-weight: 600; color: var(--ink);
-.dop   text-align: right; }
+text-align: right; }
 
 .dop /* --- оранжевая полоса, как на первом экране --- */
 .dop .strip {
-.dop   background: var(--orange); color: #FFFFFF;
-.dop   padding: 30px var(--pad); display: flex; align-items: center; gap: 40px;
+background: var(--orange); color: #FFFFFF;
+padding: 30px var(--pad); display: flex; align-items: center; gap: 40px;
 }
 .dop .strip b { font-size: 27px; font-weight: 700; letter-spacing: -.025em; line-height: 1.18; }
 .dop .strip .sub { display: block; margin-top: 5px; font-size: 13px; font-weight: 700;
-.dop   letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.82); }
+letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.82); }
 .dop .strip .div { width: 1px; align-self: stretch; background: rgba(255,255,255,.34); flex: 0 0 auto; }
 .dop .strip p { margin: 0; font-size: 17px; line-height: 1.5; max-width: 480px; }
 .dop .strip .btn-ghost {
-.dop   margin-left: auto; flex: 0 0 auto; border: 1px solid #FFFFFF; border-radius: 4px;
-.dop   padding: 16px 30px; font-size: 16px; font-weight: 600; color: #FFFFFF;
-.dop   background: transparent; cursor: pointer; font-family: inherit;
-.dop   transition: background .2s ease, color .2s ease;
+margin-left: auto; flex: 0 0 auto; border: 1px solid #FFFFFF; border-radius: 4px;
+padding: 16px 30px; font-size: 16px; font-weight: 600; color: #FFFFFF;
+background: transparent; cursor: pointer; font-family: inherit;
+transition: background .2s ease, color .2s ease;
 }
 .dop .strip .btn-ghost:hover { background: #FFFFFF; color: var(--orange); }
 
@@ -210,9 +210,9 @@ body { margin: 0; }
 .dop .steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
 .dop .steps.four { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
 .dop .step {
-.dop   background: #FFFFFF; border: 1px solid var(--line); border-radius: 4px;
-.dop   padding: 26px 22px 24px; display: flex; flex-direction: column; gap: 6px;
-.dop   transition: transform .25s ease, box-shadow .25s ease;
+background: #FFFFFF; border: 1px solid var(--line); border-radius: 4px;
+padding: 26px 22px 24px; display: flex; flex-direction: column; gap: 6px;
+transition: transform .25s ease, box-shadow .25s ease;
 }
 .dop .step:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(22, 48, 90, .09); }
 .dop .step.top { border: 2px solid var(--orange); padding: 25px 21px 23px; }
@@ -221,40 +221,40 @@ body { margin: 0; }
 .dop .dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; align-self: center; }
 .dop .step b { font-size: 19px; font-weight: 700; letter-spacing: -.025em; color: var(--navy); }
 .dop .sale { margin-left: auto; font-size: 22px; font-weight: 700; letter-spacing: -.035em;
-.dop   color: var(--orange); white-space: nowrap; }
+color: var(--orange); white-space: nowrap; }
 .dop .sale.none { font-size: 13px; font-weight: 600; color: var(--mute); letter-spacing: 0; }
 .dop .step-when { font-size: 13.5px; color: var(--mute); padding-left: 19px; }
 .dop .step ul { margin: 16px 0 auto; padding: 0; list-style: none; display: flex; flex-direction: column; }
 .dop .step li {
-.dop   font-size: 14.5px; line-height: 1.45; color: var(--ink);
-.dop   padding: 11px 0; border-top: 1px solid rgba(22,48,90,.1);
+font-size: 14.5px; line-height: 1.45; color: var(--ink);
+padding: 11px 0; border-top: 1px solid rgba(22,48,90,.1);
 }
 .dop .step li b { font-size: 15px; color: var(--orange); }
 .dop .step li.off { color: var(--mute); }
 .dop .step-go { margin-top: 16px; padding-top: 15px; border-top: 1px solid rgba(22,48,90,.1);
-.dop   display: flex; flex-direction: column; gap: 6px; }
+display: flex; flex-direction: column; gap: 6px; }
 .dop .step-go .lbl { font-size: 9px; letter-spacing: .16em; }
 .dop .step-go span:last-child { font-size: 14px; line-height: 1.4; color: var(--ink); }
 .dop .step-go b { color: var(--orange); }
 .dop .step-why { margin-top: 12px; font-size: 13.5px; line-height: 1.45; color: var(--mute);
-.dop   font-style: italic; }
+font-style: italic; }
 
 .dop /* --- «Приведи под тучу» --- */
 .dop .refs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
 .dop .ref {
-.dop   border: 1px solid var(--line); border-radius: 4px; padding: 26px 26px 24px;
-.dop   display: flex; flex-direction: column; gap: 4px;
-.dop   transition: border-color .25s ease, transform .25s ease;
+border: 1px solid var(--line); border-radius: 4px; padding: 26px 26px 24px;
+display: flex; flex-direction: column; gap: 4px;
+transition: border-color .25s ease, transform .25s ease;
 }
 .dop .ref:hover { border-color: rgba(22,48,90,.3); transform: translateY(-3px); }
 .dop .ref-top { margin-bottom: 12px; }
 .dop .ref b { font-size: 19px; font-weight: 700; letter-spacing: -.025em; color: var(--navy); }
 .dop .ref-row {
-.dop   display: flex; gap: 16px; align-items: baseline;
-.dop   padding: 12px 0; border-top: 1px solid rgba(22,48,90,.1);
+display: flex; gap: 16px; align-items: baseline;
+padding: 12px 0; border-top: 1px solid rgba(22,48,90,.1);
 }
 .dop .ref-k { flex: 0 0 62px; font-size: 13px; font-weight: 700; letter-spacing: .1em;
-.dop   text-transform: uppercase; color: var(--mute); }
+text-transform: uppercase; color: var(--mute); }
 .dop .ref-v { font-size: 15px; line-height: 1.45; color: var(--ink); }
 .dop .ref-v b { font-size: 15px; color: var(--orange); }
 .dop .ref p { margin: 16px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--grey); }
@@ -262,11 +262,11 @@ body { margin: 0; }
 .dop /* --- что считает система --- */
 .dop .calc { display: flex; flex-direction: column; }
 .dop .calc-head, .calc-row {
-.dop   display: grid; grid-template-columns: 320px 1fr 250px; gap: 28px; align-items: baseline;
+display: grid; grid-template-columns: 320px 1fr 250px; gap: 28px; align-items: baseline;
 }
 .dop .calc-head { padding: 0 0 12px; border-bottom: 1px solid var(--line); }
 .dop .calc-head span { font-size: 11px; font-weight: 700; letter-spacing: .16em;
-.dop   text-transform: uppercase; color: var(--mute); }
+text-transform: uppercase; color: var(--mute); }
 .dop .calc-row { padding: 17px 0; border-bottom: 1px solid var(--line); transition: transform .25s ease; }
 .dop .calc-row:hover { transform: translateX(10px); }
 .dop .calc-k { font-size: 16.5px; font-weight: 600; color: var(--navy); }
@@ -282,17 +282,17 @@ body { margin: 0; }
 .dop /* --- пакеты привилегий --- */
 .dop .packs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .dop .pack {
-.dop   background: #FFFFFF; border: 1px solid var(--line); border-radius: 4px;
-.dop   padding: 26px 26px 22px; display: flex; flex-direction: column;
-.dop   transition: border-color .25s ease, transform .25s ease;
+background: #FFFFFF; border: 1px solid var(--line); border-radius: 4px;
+padding: 26px 26px 22px; display: flex; flex-direction: column;
+transition: border-color .25s ease, transform .25s ease;
 }
 .dop .pack:hover { border-color: rgba(22,48,90,.3); transform: translateY(-3px); }
 .dop .pack > b { font-size: 19px; font-weight: 700; letter-spacing: -.025em; color: var(--navy);
-.dop   margin-bottom: 14px; }
+margin-bottom: 14px; }
 .dop .pack ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
 .dop .pack li {
-.dop   font-size: 15px; line-height: 1.45; color: var(--ink);
-.dop   padding: 11px 0; border-top: 1px solid rgba(22,48,90,.1);
+font-size: 15px; line-height: 1.45; color: var(--ink);
+padding: 11px 0; border-top: 1px solid rgba(22,48,90,.1);
 }
 .dop .pack li b { font-size: 15px; color: var(--orange); }
 
@@ -301,33 +301,33 @@ body { margin: 0; }
 .dop .subhead h3 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -.03em; color: var(--navy); }
 .dop .subhead p { margin: 0; font-size: 16px; line-height: 1.5; color: var(--grey); max-width: 620px; }
 .dop .note-line {
-.dop   margin-top: 30px; display: flex; align-items: center; gap: 18px;
-.dop   background: #FFFFFF; border: 1px solid var(--line); border-radius: 4px;
-.dop   padding: 22px 26px; max-width: 860px;
+margin-top: 30px; display: flex; align-items: center; gap: 18px;
+background: #FFFFFF; border: 1px solid var(--line); border-radius: 4px;
+padding: 22px 26px; max-width: 860px;
 }
 .dop .note-line .lbl { flex: 0 0 auto; font-size: 11px; letter-spacing: .16em; }
 .dop .note-line p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--grey); }
 
 .dop /* --- витрина --- */
 .dop .showcase {
-.dop   background: var(--navy); border-radius: 4px; padding: 54px 56px;
-.dop   display: flex; align-items: center; gap: 56px; position: relative; overflow: hidden;
+background: var(--navy); border-radius: 4px; padding: 54px 56px;
+display: flex; align-items: center; gap: 56px; position: relative; overflow: hidden;
 }
 .dop .showcase::after {
-.dop   content: ''; position: absolute; right: -80px; top: -80px; width: 320px; height: 320px;
-.dop   border: 60px solid rgba(239, 127, 26, .13); border-radius: 50%;
+content: ''; position: absolute; right: -80px; top: -80px; width: 320px; height: 320px;
+border: 60px solid rgba(239, 127, 26, .13); border-radius: 50%;
 }
 .dop .showcase-text { display: flex; flex-direction: column; gap: 16px; max-width: 700px; position: relative; }
 .dop .showcase-text .lbl { color: var(--orange); }
 .dop .showcase h3 { margin: 0; font-size: 38px; font-weight: 700; letter-spacing: -.032em;
-.dop   line-height: 1.12; color: #FFFFFF; text-wrap: pretty; }
+line-height: 1.12; color: #FFFFFF; text-wrap: pretty; }
 .dop .showcase p { margin: 0; font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.74); text-wrap: pretty; }
 .dop .showcase-act { margin-left: auto; display: flex; flex-direction: column; gap: 12px;
-.dop   flex: 0 0 auto; position: relative; }
+flex: 0 0 auto; position: relative; }
 .dop .btn {
-.dop   border: 0; border-radius: 4px; padding: 19px 34px; font-family: inherit;
-.dop   font-size: 17px; font-weight: 600; cursor: pointer; text-align: center;
-.dop   transition: transform .15s ease, background .2s ease, box-shadow .2s ease;
+border: 0; border-radius: 4px; padding: 19px 34px; font-family: inherit;
+font-size: 17px; font-weight: 600; cursor: pointer; text-align: center;
+transition: transform .15s ease, background .2s ease, box-shadow .2s ease;
 }
 .dop .btn:active { transform: translateY(1px); }
 .dop .btn-primary { background: var(--orange); color: #FFFFFF; }
@@ -361,13 +361,13 @@ body { margin: 0; }
 .dop a { color: inherit; text-decoration: none; }
 .dop .switch { background: #1E3A5F; display: flex; align-items: center; gap: 2px; padding: 0 44px; height: 40px; }
 .dop .switch a { font-size: 13.5px; color: rgba(255,255,255,.72); padding: 0 16px; height: 100%;
-.dop   display: flex; align-items: center; transition: background .2s ease, color .2s ease; }
+display: flex; align-items: center; transition: background .2s ease, color .2s ease; }
 .dop .switch a:hover { background: rgba(255,255,255,.1); color: #FFF; }
 .dop .switch a.on { background: var(--orange); color: #FFF; font-weight: 600; }
 .dop .switch .tail { margin-left: auto; font-size: 12.5px; color: rgba(255,255,255,.5); }
 .dop .head { background: rgba(255,255,255,.92); backdrop-filter: saturate(160%) blur(12px);
-.dop   border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 30;
-.dop   display: flex; align-items: center; gap: 30px; padding: 0 44px; height: 78px; }
+border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 30;
+display: flex; align-items: center; gap: 30px; padding: 0 44px; height: 78px; }
 .dop .head-logo { height: 48px; width: auto; display: block; flex: 0 0 auto; }
 .dop .head-nav { display: flex; gap: 22px; }
 .dop .head-nav a { font-size: 14.5px; color: var(--grey); transition: color .2s ease; }
@@ -376,15 +376,15 @@ body { margin: 0; }
 .dop .head-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
 .dop .head-phone { display: flex; flex-direction: column; align-items: flex-end; }
 .dop .head-phone b { font-size: 16.5px; font-weight: 700; color: var(--navy);
-.dop   font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 .dop .head-phone span { font-size: 11px; color: var(--mute); }
 .dop .head-btn { font-family: inherit; font-size: 14.5px; font-weight: 600; color: #FFF;
-.dop   background: var(--orange); border: 0; border-radius: 7px; padding: 12px 20px; cursor: pointer;
-.dop   transition: transform .18s ease, box-shadow .25s ease, background .2s ease; }
+background: var(--orange); border: 0; border-radius: 7px; padding: 12px 20px; cursor: pointer;
+transition: transform .18s ease, box-shadow .25s ease, background .2s ease; }
 .dop .head-btn:hover { background: #DE7212; box-shadow: 0 10px 24px rgba(239,127,26,.3); transform: translateY(-2px); }
 .dop .head-line { font-family: inherit; font-size: 14.5px; font-weight: 500; color: var(--navy);
-.dop   background: #FFF; border: 1px solid var(--line); border-radius: 7px; padding: 11px 18px; cursor: pointer;
-.dop   transition: border-color .2s ease, color .2s ease; }
+background: #FFF; border: 1px solid var(--line); border-radius: 7px; padding: 11px 18px; cursor: pointer;
+transition: border-color .2s ease, color .2s ease; }
 .dop .head-line:hover { border-color: var(--orange); color: var(--orange); }
 @media (max-width: 1100px) {
 .dop   .switch, .head { padding-left: 18px; padding-right: 18px; overflow-x: auto; }
@@ -393,6 +393,10 @@ body { margin: 0; }
 
   /* панель прототипа не перекрывает нижний блок */
   .wrap { padding-bottom: 84px; }
+
+.dop .head { position: static !important; background: none !important;
+  backdrop-filter: none !important; border-bottom: 0 !important;
+  padding: 0 !important; z-index: auto !important; }
 </style>
 </head>
 <body>
@@ -1304,9 +1308,9 @@ body { margin: 0; }
 
     <div class="ways">
       <article class="way rise">
-        <div class="way-top"><span class="lbl">Путь 1</span><span class="way-who">не хочу разбираться</span></div>
+        <div class="way-top"><span class="lbl">Путь 1</span><span class="way-who">просто заплатить и не думать</span></div>
         <h3>Базовый</h3>
-        <p>Один счёт раз в месяц по открытому прайсу. Ничего не нужно считать, отслеживать
+        <p>Платите по факту: сколько мест заняли, столько и в счёте. Ничего не нужно считать, отслеживать
           и просить — оплатили и работаете дальше.</p>
         <dl>
           <div class="row"><dt>Ставка</dt><dd>по прайсу</dd></div>
@@ -1317,9 +1321,9 @@ body { margin: 0; }
       </article>
 
       <article class="way pick rise">
-        <div class="way-top"><span class="lbl">Путь 2</span><span class="way-who">хочу понятную выгоду</span></div>
+        <div class="way-top"><span class="lbl">Путь 2</span><span class="way-who">хочу скидку за то, что остаюсь</span></div>
         <h3>Стандарт</h3>
-        <p>То же самое, но с лестницей: хранение дешевеет за срок работы, часть операций
+        <p>Чем дольше вы с нами, тем дешевле: хранение снижается за срок, часть операций
           становится бесплатной. Ступень поднимается сама, просить не нужно.</p>
         <dl>
           <div class="row"><dt>Всё из «Базового»</dt><dd>входит</dd></div>
@@ -1330,9 +1334,9 @@ body { margin: 0; }
       </article>
 
       <article class="way rise">
-        <div class="way-top"><span class="lbl">Путь 3</span><span class="way-who">хочу выжимать максимум</span></div>
+        <div class="way-top"><span class="lbl">Путь 3</span><span class="way-who">готов на условия ради выгоды</span></div>
         <h3>Своя туча</h3>
-        <p>Четыре размера — Тучка, Туча, Туча Про и Туча Макс. Растёте не за объём, а за то,
+        <p>Четыре размера — Тучка, Туча, Туча Про и Туча Макс. Здесь вы договариваетесь: соблюдаете условия — получаете скидку и привилегии. Размер растёт не за объём, а за то,
           что с вами удобно работать: рядом с каждым условием написано, что оно даёт складу.</p>
         <dl>
           <div class="row"><dt>Всё из «Стандарта»</dt><dd>входит</dd></div>
