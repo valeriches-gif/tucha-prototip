@@ -419,9 +419,6 @@ a.man-row:hover b { color: var(--orange); }
 .acc-out:hover { background: rgba(212,96,74,.08); color: var(--bad); }
   /* панель прототипа не перекрывает нижний блок */
   .wrap { padding-bottom: 84px; }
-
-.acc-pravilo { padding: 8px 14px 10px; font-size: 11.5px; line-height: 1.45;
-  color: #97A3B4; border-bottom: 1px solid rgba(30,58,95,.08); margin-bottom: 6px; }
 </style>
 
 <style>
@@ -617,7 +614,7 @@ a.man-row:hover b { color: var(--orange); }
         <span class="who-sub">личный кабинет</span>
       </div>
       <div class="ava">ИС</div>
-    <div class="acc"><div class="acc-head">Вы входите как</div><div class="acc-pravilo">Второй кабинет виден, потому что вы представляете компанию. У частных лиц кабинет один.</div><a class="acc-item on" href="kabinet-lichnyy.html"><span class="acc-ava" style="background:linear-gradient(140deg,#4FB07C,#2F7A52)">ИС</span><span class="acc-body"><b>Ирина Соколова</b><span>личный кабинет · 3 места</span></span><svg class="acc-tick" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg></a><a class="acc-item" href="kabinet.html"><span class="acc-ava" style="background:linear-gradient(140deg,#3EA9E0,#17679B)">СВ</span><span class="acc-body"><b>ООО «Северный ветер»</b><span>бизнес-аккаунт · 50 мест</span></span></a><div class="acc-line"></div><div class="acc-add"><i>+</i>Добавить организацию</div><div class="acc-line"></div><div class="acc-out">Выйти</div></div></div>
+    <div class="acc"><div class="acc-head">Вы входите как</div><a class="acc-item on" href="kabinet-lichnyy.html"><span class="acc-ava" style="background:linear-gradient(140deg,#4FB07C,#2F7A52)">ИС</span><span class="acc-body"><b>Ирина Соколова</b><span>личный кабинет · 3 места</span></span><svg class="acc-tick" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg></a><a class="acc-item" href="kabinet.html"><span class="acc-ava" style="background:linear-gradient(140deg,#3EA9E0,#17679B)">СВ</span><span class="acc-body"><b>ООО «Северный ветер»</b><span>бизнес-аккаунт · 50 мест</span></span></a><div class="acc-line"></div><div class="acc-add"><i>+</i>Добавить организацию</div><div class="acc-line"></div><div class="acc-out">Выйти</div></div></div>
   </div>
 
   <div class="wrap">
@@ -646,7 +643,25 @@ a.man-row:hover b { color: var(--orange); }
     </div>
     <div class="grid">
       <div class="col">
-        
+        <div class="card rise">
+          <div class="card-head">
+            <h2>Профиль</h2>
+            <span class="note">данные для доставки и документов</span>
+          </div>
+          <div class="prof-rows">
+            <div class="prof-row"><span>Имя</span><b>Ирина Соколова</b><span class="edit">изменить</span></div>
+            <div class="prof-row"><span>Телефон</span><b>+7 (916) 402-18-77</b><span class="edit">изменить</span></div>
+            <div class="prof-row"><span>Почта</span><b>i.sokolova@mail.ru</b><span class="edit">изменить</span></div>
+            <div class="prof-row"><span>Уведомления</span><b>почта и SMS</b><span class="edit">настроить</span></div>
+          </div>
+
+          <div class="card-head" style="margin: 24px 0 14px;">
+            <h2 style="font-size: 16px;">Адреса доставки</h2>
+            <span class="note">чтобы не вводить каждый раз</span>
+          </div>
+          <div id="addrs"></div>
+          <button class="addr-add">Добавить адрес</button>
+        </div>
 
         <div class="card rise">
           <div class="card-head">
@@ -662,14 +677,27 @@ a.man-row:hover b { color: var(--orange); }
             или повредится, отвечаем мы. Доступ к вещам — по будням с 9:00 до 18:00.</div>
         </div>
 
-        
+        <div class="card rise">
+          <div class="card-head">
+            <h2>Покупки на витрине</h2>
+            <span class="note">купленное можно не увозить</span>
+            <a href="vitrina.html">За покупками</a>
+          </div>
+          <div id="orders"></div>
+          <div class="foot">После оплаты товар неделю ждёт вас бесплатно. Нужно дольше —
+            добавим к вашему хранению, отдельный договор не нужен.</div>
+        </div>
 
         
       </div>
       <div class="col">
         
 
-        
+        <div class="card rise">
+          <div class="card-head"><h2>Уведомления</h2><span class="note">о чём писать</span></div>
+          <div id="notifs"></div>
+          <div class="foot">Про статус заказа пишем всегда — это не отключается.</div>
+        </div>
 
         <div class="card man rise">
           <div class="man-top">
@@ -1138,8 +1166,7 @@ window.KORZINA = (function () {
      Блоки со своей анимацией — карта тучи, галочки условий, квоты, лестница цен —
      сюда не входят: они оживают собственным кодом страницы. */
   var ROWS = '.ways, .steps, .refs, .packs, .quests, .calc, .goods, .cats, ' +
-             '.doors, .entries, .facts, .tri-put, .kak-shagi, .pravila, ' +
-             '.plus3, .reg, .kanaly, .picks, .sposob, .otkuda';
+             '.doors, .entries, .facts';
 
   function ready() {
     var blocks = [], seen = [];
@@ -1152,8 +1179,6 @@ window.KORZINA = (function () {
     }
 
     document.querySelectorAll('.rise').forEach(add);
-    // карточки новых страниц: каждая выплывает сама
-    document.querySelectorAll('.card, .vs-card, .zk-card').forEach(add);
     document.querySelectorAll(ROWS).forEach(add);
 
     // секции верхнего уровня — для макета, где никаких классов нет
@@ -1248,9 +1273,6 @@ window.KORZINA = (function () {
 (function () {
   /* куда ведут кнопки, у которых есть своя страница */
   var GO = {
-    'приведи под тучу': 'partnerstvo.html',
-    'партнёрская программа': 'partnerstvo.html',
-    'посоветовать склад': 'partnerstvo.html',
     'заказать звонок': 'svyaz.html',
     'написать нам': 'svyaz.html',
     'связаться': 'svyaz.html',
@@ -1374,11 +1396,6 @@ window.KORZINA = (function () {
     .forEach(function (el) { el.dataset.own = '1'; });
 })();
 </script>
-
-
-
-
-
 <script>
 
 /* Помощник Тучи: диалог внизу справа.
