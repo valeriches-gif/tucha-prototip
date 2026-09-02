@@ -164,6 +164,31 @@ textarea { min-height: 104px; resize: vertical; }
 .inn-found { margin-top: 10px; padding: 12px 14px; border-radius: 10px;
   background: #F2F8F5; border: 1px solid #CFE6DA; font-size: 13.5px; color: #2F6B4F; }
 .inn-found b { display: block; color: #1E5138; font-size: 14.5px; }
+.vybor-fon { position: fixed; inset: 0; z-index: 300; background: rgba(30,58,95,.42);
+  backdrop-filter: blur(3px); display: flex; align-items: center;
+  justify-content: center; padding: 20px; }
+.vybor-fon.hide { display: none; }
+.vybor { background: #fff; border-radius: 18px; padding: 30px 32px; width: 430px;
+  max-width: 100%; box-shadow: 0 30px 70px rgba(30,58,95,.3); }
+.vybor h2 { margin: 0 0 6px; font-size: 22px; color: var(--navy); }
+.vybor > p { margin: 0 0 20px; font-size: 14px; color: var(--mute); }
+.vybor-kart { display: flex; align-items: center; gap: 14px; width: 100%;
+  font: inherit; text-align: left; cursor: pointer; background: #fff;
+  border: 1.5px solid var(--line); border-radius: 13px; padding: 15px 17px;
+  margin-bottom: 10px; transition: border-color .16s ease, transform .16s ease; }
+.vybor-kart:hover { border-color: var(--sky); transform: translateY(-2px); }
+.vybor-kart .ava { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 12px;
+  background: var(--navy); color: #fff; display: flex; align-items: center;
+  justify-content: center; font-weight: 700; font-size: 14px; }
+.vybor-kart .ava.lich { background: #EAF6F0; color: #3F9D6B; }
+.vk-txt { flex: 1; }
+.vk-txt b { display: block; color: var(--navy); font-size: 15.5px; }
+.vk-txt span { display: block; color: var(--mute); font-size: 13px; margin-top: 2px; }
+.vk-go { color: var(--orange); font-size: 18px; font-weight: 700; }
+.vybor-niz { margin: 14px 0 0; font-size: 12.5px; color: var(--mute);
+  line-height: 1.5; }
+.dopolnit { margin-top: 22px; padding-top: 18px;
+  border-top: 1px solid var(--line); }
 .firma-box { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
 .firma-box .pick { cursor: pointer; }
 .kto-zag { display: block; font-size: 13px; font-weight: 600; color: var(--navy);
@@ -200,8 +225,7 @@ textarea { min-height: 104px; resize: vertical; }
     <div class="card">
       <div class="steps" id="steps">
         <b class="on" data-s="1"><i>1</i>Телефон</b><s></s>
-        <b data-s="2"><i>2</i>Код из СМС</b><s></s>
-        <b data-s="3"><i>3</i>Кабинет</b>
+        <b data-s="2"><i>2</i>Код из СМС</b>
       </div>
 
       <!-- шаг 1 -->
@@ -253,34 +277,34 @@ textarea { min-height: 104px; resize: vertical; }
         <p class="timer" id="timer">Выслать снова можно через <b>45</b> с</p>
       </div>
 
-      <!-- шаг 3 -->
+      <!-- вошли -->
       <div id="s3" class="hide">
-        <h1>Куда заходим</h1>
-        <p class="sub">На этот номер записаны два кабинета. Переключить можно
-          в любой момент — в меню профиля.</p>
-        <div class="picks" id="whoPick">
-          <label class="pick on" data-go="kabinet.html">
-            <i></i>
-            <span class="who">
-              <span class="ava">СВ</span>
-              <span>
-                <b>ООО «Северный ветер»</b>
-                <span>Склад, витрина, документы и счета · 34 позиции на хранении</span>
-              </span>
-            </span>
-          </label>
-          <label class="pick" data-go="kabinet-lichnyy.html">
-            <i></i>
-            <span class="who">
-              <span class="ava lich">ИС</span>
-              <span>
-                <b>Ирина Соколова</b>
-                <span>Личные вещи, покупки на витрине и доставка</span>
-              </span>
-            </span>
-          </label>
+        <div class="done-mark">&#10003;</div>
+        <h1 id="privet">Вы вошли</h1>
+        <p class="sub" id="kudaTxt">Открываем кабинет…</p>
+      </div>
+
+      <!-- окно выбора роли: только если на номере их две -->
+      <div class="vybor-fon hide" id="vyborFon">
+        <div class="vybor">
+          <h2>Куда заходим?</h2>
+          <p>На этом номере два кабинета. Переключить можно в любой момент —
+            в меню профиля.</p>
+          <button class="vybor-kart" data-go="kabinet-lichnyy.html">
+            <span class="ava lich">ИС</span>
+            <span class="vk-txt"><b>Ирина Соколова</b>
+              <span>личный: вещи, покупки, возвраты</span></span>
+            <span class="vk-go">&#8594;</span>
+          </button>
+          <button class="vybor-kart" data-go="kabinet.html">
+            <span class="ava">СВ</span>
+            <span class="vk-txt"><b>ООО «Северный ветер»</b>
+              <span>компания: склад, витрина, счета</span></span>
+            <span class="vk-go">&#8594;</span>
+          </button>
+          <p class="vybor-niz">Заказать товар для себя можно из любого:
+            на оплате выбирается, на кого документы.</p>
         </div>
-        <div class="row-btn"><button class="btn wide" id="enter">Войти</button></div>
       </div>
     </div>
   </div>
@@ -288,14 +312,12 @@ textarea { min-height: 104px; resize: vertical; }
   <div class="aside">
     <h3>Что внутри</h3>
     <ul>
-      <li><span class="tick">✓</span><span><b>Остатки в реальном времени</b>
-        <span>сколько лежит, где стоит, что уехало</span></span></li>
-      <li><span class="tick">✓</span><span><b>Заказы с витрины</b>
-        <span>собираем и отгружаем мы — вы только смотрите</span></span></li>
-      <li><span class="tick">✓</span><span><b>Документы и счета</b>
-        <span>УПД, накладные, акт сверки — скачиваются сразу</span></span></li>
-      <li><span class="tick">✓</span><span><b>Свой человек на складе</b>
-        <span>Пётр Ким ведёт вашу витрину и отвечает в чате</span></span></li>
+      <li><span class="tick">✓</span><span><b>Ваши вещи и заказы</b>
+        <span>что лежит, до какого числа оплачено, когда забирать</span></span></li>
+      <li><span class="tick">✓</span><span><b>Покупки на витрине</b>
+        <span>история, повтор заказа, возвраты</span></span></li>
+      <li><span class="tick">✓</span><span><b>Документы</b>
+        <span>чеки, акт приёма, опись с фотографиями</span></span></li>
     </ul>
     <p class="mini">Ещё нет аккаунта?
       <a href="registraciya.html">Зарегистрироваться за 2 минуты</a></p>
@@ -332,7 +354,7 @@ function pokazat(id) {
   ['s1', 's1b', 's2', 's3'].forEach(function (x) {
     document.getElementById(x).classList.toggle('hide', x !== id);
   });
-  var nomer = { s1: 1, s1b: 1, s2: 2, s3: 3 }[id];
+  var nomer = { s1: 1, s1b: 1, s2: 2, s3: 2 }[id];
   document.querySelectorAll('#steps b').forEach(function (b) {
     var s = +b.dataset.s;
     b.classList.toggle('on', s === nomer);
@@ -344,7 +366,7 @@ function pokazat(id) {
 document.getElementById('toPass').onclick = function () { pokazat('s1b'); };
 document.getElementById('backTel').onclick = function () { pokazat('s1'); };
 document.getElementById('edit').onclick = function () { pokazat('s1'); };
-document.getElementById('passGo').onclick = function () { pokazat('s3'); };
+document.getElementById('passGo').onclick = function () { pokazat('s3'); voyti(); };
 
 var tikanie;
 document.getElementById('send').onclick = function () {
@@ -383,7 +405,7 @@ kletki.forEach(function (k, i) {
     var vse = Array.prototype.every.call(kletki, function (x) { return x.value; });
     if (vse) {
       clearInterval(tikanie);
-      setTimeout(function () { pokazat('s3'); }, 260);
+      setTimeout(function () { pokazat('s3'); voyti(); }, 260);
     }
   });
   k.addEventListener('keydown', function (e) {
@@ -391,18 +413,28 @@ kletki.forEach(function (k, i) {
   });
 });
 
-document.querySelectorAll('#whoPick .pick').forEach(function (p) {
-  p.onclick = function () {
-    document.querySelectorAll('#whoPick .pick').forEach(function (x) {
-      x.classList.remove('on');
-    });
-    p.classList.add('on');
-  };
+/* Сколько кабинетов на номере — столько и вопросов. Один — заходим молча,
+   два — показываем окно выбора. Частного лица это не касается. */
+var KABINETOV = 2;
+
+function voyti() {
+  if (KABINETOV < 2) {
+    document.getElementById('kudaTxt').textContent =
+      'Открываем ваш кабинет…';
+    setTimeout(function () { location.href = 'kabinet-lichnyy.html'; }, 700);
+    return;
+  }
+  document.getElementById('kudaTxt').textContent =
+    'На этом номере два кабинета — выберите, куда войти.';
+  document.getElementById('vyborFon').classList.remove('hide');
+}
+
+document.querySelectorAll('.vybor-kart').forEach(function (b) {
+  b.onclick = function () { location.href = b.dataset.go; };
 });
-document.getElementById('enter').onclick = function () {
-  var p = document.querySelector('#whoPick .pick.on');
-  location.href = p ? p.dataset.go : 'kabinet.html';
-};
+document.getElementById('vyborFon').addEventListener('click', function (e) {
+  if (e.target === this) this.classList.add('hide');
+});
 
 </script>
 </body>
