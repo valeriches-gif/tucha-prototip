@@ -1807,5 +1807,20 @@ window.KORZINA = (function () {
   setTimeout(pokazatAkciyu, 6500);
 })();
 </script>
+
+<script>
+/* Страховка: скрытых по ошибке блоков на странице быть не должно. */
+setTimeout(function () {
+  document.querySelectorAll('.rise, .wk, .wki, .card, .vs-card, .zk-card, .dk-card')
+    .forEach(function (e) {
+      var s = getComputedStyle(e);
+      if (parseFloat(s.opacity) < 0.9) {
+        e.classList.add('seen', 'up');
+        e.style.opacity = '1';
+        e.style.transform = 'none';
+      }
+    });
+}, 2200);
+</script>
 </body>
 </html>
