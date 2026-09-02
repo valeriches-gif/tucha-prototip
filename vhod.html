@@ -164,6 +164,11 @@ textarea { min-height: 104px; resize: vertical; }
 .inn-found { margin-top: 10px; padding: 12px 14px; border-radius: 10px;
   background: #F2F8F5; border: 1px solid #CFE6DA; font-size: 13.5px; color: #2F6B4F; }
 .inn-found b { display: block; color: #1E5138; font-size: 14.5px; }
+.dva-spiska { display: flex; flex-direction: column; gap: 20px; }
+.sp-zag { display: block; font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+.spisok ul { margin: 0; }
+.spisok li:first-child { padding-top: 0; border-top: 0; }
 .vybor-fon { position: fixed; inset: 0; z-index: 300; background: rgba(30,58,95,.42);
   backdrop-filter: blur(3px); display: flex; align-items: center;
   justify-content: center; padding: 20px; }
@@ -316,15 +321,33 @@ textarea { min-height: 104px; resize: vertical; }
   </div>
 
   <div class="aside">
-    <h3>Что внутри</h3>
-    <ul>
-      <li><span class="tick">✓</span><span><b>Ваши вещи и заказы</b>
-        <span>что лежит, до какого числа оплачено, когда забирать</span></span></li>
-      <li><span class="tick">✓</span><span><b>Покупки на витрине</b>
-        <span>история, повтор заказа, возвраты</span></span></li>
-      <li><span class="tick">✓</span><span><b>Документы</b>
-        <span>чеки, акт приёма, опись с фотографиями</span></span></li>
-    </ul>
+    <h3>Что в каком кабинете</h3>
+    <div class="dva-spiska">
+      <div class="spisok">
+        <span class="sp-zag">Деловой · семь разделов</span>
+        <ul>
+          <li><span class="tick">✓</span><span><b>Мой склад</b>
+            <span>остатки, приёмки и отгрузки, счёт за месяц</span></span></li>
+          <li><span class="tick">✓</span><span><b>Витрина</b>
+            <span>свои заказы, свои товары, заказы покупателей</span></span></li>
+          <li><span class="tick">✓</span><span><b>Тарифы и отчёты</b>
+            <span>ступень, расчёты, акт сверки, движения</span></span></li>
+          <li><span class="tick">✓</span><span><b>Документы и поддержка</b>
+            <span>счета, УПД, накладные, чат со складом</span></span></li>
+        </ul>
+      </div>
+      <div class="spisok">
+        <span class="sp-zag">Личный · три раздела</span>
+        <ul>
+          <li><span class="tick">✓</span><span><b>Мои вещи</b>
+            <span>что лежит, до какого числа оплачено, выдача</span></span></li>
+          <li><span class="tick">✓</span><span><b>Витрина</b>
+            <span>заказы, избранное, возвраты</span></span></li>
+          <li><span class="tick">✓</span><span><b>Документы</b>
+            <span>чеки, акт приёма, опись с фотографиями</span></span></li>
+        </ul>
+      </div>
+    </div>
     <p class="mini">Ещё нет аккаунта?
       <a href="registraciya.html">Зарегистрироваться за 2 минуты</a></p>
   </div>
