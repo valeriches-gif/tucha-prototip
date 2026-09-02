@@ -1331,6 +1331,7 @@ window.KORZINA = (function () {
     'забрать вещи': ['Заявка на выдачу принята', 'Скажите день — приготовим вещи к вашему приезду'],
     'заказать выдачу': ['Заявка на выдачу принята', 'Приготовим вещи к вашему приезду'],
     'контакты': 'kontakty.html',
+    'контакты': 'kontakty.html',
     'как проехать': ['Химки, деревня Подолино, промзона 2Б', '10 минут от МКАД и Шереметьева'],
     'оплатить картой': ['Переход к оплате', 'Откроется защищённая страница банка'],
     'добавить товар': ['Новая карточка товара', 'Заполните название, артикул и габариты'],
@@ -1403,6 +1404,26 @@ window.KORZINA = (function () {
     .forEach(function (el) { el.dataset.own = '1'; });
 })();
 </script>
+
+
+<script>
+(function () {
+  var shapka = document.querySelector('.top');
+  if (!shapka) return;
+  var zhdet = false;
+  function proverit() {
+    shapka.classList.toggle('plotno', window.scrollY > 12);
+  }
+  window.addEventListener('scroll', function () {
+    if (zhdet) return;
+    zhdet = true;
+    requestAnimationFrame(function () { zhdet = false; proverit(); });
+  }, { passive: true });
+  proverit();
+})();
+</script>
+
+
 <script>
 
 /* Помощник Тучи: диалог внизу справа.
@@ -1881,23 +1902,6 @@ window.KORZINA = (function () {
     amolchit = true;
   };
   setTimeout(pokazatAkciyu, 6500);
-})();
-</script>
-
-<script>
-(function () {
-  var shapka = document.querySelector('.top');
-  if (!shapka) return;
-  var zhdet = false;
-  function proverit() {
-    shapka.classList.toggle('plotno', window.scrollY > 12);
-  }
-  window.addEventListener('scroll', function () {
-    if (zhdet) return;
-    zhdet = true;
-    requestAnimationFrame(function () { zhdet = false; proverit(); });
-  }, { passive: true });
-  proverit();
 })();
 </script>
 </body>

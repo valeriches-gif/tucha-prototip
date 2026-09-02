@@ -850,6 +850,7 @@ a { color: inherit; text-decoration: none; }
     'забрать вещи': ['Заявка на выдачу принята', 'Скажите день — приготовим вещи к вашему приезду'],
     'заказать выдачу': ['Заявка на выдачу принята', 'Приготовим вещи к вашему приезду'],
     'контакты': 'kontakty.html',
+    'контакты': 'kontakty.html',
     'как проехать': ['Химки, деревня Подолино, промзона 2Б', '10 минут от МКАД и Шереметьева'],
     'оплатить картой': ['Переход к оплате', 'Откроется защищённая страница банка'],
     'добавить товар': ['Новая карточка товара', 'Заполните название, артикул и габариты'],
@@ -1025,6 +1026,44 @@ a { color: inherit; text-decoration: none; }
 
 
 
+
+
+
+
+<script>
+/* Выпадающий список кабинетов в шапке. Закрывается по клику мимо и по Esc —
+   иначе он перекрывает страницу и мешает. */
+(function () {
+  var m = document.querySelector('.kab-menu');
+  if (!m) return;
+  var k = document.getElementById('kabKnopka');
+  k.addEventListener('click', function (e) {
+    e.stopPropagation();
+    m.classList.toggle('open');
+  });
+  document.addEventListener('click', function () { m.classList.remove('open'); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') m.classList.remove('open');
+  });
+})();
+</script>
+
+<script>
+(function () {
+  var shapka = document.querySelector('.top');
+  if (!shapka) return;
+  var zhdet = false;
+  function proverit() {
+    shapka.classList.toggle('plotno', window.scrollY > 12);
+  }
+  window.addEventListener('scroll', function () {
+    if (zhdet) return;
+    zhdet = true;
+    requestAnimationFrame(function () { zhdet = false; proverit(); });
+  }, { passive: true });
+  proverit();
+})();
+</script>
 
 
 <script>
@@ -1505,41 +1544,6 @@ a { color: inherit; text-decoration: none; }
     amolchit = true;
   };
   setTimeout(pokazatAkciyu, 6500);
-})();
-</script>
-
-<script>
-/* Выпадающий список кабинетов в шапке. Закрывается по клику мимо и по Esc —
-   иначе он перекрывает страницу и мешает. */
-(function () {
-  var m = document.querySelector('.kab-menu');
-  if (!m) return;
-  var k = document.getElementById('kabKnopka');
-  k.addEventListener('click', function (e) {
-    e.stopPropagation();
-    m.classList.toggle('open');
-  });
-  document.addEventListener('click', function () { m.classList.remove('open'); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') m.classList.remove('open');
-  });
-})();
-</script>
-
-<script>
-(function () {
-  var shapka = document.querySelector('.top');
-  if (!shapka) return;
-  var zhdet = false;
-  function proverit() {
-    shapka.classList.toggle('plotno', window.scrollY > 12);
-  }
-  window.addEventListener('scroll', function () {
-    if (zhdet) return;
-    zhdet = true;
-    requestAnimationFrame(function () { zhdet = false; proverit(); });
-  }, { passive: true });
-  proverit();
 })();
 </script>
 </body>

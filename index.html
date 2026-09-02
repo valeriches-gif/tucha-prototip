@@ -950,6 +950,7 @@ window.KORZINA = (function () {
     'забрать вещи': ['Заявка на выдачу принята', 'Скажите день — приготовим вещи к вашему приезду'],
     'заказать выдачу': ['Заявка на выдачу принята', 'Приготовим вещи к вашему приезду'],
     'контакты': 'kontakty.html',
+    'контакты': 'kontakty.html',
     'как проехать': ['Химки, деревня Подолино, промзона 2Б', '10 минут от МКАД и Шереметьева'],
     'оплатить картой': ['Переход к оплате', 'Откроется защищённая страница банка'],
     'добавить товар': ['Новая карточка товара', 'Заполните название, артикул и габариты'],
@@ -1025,6 +1026,91 @@ window.KORZINA = (function () {
 
 
 
+
+
+
+
+<script>
+/* Выпадающий список кабинетов в шапке. Закрывается по клику мимо и по Esc —
+   иначе он перекрывает страницу и мешает. */
+(function () {
+  var m = document.querySelector('.kab-menu');
+  if (!m) return;
+  var k = document.getElementById('kabKnopka');
+  k.addEventListener('click', function (e) {
+    e.stopPropagation();
+    m.classList.toggle('open');
+  });
+  document.addEventListener('click', function () { m.classList.remove('open'); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') m.classList.remove('open');
+  });
+})();
+</script>
+
+<script>
+/* Заголовок первого экрана: слова выходят по очереди, а при прокрутке
+   первый экран мягко уходит вверх. Один приём на всю страницу. */
+(function () {
+  var h = document.querySelector('.hero h1');
+  if (!h) return;
+
+  var tiho = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* разбиваем заголовок по словам, ключевое помечаем отдельно */
+  var slova = h.textContent.trim().split(/\s+/);
+  h.textContent = '';
+  slova.forEach(function (s, i) {
+    var el = document.createElement('span');
+    el.className = 'slovo' + (/туч/i.test(s) ? ' tucha' : '');
+    el.textContent = s;
+    h.appendChild(el);
+    if (i < slova.length - 1) h.appendChild(document.createTextNode(' '));
+  });
+
+  var vse = h.querySelectorAll('.slovo');
+  if (tiho) {
+    vse.forEach(function (el) { el.classList.add('est'); });
+    return;
+  }
+  vse.forEach(function (el, i) {
+    setTimeout(function () { el.classList.add('est'); }, 120 + i * 130);
+  });
+
+  /* уход первого экрана при прокрутке — считаем на кадре, не на каждом событии */
+  var hero = document.querySelector('.hero');
+  var zhdet = false;
+  window.addEventListener('scroll', function () {
+    if (zhdet) return;
+    zhdet = true;
+    requestAnimationFrame(function () {
+      zhdet = false;
+      var y = window.scrollY;
+      if (y > 700) return;                 /* ниже первого экрана не трогаем */
+      var d = Math.min(y / 520, 1);
+      hero.style.transform = 'translateY(' + (y * 0.22) + 'px)';
+      hero.style.opacity = String(1 - d * 0.85);
+    });
+  }, { passive: true });
+})();
+</script>
+
+<script>
+(function () {
+  var shapka = document.querySelector('.top');
+  if (!shapka) return;
+  var zhdet = false;
+  function proverit() {
+    shapka.classList.toggle('plotno', window.scrollY > 12);
+  }
+  window.addEventListener('scroll', function () {
+    if (zhdet) return;
+    zhdet = true;
+    requestAnimationFrame(function () { zhdet = false; proverit(); });
+  }, { passive: true });
+  proverit();
+})();
+</script>
 
 
 <script>
@@ -1505,88 +1591,6 @@ window.KORZINA = (function () {
     amolchit = true;
   };
   setTimeout(pokazatAkciyu, 6500);
-})();
-</script>
-
-<script>
-/* Выпадающий список кабинетов в шапке. Закрывается по клику мимо и по Esc —
-   иначе он перекрывает страницу и мешает. */
-(function () {
-  var m = document.querySelector('.kab-menu');
-  if (!m) return;
-  var k = document.getElementById('kabKnopka');
-  k.addEventListener('click', function (e) {
-    e.stopPropagation();
-    m.classList.toggle('open');
-  });
-  document.addEventListener('click', function () { m.classList.remove('open'); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') m.classList.remove('open');
-  });
-})();
-</script>
-
-<script>
-/* Заголовок первого экрана: слова выходят по очереди, а при прокрутке
-   первый экран мягко уходит вверх. Один приём на всю страницу. */
-(function () {
-  var h = document.querySelector('.hero h1');
-  if (!h) return;
-
-  var tiho = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* разбиваем заголовок по словам, ключевое помечаем отдельно */
-  var slova = h.textContent.trim().split(/\s+/);
-  h.textContent = '';
-  slova.forEach(function (s, i) {
-    var el = document.createElement('span');
-    el.className = 'slovo' + (/туч/i.test(s) ? ' tucha' : '');
-    el.textContent = s;
-    h.appendChild(el);
-    if (i < slova.length - 1) h.appendChild(document.createTextNode(' '));
-  });
-
-  var vse = h.querySelectorAll('.slovo');
-  if (tiho) {
-    vse.forEach(function (el) { el.classList.add('est'); });
-    return;
-  }
-  vse.forEach(function (el, i) {
-    setTimeout(function () { el.classList.add('est'); }, 120 + i * 130);
-  });
-
-  /* уход первого экрана при прокрутке — считаем на кадре, не на каждом событии */
-  var hero = document.querySelector('.hero');
-  var zhdet = false;
-  window.addEventListener('scroll', function () {
-    if (zhdet) return;
-    zhdet = true;
-    requestAnimationFrame(function () {
-      zhdet = false;
-      var y = window.scrollY;
-      if (y > 700) return;                 /* ниже первого экрана не трогаем */
-      var d = Math.min(y / 520, 1);
-      hero.style.transform = 'translateY(' + (y * 0.22) + 'px)';
-      hero.style.opacity = String(1 - d * 0.85);
-    });
-  }, { passive: true });
-})();
-</script>
-
-<script>
-(function () {
-  var shapka = document.querySelector('.top');
-  if (!shapka) return;
-  var zhdet = false;
-  function proverit() {
-    shapka.classList.toggle('plotno', window.scrollY > 12);
-  }
-  window.addEventListener('scroll', function () {
-    if (zhdet) return;
-    zhdet = true;
-    requestAnimationFrame(function () { zhdet = false; proverit(); });
-  }, { passive: true });
-  proverit();
 })();
 </script>
 </body>

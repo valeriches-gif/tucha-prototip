@@ -891,6 +891,148 @@ document.querySelectorAll('[data-povtor]').forEach(function (b) {
 
 
 
+
+<script>
+/* Постепенное появление при листании.
+   Секция всплывает целиком, а карточки внутри неё выходят короткой волной.
+   Работает и на страницах прототипа, и на макете из Claude Design — вёрстка у них разная,
+   поэтому блоки ищутся и по классам, и по строению страницы. */
+(function () {
+  var slow = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var css = document.createElement('style');
+  css.textContent =
+    '.wk{opacity:0;transform:translateY(22px)}' +
+    '.wk.up{opacity:1;transform:none;' +
+    'transition:opacity .62s ease,transform .62s cubic-bezier(.2,.7,.3,1)}' +
+    '.wki{opacity:0;transform:translateY(18px) scale(.982)}' +
+    '.wki.up{opacity:1;transform:none;' +
+    'transition:opacity .5s ease,transform .55s cubic-bezier(.2,.75,.3,1)}';
+  document.head.appendChild(css);
+
+  /* ряды карточек: их дети выходят по очереди.
+     Блоки со своей анимацией — карта тучи, галочки условий, квоты, лестница цен —
+     сюда не входят: они оживают собственным кодом страницы. */
+  var ROWS = '.ways, .steps, .refs, .packs, .quests, .calc, .goods, .cats, ' +
+             '.doors, .entries, .facts, .tri-put, .kak-shagi, .pravila, ' +
+             '.plus3, .reg, .kanaly, .picks, .sposob, .otkuda';
+
+  function ready() {
+    var blocks = [], seen = [];
+
+    function add(el) {
+      if (!el || seen.indexOf(el) >= 0) return;
+      if (el.closest && el.closest('.proto')) return;
+      seen.push(el);
+      blocks.push(el);
+    }
+
+    document.querySelectorAll('.rise').forEach(add);
+    // карточки новых страниц: каждая выплывает сама
+    document.querySelectorAll('.card, .vs-card, .zk-card').forEach(add);
+    document.querySelectorAll(ROWS).forEach(add);
+
+    // секции верхнего уровня — для макета, где никаких классов нет
+    var root = document.querySelector('#dc-root > div') || document.querySelector('.page');
+    if (root) {
+      Array.prototype.forEach.call(root.children, function (el, i) {
+        if (i === 0) return;                 // шапку не прячем
+        if (el.offsetHeight < 40) return;
+        add(el);
+      });
+    }
+
+    if (slow) {
+      blocks.forEach(function (b) { b.classList.remove('rise'); b.classList.add('seen'); });
+      return;
+    }
+
+    // то, что человек видит сразу при открытии, не прячем: первый экран должен быть на месте
+    var fold = window.innerHeight - 40;
+    blocks = blocks.filter(function (b) {
+      if (b.getBoundingClientRect().top < fold) {
+        b.classList.add('seen', 'up');
+        return false;
+      }
+      return true;
+    });
+
+    // элементы со своим классом .rise уже описаны на странице — второй раз не прячем
+    blocks.forEach(function (b) {
+      if (!b.classList.contains('rise')) b.classList.add('wk');
+    });
+
+    function kidsOf(block) {
+      var rows = block.matches(ROWS) ? [block] : [];
+      block.querySelectorAll(ROWS).forEach(function (r) { rows.push(r); });
+      var out = [];
+      rows.forEach(function (r) {
+        Array.prototype.forEach.call(r.children, function (k) {
+          if (k.offsetHeight > 30 && out.indexOf(k) < 0) out.push(k);
+        });
+      });
+      return out.slice(0, 14);
+    }
+
+    var io = new IntersectionObserver(function (items) {
+      items.forEach(function (item) {
+        if (!item.isIntersecting) return;
+        var block = item.target;
+        io.unobserve(block);
+
+        var kids = kidsOf(block);
+        block.classList.add('up');
+        block.classList.add('seen');
+
+        // задержку держим на CSS, а не на таймерах: так волна не рассыпается
+        kids.forEach(function (k, i) {
+          if (k.classList.contains('wk')) return;
+          k.classList.add('wki');
+          k.style.transitionDelay = (i * 65) + 'ms';
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { k.classList.add('up'); });
+          });
+        });
+      });
+    }, { threshold: 0.04, rootMargin: '0px 0px -8%' });
+
+    blocks.forEach(function (b) { io.observe(b); });
+
+    /* страховка: что бы ни случилось, через 2,5 секунды страница видна целиком */
+    setTimeout(function () {
+      blocks.forEach(function (b) { b.classList.add('up', 'seen'); });
+      document.querySelectorAll('.wki, .rise').forEach(function (k) {
+        k.classList.add('up', 'seen');
+      });
+    }, 2500);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { requestAnimationFrame(ready); });
+  } else {
+    requestAnimationFrame(ready);
+  }
+})();
+</script>
+
+<script>
+(function () {
+  var shapka = document.querySelector('.top');
+  if (!shapka) return;
+  var zhdet = false;
+  function proverit() {
+    shapka.classList.toggle('plotno', window.scrollY > 12);
+  }
+  window.addEventListener('scroll', function () {
+    if (zhdet) return;
+    zhdet = true;
+    requestAnimationFrame(function () { zhdet = false; proverit(); });
+  }, { passive: true });
+  proverit();
+})();
+</script>
+
+
 <script>
 
 /* Помощник Тучи: диалог внизу справа.
@@ -1369,145 +1511,6 @@ document.querySelectorAll('[data-povtor]').forEach(function (b) {
     amolchit = true;
   };
   setTimeout(pokazatAkciyu, 6500);
-})();
-</script>
-<script>
-/* Постепенное появление при листании.
-   Секция всплывает целиком, а карточки внутри неё выходят короткой волной.
-   Работает и на страницах прототипа, и на макете из Claude Design — вёрстка у них разная,
-   поэтому блоки ищутся и по классам, и по строению страницы. */
-(function () {
-  var slow = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  var css = document.createElement('style');
-  css.textContent =
-    '.wk{opacity:0;transform:translateY(22px)}' +
-    '.wk.up{opacity:1;transform:none;' +
-    'transition:opacity .62s ease,transform .62s cubic-bezier(.2,.7,.3,1)}' +
-    '.wki{opacity:0;transform:translateY(18px) scale(.982)}' +
-    '.wki.up{opacity:1;transform:none;' +
-    'transition:opacity .5s ease,transform .55s cubic-bezier(.2,.75,.3,1)}';
-  document.head.appendChild(css);
-
-  /* ряды карточек: их дети выходят по очереди.
-     Блоки со своей анимацией — карта тучи, галочки условий, квоты, лестница цен —
-     сюда не входят: они оживают собственным кодом страницы. */
-  var ROWS = '.ways, .steps, .refs, .packs, .quests, .calc, .goods, .cats, ' +
-             '.doors, .entries, .facts, .tri-put, .kak-shagi, .pravila, ' +
-             '.plus3, .reg, .kanaly, .picks, .sposob, .otkuda';
-
-  function ready() {
-    var blocks = [], seen = [];
-
-    function add(el) {
-      if (!el || seen.indexOf(el) >= 0) return;
-      if (el.closest && el.closest('.proto')) return;
-      seen.push(el);
-      blocks.push(el);
-    }
-
-    document.querySelectorAll('.rise').forEach(add);
-    // карточки новых страниц: каждая выплывает сама
-    document.querySelectorAll('.card, .vs-card, .zk-card').forEach(add);
-    document.querySelectorAll(ROWS).forEach(add);
-
-    // секции верхнего уровня — для макета, где никаких классов нет
-    var root = document.querySelector('#dc-root > div') || document.querySelector('.page');
-    if (root) {
-      Array.prototype.forEach.call(root.children, function (el, i) {
-        if (i === 0) return;                 // шапку не прячем
-        if (el.offsetHeight < 40) return;
-        add(el);
-      });
-    }
-
-    if (slow) {
-      blocks.forEach(function (b) { b.classList.remove('rise'); b.classList.add('seen'); });
-      return;
-    }
-
-    // то, что человек видит сразу при открытии, не прячем: первый экран должен быть на месте
-    var fold = window.innerHeight - 40;
-    blocks = blocks.filter(function (b) {
-      if (b.getBoundingClientRect().top < fold) {
-        b.classList.add('seen', 'up');
-        return false;
-      }
-      return true;
-    });
-
-    // элементы со своим классом .rise уже описаны на странице — второй раз не прячем
-    blocks.forEach(function (b) {
-      if (!b.classList.contains('rise')) b.classList.add('wk');
-    });
-
-    function kidsOf(block) {
-      var rows = block.matches(ROWS) ? [block] : [];
-      block.querySelectorAll(ROWS).forEach(function (r) { rows.push(r); });
-      var out = [];
-      rows.forEach(function (r) {
-        Array.prototype.forEach.call(r.children, function (k) {
-          if (k.offsetHeight > 30 && out.indexOf(k) < 0) out.push(k);
-        });
-      });
-      return out.slice(0, 14);
-    }
-
-    var io = new IntersectionObserver(function (items) {
-      items.forEach(function (item) {
-        if (!item.isIntersecting) return;
-        var block = item.target;
-        io.unobserve(block);
-
-        var kids = kidsOf(block);
-        block.classList.add('up');
-        block.classList.add('seen');
-
-        // задержку держим на CSS, а не на таймерах: так волна не рассыпается
-        kids.forEach(function (k, i) {
-          if (k.classList.contains('wk')) return;
-          k.classList.add('wki');
-          k.style.transitionDelay = (i * 65) + 'ms';
-          requestAnimationFrame(function () {
-            requestAnimationFrame(function () { k.classList.add('up'); });
-          });
-        });
-      });
-    }, { threshold: 0.04, rootMargin: '0px 0px -8%' });
-
-    blocks.forEach(function (b) { io.observe(b); });
-
-    /* страховка: что бы ни случилось, через 2,5 секунды страница видна целиком */
-    setTimeout(function () {
-      blocks.forEach(function (b) { b.classList.add('up', 'seen'); });
-      document.querySelectorAll('.wki, .rise').forEach(function (k) {
-        k.classList.add('up', 'seen');
-      });
-    }, 2500);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { requestAnimationFrame(ready); });
-  } else {
-    requestAnimationFrame(ready);
-  }
-})();
-</script>
-
-<script>
-(function () {
-  var shapka = document.querySelector('.top');
-  if (!shapka) return;
-  var zhdet = false;
-  function proverit() {
-    shapka.classList.toggle('plotno', window.scrollY > 12);
-  }
-  window.addEventListener('scroll', function () {
-    if (zhdet) return;
-    zhdet = true;
-    requestAnimationFrame(function () { zhdet = false; proverit(); });
-  }, { passive: true });
-  proverit();
 })();
 </script>
 </body>
