@@ -472,6 +472,12 @@ a.man-row:hover b { color: var(--orange); }
 .acc-out:hover { background: rgba(212,96,74,.08); color: var(--bad); }
   /* панель прототипа не перекрывает нижний блок */
   .wrap { padding-bottom: 84px; }
+
+/* Полупрозрачная шапка при прокрутке пропускает текст под собой — читается
+   грязно. Как только страница тронулась, делаем её плотной. */
+.top { transition: background .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.top.plotno { background: #fff !important; backdrop-filter: none !important;
+  box-shadow: 0 6px 20px rgba(30,58,95,.07); border-bottom-color: transparent; }
 </style>
 
 <style>
@@ -1570,6 +1576,7 @@ window.KORZINA = (function () {
     'добавить адрес': ['Форма нового адреса', 'Заполните адрес и сохраните — подставим в заказы'],
     'забрать вещи': ['Заявка на выдачу принята', 'Скажите день — приготовим вещи к вашему приезду'],
     'заказать выдачу': ['Заявка на выдачу принята', 'Приготовим вещи к вашему приезду'],
+    'контакты': 'kontakty.html',
     'как проехать': ['Химки, деревня Подолино, промзона 2Б', '10 минут от МКАД и Шереметьева'],
     'оплатить картой': ['Переход к оплате', 'Откроется защищённая страница банка'],
     'добавить товар': ['Новая карточка товара', 'Заполните название, артикул и габариты'],
@@ -2120,6 +2127,23 @@ window.KORZINA = (function () {
     amolchit = true;
   };
   setTimeout(pokazatAkciyu, 6500);
+})();
+</script>
+
+<script>
+(function () {
+  var shapka = document.querySelector('.top');
+  if (!shapka) return;
+  var zhdet = false;
+  function proverit() {
+    shapka.classList.toggle('plotno', window.scrollY > 12);
+  }
+  window.addEventListener('scroll', function () {
+    if (zhdet) return;
+    zhdet = true;
+    requestAnimationFrame(function () { zhdet = false; proverit(); });
+  }, { passive: true });
+  proverit();
 })();
 </script>
 </body>

@@ -212,6 +212,12 @@ textarea { min-height: 104px; resize: vertical; }
   padding: 7px 13px; border-radius: 20px; white-space: nowrap; }
 .proto a:hover { background: rgba(255,255,255,.13); color: #fff; }
 .proto a.on { background: var(--orange); color: #fff; font-weight: 600; }
+
+/* Полупрозрачная шапка при прокрутке пропускает текст под собой — читается
+   грязно. Как только страница тронулась, делаем её плотной. */
+.top { transition: background .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.top.plotno { background: #fff !important; backdrop-filter: none !important;
+  box-shadow: 0 6px 20px rgba(30,58,95,.07); border-bottom-color: transparent; }
 </style>
 </head>
 <body>
@@ -465,6 +471,23 @@ document.getElementById('vyborFon').addEventListener('click', function (e) {
   if (e.target === this) this.classList.add('hide');
 });
 
+</script>
+
+<script>
+(function () {
+  var shapka = document.querySelector('.top');
+  if (!shapka) return;
+  var zhdet = false;
+  function proverit() {
+    shapka.classList.toggle('plotno', window.scrollY > 12);
+  }
+  window.addEventListener('scroll', function () {
+    if (zhdet) return;
+    zhdet = true;
+    requestAnimationFrame(function () { zhdet = false; proverit(); });
+  }, { passive: true });
+  proverit();
+})();
 </script>
 </body>
 </html>

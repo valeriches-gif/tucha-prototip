@@ -454,6 +454,12 @@ a.man-row:hover b { color: var(--orange); }
   .levels.slim .lvl-go { margin-top: auto; }
   /* панель прототипа не перекрывает нижний блок */
   .wrap { padding-bottom: 84px; }
+
+/* Полупрозрачная шапка при прокрутке пропускает текст под собой — читается
+   грязно. Как только страница тронулась, делаем её плотной. */
+.top { transition: background .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.top.plotno { background: #fff !important; backdrop-filter: none !important;
+  box-shadow: 0 6px 20px rgba(30,58,95,.07); border-bottom-color: transparent; }
 </style>
 
 <style>
@@ -1485,6 +1491,23 @@ document.querySelectorAll('[data-povtor]').forEach(function (b) {
   } else {
     requestAnimationFrame(ready);
   }
+})();
+</script>
+
+<script>
+(function () {
+  var shapka = document.querySelector('.top');
+  if (!shapka) return;
+  var zhdet = false;
+  function proverit() {
+    shapka.classList.toggle('plotno', window.scrollY > 12);
+  }
+  window.addEventListener('scroll', function () {
+    if (zhdet) return;
+    zhdet = true;
+    requestAnimationFrame(function () { zhdet = false; proverit(); });
+  }, { passive: true });
+  proverit();
 })();
 </script>
 </body>
