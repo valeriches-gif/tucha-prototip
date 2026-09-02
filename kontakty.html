@@ -227,8 +227,35 @@ a.punkt:hover .znak { color: var(--orange); }
   margin: 0 0 6px; }
 .spasibo b { color: var(--navy); }
 
+
+/* отзывы: цитаты, а не карточки с аватарками */
+.mnenie { padding: 44px 0 10px; border-top: 1px solid var(--line); }
+.mnenie-shapka { display: flex; justify-content: space-between; gap: 24px;
+  align-items: flex-end; margin-bottom: 28px; flex-wrap: wrap; }
+.ocenka { font-size: var(--t3); margin: 0; font-weight: 600;
+  letter-spacing: -.015em; }
+.ocenka b { font-size: var(--t1); font-weight: 700; color: var(--orange);
+  letter-spacing: -.04em; margin-right: 8px; }
+.skolko { display: block; font-size: var(--t5); color: var(--mute);
+  margin-top: 6px; }
+.vse-otzyvy { font-size: var(--t4); font-weight: 600; color: var(--navy);
+  text-decoration: none; border-bottom: 2px solid var(--orange);
+  padding-bottom: 3px; }
+.vse-otzyvy:hover { color: var(--orange); }
+.otzyvy { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; }
+.otzyv { margin: 0; padding-top: 20px; border-top: 1px solid var(--line); }
+.otzyv p { font-size: var(--t4); line-height: 1.6; color: var(--ink);
+  margin: 0 0 16px; }
+.otzyv cite { font-style: normal; }
+.otzyv cite b { display: block; font-size: var(--t5); color: var(--navy);
+  font-weight: 600; }
+.otzyv cite span { display: block; font-size: var(--t6); color: var(--mute);
+  margin-top: 2px; }
+@media (max-width: 900px) { .otzyvy { grid-template-columns: 1fr; gap: 24px; } }
+
 /* карта */
-.karta-blok { padding-top: 44px; border-top: 1px solid var(--line); }
+.karta-blok { padding-top: 44px; margin-top: 34px;
+  border-top: 1px solid var(--line); }
 .karta-shapka { display: flex; justify-content: space-between; gap: 24px;
   align-items: baseline; margin-bottom: 18px; flex-wrap: wrap; }
 .karta-shapka h2 { font-size: var(--t3); margin: 0; letter-spacing: -.015em; }
@@ -362,6 +389,43 @@ a.punkt:hover .znak { color: var(--orange); }
     </div>
   </div>
 
+
+  <div class="mnenie">
+    <div class="mnenie-shapka">
+      <div>
+        <span class="metka">Что говорят</span>
+        <h2 class="ocenka"><b>4,6</b> на Яндекс Картах</h2>
+        <span class="skolko">36 оценок от клиентов, водителей и подрядчиков</span>
+      </div>
+      <a class="vse-otzyvy" href="https://yandex.ru/maps/org/tucha_mirovaya_lavka"
+         target="_blank" rel="noopener">Читать все отзывы</a>
+    </div>
+
+    <div class="otzyvy">
+      <blockquote class="otzyv">
+        <p>Начинали с одной паллеты, когда ещё непонятно было, пойдёт товар
+          или нет. До этого в трёх местах отказали, объём маленький. Тут взяли
+          без вопросов. Сейчас объём другой, склад тот же.</p>
+        <cite><b>Селлер маркетплейсов</b><span>работает второй год</span></cite>
+      </blockquote>
+
+      <blockquote class="otzyv">
+        <p>Принимают с пересчётом, на каждый паллет два фото: общий вид
+          и этикетка крупно. Лист приёмки приходит в тот же день, правда иногда
+          уже вечером. Один раз разошлось количество, подняли снимки
+          и закрыли вопрос за час.</p>
+        <cite><b>Логист</b><span>оптовые поставки</span></cite>
+      </blockquote>
+
+      <blockquote class="otzyv">
+        <p>У нас негабарит. На складах разговор обычно кончается на первой
+          минуте: «мы такое не берём». Тут взяли и разместили аккуратно,
+          ничего не свалено в кучу.</p>
+        <cite><b>Оптовик</b><span>крупногабаритный товар</span></cite>
+      </blockquote>
+    </div>
+  </div>
+
   <div class="karta-blok">
     <div class="karta-shapka">
       <h2>Как доехать</h2>
@@ -453,7 +517,7 @@ document.querySelectorAll('input[data-phone]').forEach(function (el) {
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!('IntersectionObserver' in window)) return;
-  var el = document.querySelectorAll('.punkt, .shag');
+  var el = document.querySelectorAll('.punkt, .shag, .otzyv');
   el.forEach(function (e) {
     e.style.opacity = '0';
     e.style.transform = 'translateY(10px)';
