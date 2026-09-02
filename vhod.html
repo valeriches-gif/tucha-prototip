@@ -231,8 +231,8 @@ textarea { min-height: 104px; resize: vertical; }
       <!-- шаг 1 -->
       <div id="s1">
         <h1>Вход в кабинет</h1>
-        <p class="sub">Один номер — оба кабинета: и компании, и личный.
-          Пароль придумывать не нужно.</p>
+        <p class="sub">Кабинет один на всё: хранение, витрина и покупки
+          в одном месте. Пароль придумывать не нужно.</p>
         <label class="field">
           <span>Номер телефона</span>
           <input type="tel" data-phone id="tel" placeholder="+7 (___) ___-__-__"
@@ -287,23 +287,24 @@ textarea { min-height: 104px; resize: vertical; }
       <!-- окно выбора роли: только если на номере их две -->
       <div class="vybor-fon hide" id="vyborFon">
         <div class="vybor">
-          <h2>Куда заходим?</h2>
-          <p>На этом номере два кабинета. Переключить можно в любой момент —
+          <h2>От чьего имени войти?</h2>
+          <p>Кабинет один на всё: и хранение, и витрина, и покупки. Выбираете
+            только, от кого работаете — переключить можно в любой момент,
             в меню профиля.</p>
           <button class="vybor-kart" data-go="kabinet-lichnyy.html">
             <span class="ava lich">ИС</span>
             <span class="vk-txt"><b>Ирина Соколова</b>
-              <span>личный: вещи, покупки, возвраты</span></span>
+              <span>как частное лицо · вещи на хранении, покупки, документы</span></span>
             <span class="vk-go">&#8594;</span>
           </button>
           <button class="vybor-kart" data-go="kabinet.html">
             <span class="ava">СВ</span>
             <span class="vk-txt"><b>ООО «Северный ветер»</b>
-              <span>компания: склад, витрина, счета</span></span>
+              <span>как компания · склад, витрина, закупки, счета и УПД</span></span>
             <span class="vk-go">&#8594;</span>
           </button>
-          <p class="vybor-niz">Заказать товар для себя можно из любого:
-            на оплате выбирается, на кого документы.</p>
+          <p class="vybor-niz">Разница только в документах: компании — счёт
+            и УПД, частному лицу — чек. Заказать товар можно из любого.</p>
         </div>
       </div>
     </div>
