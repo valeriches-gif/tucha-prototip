@@ -670,50 +670,7 @@ a.man-row:hover b { color: var(--orange); }
             закреплённый специалист — можно отправить контрагенту как есть.</div>
         </div>
 
-        <div class="card rise" id="raschet">
-          <div class="card-head">
-            <h2>Посчитать новую партию</h2>
-            <span class="note">по вашей ступени и договору</span>
-          </div>
-          <div class="calc-grid">
-            <div class="calc-fields">
-              <div class="cf">
-                <div class="cf-top"><b>Паллето-мест</b><span id="cP">20</span></div>
-                <input type="range" id="rP" min="1" max="200" value="20" step="1">
-              </div>
-              <div class="cf">
-                <div class="cf-top"><b>Срок хранения</b><span id="cD">30 дней</span></div>
-                <input type="range" id="rD" min="7" max="365" value="30" step="1">
-              </div>
-              <div class="cf">
-                <div class="cf-top"><b>Зона</b><span id="cZ">стеллажная</span></div>
-                <div class="chips2" id="zones2">
-                  <button class="chip2 on" data-z="1">Стеллажная</button>
-                  <button class="chip2" data-z="1.15">Напольная, негабарит</button>
-                  <button class="chip2" data-z="1.4">Холодная +5…+15</button>
-                </div>
-              </div>
-              <div class="cf">
-                <div class="cf-top"><b>Операции</b><span>сверх бесплатных по ступени</span></div>
-                <div id="ops"></div>
-              </div>
-            </div>
-
-            <div class="calc-out">
-              <span class="lbl">Выйдет</span>
-              <span class="big" id="oTotal">—</span>
-              <span class="per" id="oPer">—</span>
-              <div class="co-row"><span>Хранение</span><b id="oHold">—</b></div>
-              <div class="co-row"><span>Операции</span><b id="oOps">—</b></div>
-              <div class="co-row save"><span>Скидка «Тучи Про» −12 %</span><b id="oSale">—</b></div>
-              <div class="co-row save"><span>«Займи место под тучей» — квартал вперёд</span><b id="oRes">—</b></div>
-              <button class="btn">Занять место под тучей</button>
-            </div>
-          </div>
-          <div class="foot">Расчёт по вашему договору: базовая ставка 16,42 ₽ за место в сутки,
-            ступень «Туча Про» даёт −12 %. «Займи место под тучей» — оплата вперёд — считается отдельно,
-            от уже сниженной ставки.</div>
-        </div>
+        
 
         <div class="card rise" id="foto">
           <div class="card-head">
@@ -1379,6 +1336,50 @@ window.KORZINA = (function () {
   body::after { content: "proto-space"; display: block; height: 74px;
     font-size: 0; color: transparent; }
 </style>
+<div class="card rise" id="raschet">
+          <div class="card-head">
+            <h2>Посчитать новую партию</h2>
+            <span class="note">по вашей ступени и договору</span>
+          </div>
+          <div class="calc-grid">
+            <div class="calc-fields">
+              <div class="cf">
+                <div class="cf-top"><b>Паллето-мест</b><span id="cP">20</span></div>
+                <input type="range" id="rP" min="1" max="200" value="20" step="1">
+              </div>
+              <div class="cf">
+                <div class="cf-top"><b>Срок хранения</b><span id="cD">30 дней</span></div>
+                <input type="range" id="rD" min="7" max="365" value="30" step="1">
+              </div>
+              <div class="cf">
+                <div class="cf-top"><b>Зона</b><span id="cZ">стеллажная</span></div>
+                <div class="chips2" id="zones2">
+                  <button class="chip2 on" data-z="1">Стеллажная</button>
+                  <button class="chip2" data-z="1.15">Напольная, негабарит</button>
+                  <button class="chip2" data-z="1.4">Холодная +5…+15</button>
+                </div>
+              </div>
+              <div class="cf">
+                <div class="cf-top"><b>Операции</b><span>сверх бесплатных по ступени</span></div>
+                <div id="ops"></div>
+              </div>
+            </div>
+
+            <div class="calc-out">
+              <span class="lbl">Выйдет</span>
+              <span class="big" id="oTotal">—</span>
+              <span class="per" id="oPer">—</span>
+              <div class="co-row"><span>Хранение</span><b id="oHold">—</b></div>
+              <div class="co-row"><span>Операции</span><b id="oOps">—</b></div>
+              <div class="co-row save"><span>Скидка «Тучи Про» −12 %</span><b id="oSale">—</b></div>
+              <div class="co-row save"><span>«Займи место под тучей» — квартал вперёд</span><b id="oRes">—</b></div>
+              <button class="btn">Занять место под тучей</button>
+            </div>
+          </div>
+          <div class="foot">Расчёт по вашему договору: базовая ставка 16,42 ₽ за место в сутки,
+            ступень «Туча Про» даёт −12 %. «Займи место под тучей» — оплата вперёд — считается отдельно,
+            от уже сниженной ставки.</div>
+        </div>
 <div class="proto"><b>Прототип</b><a href="glavnaya.html">Главная</a><a href="hranenie.html">Хранение</a><a href="vitrina.html">Витрина</a><a href="korzina.html">Корзина</a><a class="on" href="kabinet.html">ЛК юрлица</a><a href="kabinet-lichnyy.html">ЛК физлица</a></div>
 <script>
 /* переключение аккаунта: вход один, профилей может быть несколько */
