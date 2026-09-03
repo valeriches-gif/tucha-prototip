@@ -523,6 +523,11 @@ a.man-row:hover b { color: var(--orange); }
   .proto { left: 8px; right: 8px; translate: 0 0; transform: none;
     overflow-x: auto; justify-content: flex-start; }
 }
+
+/* запас снизу: человечек стоит в правом нижнем углу */
+@media (min-width: 761px) {
+  .foot { padding-bottom: 200px; }
+}
 </style>
 
 <style>
@@ -1498,6 +1503,16 @@ window.KORZINA = (function () {
     '.pom-akc-x:hover{color:#1E3A5F}' +
     '@media (max-width:1080px){.pom-akc,.pom-rech{display:none}}' +
     '.pom-knopka.spryatan{opacity:0;transform:translateY(20px);pointer-events:none}' +
+    '.pom-ubrat{position:fixed;right:16px;bottom:270px;z-index:122;width:26px;'+
+    'height:26px;border-radius:50%;border:1px solid rgba(30,58,95,.14);'+
+    'background:#fff;color:#7C8AA0;font-size:12px;line-height:1;cursor:pointer;'+
+    'display:flex;align-items:center;justify-content:center;padding:0;'+
+    'box-shadow:0 4px 14px rgba(30,58,95,.12);opacity:0;'+
+    'transition:opacity .2s ease,color .2s ease}' +
+    '.pom-ubrat:hover{color:#EF7F1A;border-color:#EF7F1A}' +
+    '.pom-ubrat.vidno{opacity:1}' +
+    '.pom-ubrat.spryatan{opacity:0;pointer-events:none}' +
+    '@media (max-width:760px){.pom-ubrat{bottom:180px;right:12px}}' +
     '@media print{.pom,.pom-knopka{display:none}}';
   document.head.appendChild(css);
 
@@ -1505,6 +1520,16 @@ window.KORZINA = (function () {
   knopka.className = 'pom-knopka';
   knopka.setAttribute('aria-label', 'Спросить помощника');
   knopka.innerHTML = '<span class="pom-tochka"></span><img src="' + LICO + '" alt="">';
+  var ubrat = document.createElement('button');
+  ubrat.className = 'pom-ubrat vidno';
+  ubrat.setAttribute('aria-label', 'Убрать помощника');
+  ubrat.innerHTML = '&#10005;';
+  ubrat.onclick = function (e) {
+    e.preventDefault(); e.stopPropagation();
+    knopka.classList.add('spryatan');
+    ubrat.classList.add('spryatan');
+    rech.classList.remove('vidno');
+  };
 
   var okno = document.createElement('div');
   okno.className = 'pom';
@@ -1521,7 +1546,27 @@ window.KORZINA = (function () {
     'позовём Петра Кима.</div>';
 
   document.body.appendChild(knopka);
+  document.body.appendChild(ubrat);
   document.body.appendChild(okno);
+
+  /* у подвала человечек уступает место: там телефон и адрес */
+  (function () {
+    var podval = document.querySelector('.foot');
+    if (!podval || !('IntersectionObserver' in window)) return;
+    var ushel = false;
+    new IntersectionObserver(function (items) {
+      items.forEach(function (it) {
+        if (it.isIntersecting && !knopka.classList.contains('spryatan')) {
+          knopka.classList.add('spryatan'); ubrat.classList.add('spryatan');
+          rech.classList.remove('vidno'); ushel = true;
+        } else if (!it.isIntersecting && ushel) {
+          knopka.classList.remove('spryatan'); ubrat.classList.remove('spryatan');
+          ushel = false;
+        }
+      });
+    }, { threshold: 0.08 }).observe(podval);
+  })();
+
 
   var lenta = okno.querySelector('#pomLenta');
   var bystro = okno.querySelector('#pomBystro');
