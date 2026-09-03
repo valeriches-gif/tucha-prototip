@@ -533,6 +533,9 @@ transition: border-color .2s ease, color .2s ease; }
 
   /* помощник и панель прототипа не должны закрывать пол-экрана */
   .pom-rost, .pom-figura { display: none; }
+  .pom-knopka { width: 108px !important; }
+  .pom-rech { display: none; }
+
   .proto { left: 8px; right: 8px; translate: 0 0; transform: none;
     overflow-x: auto; justify-content: flex-start; }
 }
@@ -3291,7 +3294,7 @@ window.__logic = startDC(Component);
 
   var css = document.createElement('style');
   css.textContent =
-    '.pom-knopka{position:fixed;right:14px;bottom:0;z-index:120;width:124px;' +
+    '.pom-knopka{position:fixed;right:16px;bottom:0;z-index:120;width:176px;' +
     'border:0;background:none;cursor:pointer;padding:0;' +
     'transition:transform .26s cubic-bezier(.2,.8,.3,1)}' +
     '.pom-knopka:hover{transform:translateY(-6px)}' +
@@ -3365,7 +3368,7 @@ window.__logic = startDC(Component);
     '.pom-snoska{font-size:10.5px;color:#A6B2C2;text-align:center;padding:0 14px 10px;' +
     'background:#fff}' +
 
-    '.pom-rech{position:fixed;right:132px;bottom:96px;z-index:119;width:212px;' +
+    '.pom-rech{position:fixed;right:186px;bottom:132px;z-index:119;width:224px;' +
     'background:#fff;border:1px solid #E3EAF2;border-radius:14px;' +
     'padding:12px 16px;box-shadow:0 12px 30px rgba(30,58,95,.16);' +
     'font-family:"Golos Text",Arial,sans-serif;opacity:0;' +
