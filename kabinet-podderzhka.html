@@ -511,6 +511,12 @@ a.man-row:hover b { color: var(--orange); }
 .top { transition: background .2s ease, box-shadow .2s ease, border-color .2s ease; }
 .top.plotno { background: #fff !important; backdrop-filter: none !important;
   box-shadow: 0 6px 20px rgba(30,58,95,.07); border-bottom-color: transparent; }
+
+/* рамка не у всех, а там, где она что-то значит */
+.card { border-color: transparent; box-shadow: none; }
+.card:hover { box-shadow: none; }
+.card.glavnyy { box-shadow: 0 6px 22px rgba(30,58,95,.06); }
+.card.man { border-color: var(--line); }
 </style>
 
 <style>

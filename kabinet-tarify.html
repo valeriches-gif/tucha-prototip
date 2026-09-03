@@ -476,6 +476,36 @@ a.man-row:hover b { color: var(--orange); }
 .top { transition: background .2s ease, box-shadow .2s ease, border-color .2s ease; }
 .top.plotno { background: #fff !important; backdrop-filter: none !important;
   box-shadow: 0 6px 20px rgba(30,58,95,.07); border-bottom-color: transparent; }
+.calc-grid { display: grid; grid-template-columns: 1fr 240px; gap: 26px; align-items: start; }
+.calc-fields { display: flex; flex-direction: column; gap: 16px; }
+.cf { display: flex; flex-direction: column; gap: 8px; }
+.cf input[type=range] { width: 100%; appearance: none; height: 4px; border-radius: 3px;
+  background: rgba(30,58,95,.12); outline: none; }
+.cf input[type=range]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px;
+  border-radius: 50%; background: var(--orange); cursor: pointer; border: 3px solid #FFF;
+  box-shadow: 0 2px 8px rgba(239,127,26,.45); }
+.cf input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%;
+  background: var(--orange); cursor: pointer; border: 3px solid #FFF; }
+.chips2 { display: flex; gap: 7px; flex-wrap: wrap; }
+.chip2 { font-family: inherit; font-size: 12.5px; color: var(--grey); background: #FFF;
+  border: 1px solid var(--line); border-radius: 20px; padding: 8px 14px; cursor: pointer;
+  transition: all .18s ease; }
+.chip2:hover { border-color: rgba(239,127,26,.5); color: var(--orange); }
+.chip2.on { background: var(--navy); border-color: var(--navy); color: #FFF; font-weight: 500; }
+.calc-out { background: linear-gradient(150deg, #FEF8F0, #FDF0E1);
+  border: 1px solid rgba(239,127,26,.3); border-radius: 12px; padding: 22px 22px 20px;
+  display: flex; flex-direction: column; gap: 12px; position: sticky; top: 96px; }
+.calc-out .lbl { color: var(--orange); }
+.calc-out .big { font-size: 31px; font-weight: 700; letter-spacing: -.04em; color: var(--navy);
+  line-height: 1; font-variant-numeric: tabular-nums; }
+.calc-out .per { font-size: 12.5px; color: var(--grey); }
+.calc-out button { width: 100%; margin-top: 4px; }
+
+/* рамка не у всех, а там, где она что-то значит */
+.card { border-color: transparent; box-shadow: none; }
+.card:hover { box-shadow: none; }
+.card.glavnyy { box-shadow: 0 6px 22px rgba(30,58,95,.06); }
+.card.man { border-color: var(--line); }
 </style>
 
 <style>
@@ -753,6 +783,51 @@ a.man-row:hover b { color: var(--orange); }
     </div>
       <div class="foot">Тариф меняется с первого числа следующего месяца. Карточки и отзывы остаются вашими при любом варианте.</div>
     </div>
+
+        <div class="card rise" id="raschet">
+          <div class="card-head">
+            <h2>Посчитать новую партию</h2>
+            <span class="note">по вашей ступени и договору</span>
+          </div>
+          <div class="calc-grid">
+            <div class="calc-fields">
+              <div class="cf">
+                <div class="cf-top"><b>Паллето-мест</b><span id="cP">20</span></div>
+                <input type="range" id="rP" min="1" max="200" value="20" step="1">
+              </div>
+              <div class="cf">
+                <div class="cf-top"><b>Срок хранения</b><span id="cD">30 дней</span></div>
+                <input type="range" id="rD" min="7" max="365" value="30" step="1">
+              </div>
+              <div class="cf">
+                <div class="cf-top"><b>Зона</b><span id="cZ">стеллажная</span></div>
+                <div class="chips2" id="zones2">
+                  <button class="chip2 on" data-z="1">Стеллажная</button>
+                  <button class="chip2" data-z="1.15">Напольная, негабарит</button>
+                  <button class="chip2" data-z="1.4">Холодная +5…+15</button>
+                </div>
+              </div>
+              <div class="cf">
+                <div class="cf-top"><b>Операции</b><span>сверх бесплатных по ступени</span></div>
+                <div id="ops"></div>
+              </div>
+            </div>
+
+            <div class="calc-out">
+              <span class="lbl">Выйдет</span>
+              <span class="big" id="oTotal">—</span>
+              <span class="per" id="oPer">—</span>
+              <div class="co-row"><span>Хранение</span><b id="oHold">—</b></div>
+              <div class="co-row"><span>Операции</span><b id="oOps">—</b></div>
+              <div class="co-row save"><span>Скидка «Своей тучи» −12 %</span><b id="oSale">—</b></div>
+              <div class="co-row save"><span>«Займи место под тучей» — квартал вперёд</span><b id="oRes">—</b></div>
+              <button class="btn">Занять место под тучей</button>
+            </div>
+          </div>
+          <div class="foot">Расчёт по вашему договору: базовая ставка 16,42 ₽ за место в сутки,
+            ступень «работаете ровно» даёт −12 %. «Займи место под тучей» — оплата вперёд — считается отдельно,
+            от уже сниженной ставки.</div>
+        </div>
 
 
   </div>
@@ -1821,6 +1896,76 @@ setTimeout(function () {
       }
     });
 }, 2200);
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+/* ---------- калькулятор партии ---------- */
+  var RATE = 16.42, SALE = 0.12;
+  var OPS = [
+    { id: 'in', name: 'Приёмка паллеты', cost: 320, on: true },
+    { id: 'mark', name: 'Маркировка «Честный знак»', cost: 24, on: false, per: 'шт' },
+    { id: 'pack', name: 'Обмотка стрейчем', cost: 180, on: false },
+    { id: 'pick', name: 'Сборка заказов', cost: 46, on: false, per: 'строка' },
+    { id: 'out', name: 'Отгрузка', cost: 290, on: true }
+  ];
+  var zone = 1;
+
+  function ruk(n) { return Math.round(n).toLocaleString('ru-RU').replace(/\u00a0/g, ' '); }
+
+  document.getElementById('ops').innerHTML = OPS.map(function (o) {
+    return '<div class="sw' + (o.on ? ' on' : '') + '" data-o="' + o.id + '">'
+      + '<span class="sw-box"></span><span class="sw-name">' + o.name + '</span>'
+      + '<span class="sw-cost">' + o.cost + ' ₽ за ' + (o.per || 'место') + '</span></div>';
+  }).join('');
+
+  function calcAll() {
+    var places = +document.getElementById('rP').value;
+    var days = +document.getElementById('rD').value;
+    var hold = places * days * RATE * zone;
+    var ops = 0;
+    OPS.forEach(function (o) {
+      if (!o.on) return;
+      ops += o.cost * (o.per === 'шт' ? places * 40 : o.per === 'строка' ? places * 4 : places);
+    });
+    var sale = hold * SALE;
+    var total = hold - sale + ops;
+    var res = (hold - sale) * 0.3;
+
+    document.getElementById('cP').textContent = places + ' мест';
+    document.getElementById('cD').textContent = days + (days % 10 === 1 && days % 100 !== 11 ? ' день'
+      : (days % 10 > 1 && days % 10 < 5 && (days % 100 < 10 || days % 100 > 20)) ? ' дня' : ' дней');
+    document.getElementById('oTotal').textContent = ruk(total) + ' ₽';
+    document.getElementById('oPer').textContent =
+      'за ' + days + ' дн. · ' + ruk(total / days) + ' ₽ в сутки';
+    document.getElementById('oHold').textContent = ruk(hold) + ' ₽';
+    document.getElementById('oOps').textContent = ruk(ops) + ' ₽';
+    document.getElementById('oSale').textContent = '−' + ruk(sale) + ' ₽';
+    document.getElementById('oRes').textContent = '−' + ruk(res) + ' ₽';
+  }
+
+  ['rP', 'rD'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', calcAll);
+  });
+  document.querySelectorAll('[data-z]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('[data-z]').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      zone = +b.dataset.z;
+      document.getElementById('cZ').textContent = b.textContent.toLowerCase();
+      calcAll();
+    });
+  });
+  document.querySelectorAll('[data-o]').forEach(function (row) {
+    row.addEventListener('click', function () {
+      var o = OPS.filter(function (x) { return x.id === row.dataset.o; })[0];
+      o.on = !o.on;
+      row.classList.toggle('on', o.on);
+      calcAll();
+    });
+  });
+  calcAll();
+
+});
 </script>
 </body>
 </html>
