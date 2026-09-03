@@ -726,9 +726,11 @@ a.man-row:hover b { color: var(--orange); }
             <div class="head-acts">
               <button class="btn-ghost" id="csv">Скачать опись</button>
               <button class="btn-ghost">Забрать вещи</button>
+            <button class="btn-ghost">Привезти ещё</button>
             </div>
           </div>
           <div class="things" id="things"></div>
+          <div class="foot" style="border-top:2px solid rgba(239,127,26,.35);margin-top:14px;padding-top:12px;color:#1E3A5F"><b>Оплачено до 31 августа.</b> Дальше хранение продлевается само, счёт придёт первого числа. Заберёте раньше — пересчитаем по дням.</div>
           <div class="foot">Опись составлена при приёмке и подписана: если что-то пропадёт
             или повредится, отвечаем мы. Доступ к вещам — по будням с 9:00 до 18:00.</div>
         </div>
@@ -740,20 +742,16 @@ a.man-row:hover b { color: var(--orange); }
             <a href="vitrina.html">За покупками</a>
           </div>
           <div id="orders"></div>
+          <div class="card-head" style="margin: 22px 0 12px">
+            <h3 style="margin:0;font-size:15.5px">Покупали раньше</h3>
+            <a href="lk-pokupki.html">Все покупки</a>
+          </div>
+          <div id="hist"></div>
           <div class="foot">После оплаты товар неделю ждёт вас бесплатно. Нужно дольше —
             добавим к вашему хранению, отдельный договор не нужен.</div>
         </div>
 
-        <div class="card rise">
-          <div class="card-head">
-            <h2>История покупок</h2>
-            <span class="note">за три месяца</span>
-            <a href="lk-pokupki.html">Все покупки</a>
-          </div>
-          <div id="hist"></div>
-          <div class="foot">Повтор заказа собирает ту же корзину — цены подставим
-            сегодняшние.</div>
-        </div>
+        
 
       </div>
       <div class="col">
