@@ -11,14 +11,14 @@ window.TuchaIzo = (function () {
   var H1 = 58, H2 = 44, H3 = 30;
 
   var C = {
-    sklad: { top: '#2F5A8A', px: '#152C48', py: '#1E3A5F' },
-    mast: { top: '#7CC6EE', px: '#1672A8', py: '#1E90D2' },
-    lavka: { top: '#F9B57A', px: '#C9650F', py: '#EF7F1A' },
-    vitr: { top: '#FFF1E2', px: '#EDAA63', py: '#F7C28A' },
-    kraft: { top: '#E8C79E', px: '#B98B58', py: '#D2A774' },
-    stolb: { top: '#3A6799', px: '#152C48', py: '#1E3A5F' },
-    bel: { top: '#FFFFFF', px: '#C3D3E3', py: '#E1EAF3' },
-    ora: { top: '#FFB36B', px: '#C9650F', py: '#EF7F1A' }
+    sklad: { top: '#4A7FC0', px: '#1D3E6B', py: '#2A5693' },
+    mast: { top: '#9BDDFF', px: '#1A86C9', py: '#3AA7EA' },
+    lavka: { top: '#FFC98F', px: '#E0700F', py: '#FF8A1F' },
+    vitr: { top: '#FFF4E6', px: '#F2A95C', py: '#FFC88C' },
+    kraft: { top: '#F2D2A6', px: '#C4935E', py: '#DDB07C' },
+    stolb: { top: '#4F85C4', px: '#1D3E6B', py: '#2A5693' },
+    bel: { top: '#FFFFFF', px: '#C8DAEC', py: '#E6F0FA' },
+    ora: { top: '#FFC079', px: '#E0700F', py: '#FF8A1F' }
   };
 
   /* где стоит блок и где его подпись */
@@ -45,7 +45,10 @@ window.TuchaIzo = (function () {
   function P(gx, gy, z) { return [OX + (gx - gy) * TW / 2, OY + (gx + gy) * TH / 2 - (z || 0)]; }
   function pts(a) { return a.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' '); }
   function poly(g, a, fill, dop) { return el('polygon', Object.assign({ points: pts(a), fill: fill }, dop || {}), g); }
+  /* мультяшный контур, как в казуальных играх */
+  var KONTUR = { stroke: '#16304F', 'stroke-width': 1.6, 'stroke-linejoin': 'round' };
   function boks(g, x, y, w, d, z, h, c, dop) {
+    dop = Object.assign({}, KONTUR, dop || {});
     var A = P(x, y, z + h), B = P(x + w, y, z + h), Cc = P(x + w, y + d, z + h), D = P(x, y + d, z + h);
     var B0 = P(x + w, y, z), C0 = P(x + w, y + d, z), D0 = P(x, y + d, z);
     if (c.py) poly(g, [D, Cc, C0, D0], c.py, dop);
@@ -72,14 +75,14 @@ window.TuchaIzo = (function () {
 
   /* ---------- остров, дорога, мелочи ---------- */
   function ostrov(g) {
-    boks(g, 1.7, 1.7, N - 3.4, N - 3.4, -100, 24, { px: '#2C4B6E', py: '#36597F' });
-    boks(g, 0.7, 0.7, N - 1.4, N - 1.4, -76, 42, { px: '#3E6189', py: '#4B6F97' });
-    boks(g, 0, 0, N, N, -34, 34, { top: '#EEF4FA', px: '#7E9BB8', py: '#9DB7CF' });
+    boks(g, 1.7, 1.7, N - 3.4, N - 3.4, -100, 24, { px: '#2C5285', py: '#3A68A3' });
+    boks(g, 0.7, 0.7, N - 1.4, N - 1.4, -76, 42, { px: '#3E6FAD', py: '#5288C9' });
+    boks(g, 0, 0, N, N, -34, 34, { top: '#F4FAFF', px: '#6C9FD6', py: '#92C0EC' });
     for (var gx = 0; gx < N; gx++) {
       for (var gy = 0; gy < N; gy++) {
         if (gx >= 6 || gy >= 6) continue;
-        poly(g, [P(gx, gy), P(gx + 1, gy), P(gx + 1, gy + 1), P(gx, gy + 1)], (gx + gy) % 2 ? '#E6EEF6' : '#F2F7FB',
-          { stroke: '#DCE6F0', 'stroke-width': .6 });
+        poly(g, [P(gx, gy), P(gx + 1, gy), P(gx + 1, gy + 1), P(gx, gy + 1)], (gx + gy) % 2 ? '#E2F1FD' : '#F7FCFF',
+          { stroke: '#C9E2F7', 'stroke-width': .8 });
       }
     }
   }
@@ -112,9 +115,14 @@ window.TuchaIzo = (function () {
     });
   }
   function tucha(g) {
-    [[346, 116, 34], [400, 98, 46], [458, 110, 38]].forEach(function (c) { el('circle', { cx: c[0] + 6, cy: c[1] + 8, r: c[2], fill: '#5AAEE0' }, g); });
-    [[300, 132, 24], [342, 114, 34], [400, 92, 48], [460, 106, 40], [504, 128, 26]].forEach(function (c) { el('circle', { cx: c[0], cy: c[1], r: c[2], fill: '#1E90D2' }, g); });
-    el('rect', { x: 294, y: 120, width: 216, height: 36, rx: 18, fill: '#1E90D2' }, g);
+    var kr = [[300, 132, 24], [342, 114, 34], [400, 92, 48], [460, 106, 40], [504, 128, 26]];
+    /* сначала толстый контур всех частей, поверх заливка: остаётся только внешний контур */
+    kr.forEach(function (c) { el('circle', { cx: c[0], cy: c[1], r: c[2], fill: '#16304F', stroke: '#16304F', 'stroke-width': 7 }, g); });
+    el('rect', { x: 294, y: 120, width: 216, height: 36, rx: 18, fill: '#16304F', stroke: '#16304F', 'stroke-width': 7 }, g);
+    [[346, 116, 34], [400, 98, 46], [458, 110, 38]].forEach(function (c) { el('circle', { cx: c[0] + 6, cy: c[1] + 8, r: c[2], fill: '#2B9BE0' }, g); });
+    kr.forEach(function (c) { el('circle', { cx: c[0], cy: c[1], r: c[2], fill: '#3AA7EA' }, g); });
+    el('rect', { x: 294, y: 120, width: 216, height: 36, rx: 18, fill: '#3AA7EA' }, g);
+    el('path', { d: 'M300 150 Q400 164 504 150 L504 156 Q400 170 300 156 Z', fill: '#1E8BD0' }, g);
     [[388, 74, 20], [448, 92, 15], [334, 104, 12]].forEach(function (c) {
       el('path', { d: 'M' + (c[0] - c[2]) + ' ' + c[1] + ' a' + c[2] + ' ' + c[2] + ' 0 0 1 ' + 2 * c[2] + ' 0', fill: 'none', stroke: '#FFFFFF', 'stroke-opacity': .35, 'stroke-width': 4, 'stroke-linecap': 'round' }, g);
     });

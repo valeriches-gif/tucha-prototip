@@ -653,7 +653,7 @@ legend { font-weight: 600; color: var(--navy); margin: 0 0 8px; font-size: 15px;
 /* первый экран: одно собранное появление, по очереди */
 @keyframes vzlet { from { opacity: 0; transform: translateY(18px); } }
 @keyframes proyav { from { opacity: 0; } }
-.hero-mir .eb, .hero-mir h1, .tucha-rasshifr span, .hero-mir .lead, .hero-mir .knopki, .hran-hero-t > * { animation: vzlet 800ms var(--ease-out) both; }
+.hero-mir .eb, .hero-mir h1, .tucha-rasshifr span, .hero-mir .lead, .hero-mir .knopki, .hran-hero-t > * { animation: vzlet 800ms var(--ease-out) backwards; }
 .hero-mir .eb { animation-delay: 60ms; }
 .hero-mir h1 { animation-delay: 140ms; }
 .tucha-rasshifr span:nth-child(1) { animation-delay: 360ms; }
@@ -678,7 +678,7 @@ legend { font-weight: 600; color: var(--navy); margin: 0 0 8px; font-size: 15px;
 .kl.otkr.vidno .ik-bol { opacity: 1; transform: none;
   transition: transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i, 0) * 80ms + 180ms), opacity 300ms var(--ease-out) calc(var(--i, 0) * 80ms + 180ms); }
 /* игра: при смене уровня пульт перелистывается, полоска уровня заполняется */
-.pult.smena > * { animation: vzlet 420ms var(--ease-out) both; }
+.pult.smena > * { animation: vzlet 420ms var(--ease-out) backwards; }
 .pult.smena > *:nth-child(2) { animation-delay: 40ms; }
 .pult.smena > *:nth-child(3) { animation-delay: 80ms; }
 .pult.smena > *:nth-child(4) { animation-delay: 120ms; }
@@ -701,7 +701,7 @@ legend { font-weight: 600; color: var(--navy); margin: 0 0 8px; font-size: 15px;
   .doroga:hover .doroga-ill img, .kl:hover .ik-bol, .pult .blok-k:hover .ik { transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-mir .eb, .hero-mir h1, .tucha-rasshifr span, .hero-mir .lead, .hero-mir .knopki, .hran-hero-t > *, .pult.smena > * { animation: proyav 300ms ease both; }
+  .hero-mir .eb, .hero-mir h1, .tucha-rasshifr span, .hero-mir .lead, .hero-mir .knopki, .hran-hero-t > *, .pult.smena > * { animation: proyav 300ms ease backwards; }
   .hero-mir::before, .hero-mir::after, .hud-urovni li.on::before, .status div.on::before { animation: none; }
   .btn:active { transform: none; }
   .kl.otkr .ik-bol { opacity: 1; transform: none; }
