@@ -125,7 +125,7 @@ img[src*="8bit"], .ava-foto, .rech-mob::before { image-rendering: pixelated; }
   .final-t h2, .final-t > p:not(.final-mel), .final-t .final-tel, .final-t .cta-pol, .final-t .final-mel { grid-column: 1; grid-row: auto; justify-self: start; justify-content: flex-start; }
 }
 .final-t p { margin: 0; }
-.final-tel { display: inline-block; margin: 18px 0 4px; font-family: var(--igr); font-weight: 800; font-size: clamp(28px, 3.6vw, 42px); color: #fff; text-decoration: none; }
+.final-tel { display: inline-block; margin: 18px 0 4px; font-family: var(--igr); font-weight: 800; font-size: clamp(24px, 3.2vw, 40px); color: #fff; text-decoration: none; white-space: nowrap; }
 .final-tel:hover { color: #FFB877; }
 .final-mel { margin-top: 16px !important; font-size: 15px; }
 .final-mel a { color: #FFB877; }
