@@ -9,8 +9,8 @@
   var BLOKI = {
     hranenie: { ig: 'Точка сохранения', ob: 'хранение', fill: '#1E3A5F', opora: null },
     obrabotka: { ig: 'Мастерская', ob: 'обработка', fill: '#1E90D2', opora: 'hranenie' },
-    lavka: { ig: 'Лавка', ob: 'маркетплейс', fill: '#EF7F1A', opora: 'hranenie', skoro: true },
-    vitrina: { ig: 'Витрина', ob: 'продвижение', fill: '#F7B267', opora: 'lavka', skoro: true },
+    lavka: { ig: 'Лавка', ob: 'маркетплейс', fill: '#EF7F1A', opora: 'hranenie' },
+    vitrina: { ig: 'Витрина', ob: 'продвижение', fill: '#F7B267', opora: 'lavka' },
     dostavka: { ig: 'Телепорт', ob: 'доставка', fill: '#5AAEE0', opora: null },
     tamozhnya: { ig: 'Портал', ob: 'таможня', fill: '#2C5486', opora: null }
   };
@@ -67,6 +67,16 @@
     this.gr = {};
     ['dostavka', 'tamozhnya'].forEach(function (k) { self.gr[k] = el('g', { 'data-blok': k }, zad); });
     ['hranenie', 'lavka', 'vitrina', 'obrabotka'].forEach(function (k) { self.gr[k] = el('g', { 'data-blok': k }, zd); });
+    if (o.onKlik) {
+      svg.classList.add('klik');
+      Object.keys(self.gr).forEach(function (k) {
+        var g = self.gr[k];
+        g.setAttribute('tabindex', '0'); g.setAttribute('role', 'link');
+        g.setAttribute('aria-label', BLOKI[k].ig + ', ' + BLOKI[k].ob + ': подробнее');
+        g.addEventListener('click', function () { o.onKlik(k); });
+        g.addEventListener('keydown', function (e) { if (e.key === 'Enter') o.onKlik(k); });
+      });
+    }
     this.lyudi = el('g', {}, this.mir);
     this.mashiny = el('g', {}, this.mir);
     this.sprayty = {};
@@ -295,6 +305,7 @@
           else if (a.tip === 'volna') { var f = (t * .6 + a.faza) % 1; masshtab(a.el, a.cx, a.cy, 1 + f * .7); a.el.setAttribute('opacity', (1 - f).toFixed(2)); }
           else if (a.tip === 'luch') a.el.setAttribute('opacity', (.55 + .35 * Math.sin(t * 2.2)).toFixed(2));
           else if (a.tip === 'portal') a.el.setAttribute('transform', 'rotate(' + (t * 50 % 360).toFixed(1) + ' ' + a.cx + ' ' + a.cy + ')');
+          else if (a.tip === 'zvezda') a.el.setAttribute('transform', 'translate(' + a.x.toFixed(1) + ',' + (a.y + Math.sin(t * 2.4) * 2.5).toFixed(1) + ') rotate(' + (Math.sin(t * 1.3) * 10).toFixed(1) + ')');
           else if (a.tip === 'fonar') a.el.setAttribute('opacity', (.7 + .3 * Math.sin(t * 3 + a.faza)).toFixed(2));
         });
       });

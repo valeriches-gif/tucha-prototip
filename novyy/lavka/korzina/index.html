@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Всё просто: регистрация за пару минут | Туча</title>
-<meta name="description" content="Одна форма: ИНН, имя и телефон. Менеджер позвонит в рабочее время.">
+<title>Корзина Лавки | Туча</title>
+<meta name="description" content="Товары из Лавки: объём, машина и сумма к оплате.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#1E3A5F">
-<meta property="og:title" content="Всё просто: регистрация за пару минут | Туча">
-<meta property="og:description" content="Одна форма: ИНН, имя и телефон. Менеджер позвонит в рабочее время.">
+<meta property="og:title" content="Корзина Лавки | Туча">
+<meta property="og:description" content="Товары из Лавки: объём, машина и сумма к оплате.">
 <meta property="og:image" content="../../assets/img/art-palec.jpg">
 <link rel="icon" type="image/png" href="../../assets/img/znachok.png">
 <link rel="preload" href="../../assets/fonts/golos.woff2" as="font" type="font/woff2" crossorigin>
@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="../../assets/site.css?v=202609111610">
 <link rel="stylesheet" href="../../assets/ui.css?v=202609111610">
 <link rel="stylesheet" href="../../assets/lavka.css?v=202609111610">
-</head><body class="start">
+</head><body>
 <a class="skryt-f" href="#glav">К содержанию</a>
 <div class="nebo" aria-hidden="true"><i></i><i></i><i></i></div>
 <header class="shapka" id="shapka"><div class="wrap">
@@ -39,14 +39,8 @@
 <a class="btn btn-sm" href="../../start/">Начать</a>
 <button class="burger" type="button" data-burger aria-expanded="false" aria-label="Меню"><i></i><i></i><i></i></button>
 </div></div></header>
-<main id="glav"><section class="sek-t"><div class="wrap prosto">
-<div><p class="eb">Всё просто</p><h1>Одна форма: и мы на связи</h1>
-<ol class="dalee"><li><b>Проверим данные компании</b><span>По ИНН: название, адрес, КПП</span></li>
-<li><b>Менеджер позвонит в рабочее время</b><span>пн-пт с 9:00 до 18:00</span></li>
-<li><b>Договор: в день обращения</b><span>Около 20 минут</span></li></ol>
-<p class="muted">Хотите собрать услуги сами? <a href="../../start/mir/">Мир Тучи</a>, то же самое в формате игры.</p></div>
-<div class="kart" id="forma"></div>
-</div></section></main>
+<main id="glav"><section class="sek-t"><div class="wrap"><h1>Корзина</h1>
+<p class="muted" style="margin-top:-6px">Всё лежит на одном складе в Химках</p><div data-lavka="korzina"></div></div></section></main>
 <footer class="podval"><div class="wrap"><div class="kol">
 <div class="znak-p"><img src="../../assets/img/logo.png" alt="ТУЧА, Мировая Лавка" width="132" height="40" loading="lazy">
 <p>Всё под одной тучей</p><a class="tel-bol" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a></div>
@@ -63,30 +57,22 @@
 <a href="../../dokumenty/#politika">политика обработки данных</a> · <a href="../../dokumenty/#soglasie">согласие</a></span>
 <span>© 2026 · тестовая версия сайта</span></div>
 </div></footer>
-
+<div class="pomosh" data-pomosh-box>
+<p class="pomosh-rech">Есть вопрос?</p>
+<button class="pomosh-kn" type="button" data-pomosh aria-expanded="false" aria-label="Нужна помощь? Открыть контакты">
+<img src="../../assets/img/maskot.webp" alt="" width="80" height="145"></button>
+<button class="pomosh-x" type="button" data-pomosh-x aria-label="Убрать помощника">×</button>
+</div>
+<div class="pomosh-panel" role="dialog" aria-label="Помощник Тучи">
+<div data-chat-box><div class="zapas"><b>Нужна помощь?</b>
+<p class="muted">Пн-пт с 9:00 до 18:00 отвечаем сразу, в другое время, перезвоним утром.</p>
+<a href="tel:+74956658242" data-goal="call_click">Позвонить: +7 (495) 665-82-42</a>
+<a href="https://t.me/tucha_ml">Написать в Telegram</a>
+<a href="../../kontakty/#perezvon">Перезвоните мне</a></div></div>
+</div>
 <script>window.TUCHA_ROOT = '../../';</script>
 <script src="../../assets/site.js?v=202609111610"></script>
-<script src="../../assets/reg.js?v=202609111610"></script>
-<script>(function () {
-  var T = Tucha, m = T.anketa(), iz = /[?&]iz=mir/.test(location.search) && m;
-  var otm = T.metki(), pred = {}, kalk = /[?&]kalk=(\d+)-(\d+)/.exec(location.search);
-  if (kalk) {
-    otm.push('hranenie');
-    pred.kommentariy = 'Хранение: ' + kalk[1] + ' паллет' + (+kalk[2] ? ', резервация мест на ' + kalk[2] + ' мес' : '');
-  }
-  if (iz) {
-    otm = otm.concat(Object.keys(m.bloki || {}));
-    if (m.kontakt) { if (/@/.test(m.kontakt)) pred.pochta = m.kontakt; else pred.tel = m.kontakt; }
-    if (m.bonus && m.bonus.tekst) pred.kommentariy = 'Бонус «Развитие»: ' + m.bonus.tekst;
-  }
-  TuchaReg.forma(document.getElementById('forma'), {
-    uslugi: true, kommentariy: true, otmecheny: otm, predzapolnit: pred,
-    pered: function () { T.goal('prosto_submit'); },
-    onOk: function (d) {
-      TuchaReg.sozdatAkk(d, { put: 'prosto', vid: 'prosto', persona: iz ? m.persona : null, kanal: iz ? m.kanal : 'zvonok' });
-      location.href = T.ROOT + 'kabinet/?novyy=1';
-    }
-  });
-  if (iz) T.toast('Перенесли ваши ответы из «Мира Тучи»');
-})();</script>
+<script src="../../assets/chat.js?v=202609111610"></script>
+<script src="../../assets/lavka-dannye.js?v=202609111610"></script>
+<script src="../../assets/lavka.js?v=202609111610"></script>
 </body></html>

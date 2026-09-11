@@ -79,6 +79,16 @@ window.Tucha = (function () {
     m.push({ b: b, t: Date.now() }); st.set('tucha.metki', m);
   }
 
+  /* корзина Лавки: число позиций у значка в шапке */
+  function korzN() { return (st.get('tucha.korzina') || []).filter(function (x) { return x.q > 0; }).length; }
+  function korzObnovit(bump) {
+    var n = korzN();
+    document.querySelectorAll('[data-korz-n]').forEach(function (b) {
+      b.textContent = n; b.hidden = !n;
+      if (bump && n) { b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); }
+    });
+  }
+
   function akk() { return st.get('tucha.akk'); }
   function sessiya() { var s = st.get('tucha.sessiya'); return !!(s && akk() && Date.now() - s.t < 30 * 864e5); }
   function voyti() { st.set('tucha.sessiya', { t: Date.now() }); }
@@ -184,6 +194,7 @@ window.Tucha = (function () {
       if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { sh.classList.toggle('mini', !e[0].isIntersecting); }).observe(dozor);
       if (sessiya()) sh.querySelectorAll('[data-vhod]').forEach(function (a) { a.textContent = 'Кабинет'; a.href = ROOT + 'kabinet/'; });
     }
+    korzObnovit();
 
     document.querySelectorAll('[data-dobavit]').forEach(function (b) {
       b.addEventListener('click', function () { var k = b.getAttribute('data-dobavit'); dobMetku(k); goal('dobavit_' + k); location.href = ROOT + 'start/'; });
@@ -345,6 +356,6 @@ window.Tucha = (function () {
     ROOT: ROOT, NAZV: NAZV, st: st, goal: goal, toast: toast, innOk: innOk, telOk: telOk, pochtaOk: pochtaOk,
     telFormat: telFormat, maska: maska, metki: metki, dobMetku: dobMetku, akk: akk, sessiya: sessiya,
     voyti: voyti, vyyti: vyyti, anketa: anketa, kodEkran: kodEkran, kogdaSvyazhetsya: kogdaSvyazhetsya,
-    kakSvyazhetsya: kakSvyazhetsya
+    kakSvyazhetsya: kakSvyazhetsya, korzObnovit: korzObnovit
   };
 })();

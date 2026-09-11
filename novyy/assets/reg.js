@@ -6,7 +6,7 @@ window.TuchaReg = (function () {
   var USLUGI = [
     ['hranenie', 'Точка сохранения · хранение'], ['obrabotka', 'Мастерская · обработка'],
     ['dostavka', 'Телепорт · доставка'], ['tamozhnya', 'Портал · таможня'],
-    ['lavka', 'Лавка · маркетплейс', 1], ['vitrina', 'Витрина · продвижение', 1]
+    ['lavka', 'Лавка · маркетплейс'], ['vitrina', 'Витрина · продвижение']
   ];
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
@@ -38,7 +38,7 @@ window.TuchaReg = (function () {
         USLUGI.map(function (u) {
           return '<label><input type="checkbox" name="usl" value="' + u[0] + '"' + (otm.indexOf(u[0]) >= 0 ? ' checked' : '') + '>' +
             '<span>' + u[1] + (u[2] ? ' <i class="skoro">скоро</i>' : '') + '</span></label>';
-        }).join('') + '</div><p class="podskaz" data-skoro-pod hidden>Лавка и Витрина откроются позже, сообщим о запуске</p></fieldset>';
+        }).join('') + '</div><p class="podskaz" data-skoro-pod hidden>Лавка работает: менеджер расскажет, как выставить ваш товар</p></fieldset>';
     }
     if (o.kommentariy) {
       h += '<div class="pole"><label for="r-kom">Комментарий <span class="nb">необязательно</span></label>' +

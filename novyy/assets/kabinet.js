@@ -7,7 +7,7 @@
   if (!T.sessiya()) { location.replace(R + 'vhod/'); return; }
   var a = T.akk();
   var STATUSY = ['Мир сохранён', 'Менеджер на связи', 'Готовим договор', 'Договор подписан', 'Товар под тучей'];
-  var RAZDELY = [['glavnaya', 'Главная'], ['uslugi', 'Услуги'], ['zayavki', 'Заявки'], ['dokumenty', 'Документы'], ['manager', 'Менеджер'], ['nastroyki', 'Настройки']];
+  var RAZDELY = [['glavnaya', 'Главная'], ['uslugi', 'Услуги'], ['pokupki', 'Покупки'], ['zayavki', 'Заявки'], ['dokumenty', 'Документы'], ['manager', 'Менеджер'], ['nastroyki', 'Настройки']];
   var DOST = { hranenie: 'Фундамент заложен', obrabotka: 'Своя мастерская', lavka: 'Место в Лавке', vitrina: 'Полка в Витрине',
     dostavka: 'Телепорт настроен', tamozhnya: 'Портал открыт', vse: 'Всё под одной тучей' };
   var PERS = { shturman: ['Штурман', 'Отвечаю быстро и по сути'], hranitel: ['Хранитель', 'Пришлю фото и отчёт по каждой поставке'],
@@ -102,6 +102,9 @@
       }
       return h;
     },
+    pokupki: function () {
+      return verh('Покупки в Лавке') + '<div data-pokupki-kab></div>';
+    },
     zayavki: function () {
       var st = a.status || 0;
       return verh('Заявки') + '<div class="zamok"><b>' + (st < 3 ? 'Откроется после договора' : 'Заявок пока нет') + '</b><p>' +
@@ -146,6 +149,8 @@
     box.innerHTML = RENDER[r]();
     var ch = box.querySelector('[data-chat-kab]');
     if (ch && window.TuchaChat) TuchaChat.sozdat(ch, { vstroen: true });
+    var pk = box.querySelector('[data-pokupki-kab]');
+    if (pk && window.TuchaLavka) TuchaLavka.pokupki(pk);
     var svg = box.querySelector('#kabScena');
     if (svg) {
       var sc = S.sozdat(svg, { root: R }), bl = {}, opora = { obrabotka: 'hranenie', lavka: 'hranenie', vitrina: 'lavka' };
@@ -179,7 +184,8 @@
     }
     else if ('vyyti' in d) { T.vyyti(); location.href = R + 'vhod/'; }
     else if ('steret' in d) {
-      ['tucha.akk', 'tucha.sessiya', 'tucha.mir', 'tucha.metki', 'tucha.list', 'tucha.kodpop', 'tucha.kodblok', 'tucha.kodpovt'].forEach(T.st.del);
+      ['tucha.akk', 'tucha.sessiya', 'tucha.mir', 'tucha.metki', 'tucha.list', 'tucha.kodpop', 'tucha.kodblok', 'tucha.kodpovt',
+        'tucha.korzina', 'tucha.zakazy', 'tucha.vitrina'].forEach(T.st.del);
       location.href = R;
     }
   });

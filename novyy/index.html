@@ -11,8 +11,9 @@
 <link rel="icon" type="image/png" href="./assets/img/znachok.png">
 <link rel="preload" href="./assets/fonts/golos.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="./assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="./assets/site.css?v=202609111523">
-<link rel="stylesheet" href="./assets/ui.css?v=202609111523">
+<link rel="stylesheet" href="./assets/site.css?v=202609111610">
+<link rel="stylesheet" href="./assets/ui.css?v=202609111610">
+<link rel="stylesheet" href="./assets/lavka.css?v=202609111610">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LocalBusiness", "name": "Туча, Мировая Лавка", "description": "Склад ответственного хранения в Химках: хранение, обработка, доставка и таможня.", "telephone": "+7 495 665-82-42", "email": "info@tucha-ml.ru", "image": "assets/img/foto-angar.jpg", "foundingDate": "2017", "address": {"@type": "PostalAddress", "addressRegion": "Московская область", "addressLocality": "г. о. Химки, д. Подолино", "streetAddress": "Промышленная зона, 2Б", "addressCountry": "RU"}, "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.6", "ratingCount": "36"}, "openingHours": "Mo-Fr 09:00-18:00"}</script>
 </head><body>
 <a class="skryt-f" href="#glav">К содержанию</a>
@@ -22,10 +23,11 @@
 <nav class="nav" aria-label="Главное меню">
 <a href="./hranenie/">Хранение</a>
 <div class="menu-u"><button type="button" data-menu-u aria-expanded="false">Услуги <span aria-hidden="true">▾</span></button>
-<div class="spisok"><a href="./hranenie/"><span><b>Точка сохранения</b> <small>· хранение</small></span></a><a href="./obrabotka/"><span><b>Мастерская</b> <small>· обработка</small></span></a><a href="./dostavka/"><span><b>Телепорт</b> <small>· доставка</small></span></a><a href="./tamozhnya/"><span><b>Портал</b> <small>· таможня</small></span></a><a href="./lavka/"><span><b>Лавка</b> <small>· маркетплейс</small></span><i class="skoro">скоро</i></a><a href="./vitrina/"><span><b>Витрина</b> <small>· продвижение</small></span><i class="skoro">скоро</i></a></div></div>
+<div class="spisok"><a href="./hranenie/"><span><b>Точка сохранения</b> <small>· хранение</small></span></a><a href="./obrabotka/"><span><b>Мастерская</b> <small>· обработка</small></span></a><a href="./dostavka/"><span><b>Телепорт</b> <small>· доставка</small></span></a><a href="./tamozhnya/"><span><b>Портал</b> <small>· таможня</small></span></a><a href="./lavka/"><span><b>Лавка</b> <small>· маркетплейс</small></span></a><a href="./vitrina/"><span><b>Витрина</b> <small>· продвижение</small></span></a></div></div>
 <a href="./hranenie/#tarify">Тарифы</a>
-<a href="./lavka/">Лавка <span aria-hidden="true">↗</span></a>
+<a href="./lavka/">Лавка</a>
 <a href="./kontakty/">Контакты</a>
+<a class="mob" href="./lavka/korzina/">Корзина</a>
 <a class="mob" href="./o-kompanii/">О компании</a>
 <a class="mob" href="./vhod/" data-vhod>Войти</a>
 <a class="mob" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a>
@@ -33,6 +35,7 @@
 </nav>
 <div class="shapka-prav">
 <a class="tel" href="tel:+74956658242" data-goal="call_click"><b>+7 (495) 665-82-42</b><span>пн-пт 9:00-18:00</span></a>
+<a class="korz-l" href="./lavka/korzina/" aria-label="Корзина Лавки"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.2l2.2 10.2a1.6 1.6 0 0 0 1.6 1.3h7.7a1.6 1.6 0 0 0 1.5-1.2L20 8H6.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.6" fill="currentColor"/><circle cx="17" cy="19.5" r="1.6" fill="currentColor"/></svg><b data-korz-n hidden>0</b></a>
 <a class="vhod-l" href="./vhod/" data-vhod>Войти</a>
 <a class="btn btn-sm" href="./start/">Начать</a>
 <button class="burger" type="button" data-burger aria-expanded="false" aria-label="Меню"><i></i><i></i><i></i></button>
@@ -90,10 +93,15 @@
 <p>Телепорт возит по стране, Портал ведёт между мирами, то есть странами.</p>
 <div class="cta-pol"><button class="btn btn-bel btn-sm" type="button" data-dobavit="dostavka">Добавить в мой мир</button><a class="kl-ssylka" href="./tamozhnya/">Про таможню</a></div></div></article>
 <article class="kl kl-lavka"><svg class="ik-bol" data-ik="lavka" aria-hidden="true"></svg><div>
-<p class="kl-ob">Маркетплейс и продвижение <i class="skoro">скоро</i></p><h3>Лавка / Витрина</h3>
-<p>Наша площадка и место на полке внутри неё. Товар продаётся оттуда, где лежит. Пока не запущены: записываем в лист ожидания.</p>
-<div class="cta-pol"><a class="btn btn-2 btn-sm" href="./lavka/#list">В лист ожидания</a></div></div></article>
+<p class="kl-ob">Маркетплейс и продвижение</p><h3>Лавка / Витрина</h3>
+<p>Наша площадка и место на полке внутри неё. Товар продаётся оттуда, где лежит: 2 840 позиций от 34 продавцов.</p>
+<div class="cta-pol"><a class="btn btn-2 btn-sm" href="./lavka/">Открыть Лавку</a><a class="kl-ssylka" href="./vitrina/">Продавать в Лавке</a></div></div></article>
 </div></div></section>
+
+<section class="sek"><div class="wrap"><div class="lv-dom-h"><div><h2>Сегодня в Лавке</h2>
+<p class="muted">Товар лежит на нашем складе: заберёте в день заказа. Чем больше берёте, тем ниже цена за штуку.</p></div>
+<a class="btn btn-2" href="./lavka/">Все товары</a></div>
+<div class="lv-dom" data-lavka="vitrinka" data-ids="5,1,3,8"></div></div></section>
 
 <section class="sek"><div class="wrap">
 <h2>Классика или игра: выбирайте</h2>
@@ -121,7 +129,7 @@
 <section class="sek"><div class="wrap"><div class="kto-vy-k">
 <div><h2>Кто вы?</h2><p class="muted">Ответ здесь, и экран выбора пропускается. Регистрация начинается уже внутри выбранного пути.</p></div>
 <div><a class="btn btn-2 btn-bol" href="./start/put/">Я компания или ИП</a>
-<p class="muted">Покупаете товар? Лавка скоро откроется, <a href="./lavka/#list">оставьте почту</a></p></div>
+<p class="muted">Покупаете товар? <a href="./lavka/">Откройте Лавку</a>: забрать можно в день заказа</p></div>
 </div></div></section></main>
 <footer class="podval"><div class="wrap"><div class="kol">
 <div class="znak-p"><img src="./assets/img/logo.png" alt="ТУЧА, Мировая Лавка" width="132" height="40" loading="lazy">
@@ -141,11 +149,14 @@
 </div></footer>
 
 <script>window.TUCHA_ROOT = './';</script>
-<script src="./assets/site.js?v=202609111523"></script>
-<script src="./assets/izo.js?v=202609111523"></script>
-<script src="./assets/scena.js?v=202609111523"></script>
+<script src="./assets/site.js?v=202609111610"></script>
+<script src="./assets/izo.js?v=202609111610"></script>
+<script src="./assets/scena.js?v=202609111610"></script>
+<script src="./assets/lavka-dannye.js?v=202609111610"></script>
+<script src="./assets/lavka.js?v=202609111610"></script>
 <script>(function () {
-  var sc = TuchaScena.sozdat(document.getElementById('heroScena'), { root: Tucha.ROOT });
+  var ADR = { hranenie: 'hranenie/', obrabotka: 'obrabotka/', lavka: 'lavka/', vitrina: 'vitrina/', dostavka: 'dostavka/', tamozhnya: 'tamozhnya/' };
+  var sc = TuchaScena.sozdat(document.getElementById('heroScena'), { root: Tucha.ROOT, onKlik: function (k) { location.href = Tucha.ROOT + ADR[k]; } });
   var por = ['hranenie', 'obrabotka', 'lavka', 'dostavka', 'vitrina', 'tamozhnya'], bl = {}, i = 0;
   function sled() {
     if (i >= por.length) { sc.podpisi(true); sc.k = 'zvonok'; sc.menedzher({ harakter: 'shturman', vozrast: 'do30', pol: 'm' }, true, 'Менеджер'); return; }

@@ -1,0 +1,162 @@
+/* Вариант главной «Печать»: логотип — круговая надпись с мерча.
+   Свой язык: синий экран с белым диском-печатью, наклейки, штампы услуг, крупные цифры.
+   Палитра прежняя (синий, оранжевый, голубой), токены из site.css и ui.css. */
+.pechat-str { background: #F4F7FA; }
+.pechat-str .nebo { display: none; }
+
+/* шапка: логотип по центру, меню по сторонам */
+.shp { position: sticky; top: 0; z-index: 50; background: rgba(244, 247, 250, .92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(30, 58, 95, .08); }
+.shp-g { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 24px; min-height: 100px;
+  transition: min-height .25s var(--ease-out); }
+.shp-l, .shp-r { display: flex; align-items: center; gap: 22px; }
+.shp-r { justify-content: flex-end; gap: 14px; }
+.shp a { color: var(--navy); font-weight: 600; text-decoration: none; }
+.shp-l a { transition: color .2s ease; }
+.shp-l a:hover, .shp-vhod:hover, .shp-tel:hover { color: var(--orange); }
+.shp-mob { display: none; }
+.shp-tel { font-family: var(--igr); font-weight: 700; white-space: nowrap; }
+.shp-logo img { display: block; width: 80px; height: auto; transition: width .25s var(--ease-out); }
+.shp.mini .shp-g { min-height: 70px; }
+.shp.mini .shp-logo img { width: 56px; }
+.shp .burger { display: none; width: 44px; height: 44px; border: 0; border-radius: 14px; background: var(--bel-grad); box-shadow: 0 2px 0 var(--bel-kray);
+  flex-direction: column; justify-content: center; align-items: center; gap: 5px; cursor: pointer; }
+.shp .burger i { display: block; width: 20px; height: 2.5px; border-radius: 2px; background: var(--navy); }
+
+/* первый экран */
+.p-hero { position: relative; overflow: hidden; color: #fff;
+  background: radial-gradient(110% 90% at 82% 18%, #2A5693 0%, var(--navy) 52%, #132844 100%); }
+.p-hero::after { content: ""; position: absolute; inset: auto -10% -60% 40%; height: 90%; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(239, 127, 26, .22), transparent); pointer-events: none; }
+.p-hero-g { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 48px; align-items: center; padding-block: 76px 92px; }
+.p-eb { font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: #FFB877; font-weight: 700; margin: 0; }
+.p-hero h1 { font-family: var(--igr); font-weight: 800; font-size: clamp(46px, 7.4vw, 104px); line-height: .94; letter-spacing: -.035em; margin: 18px 0 24px; color: #fff; }
+.p-hero h1 em { font-style: normal; color: var(--orange); }
+.p-lead { font-size: 20px; line-height: 1.5; color: rgba(255, 255, 255, .84); max-width: 540px; margin: 0; }
+.p-kn { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.p-hero .btn-p2 { background: transparent; color: #fff; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .55); }
+.p-hero .btn-p2:hover { background: rgba(255, 255, 255, .1); }
+
+/* печать: белый диск, кольцо надписи вращается, туча стоит */
+.p-shtamp { position: relative; width: min(100%, 460px); aspect-ratio: 1; margin-inline: auto; }
+.p-disk { position: absolute; inset: 0; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 0 12px rgba(255, 255, 255, .07), 0 0 0 26px rgba(255, 255, 255, .04), 0 44px 80px -30px rgba(0, 0, 0, .6); }
+.p-kolco-box { position: absolute; left: 9%; top: 5.3%; width: 82%; aspect-ratio: 441 / 480; }
+.p-kolco { display: block; width: 100%; height: auto; animation: pKrug 70s linear infinite; }
+.p-tuchka { position: absolute; left: 30.2%; top: 39.6%; width: 39.7%; height: auto; animation: pParit 4.5s var(--ease-in-out) infinite alternate; }
+@keyframes pKrug { to { transform: rotate(360deg); } }
+@keyframes pParit { to { transform: translateY(-6px); } }
+.p-nakl { position: absolute; width: 116px; aspect-ratio: 1; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; font-family: var(--igr); box-shadow: 0 16px 30px -12px rgba(0, 0, 0, .55); animation: pNakl .55s var(--ease-out) backwards; }
+.p-nakl b { font-size: 27px; line-height: 1; font-weight: 800; }
+.p-nakl small { font-size: 12px; font-weight: 600; margin-top: 4px; padding: 0 14px; line-height: 1.2; }
+.p-n1 { background: var(--orange); color: #fff; left: -5%; top: 6%; rotate: -10deg; animation-delay: .35s; }
+.p-n2 { background: #FFC247; color: var(--navy); right: -4%; top: 56%; rotate: 8deg; animation-delay: .5s; }
+.p-n3 { background: #fff; color: var(--navy); left: 4%; bottom: -3%; rotate: -4deg; animation-delay: .65s;
+  box-shadow: inset 0 0 0 3px var(--navy), 0 16px 30px -12px rgba(0, 0, 0, .55); }
+@keyframes pNakl { from { opacity: 0; scale: .8; } }
+
+/* бегущая лента */
+.p-lenta { background: var(--orange); color: var(--navy); overflow: hidden; border-block: 3px solid var(--navy); }
+.p-lenta-t { display: flex; width: max-content; animation: pLenta 48s linear infinite; }
+.p-lenta span { font-family: var(--igr); font-weight: 800; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; padding: 14px 0; white-space: nowrap; }
+@keyframes pLenta { to { transform: translateX(-50%); } }
+
+/* разделы */
+.p-sek { padding-block: 92px; }
+.p-sek-t { padding-block: 24px 92px; }
+.p-h2 { font-family: var(--igr); font-weight: 800; font-size: clamp(34px, 4.6vw, 58px); line-height: 1; letter-spacing: -.025em; color: var(--navy); margin: 0 0 14px; }
+.p-pod { font-size: 18px; color: var(--mute); max-width: 620px; margin: 0 0 48px; }
+
+/* услуги штампами: надпись по кругу, в центре значок блока */
+.p-shtampy { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 32px; }
+.p-sht { display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: inherit; }
+.p-sht .krug { width: min(100%, 220px); height: auto; overflow: visible; filter: drop-shadow(0 18px 26px rgba(22, 48, 79, .16)); transition: transform .3s var(--ease-out); }
+.p-sht .kolco-t { transform-origin: 100px 100px; transition: transform .9s var(--ease-out); }
+.p-sht b { font-family: var(--igr); font-size: 22px; color: var(--navy); margin-top: 16px; }
+.p-sht span { color: var(--mute); font-size: 15px; max-width: 270px; margin-top: 4px; }
+@media (hover: hover) and (pointer: fine) {
+  .p-sht:hover .krug { transform: translateY(-4px) rotate(-3deg); }
+  .p-sht:hover .kolco-t { transform: rotate(50deg); }
+  .p-sht:hover b { color: var(--orange2); }
+}
+
+/* цифры: как на бланке, между жирными линиями */
+.p-cifry { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 3px solid var(--navy); }
+.p-cifry > div { padding: 30px 24px; border-left: 1px solid rgba(30, 58, 95, .16); }
+.p-cifry > div:first-child { border-left: 0; }
+.p-cifry b { display: block; font-family: var(--igr); font-weight: 800; font-size: clamp(40px, 5vw, 70px); line-height: 1; color: var(--navy); letter-spacing: -.03em; }
+.p-cifry span { display: block; margin-top: 12px; color: var(--orange2); font-weight: 700; font-size: 15px; }
+
+.p-lavka { background: #fff; }
+.p-lavka .lv-dom-h { margin-bottom: 32px; }
+
+/* две дороги */
+.p-dorogi { background: var(--navy); color: #fff; }
+.p-dorogi .p-h2 { color: #fff; }
+.p-dorogi .p-pod { color: rgba(255, 255, 255, .72); }
+.p-dg { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.p-d { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 320px; border-radius: 30px; padding: 36px;
+  text-decoration: none; overflow: hidden; transition: transform .25s var(--ease-out); }
+.p-d1 { background: #fff; color: var(--navy); }
+.p-d2 { background: var(--ora-grad); color: #fff; }
+.p-d h3 { position: relative; font-family: var(--igr); font-weight: 800; font-size: 42px; margin: 0 0 8px; letter-spacing: -.02em; }
+.p-d p { position: relative; margin: 0 0 22px; font-size: 17px; max-width: 330px; }
+.p-d-zn { position: absolute; top: 28px; left: 36px; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
+.p-d-str { position: relative; font-weight: 700; font-size: 17px; }
+.p-d img { position: absolute; right: 18px; bottom: -8px; height: 92%; width: auto; }
+.p-d-forma { position: absolute; right: 30px; top: 34px; width: 150px; display: grid; gap: 10px; }
+.p-d-forma i { display: block; height: 16px; border-radius: 8px; background: #E6EDF5; }
+.p-d-forma i:nth-child(2) { width: 70%; }
+.p-d-forma b { display: block; height: 30px; width: 60%; border-radius: 10px; background: var(--orange); }
+@media (hover: hover) and (pointer: fine) { .p-d:hover { transform: translateY(-5px); } }
+
+/* финал */
+.p-final { text-align: center; }
+.p-final .p-pod { margin: 0 auto; }
+.p-mini { display: block; width: 128px; height: auto; margin: 0 auto 22px; }
+.p-tel { display: inline-block; font-family: var(--igr); font-weight: 800; font-size: clamp(32px, 5vw, 62px); color: var(--navy); text-decoration: none;
+  letter-spacing: -.02em; margin: 18px 0 8px; }
+.p-tel:hover { color: var(--orange2); }
+
+@media (max-width: 1080px) { .shp-tel { display: none; } .shp-l { gap: 16px; } }
+@media (max-width: 900px) {
+  .shp-g { grid-template-columns: auto minmax(0, 1fr); min-height: 76px; }
+  .shp-logo { grid-row: 1; grid-column: 1; }
+  .shp-logo img { width: 58px; }
+  .shp-r { grid-row: 1; grid-column: 2; }
+  .shp-vhod { display: none; }
+  .shp .burger { display: flex; }
+  .shp-l { display: none; grid-column: 1 / -1; flex-direction: column; align-items: flex-start; gap: 14px; padding: 6px 0 18px; }
+  .shp.open .shp-l { display: flex; }
+  .shp-mob { display: block; }
+  .p-hero-g { grid-template-columns: 1fr; padding-block: 44px 64px; gap: 36px; }
+  .p-shtamp { width: min(84%, 380px); }
+  .p-shtampy { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .p-cifry { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .p-cifry > div:nth-child(3) { border-left: 0; }
+  .p-cifry > div:nth-child(n+3) { border-top: 1px solid rgba(30, 58, 95, .16); }
+  .p-dg { grid-template-columns: 1fr; }
+  .p-sek { padding-block: 64px; }
+  .p-sek-t { padding-block: 8px 64px; }
+}
+@media (max-width: 560px) {
+  .shp-r .btn { display: none; }
+  .p-nakl { width: 84px; }
+  .p-nakl b { font-size: 20px; }
+  .p-nakl small { font-size: 10px; padding: 0 8px; }
+  .p-shtampy { gap: 32px 14px; }
+  .p-sht b { font-size: 18px; }
+  .p-sht span { font-size: 14px; }
+  .p-cifry > div { padding: 22px 14px; }
+  .p-d { padding: 28px; min-height: 300px; }
+  .p-d-zn { left: 28px; }
+  .p-d h3 { font-size: 34px; }
+  .p-d img { height: 64%; right: 8px; opacity: .95; }
+  .p-d-forma { width: 110px; right: 22px; }
+  .p-lenta span { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .p-kolco, .p-tuchka, .p-lenta-t, .p-nakl { animation: none; }
+  .p-sht .krug, .p-sht .kolco-t, .p-d { transition: none; }
+}

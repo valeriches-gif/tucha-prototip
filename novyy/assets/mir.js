@@ -27,6 +27,7 @@
   var OPS = [['priemka', 'Приёмка'], ['markirovka', 'Маркировка «Честный знак»'], ['sborka', 'Сборка заказов'], ['upakovka', 'Упаковка'], ['fbs', 'FBS на WB и Ozon']];
   var GDE = [['wb', 'Wildberries'], ['ozon', 'Ozon'], ['sayt', 'Свой сайт'], ['nigde', 'Пока нигде']];
   var KUDA = [['msk', 'Москва и область'], ['rf', 'Россия'], ['mir', 'За рубеж']];
+  var VEDENIE = [['sam', 'Сами'], ['pomosh', 'С помощью'], ['klyuch', 'Под ключ']];
   var STRANY = ['Китай', 'Турция', 'Беларусь', 'Казахстан', 'Узбекистан', 'Киргизия', 'Армения', 'Индия', 'ОАЭ', 'Южная Корея',
     'Вьетнам', 'Германия', 'Италия', 'Польша', 'Иран', 'Таиланд', 'Индонезия', 'Египет'];
   var FRAZY = {
@@ -34,8 +35,8 @@
     obrabotka: 'Мастерская готова: приёмка, маркировка, сборка.',
     dostavka: 'Телепорт на месте, товар поедет куда нужно.',
     tamozhnya: 'Портал открыт: для грузов из-за рубежа.',
-    lavka: 'Лавка откроется позже, вы будете в списке первых.',
-    vitrina: 'Витрина откроется вместе с Лавкой, сообщим о запуске.'
+    lavka: 'Лавка открыта: товар продаётся прямо с полки, где лежит.',
+    vitrina: 'Витрина стоит: ваш товар на первой полке Лавки.'
   };
 
   var svg = document.getElementById('scena'), panel = document.getElementById('panel'), hud = document.getElementById('hud');
@@ -50,7 +51,7 @@
   }
   function defolt(k) {
     return { hranenie: { pallety: 10, neznayu: false, rezhim: 'teply', etap: null, srok: 0 }, obrabotka: { ops: [] },
-      lavka: { gde: [], dostup: null }, vitrina: { gde: [] }, dostavka: { kuda: [] }, tamozhnya: { strana: '' } }[k];
+      lavka: { gde: [], dostup: null }, vitrina: { gde: [], vedenie: null }, dostavka: { kuda: [] }, tamozhnya: { strana: '' } }[k];
   }
   function sohr() { s.t = Date.now(); T.st.set(KEY, s); }
   function tixo() { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; }
@@ -301,10 +302,11 @@
         '<div class="raschet" data-raschet></div>';
     }
     if (k === 'obrabotka') return '<fieldset class="pole"><legend>Какие операции нужны <span class="nb">можно несколько</span></legend>' + galki('ops', OPS, b.ops) + '</fieldset>';
-    if (k === 'lavka') return '<p class="skoro-pl"><span class="skoro">скоро</span> Лавка откроется позже. Сообщим о запуске, вы в списке первых.</p>' +
+    if (k === 'lavka') return '<p class="podskaz">Покупатели берут товар прямо со склада: сборку и отгрузку делаем мы.</p>' +
       '<fieldset class="pole"><legend>Где продаёте сейчас</legend>' + galki('gde', GDE, b.gde) + '</fieldset>' +
       '<fieldset class="pole"><legend>Готовы дать доступ к кабинету маркетплейса?</legend>' + radio('dostup', [['da', 'Да'], ['net', 'Нет'], ['pozzhe', 'Позже']], b.dostup) + '</fieldset>';
-    if (k === 'vitrina') return '<p class="skoro-pl"><span class="skoro">скоро</span> Витрина: место на полке Лавки. Откроется вместе с ней.</p>' +
+    if (k === 'vitrina') return '<p class="podskaz">Место на первой полке Лавки: вашу карточку видят первой.</p>' +
+      '<fieldset class="pole"><legend>Кто ведёт витрину</legend>' + radio('vedenie', VEDENIE, b.vedenie) + '</fieldset>' +
       '<fieldset class="pole"><legend>Где продаёте сейчас</legend>' + galki('gde', GDE, b.gde) + '</fieldset>';
     if (k === 'dostavka') return '<fieldset class="pole"><legend>Куда везём</legend>' + galki('kuda', KUDA, b.kuda) + '</fieldset>';
     return '<div class="pole"><label for="k-strana">Откуда или куда везёте</label><input id="k-strana" name="strana" type="text" list="strany" value="' + esc(b.strana) + '" placeholder="Страна">' +
@@ -360,7 +362,8 @@
     if (k === 'hranenie') return b.neznayu ? 'объём пока не знаю' : b.pallety + ' ' + plural(b.pallety, 'паллета', 'паллеты', 'паллет') + ' · ' +
       ({ teply: 'тёплый', holodny: 'холодный', nevazhno: 'режим не важен' }[b.rezhim] || '') + (b.srok ? ' · резерв ' + b.srok + (b.srok === 3 ? '+ мес' : ' мес') : ' · по факту') + (cena() ? ' · ≈ ' + rub(cena()) + ' в месяц' : '');
     if (k === 'obrabotka') return b.ops.length ? imena(OPS, b.ops) : 'операции обсудим';
-    if (k === 'lavka' || k === 'vitrina') return 'скоро, сообщим о запуске' + (b.gde && b.gde.length ? ' · продаёте: ' + imena(GDE, b.gde) : '');
+    if (k === 'lavka') return b.gde && b.gde.length ? 'продаёте: ' + imena(GDE, b.gde) : 'площадки обсудим';
+    if (k === 'vitrina') return (b.vedenie ? imena(VEDENIE, [b.vedenie]).toLowerCase() : 'ведение обсудим') + (b.gde && b.gde.length ? ' · продаёте: ' + imena(GDE, b.gde) : '');
     if (k === 'dostavka') return b.kuda.length ? imena(KUDA, b.kuda) : 'направление обсудим';
     return b.strana || 'страну обсудим';
   }
@@ -415,8 +418,10 @@
     if (n === 4) return 'Вы только запускаетесь, для вас открыт бонус-уровень.';
     return dostroit ? 'Вот ваш мир. Сохраним изменения в кабинет?' : 'Вот ваш мир. Проверьте и сохраните, это последний шаг.';
   }
+  var PROYDEN = { 1: 'Менеджер выбран', 2: 'Связь настроена', 3: 'Постройка готова', 4: 'Бонус учтён' };
   function dalee(n) {
     T.goal('mir_step_' + n);
+    if (!vozvrat && PROYDEN[n]) vsplyt('Уровень пройден', PROYDEN[n], 'uroven');
     if (vozvrat) { vozvrat = false; pokaz(5); return; }
     pokaz(sled(n));
   }
@@ -600,7 +605,7 @@
       b.neznayu = t.checked;
       panel.querySelectorAll('[name=pal], [name=pal-r]').forEach(function (i) { i.disabled = t.checked; });
     }
-    else if (nm === 'rezhim' || nm === 'etap' || nm === 'dostup' || nm === 'strana') b[nm] = t.value;
+    else if (nm === 'rezhim' || nm === 'etap' || nm === 'dostup' || nm === 'strana' || nm === 'vedenie') b[nm] = t.value;
     else if (nm === 'srok') b.srok = +t.value;
     else if (nm === 'ops' || nm === 'gde' || nm === 'kuda') {
       b[nm] = Array.prototype.map.call(panel.querySelectorAll('.kartochka [name=' + nm + ']:checked'), function (c) { return c.value; });

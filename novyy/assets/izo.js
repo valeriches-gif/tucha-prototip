@@ -46,7 +46,7 @@ window.TuchaIzo = (function () {
   function pts(a) { return a.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' '); }
   function poly(g, a, fill, dop) { return el('polygon', Object.assign({ points: pts(a), fill: fill }, dop || {}), g); }
   /* мультяшный контур, как в казуальных играх */
-  var KONTUR = { stroke: '#16304F', 'stroke-width': 1.6, 'stroke-linejoin': 'round' };
+  var KONTUR = { stroke: '#1B3A63', 'stroke-width': 1.1, 'stroke-opacity': .8, 'stroke-linejoin': 'round' };
   function boks(g, x, y, w, d, z, h, c, dop) {
     dop = Object.assign({}, KONTUR, dop || {});
     var A = P(x, y, z + h), B = P(x + w, y, z + h), Cc = P(x + w, y + d, z + h), D = P(x, y + d, z + h);
@@ -117,8 +117,8 @@ window.TuchaIzo = (function () {
   function tucha(g) {
     var kr = [[300, 132, 24], [342, 114, 34], [400, 92, 48], [460, 106, 40], [504, 128, 26]];
     /* сначала толстый контур всех частей, поверх заливка: остаётся только внешний контур */
-    kr.forEach(function (c) { el('circle', { cx: c[0], cy: c[1], r: c[2], fill: '#16304F', stroke: '#16304F', 'stroke-width': 7 }, g); });
-    el('rect', { x: 294, y: 120, width: 216, height: 36, rx: 18, fill: '#16304F', stroke: '#16304F', 'stroke-width': 7 }, g);
+    kr.forEach(function (c) { el('circle', { cx: c[0], cy: c[1], r: c[2], fill: '#1B3A63', stroke: '#1B3A63', 'stroke-width': 4.5 }, g); });
+    el('rect', { x: 294, y: 120, width: 216, height: 36, rx: 18, fill: '#1B3A63', stroke: '#1B3A63', 'stroke-width': 4.5 }, g);
     [[346, 116, 34], [400, 98, 46], [458, 110, 38]].forEach(function (c) { el('circle', { cx: c[0] + 6, cy: c[1] + 8, r: c[2], fill: '#2B9BE0' }, g); });
     kr.forEach(function (c) { el('circle', { cx: c[0], cy: c[1], r: c[2], fill: '#3AA7EA' }, g); });
     el('rect', { x: 294, y: 120, width: 216, height: 36, rx: 18, fill: '#3AA7EA' }, g);
@@ -183,37 +183,42 @@ window.TuchaIzo = (function () {
   }
   function lavkaRis(g, t, ctx) {
     var z = H1, h = H2 * t;
-    boks(g, 2, 2, 3, 1.5, z, h, C.lavka, { 'fill-opacity': .6 });
+    boks(g, 2, 2, 3, 1.5, z, h, C.lavka);
     if (t < .92) return;
-    var L = granY(g, 2, 2, 3, 1.5, z, h);
-    lesa(L, 108, h);
+    /* работающая Лавка: тент, витринное окно с товаром, вывеска */
     var R = granX(g, 2, 2, 3, 1.5, z, h);
-    lesa(R, 54, h);
-    for (var i = 0; i < 6; i++) el('rect', { x: i * 9, y: 0, width: 9, height: 7, fill: i % 2 ? '#FFFFFF' : '#EF7F1A' }, R);
-    el('rect', { x: 5, y: 17, width: 44, height: 14, rx: 3, fill: '#FFFFFF' }, R);
-    txt(R, 27, 27.5, 'СКОРО', { 'font-size': 8.5, 'font-weight': 800, fill: '#C8650F', 'letter-spacing': '.08em' });
+    for (var i = 0; i < 6; i++) el('rect', { x: i * 9, y: 0, width: 9, height: 8, fill: i % 2 ? '#FFFFFF' : '#D9660C' }, R);
+    el('path', { d: 'M0 8 Q4.5 13 9 8 Q13.5 13 18 8 Q22.5 13 27 8 Q31.5 13 36 8 Q40.5 13 45 8 Q49.5 13 54 8', fill: '#FFFFFF', stroke: '#1B3A63', 'stroke-width': .8 }, R);
+    el('rect', { x: 5, y: 17, width: 30, height: 20, rx: 2, fill: '#FFF4E6', stroke: '#1B3A63', 'stroke-width': .8 }, R);
+    [['#3AA7EA', 8], ['#1E3A5F', 15], ['#6BB36B', 22], ['#FFC247', 28]].forEach(function (c) { el('rect', { x: c[1], y: 27, width: 5, height: 8, rx: 1, fill: c[0] }, R); });
+    el('line', { x1: 6, y1: 35.5, x2: 34, y2: 35.5, stroke: '#C4935E', 'stroke-width': 1.4 }, R);
+    el('rect', { x: 38, y: 17, width: 11, height: h - 17, rx: 1.5, fill: '#1E3A5F' }, R);
+    el('circle', { cx: 46.5, cy: 17 + (h - 17) / 2, r: 1, fill: '#FFC247' }, R);
+    var L = granY(g, 2, 2, 3, 1.5, z, h);
+    el('rect', { x: 20, y: 12, width: 68, height: 16, rx: 4, fill: '#1E3A5F' }, L);
+    txt(L, 54, 24, 'ЛАВКА', { 'font-size': 11, 'font-weight': 800, fill: '#FFFFFF', 'letter-spacing': '.12em' });
     if (ctx.est && ctx.est.vitrina) return;
-    var b = P(2.45, 2.45, z + h), top = [b[0], b[1] - 62];
-    el('line', { x1: b[0], y1: b[1], x2: top[0], y2: top[1], stroke: '#EF7F1A', 'stroke-width': 3 }, g);
-    el('line', { x1: top[0] - 18, y1: top[1], x2: top[0] + 64, y2: top[1], stroke: '#EF7F1A', 'stroke-width': 3 }, g);
-    el('rect', { x: top[0] - 22, y: top[1] - 2, width: 8, height: 8, fill: '#1E3A5F' }, g);
-    var kryuk = el('g', {}, g), kx = top[0] + 58, ky = top[1];
-    el('line', { x1: kx, y1: ky, x2: kx, y2: ky + 26, stroke: '#1E3A5F', 'stroke-width': 1.2 }, kryuk);
-    el('rect', { x: kx - 7, y: ky + 26, width: 14, height: 11, rx: 1.5, fill: '#D2A774', stroke: '#B98B58' }, kryuk);
-    ctx.anim.push({ tip: 'kran', el: kryuk, cx: kx, cy: ky });
+    var tabl = el('g', {}, g);
+    boks(tabl, 3.2, 2.5, .12, .9, z + h, 20, { top: '#FFFFFF', px: '#1E3A5F', py: '#2A5693' });
+    var T2 = granX(tabl, 3.2, 2.5, .12, .9, z + h, 20);
+    txt(T2, 16, 13.5, 'ОТКРЫТО', { 'font-size': 6.5, 'font-weight': 800, fill: '#FFC247', 'letter-spacing': '.06em' });
   }
-  function vitrinaRis(g, t) {
+  function vitrinaRis(g, t, ctx) {
     var z = H1 + H2, h = H3 * t;
-    boks(g, 2.5, 2.25, 2, 1, z, h, C.vitr, { 'fill-opacity': .78 });
+    boks(g, 2.5, 2.25, 2, 1, z, h, { top: '#FFFFFF', px: '#9FD8F7', py: '#CDEBFB' }, { 'fill-opacity': .92 });
     if (t < .92) return;
+    /* Витрина: стеклянная полка с подсветкой, товар на ней, звезда «первая полка» */
     var L = granY(g, 2.5, 2.25, 2, 1, z, h);
-    for (var i = 0; i < 3; i++) el('rect', { x: 8 + i * 20, y: 14, width: 10, height: 12, rx: 1.5, fill: ['#1E90D2', '#EF7F1A', '#1E3A5F'][i], 'fill-opacity': .75 }, L);
-    el('line', { x1: 4, y1: 27, x2: 68, y2: 27, stroke: '#C9853F', 'stroke-width': 1.5 }, L);
-    el('line', { x1: 50, y1: 3, x2: 62, y2: 12, stroke: '#FFFFFF', 'stroke-width': 2, 'stroke-opacity': .8 }, L);
-    el('rect', { x: .5, y: .5, width: 71, height: h - 1, fill: 'none', stroke: '#1E3A5F', 'stroke-dasharray': '4 3', 'stroke-width': 1.2 }, L);
+    el('rect', { x: 3, y: 3, width: 66, height: 3, rx: 1.5, fill: '#FFF4B8' }, L);
+    for (var i = 0; i < 5; i++) el('rect', { x: 7 + i * 12.5, y: 14, width: 8, height: 11, rx: 1.5, fill: ['#FF8A1F', '#1E3A5F', '#3AA7EA', '#6BB36B', '#B58CC9'][i] }, L);
+    el('line', { x1: 3, y1: 25.5, x2: 69, y2: 25.5, stroke: '#1B3A63', 'stroke-width': 1.2 }, L);
+    el('line', { x1: 52, y1: 5, x2: 64, y2: 13, stroke: '#FFFFFF', 'stroke-width': 2.2, 'stroke-opacity': .9 }, L);
     var R = granX(g, 2.5, 2.25, 2, 1, z, h);
-    el('rect', { x: .5, y: .5, width: 35, height: h - 1, fill: 'none', stroke: '#1E3A5F', 'stroke-dasharray': '4 3', 'stroke-width': 1.2 }, R);
-    txt(R, 18, 19, 'СКОРО', { 'font-size': 7, 'font-weight': 800, fill: '#C8650F' });
+    el('rect', { x: 3, y: 6, width: 30, height: 12, rx: 3, fill: '#FF8A1F' }, R);
+    txt(R, 18, 14.8, 'ВИТРИНА', { 'font-size': 6.6, 'font-weight': 800, fill: '#FFFFFF', 'letter-spacing': '.05em' });
+    var v = P(4.5, 2.25, z + h), zv = el('g', { transform: 'translate(' + v[0].toFixed(1) + ',' + (v[1] - 10).toFixed(1) + ')' }, g);
+    el('path', { d: 'M0 -9 L2.6 -2.8 L9 -2.6 L4 1.6 L5.6 8 L0 4.4 L-5.6 8 L-4 1.6 L-9 -2.6 L-2.6 -2.8 Z', fill: '#FFC247', stroke: '#1B3A63', 'stroke-width': 1 }, zv);
+    if (ctx) ctx.anim.push({ tip: 'zvezda', el: zv, x: v[0], y: v[1] - 10 });
   }
   function teleportRis(g, t, ctx) {
     var c = P(1.15, 5.4, 0), rx = 0.85 * TW / 1.414, ry = rx / 2, s = Math.max(.01, t);
