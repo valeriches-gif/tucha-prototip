@@ -18,7 +18,7 @@
   var KANAL = { zvonok: 'звонок', pochta: 'почта', messenger: 'мессенджер', vstrecha: 'встреча', chat: 'чат на сайте' };
   var PERS = {
     shturman: { ig: 'Штурман', b: 'Ш' }, hranitel: { ig: 'Хранитель', b: 'Х' },
-    arhitektor: { ig: 'Архитектор', b: 'А' }, pomoshnik: { ig: 'Помощник', b: 'П' }, auto: { ig: 'Менеджер', b: 'М' }
+    arhitektor: { ig: 'Архитектор', b: 'А' }, pomoshnik: { ig: 'Помощник', b: 'П' }, auto: { ig: 'Персонаж', b: 'Т' }
   };
   /* какой собранный менеджер у готовых персонажей — для кабинета и старых анкет */
   var SBORKA = {

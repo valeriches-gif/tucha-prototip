@@ -7,18 +7,18 @@
   var T = window.Tucha, S = window.TuchaScena, Reg = window.TuchaReg, R = T.ROOT, esc = Reg.esc;
   var KEY = 'tucha.mir', STAVKA = 16.42;
   var SKIDKA = { 0: 0, 1: 15, 2: 20, 3: 30 };
-  var UROVNI = ['', 'Менеджер', 'Связь', 'Постройка', 'Бонус', 'Карта'];
+  var UROVNI = ['', 'Персонаж', 'Связь', 'Постройка', 'Бонус', 'Карта'];
   var PERS = {
     shturman: { ig: 'Штурман', pod: 'Коротко и по делу', fraza: 'Отвечаю быстро и по сути', st: [5, 2, 3] },
     hranitel: { ig: 'Хранитель', pod: 'Подробно, с фото и отчётами', fraza: 'Пришлю фото и отчёт по каждой поставке', st: [3, 5, 3] },
     arhitektor: { ig: 'Архитектор', pod: 'Сам предложит, как выгоднее', fraza: 'Посмотрю, где можно сэкономить', st: [3, 3, 5] },
-    pomoshnik: { ig: 'Помощник на сайте', pod: 'Бот, не живой человек: отвечает сразу, днём и ночью', fraza: 'Отвечу сразу, а сложное передам менеджеру', st: [5, 3, 3], bot: true },
-    auto: { ig: 'Неважно, назначьте сами', pod: 'Менеджер назначится автоматически', fraza: '', st: null }
+    pomoshnik: { ig: 'Помощник на сайте', pod: 'Бот, не живой человек: отвечает сразу, днём и ночью', fraza: 'Отвечу сразу, а сложное передам живому человеку', st: [5, 3, 3], bot: true },
+    auto: { ig: 'Неважно, назначьте сами', pod: 'Персонаж назначится автоматически', fraza: '', st: null }
   };
   var STATY = ['Скорость', 'Подробность', 'Экономия'];
   var KANALY = [['zvonok', 'Звонок'], ['pochta', 'Почта'], ['messenger', 'Мессенджер'], ['chat', 'Чат на сайте'], ['vstrecha', 'Встреча на складе']];
   var MESS = [['Telegram', 'Telegram'], ['WhatsApp', 'WhatsApp'], ['MAX', 'MAX']];
-  var ZAYAVKI = [['kabinet', 'В личном кабинете'], ['messenger', 'Сообщением в мессенджер'], ['manager', 'Через менеджера']];
+  var ZAYAVKI = [['kabinet', 'В личном кабинете'], ['messenger', 'Сообщением в мессенджер'], ['manager', 'Через персонажа']];
   var DOST = { hranenie: 'Фундамент заложен', obrabotka: 'Своя мастерская', lavka: 'Место в Лавке', vitrina: 'Полка в Витрине',
     dostavka: 'Телепорт настроен', tamozhnya: 'Портал открыт', vse: 'Всё под одной тучей' };
   var ZAVISIT = { obrabotka: 'hranenie', lavka: 'hranenie', vitrina: 'lavka' };
@@ -161,12 +161,12 @@
   }
 
   var KRIT = [
-    ['pol', 'Пол менеджера', [['nevazhno', 'Неважно'], ['zh', 'Женский'], ['m', 'Мужской']]],
+    ['pol', 'Пол персонажа', [['nevazhno', 'Неважно'], ['zh', 'Женский'], ['m', 'Мужской']]],
     ['vozrast', 'Возраст', [['nevazhno', 'Неважно'], ['do30', 'до 30'], ['30-45', '30-45'], ['45+', 'старше 45']]],
     ['harakter', 'Характер общения', [['shturman', '<b>Штурман</b><small>Коротко и только по делу</small>'],
       ['hranitel', '<b>Хранитель</b><small>Подробно, с фото и отчётами</small>'],
       ['arhitektor', '<b>Архитектор</b><small>Сам предлагает, как сделать выгоднее</small>']]],
-    ['format', 'Кто на связи', [['chelovek', 'Живой менеджер'], ['bot', 'Помощник-бот, отвечает сразу']]]
+    ['format', 'Кто на связи', [['chelovek', 'Живой человек'], ['bot', 'Помощник-бот, отвечает сразу']]]
   ];
   var KRIT_TEKST = { zh: 'женщина', m: 'мужчина', do30: 'до 30 лет', '30-45': '30-45 лет', '45+': 'старше 45',
     shturman: 'коротко и по делу', hranitel: 'подробно, с фото и отчётами', arhitektor: 'ищет, где выгоднее', bot: 'бот, отвечает сразу' };
@@ -191,7 +191,7 @@
   function sborka() { return { pol: znach('pol'), vozrast: znach('vozrast'), harakter: znach('harakter'), bot: znach('format') === 'bot' }; }
   function r1() {
     s.kriterii = s.kriterii || {};
-    var h = zag(1, 'Какой менеджер вам подойдёт', 'Отметьте критерии, и менеджер соберётся из блоков у склада. Любой пункт можно оставить «неважно».') +
+    var h = zag(1, 'Какой персонаж вам подойдёт', 'Отметьте критерии, и персонаж соберётся из блоков у склада. Любой пункт можно оставить «неважно».') +
       '<div class="krit">' + KRIT.map(function (g) {
         return '<fieldset class="pole krit-g krit-' + g[0] + '"><legend>' + g[1] + '</legend>' +
           radio('m-' + g[0], g[2], s.kriterii[g[0]] || (g[0] === 'format' ? 'chelovek' : 'nevazhno')) + '</fieldset>';
@@ -203,12 +203,12 @@
   function infPersony() {
     if (!kritEst()) {
       return '<span class="ava ava-foto" aria-hidden="true"></span><div><small class="eb">Критерии не заданы: назначим по очереди</small>' +
-        '<b>Любой из трёх</b><span class="muted">К клиентам выходят три менеджера. Отметьте критерии, покажем, кто подходит.</span></div>';
+        '<b>Любой из трёх</b><span class="muted">К клиентам выходят три персонажа. Отметьте критерии, покажем, кто подходит.</span></div>';
     }
     var v = vyvesti(), p = PERS[v];
     if (p.bot) {
       return '<span class="ava" aria-hidden="true">П</span><div><b>На связи: помощник-бот</b><span class="muted">' + opisKrit() + '</span>' +
-        '<span class="muted">Это бот, не живой человек. К договору подключится менеджер.</span>' +
+        '<span class="muted">Это бот, не живой человек. К договору подключится ваш персонаж.</span>' +
         '<button type="button" class="btn-t" data-chat-probovat>Спросить помощника прямо сейчас</button></div>';
     }
     return '<span class="ava" aria-hidden="true">' + (v === 'auto' ? 'М' : p.ig[0]) + '</span><div><b>' +
@@ -228,7 +228,7 @@
     var k = s.kanal, tip = k === 'pochta' ? 'email' : (k === 'messenger' ? 'text' : 'tel');
     if (k === 'chat') {
       return '<p class="podskaz chat-pod">Чат с помощником откроется в кабинете и в углу сайта. Помощник: бот, не живой человек: ' +
-        'отвечает сразу, днём и ночью. К договору подключится менеджер. ' +
+        'отвечает сразу, днём и ночью. К договору подключится ваш персонаж. ' +
         '<button type="button" class="btn-t" data-chat-probovat>Попробовать</button></p><div class="chat-mir" data-chat-mir hidden></div>';
     }
     var lab = k === 'pochta' ? 'Почта' : (k === 'messenger' ? 'Телефон или ник' : 'Телефон');
@@ -334,9 +334,9 @@
   function obnovitRaschet() {
     var r = panel.querySelector('[data-raschet]'), h = s.bloki.hranenie;
     if (!r || !h) return;
-    r.innerHTML = h.neznayu ? 'Посчитаем вместе с менеджером, когда станет ясен объём.' :
+    r.innerHTML = h.neznayu ? 'Посчитаем вместе, когда станет ясен объём.' :
       'Примерно <b>' + rub(cena()) + '</b> в месяц<small>' + h.pallety + ' ' + plural(h.pallety, 'паллета', 'паллеты', 'паллет') +
-      ' × 16,42 ₽ × 30 дней' + (SKIDKA[h.srok] ? ', скидка ' + SKIDKA[h.srok] + ' %' : '') + '. Точнее посчитает менеджер</small>';
+      ' × 16,42 ₽ × 30 дней' + (SKIDKA[h.srok] ? ', скидка ' + SKIDKA[h.srok] + ' %' : '') + '. Точнее посчитаем при звонке</small>';
   }
 
   function r4() {
@@ -350,7 +350,7 @@
       '<div class="pole"><label for="b-fayl">Бизнес-план <span class="nb">PDF или DOC до 10 МБ</span></label>' +
       '<input id="b-fayl" name="bonus-fayl" type="file" accept=".pdf,.doc,.docx">' +
       (b.fayl ? '<p class="podskaz">Выбран: ' + esc(b.fayl) + '. Сам файл отправим после регистрации</p>' : '') +
-      '<p class="osh-t" data-fayl-osh>Файл больше 10 МБ, сожмите его или пришлите менеджеру</p></div>' +
+      '<p class="osh-t" data-fayl-osh>Файл больше 10 МБ, сожмите его или пришлите нам</p></div>' +
       '<div class="shag-niz"><button type="button" class="btn-t" data-nazad>Назад</button>' +
       '<button type="button" class="btn" data-bonus-da>' + (vozvrat ? 'Готово: хочу участвовать' : 'Хочу участвовать') + '</button>' +
       '<button type="button" class="btn-t" data-bonus-net>Пропустить</button></div>';
@@ -371,11 +371,11 @@
     var p = PERS[s.persona || 'auto'], kan = imena(KANALY, [s.kanal]) + (s.kanal === 'messenger' ? ' · ' + s.messenger : '');
     var bloki = Object.keys(s.bloki);
     var stroki = [
-      ['Менеджер', kritEst() ? (vyvesti() === 'auto' ? 'подберём под критерии' : PERS[vyvesti()].ig) + ': ' + opisKrit() : 'подберём сами', 1],
+      ['Персонаж', kritEst() ? (vyvesti() === 'auto' ? 'подберём под критерии' : PERS[vyvesti()].ig) + ': ' + opisKrit() : 'подберём сами', 1],
       ['Связь', kan + (s.kontakt ? ', ' + esc(s.kontakt) : '') + '. Заявки: ' + imena(ZAYAVKI, [s.zayavki]).toLowerCase(), 2],
       ['Постройка', bloki.length ? S.PORYADOK.filter(function (k) { return s.bloki[k]; }).map(function (k) {
         return '<span class="st-bl"><i class="cv" style="background:' + S.BLOKI[k].fill + '"></i><span><b>' + S.BLOKI[k].ig + '</b> · ' + esc(svodka(k)) + '</span></span>';
-      }).join('') : 'Нужна помощь: соберём вместе с менеджером', 3]
+      }).join('') : 'Нужна помощь: соберём вместе при звонке', 3]
     ];
     if (!bonusOk()) stroki.push(['Стартовый бонус', 'не подходит по условиям: нужен этап «только запускаемся» и до 7 паллет', 3]);
     if (bonusOk()) stroki.push(['Стартовый бонус', s.bonus.hochu ? 'Хочу участвовать' + (s.bonus.tekst ? ': «' + esc(s.bonus.tekst.slice(0, 90)) + (s.bonus.tekst.length > 90 ? '…' : '') + '»' : '') : 'Пропущен', 4]);
@@ -412,13 +412,13 @@
   }
   function frazaShaga(n) {
     if (n === 'intro') return 'Привет! Я проводник. Выберем, кто будет на связи, и соберём склад из блоков.';
-    if (n === 1) return 'Соберём менеджера из блоков: каждый ответ добавляет деталь.';
+    if (n === 1) return 'Соберём персонажа из блоков: каждый ответ добавляет деталь.';
     if (n === 2) return 'Как вам удобнее общаться? От тучи к персонажу протянется связь.';
     if (n === 3) return Object.keys(s.bloki).length ? 'Нажмите на блок, чтобы добавить его или открыть карточку.' : 'Нажмите на блок, он упадёт на место.';
     if (n === 4) return 'Вы только запускаетесь, для вас открыт бонус-уровень.';
     return dostroit ? 'Вот ваш мир. Сохраним изменения в кабинет?' : 'Вот ваш мир. Проверьте и сохраните, это последний шаг.';
   }
-  var PROYDEN = { 1: 'Менеджер выбран', 2: 'Связь настроена', 3: 'Постройка готова', 4: 'Бонус учтён' };
+  var PROYDEN = { 1: 'Персонаж выбран', 2: 'Связь настроена', 3: 'Постройка готова', 4: 'Бонус учтён' };
   function dalee(n) {
     T.goal('mir_step_' + n);
     if (!vozvrat && PROYDEN[n]) vsplyt('Уровень пройден', PROYDEN[n], 'uroven');
@@ -506,9 +506,9 @@
     hud.hidden = true; rech.hidden = true; pop.innerHTML = '';
     document.body.classList.add('mir-final');
     panel.innerHTML = '<div class="final-t" tabindex="-1">' +
-      '<img class="final-art" src="' + R + 'assets/img/art-palec.jpg" alt="Проводник показывает большой палец: мир сохранён" width="480" height="787">' +
+      '<img class="final-art" src="' + R + 'assets/img/palec-8bit.png" alt="Проводник показывает большой палец: мир сохранён" width="272" height="504">' +
       '<p class="eb">Уровень пройден</p><h2>Мир сохранён</h2>' +
-      '<p>' + (vKabinet ? 'Изменения уже в кабинете, менеджер их увидит.' : 'Анна ' + T.kakSvyazhetsya(s.kanal, s.messenger) + '.') + '</p>' +
+      '<p>' + (vKabinet ? 'Изменения уже в кабинете, ваш персонаж их увидит.' : 'Анна ' + T.kakSvyazhetsya(s.kanal, s.messenger) + '.') + '</p>' +
       '<p class="muted">' + s.dost.length + ' из 7 достижений · ' + Object.keys(s.bloki).length + ' из 6 блоков</p>' +
       '<a class="btn" href="' + R + 'kabinet/?novyy=' + (vKabinet ? 'dostroil' : '1') + '">В кабинет</a></div>';
     panel.firstChild.focus({ preventScroll: true });
@@ -537,7 +537,7 @@
       panel.querySelectorAll('.persona').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.p === d.p); });
       var inf = panel.querySelector('[data-inf]'); inf.hidden = false; inf.innerHTML = infPersony();
       scenaLyudi(); sc.persona(d.p);
-      govorit(d.p === 'auto' ? 'Хорошо, назначим сами. Менеджер встанет у постройки.' : PERS[d.p].ig + ' уже у постройки. Дальше: связь.');
+      govorit(d.p === 'auto' ? 'Хорошо, назначим сами. Персонаж встанет у постройки.' : PERS[d.p].ig + ' уже у постройки. Дальше: связь.');
     }
     else if ('chatProbovat' in d) {
       var cm = panel.querySelector('[data-chat-mir]');

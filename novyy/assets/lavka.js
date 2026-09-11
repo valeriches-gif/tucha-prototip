@@ -224,7 +224,7 @@ window.TuchaLavka = (function () {
       nEl.textContent = sp.length ? 'Нашли ' + sp.length + ' ' + plural(sp.length, ['товар', 'товара', 'товаров']) : '';
       setka.classList.toggle('bez-anim', !pervyy);
       setka.innerHTML = sp.length ? sp.map(function (t, i) { return kartochka(t, { i: i % 8 }); }).join('') :
-        '<div class="lv-pusto"><b>Ничего не нашли</b><p class="muted">Попробуйте другое слово или сбросьте фильтры. Не нашли нужное? Спросите менеджера: товар могут привезти под заказ.</p>' +
+        '<div class="lv-pusto"><b>Ничего не нашли</b><p class="muted">Попробуйте другое слово или сбросьте фильтры. Не нашли нужное? Спросите нас: товар могут привезти под заказ.</p>' +
         '<button class="btn btn-2 btn-sm" type="button" data-sbros>Сбросить фильтры</button></div>';
       pervyy = false;
     }
@@ -674,7 +674,7 @@ window.TuchaLavka = (function () {
       var2('pomosh', 'С помощью', 'снимем товар на складе, напишем описания, поставим лестницу цен', 'от 4 900 ₽/мес') +
       var2('klyuch', 'Под ключ', 'ведём витрину целиком: карточки, цены, ответы покупателям', 'от 14 900 ₽/мес') + '</div></fieldset>' +
       '<button class="btn btn-bol" type="submit">Отправить на проверку</button>' +
-      '<p class="muted kz-mel">Ни к чему не обязывает: сначала менеджер посмотрит товар и позвонит.</p></form>' +
+      '<p class="muted kz-mel">Ни к чему не обязывает: сначала посмотрим товар и позвоним.</p></form>' +
       '<div class="vt-pr"><p class="eb">Так карточку увидят в Лавке</p><div data-pr></div>' +
       '<ul class="spis-ok vt-usl"><li>Хранение не меняется: плата за места прежняя</li><li>Сборку и отгрузку делаем мы</li><li>Выплата раз в неделю, по пятницам</li><li>Отказаться можно в любой момент</li></ul></div></div>';
     function var2(zn, zag, pod, c) {

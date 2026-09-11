@@ -20,8 +20,8 @@ window.TuchaReg = (function () {
       '<div class="pole" data-p="inn"><label for="r-inn">ИНН</label>' +
       '<input id="r-inn" type="text" inputmode="numeric" maxlength="12" autocomplete="off" value="' + esc(p.inn) + '">' +
       '<p class="podskaz" data-inn-pod></p><p class="osh-t" data-inn-osh></p></div>' +
-      '<div data-est-akk hidden class="plashka"><p>С этим ИНН уже есть аккаунт. Войти или написать менеджеру?</p>' +
-      '<a class="btn btn-sm" href="' + R + 'vhod/">Войти</a><a class="btn-t" href="https://t.me/tucha_ml">Написать менеджеру</a></div>' +
+      '<div data-est-akk hidden class="plashka"><p>С этим ИНН уже есть аккаунт. Войти или написать нам?</p>' +
+      '<a class="btn btn-sm" href="' + R + 'vhod/">Войти</a><a class="btn-t" href="https://t.me/tucha_ml">Написать нам</a></div>' +
       (o.kratko ? '' : '<div class="pole" data-p="kompaniya"><label for="r-komp" data-komp-l>Название компании</label>' +
       '<input id="r-komp" type="text" maxlength="160" autocomplete="organization" value="' + esc(p.kompaniya) + '">' +
       '<p class="podskaz">В рабочей версии подставится само по ИНН из справочника компаний</p>' +
@@ -41,7 +41,7 @@ window.TuchaReg = (function () {
         USLUGI.map(function (u) {
           return '<label><input type="checkbox" name="usl" value="' + u[0] + '"' + (otm.indexOf(u[0]) >= 0 ? ' checked' : '') + '>' +
             '<span>' + u[1] + (u[2] ? ' <i class="skoro">скоро</i>' : '') + '</span></label>';
-        }).join('') + '</div><p class="podskaz" data-skoro-pod hidden>Лавка работает: менеджер расскажет, как выставить ваш товар</p></fieldset>';
+        }).join('') + '</div><p class="podskaz" data-skoro-pod hidden>Лавка работает: расскажем при звонке, как выставить ваш товар</p></fieldset>';
     }
     if (o.kommentariy) {
       h += '<div class="pole"><label for="r-kom">Комментарий <span class="nb">необязательно</span></label>' +
