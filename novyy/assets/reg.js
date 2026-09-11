@@ -14,12 +14,15 @@ window.TuchaReg = (function () {
     o = o || {};
     var p = o.predzapolnit || {}, R = T.ROOT;
     var h = '<form novalidate class="reg">' +
+      '<fieldset class="pole reg-tip"><legend>Вы регистрируетесь как</legend><div class="vybor">' +
+      '<label><input type="radio" name="r-tip" value="ul"' + (p.tip !== 'ip' ? ' checked' : '') + '><span>Юрлицо: ООО, АО</span></label>' +
+      '<label><input type="radio" name="r-tip" value="ip"' + (p.tip === 'ip' ? ' checked' : '') + '><span>Индивидуальный предприниматель</span></label></div></fieldset>' +
       '<div class="pole" data-p="inn"><label for="r-inn">ИНН</label>' +
       '<input id="r-inn" type="text" inputmode="numeric" maxlength="12" autocomplete="off" value="' + esc(p.inn) + '">' +
-      '<p class="osh-t">ИНН: 10 цифр для компании или 12 для ИП</p></div>' +
+      '<p class="podskaz" data-inn-pod></p><p class="osh-t" data-inn-osh></p></div>' +
       '<div data-est-akk hidden class="plashka"><p>С этим ИНН уже есть аккаунт. Войти или написать менеджеру?</p>' +
       '<a class="btn btn-sm" href="' + R + 'vhod/">Войти</a><a class="btn-t" href="https://t.me/tucha_ml">Написать менеджеру</a></div>' +
-      (o.kratko ? '' : '<div class="pole" data-p="kompaniya"><label for="r-komp">Компания</label>' +
+      (o.kratko ? '' : '<div class="pole" data-p="kompaniya"><label for="r-komp" data-komp-l>Название компании</label>' +
       '<input id="r-komp" type="text" maxlength="160" autocomplete="organization" value="' + esc(p.kompaniya) + '">' +
       '<p class="podskaz">В рабочей версии подставится само по ИНН из справочника компаний</p>' +
       '<p class="osh-t">Впишите название компании или ИП</p></div>' +
@@ -55,8 +58,26 @@ window.TuchaReg = (function () {
     T.maska(tel);
     if (tel.value) tel.value = T.telFormat(tel.value);
     inn.addEventListener('input', function () { inn.value = inn.value.replace(/\D/g, ''); });
+    /* юрлицо или ИП: от выбора зависят длина ИНН и подпись поля с названием */
+    function tip() { var r = box.querySelector('[name=r-tip]:checked'); return r ? r.value : 'ul'; }
+    function podTip() {
+      var ip = tip() === 'ip', kl = box.querySelector('[data-komp-l]');
+      box.querySelector('[data-inn-pod]').textContent = ip ? '12 цифр, как в листе записи ЕГРИП' : '10 цифр, как в выписке ЕГРЮЛ';
+      box.querySelector('[data-inn-osh]').textContent = ip ? 'Проверьте ИНН: у предпринимателя 12 цифр' : 'Проверьте ИНН: у компании 10 цифр';
+      if (kl) kl.textContent = ip ? 'ФИО предпринимателя' : 'Название компании';
+    }
+    box.querySelectorAll('[name=r-tip]').forEach(function (r) {
+      r.addEventListener('change', function () { podTip(); if (inn.value) pokazat('inn'); });
+    });
+    /* ввели ИНН другого вида: переключаем выбор сами, а не показываем ошибку */
+    function avtoTip() {
+      var d = inn.value.replace(/\D/g, '');
+      if (T.innOk(d) && (d.length === 12) !== (tip() === 'ip')) { box.querySelector('[name=r-tip][value=' + (d.length === 12 ? 'ip' : 'ul') + ']').checked = true; podTip(); }
+    }
+    inn.addEventListener('blur', avtoTip);
+    podTip();
     var pr = {
-      inn: function () { return T.innOk(inn.value); },
+      inn: function () { var d = inn.value.replace(/\D/g, ''); return T.innOk(d) && (d.length === 12) === (tip() === 'ip'); },
       kompaniya: function () { return !komp || komp.value.trim().length > 1; },
       imya: function () { return !imya || imya.value.trim().length > 0; },
       tel: function () { return T.telOk(tel.value); },
@@ -80,6 +101,7 @@ window.TuchaReg = (function () {
 
     f.addEventListener('submit', function (e) {
       e.preventDefault();
+      avtoTip();
       var pervaya = null;
       Object.keys(pr).forEach(function (k) { if (!pokazat(k) && !pervaya) pervaya = k; });
       var akk = T.akk(), dubl = akk && akk.inn === inn.value.replace(/\D/g, '');
@@ -87,7 +109,8 @@ window.TuchaReg = (function () {
       if (pervaya) { box.querySelector('[data-p="' + pervaya + '"] input').focus(); return; }
       if (dubl) { inn.focus(); return; }
       var d = {
-        inn: inn.value.replace(/\D/g, ''), kompaniya: komp ? komp.value.trim() : 'Компания по ИНН ' + inn.value.replace(/\D/g, ''),
+        tip: tip(), inn: inn.value.replace(/\D/g, ''),
+        kompaniya: komp ? komp.value.trim() : (tip() === 'ip' ? 'ИП, ИНН ' : 'Компания по ИНН ') + inn.value.replace(/\D/g, ''),
         imya: imya ? imya.value.trim() : '', tel: tel.value, pochta: pochta ? pochta.value.trim() : '',
         uslugi: Array.prototype.map.call(box.querySelectorAll('[name=usl]:checked'), function (c) { return c.value; }),
         kommentariy: box.querySelector('#r-kom') ? box.querySelector('#r-kom').value.trim() : ''
@@ -107,7 +130,7 @@ window.TuchaReg = (function () {
 
   function sozdatAkk(d, dop) {
     var akk = Object.assign({
-      inn: d.inn, kompaniya: d.kompaniya, imya: d.imya, tel: d.tel, pochta: d.pochta,
+      tip: d.tip || 'ul', inn: d.inn, kompaniya: d.kompaniya, imya: d.imya, tel: d.tel, pochta: d.pochta,
       uslugi: d.uslugi || [], kommentariy: d.kommentariy || '', status: 0, sozdan: Date.now(),
       manager: 'Анна', dost: []
     }, dop || {});

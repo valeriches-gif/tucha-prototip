@@ -82,6 +82,34 @@ h2, h3, .h3 { font-weight: 800; letter-spacing: -.01em; }
 .podval h4 { color: #FFC079; font-family: var(--igr); }
 .podval .znak-p p { color: #FFFFFF; }
 .podval .znak-p img { width: 150px; height: auto; }
+
+/* SpaceFlow: название формата Тучи, пишется только так, без перевода в заглавные */
+.sf { text-transform: none; letter-spacing: .02em; }
+.sf-metka { align-self: center; margin-left: -6px; padding: 4px 10px; border-radius: 999px; background: #EAF4FB; color: var(--navy);
+  font-family: var(--igr); font-weight: 700; font-size: 13px; letter-spacing: .02em; white-space: nowrap; box-shadow: inset 0 0 0 1.5px #CFE3F2; }
+@media (max-width: 1180px) { .sf-metka { display: none; } }
+.podval .znak-p .sf-p { font-family: var(--igr); font-weight: 800; font-size: 18px; letter-spacing: .02em; color: #FFB877; margin: 4px 0 -6px; }
+
+/* форматы работы в карточках «Всё просто» и «Мир Тучи» */
+.doroga-f { font-size: 12px !important; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--orange2); margin: 0 0 2px !important; }
+.doroga-mir .doroga-f { color: #FFB877; }
+.doroga-sp { list-style: none; padding: 0; margin: 10px 0 4px; display: grid; gap: 6px; font-size: 15px; }
+.doroga-sp li { position: relative; padding-left: 22px; }
+.doroga-sp li::before { content: ""; position: absolute; left: 2px; top: .45em; width: 10px; height: 10px; border-radius: 3px; background: var(--orange); }
+.doroga-mir .doroga-sp li { color: #E4ECF6; }
+
+/* финальный блок главной: фото склада, телефон, регистрация */
+.final-b { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); align-items: end; min-height: 440px; border-radius: 32px; overflow: hidden; box-shadow: 0 5px 0 #0F2440, var(--glub); }
+.final-b .final-foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.final-b::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(19, 40, 68, .94) 0%, rgba(19, 40, 68, .82) 45%, rgba(19, 40, 68, .2) 100%); }
+.final-t { position: relative; z-index: 1; max-width: 640px; padding: 48px; color: #DCE6F2; }
+.final-t h2 { color: #fff; font-family: var(--igr); font-size: clamp(30px, 4vw, 46px); line-height: 1.05; margin: 0 0 14px; }
+.final-t p { margin: 0; }
+.final-tel { display: inline-block; margin: 18px 0 4px; font-family: var(--igr); font-weight: 800; font-size: clamp(28px, 3.6vw, 42px); color: #fff; text-decoration: none; }
+.final-tel:hover { color: #FFB877; }
+.final-mel { margin-top: 16px !important; font-size: 15px; }
+.final-mel a { color: #FFB877; }
+@media (max-width: 700px) { .final-t { padding: 28px 22px; } .final-b { min-height: 0; } .final-b::after { background: rgba(19, 40, 68, .86); } }
 .podval .niz { border-top-color: rgba(255, 255, 255, .14); color: #9FB3CA; }
 
 /* игровая панель уровней и ресурсы */
