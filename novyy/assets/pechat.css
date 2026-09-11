@@ -30,6 +30,9 @@
   background: radial-gradient(closest-side, rgba(239, 127, 26, .22), transparent); pointer-events: none; }
 .p-hero-g { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 48px; align-items: center; padding-block: 76px 92px; }
 .p-eb { font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: #FFB877; font-weight: 700; margin: 0; }
+.p-hero .sf-znak b { background: var(--ora-grad); box-shadow: 0 3px 0 var(--ora-kray), 0 14px 30px -12px rgba(239, 127, 26, .7); }
+.p-hero .sf-znak b::before { background: #fff; box-shadow: 0 0 0 4px rgba(255, 255, 255, .3); }
+.p-hero .sf-znak span { color: #FFB877; }
 .p-hero h1 { font-family: var(--igr); font-weight: 800; font-size: clamp(46px, 7.4vw, 104px); line-height: .94; letter-spacing: -.035em; margin: 18px 0 24px; color: #fff; }
 .p-hero h1 em { font-style: normal; color: var(--orange); }
 .p-lead { font-size: 20px; line-height: 1.5; color: rgba(255, 255, 255, .84); max-width: 540px; margin: 0; }

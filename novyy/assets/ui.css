@@ -85,8 +85,15 @@ h2, h3, .h3 { font-weight: 800; letter-spacing: -.01em; }
 
 /* SpaceFlow: название формата Тучи, пишется только так, без перевода в заглавные */
 .sf { text-transform: none; letter-spacing: .02em; }
-.sf-metka { align-self: center; margin-left: -6px; padding: 4px 10px; border-radius: 999px; background: #EAF4FB; color: var(--navy);
-  font-family: var(--igr); font-weight: 700; font-size: 13px; letter-spacing: .02em; white-space: nowrap; box-shadow: inset 0 0 0 1.5px #CFE3F2; }
+.sf-metka { align-self: center; margin-left: -6px; padding: 5px 12px; border-radius: 999px; background: var(--navy); color: #fff;
+  font-family: var(--igr); font-weight: 800; font-size: 13px; letter-spacing: .02em; white-space: nowrap; box-shadow: 0 2px 0 #0F2440; }
+/* плашка СпейсФлоу на первом экране главных */
+.sf-znak { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 0 0 4px; }
+.sf-znak b { display: inline-flex; align-items: center; gap: 9px; padding: 8px 18px 8px 14px; border-radius: 999px;
+  font-family: var(--igr); font-weight: 800; font-size: 21px; line-height: 1; letter-spacing: .01em; color: #fff;
+  background: linear-gradient(135deg, #2A5693, var(--navy)); box-shadow: 0 3px 0 #0F2440, 0 12px 26px -12px rgba(30, 58, 95, .65); }
+.sf-znak b::before { content: ""; width: 11px; height: 11px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 4px rgba(255, 138, 31, .28); }
+.sf-znak span { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--orange2); }
 @media (max-width: 1180px) { .sf-metka { display: none; } }
 .podval .znak-p .sf-p { font-family: var(--igr); font-weight: 800; font-size: 18px; letter-spacing: .02em; color: #FFB877; margin: 4px 0 -6px; }
 
