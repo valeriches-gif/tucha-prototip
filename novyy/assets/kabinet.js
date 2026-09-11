@@ -41,7 +41,7 @@
     if (!novyy) return '';
     var t = novyy === 'dostroil' ? 'Мир сохранён. Изменения уже видит менеджер.' :
       mir() ? 'Ваш мир сохранён. Анна ' + T.kakSvyazhetsya(kanal(), a.messenger) + '.' :
-      'Готово. Менеджер позвонит в рабочее время — пн–пт с 9:00 до 18:00.';
+      'Готово. Менеджер позвонит в рабочее время, пн-пт с 9:00 до 18:00.';
     return '<div class="plashka plashka-ok" role="status"><p>' + t + '</p></div>';
   }
   function rStatus() {
@@ -55,13 +55,17 @@
     return '<div class="kart manager"><div class="m-verh"><span class="ava" aria-hidden="true">А</span><div><b>Анна</b><span class="muted">' +
       (p ? p[0] + ' · ваш менеджер' : 'ваш менеджер') + '</span></div></div>' +
       (p && podrobno ? '<p class="fraza">«' + p[1] + '»</p>' : '') +
-      '<p>' + (st < 1 ? 'Анна ' + T.kakSvyazhetsya(kanal(), a.messenger) + '.' : 'На связи в рабочее время: пн–пт с 9:00 до 18:00.') + '</p>' +
+      '<p>' + (st < 1 ? 'Анна ' + T.kakSvyazhetsya(kanal(), a.messenger) + '.' : 'На связи в рабочее время: пн-пт с 9:00 до 18:00.') + '</p>' +
       '<div class="m-kn"><a class="btn btn-2 btn-sm" href="tel:+74956658242" data-goal="call_click">Позвонить</a>' +
       '<a class="btn btn-2 btn-sm" href="https://t.me/tucha_ml">Написать в Telegram</a></div></div>';
   }
   function rPrigotovit() {
     return '<div class="kart"><h2 class="h3">Что приготовить к разговору</h2><ul class="spis-ok">' +
       '<li>Объём и тип товара: паллеты, коробки, вес</li><li>Даты первой поставки</li><li>Нужны ли маркировка, сборка и доставка</li></ul></div>';
+  }
+  function rUroven() {
+    return '<div class="kart uroven-k"><h2 class="h3">Уровень</h2><p class="uroven"><b>Тучка</b></p>' +
+      '<p class="muted" style="margin:0">Дальше Туча и Туча Макс, скоро.</p></div>';
   }
   function rDost() {
     var d = a.dost || (a.mir && a.mir.dost) || [];
@@ -71,13 +75,13 @@
 
   var RENDER = {
     glavnaya: function () {
-      var h = plashka() + verh('Здравствуйте, ' + esc(a.imya));
+      var h = plashka() + verh(mir() ? 'Мой мир' : (a.imya ? 'Здравствуйте, ' + esc(a.imya) : 'Здравствуйте'));
       if (mir()) {
         h += '<div class="kab-mir"><div class="mir-scena kab-scena"><svg id="kabScena" role="img" aria-label="Ваш мир: постройка под тучей"></svg></div>' +
-          '<div class="kab-kol">' + rStatus() + '</div></div><div class="setka s2 kab-niz">' + rManager() + rDost() + '</div>';
+          '<div class="kab-kol">' + rStatus() + rUroven() + '</div></div><div class="setka s2 kab-niz">' + rManager() + rDost() + '</div>';
       } else {
-        h += rStatus() + '<div class="setka s2 kab-niz">' + rManager() + rPrigotovit() + '</div>' +
-          '<div class="banner-mir"><div><b>Соберите свой мир</b><p>Те же услуги — в формате игры: персонаж, связь и постройка из блоков.</p></div>' +
+        h += rStatus() + '<div class="setka s3 kab-niz">' + rManager() + rPrigotovit() + rUroven() + '</div>' +
+          '<div class="banner-mir"><div><b>Соберите свой мир</b><p>Те же услуги, в формате игры: персонаж, связь и постройка из блоков.</p></div>' +
           '<a class="btn btn-2 btn-sm" href="' + R + 'start/mir/?dostroit=1">Собрать</a></div>';
       }
       return h;
@@ -88,8 +92,8 @@
       h += '<div class="kart">' + (u.length ? u.map(function (k) {
         var B = S.BLOKI[k];
         return '<div class="usl-str"><span class="st-bl"><i class="cv" style="background:' + B.fill + '"></i><span><b>' + B.ig + '</b> · ' + B.ob + '</span></span>' +
-          '<span class="muted">' + (B.skoro ? 'скоро — сообщим о запуске' : (a.status || 0) >= 3 ? 'в договоре' : 'обсудим с менеджером') + '</span></div>';
-      }).join('') : '<p class="pusto">Услуги пока не выбраны. Добавьте нужные — менеджер учтёт их в договоре.</p>') + '</div>';
+          '<span class="muted">' + (B.skoro ? 'скоро: сообщим о запуске' : (a.status || 0) >= 3 ? 'в договоре' : 'обсудим с менеджером') + '</span></div>';
+      }).join('') : '<p class="pusto">Услуги пока не выбраны. Добавьте нужные: менеджер учтёт их в договоре.</p>') + '</div>';
       if (mir()) h += '<p class="cta-pol"><a class="btn" href="' + R + 'start/mir/?dostroit=1">Достроить</a><span class="muted">Откроется конструктор с вашей постройкой</span></p>';
       else if (net.length) {
         h += '<div class="kart dobavit-usl"><h2 class="h3">Добавить услугу</h2><div class="vybor">' + net.map(function (x) {
@@ -101,7 +105,7 @@
     zayavki: function () {
       var st = a.status || 0;
       return verh('Заявки') + '<div class="zamok"><b>' + (st < 3 ? 'Откроется после договора' : 'Заявок пока нет') + '</b><p>' +
-        (st < 3 ? 'Заявок пока нет. Первая приёмка — после договора.' : 'Приёмку, отгрузку и доставку пока оформляет менеджер. Форма заявки появится здесь.') + '</p></div>' +
+        (st < 3 ? 'Заявок пока нет. Первая приёмка: после договора.' : 'Приёмку, отгрузку и доставку пока оформляет менеджер. Форма заявки появится здесь.') + '</p></div>' +
         '<div class="setka s3 zay-kn">' + [['Приёмка', 'Привезти товар на склад'], ['Отгрузка', 'Забрать или отправить товар'], ['Доставка', 'Отвезти по адресу']].map(function (x) {
           return '<div class="kart off" aria-disabled="true"><b>' + x[0] + '</b><p class="muted">' + x[1] + '</p></div>';
         }).join('') + '</div>';
@@ -110,12 +114,12 @@
       var st = a.status || 0;
       if (st < 2) return verh('Документы') + '<div class="zamok"><b>Откроется после договора</b><p>Документов пока нет. Договор появится здесь.</p></div>';
       return verh('Документы') + '<div class="kart"><div class="usl-str"><span><b>Договор ответственного хранения</b><br><span class="muted">' +
-        (st < 3 ? 'Готовим — пришлём на подпись' : 'Подписан') + '</span></span><span class="muted">демо</span></div></div>' +
+        (st < 3 ? 'Готовим: пришлём на подпись' : 'Подписан') + '</span></span><span class="muted">демо</span></div></div>' +
         '<p class="muted">Счета и акты появятся после первой приёмки.</p>';
     },
     manager: function () {
       return verh('Менеджер') + '<div class="setka s2">' + rManager(true) +
-        '<div class="kart"><h2 class="h3">Чат</h2><p class="muted">Сейчас отвечает помощник — бот, не живой человек: сразу, днём и ночью. ' +
+        '<div class="kart"><h2 class="h3">Чат</h2><p class="muted">Сейчас отвечает помощник, бот, не живой человек: сразу, днём и ночью. ' +
         'Чат с менеджером откроется после договора.</p><div data-chat-kab></div></div></div>';
     },
     nastroyki: function () {
@@ -127,7 +131,7 @@
         '<div class="kart"><h2 class="h3">Как с вами связаться</h2><div class="vybor">' + KANALY.map(function (x) {
           return '<label><input type="radio" name="kanal" value="' + x[0] + '"' + (kanal() === x[0] ? ' checked' : '') + '><span>' + x[1] + '</span></label>';
         }).join('') + '</div></div>' +
-        '<div class="kart"><h2 class="h3">Доступ</h2><p>Сейчас в кабинет входит один человек — ' + esc(a.imya) + ', ' + esc(a.tel) + '.</p>' +
+        '<div class="kart"><h2 class="h3">Доступ</h2><p>Сейчас в кабинет входит один человек, ' + esc(a.imya) + ', ' + esc(a.tel) + '.</p>' +
         '<p class="muted">Второму сотруднику доступ откроет менеджер.</p></div>' +
         '<div class="kart"><h2 class="h3">Выход</h2><p class="muted">Вход держится 30 дней на этом устройстве.</p>' +
         '<p class="cta-pol"><button type="button" class="btn btn-2 btn-sm" data-vyyti>Выйти</button>' +
@@ -171,7 +175,7 @@
       a.uslugi = (a.uslugi || []).concat(nov);
       if (a.mir && a.mir.bloki) nov.forEach(function (k) { a.mir.bloki[k] = a.mir.bloki[k] || {}; });
       sohr(); pokaz('uslugi');
-      T.toast(nov.length > 1 ? 'Услуги добавлены — менеджер учтёт их в договоре' : 'Услуга добавлена — менеджер учтёт её в договоре');
+      T.toast(nov.length > 1 ? 'Услуги добавлены: менеджер учтёт их в договоре' : 'Услуга добавлена: менеджер учтёт её в договоре');
     }
     else if ('vyyti' in d) { T.vyyti(); location.href = R + 'vhod/'; }
     else if ('steret' in d) {

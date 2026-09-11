@@ -1,69 +1,72 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Мир Тучи — соберите свой склад из блоков</title>
-<meta name="description" content="Пять уровней: персонаж, связь, постройка из блоков, бонус и карта вашего мира. Регистрация — в конце.">
+<title>Мир Тучи: соберите свой склад из блоков</title>
+<meta name="description" content="Пять уровней: персонаж, связь, постройка из блоков, бонус и карта вашего мира. Регистрация: в конце.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#1E3A5F">
-<meta property="og:title" content="Мир Тучи — соберите свой склад из блоков">
-<meta property="og:description" content="Пять уровней: персонаж, связь, постройка из блоков, бонус и карта вашего мира. Регистрация — в конце.">
+<meta property="og:title" content="Мир Тучи: соберите свой склад из блоков">
+<meta property="og:description" content="Пять уровней: персонаж, связь, постройка из блоков, бонус и карта вашего мира. Регистрация: в конце.">
 <meta property="og:image" content="../../assets/img/art-palec.jpg">
 <link rel="icon" type="image/png" href="../../assets/img/znachok.png">
 <link rel="preload" href="../../assets/fonts/golos.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/site.css?v=202609111406">
+<link rel="stylesheet" href="../../assets/site.css?v=202609111504">
 </head><body class="start mir-stranica">
 <a class="skryt-f" href="#glav">К содержанию</a>
 <header class="shapka" id="shapka"><div class="wrap">
-<a class="logo" href="../../"><img src="../../assets/img/logo.png" alt="ТУЧА — Мировая Лавка, на главную" width="132" height="40"></a>
+<a class="logo" href="../../"><img src="../../assets/img/logo.png" alt="ТУЧА, Мировая Лавка: на главную" width="132" height="40"></a>
 <nav class="nav" aria-label="Главное меню">
+<a href="../../hranenie/">Хранение</a>
 <div class="menu-u"><button type="button" data-menu-u aria-expanded="false">Услуги <span aria-hidden="true">▾</span></button>
 <div class="spisok"><a href="../../hranenie/"><span><b>Точка сохранения</b> <small>· хранение</small></span></a><a href="../../obrabotka/"><span><b>Мастерская</b> <small>· обработка</small></span></a><a href="../../dostavka/"><span><b>Телепорт</b> <small>· доставка</small></span></a><a href="../../tamozhnya/"><span><b>Портал</b> <small>· таможня</small></span></a><a href="../../lavka/"><span><b>Лавка</b> <small>· маркетплейс</small></span><i class="skoro">скоро</i></a><a href="../../vitrina/"><span><b>Витрина</b> <small>· продвижение</small></span><i class="skoro">скоро</i></a></div></div>
+<a href="../../hranenie/#tarify">Тарифы</a>
 <a href="../../lavka/">Лавка <span aria-hidden="true">↗</span></a>
+<a href="../../kontakty/">Контакты</a>
 <a class="mob" href="../../o-kompanii/">О компании</a>
-<a class="mob" href="../../kontakty/">Контакты</a>
 <a class="mob" href="../../vhod/" data-vhod>Войти</a>
 <a class="mob" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a>
 <a class="mob" href="https://t.me/tucha_ml">Telegram</a>
 </nav>
 <div class="shapka-prav">
-<a class="tel" href="tel:+74956658242" data-goal="call_click"><b>+7 (495) 665-82-42</b><span>пн–пт 9:00–18:00</span></a>
+<a class="tel" href="tel:+74956658242" data-goal="call_click"><b>+7 (495) 665-82-42</b><span>пн-пт 9:00-18:00</span></a>
 <a class="vhod-l" href="../../vhod/" data-vhod>Войти</a>
 <a class="btn btn-sm" href="../../start/">Начать</a>
 <button class="burger" type="button" data-burger aria-expanded="false" aria-label="Меню"><i></i><i></i><i></i></button>
 </div></div></header>
-<main id="glav"><div class="wrap mir-str">
+<main id="glav"><div class="igra">
+<div class="stage" id="stage">
 <div class="hud" id="hud" hidden></div>
-<div class="mir">
-<div class="mir-scena-kol"><div class="mir-scena">
-<svg id="scena" role="img" aria-label="Постройка вашего мира: туча, земля и блоки услуг"></svg>
-<p class="rech" id="rech"></p>
+<svg id="scena" class="stage-svg" role="img" aria-label="Ваш мир: остров-склад под тучей, на нём собираются здания услуг"></svg>
 <div class="dost-pop" id="dostPop" aria-live="polite"></div>
-</div></div>
-<div class="mir-panel" id="panel"></div>
+<div class="provodnik-v"><img id="malchik" class="malchik" src="../../assets/img/maskot.webp" alt="" width="445" height="805"><p class="rech" id="rech"></p></div>
+<p class="priem-tekst" aria-hidden="true">Отпустите: блок упадёт на место</p>
 </div>
+<p class="rech-mob" id="rechMob" aria-hidden="true"></p>
+<div class="wrap"><div class="pult" id="panel"></div></div>
 <p class="skryt" id="ozv" aria-live="polite"></p>
 </div></main>
 <footer class="podval"><div class="wrap"><div class="kol">
-<div class="znak-p"><img src="../../assets/img/logo-v-svetl.png" alt="ТУЧА — Мировая Лавка" width="120" height="69" loading="lazy">
-<span class="kolco-p"><img src="../../assets/img/koltso-tuchka.png" alt="" width="64" height="70" loading="lazy"></span></div>
+<div class="znak-p"><img src="../../assets/img/logo.png" alt="ТУЧА, Мировая Лавка" width="132" height="40" loading="lazy">
+<p>Всё под одной тучей</p><a class="tel-bol" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a></div>
 <div><h4>Услуги</h4><ul><li><a href="../../hranenie/">Точка сохранения · хранение</a></li><li><a href="../../obrabotka/">Мастерская · обработка</a></li><li><a href="../../dostavka/">Телепорт · доставка</a></li><li><a href="../../tamozhnya/">Портал · таможня</a></li><li><a href="../../lavka/">Лавка · маркетплейс</a></li><li><a href="../../vitrina/">Витрина · продвижение</a></li></ul></div>
 <div><h4>Компания</h4><ul><li><a href="../../o-kompanii/">О компании</a></li><li><a href="../../voprosy/">Вопрос-ответ</a></li>
 <li><a href="../../kontakty/">Контакты</a></li></ul></div>
 <div><h4>Клиентам</h4><ul><li><a href="../../vhod/" data-vhod>Войти</a></li><li><a href="../../start/">Начать</a></li>
 <li><a href="../../start/mir/">Мир Тучи</a></li></ul></div>
-<div><h4>Контакты</h4><ul><li>141420, Московская область, г. о. Химки, д. Подолино, стр. 2с2</li><li><a href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a></li>
+<div><h4>Контакты</h4><ul><li>Московская обл., г. о. Химки, д. Подолино, Промышленная зона, 2Б</li><li><a href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a></li>
 <li><a href="tel:+79296340988">+7 (929) 634-09-88</a></li><li><a href="mailto:info@tucha-ml.ru">info@tucha-ml.ru</a></li>
-<li><a href="https://t.me/tucha_ml">Telegram</a> · <a href="https://wa.me/79296340988">WhatsApp</a></li><li>пн–пт 9:00–18:00</li></ul></div>
+<li><a href="https://t.me/tucha_ml">Telegram</a> · <a href="https://wa.me/79296340988">WhatsApp</a></li><li>пн-пт 9:00-18:00</li></ul></div>
 </div>
-<div class="niz"><span>ООО «Туча — Мировая Лавка» · <a href="../../dokumenty/#rekvizity">реквизиты</a> ·
+<div class="niz"><span>ООО «Туча - Мировая Лавка» · <a href="../../dokumenty/#rekvizity">реквизиты</a> ·
 <a href="../../dokumenty/#politika">политика обработки данных</a> · <a href="../../dokumenty/#soglasie">согласие</a></span>
 <span>© 2026 · тестовая версия сайта</span></div>
 </div></footer>
 
 <script>window.TUCHA_ROOT = '../../';</script>
-<script src="../../assets/site.js?v=202609111406"></script>
-<script src="../../assets/scena.js?v=202609111406"></script>
-<script src="../../assets/reg.js?v=202609111406"></script>
-<script src="../../assets/chat.js?v=202609111406"></script>
-<script src="../../assets/mir.js?v=202609111406"></script>
+<script src="../../assets/site.js?v=202609111504"></script>
+<script src="../../assets/izo.js?v=202609111504"></script>
+<script src="../../assets/scena.js?v=202609111504"></script>
+<script src="../../assets/reg.js?v=202609111504"></script>
+<script src="../../assets/chat.js?v=202609111504"></script>
+<script src="../../assets/mir.js?v=202609111504"></script>
 </body></html>

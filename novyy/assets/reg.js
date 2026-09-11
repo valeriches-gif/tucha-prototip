@@ -16,36 +16,36 @@ window.TuchaReg = (function () {
     var h = '<form novalidate class="reg">' +
       '<div class="pole" data-p="inn"><label for="r-inn">ИНН</label>' +
       '<input id="r-inn" type="text" inputmode="numeric" maxlength="12" autocomplete="off" value="' + esc(p.inn) + '">' +
-      '<p class="osh-t">ИНН — 10 цифр для компании или 12 для ИП</p></div>' +
+      '<p class="osh-t">ИНН: 10 цифр для компании или 12 для ИП</p></div>' +
       '<div data-est-akk hidden class="plashka"><p>С этим ИНН уже есть аккаунт. Войти или написать менеджеру?</p>' +
       '<a class="btn btn-sm" href="' + R + 'vhod/">Войти</a><a class="btn-t" href="https://t.me/tucha_ml">Написать менеджеру</a></div>' +
-      '<div class="pole" data-p="kompaniya"><label for="r-komp">Компания</label>' +
+      (o.kratko ? '' : '<div class="pole" data-p="kompaniya"><label for="r-komp">Компания</label>' +
       '<input id="r-komp" type="text" maxlength="160" autocomplete="organization" value="' + esc(p.kompaniya) + '">' +
       '<p class="podskaz">В рабочей версии подставится само по ИНН из справочника компаний</p>' +
       '<p class="osh-t">Впишите название компании или ИП</p></div>' +
       '<div class="pole" data-p="imya"><label for="r-imya">Как к вам обращаться</label>' +
       '<input id="r-imya" type="text" maxlength="60" autocomplete="name" value="' + esc(p.imya) + '">' +
-      '<p class="osh-t">Как к вам обращаться?</p></div>' +
+      '<p class="osh-t">Как к вам обращаться?</p></div>') +
       '<div class="pole" data-p="tel"><label for="r-tel">Телефон</label>' +
       '<input id="r-tel" type="tel" autocomplete="tel" value="' + esc(p.tel) + '">' +
       '<p class="podskaz">На него придёт код</p><p class="osh-t">Не хватает цифр в номере</p></div>' +
-      '<div class="pole" data-p="pochta"><label for="r-pochta">Почта <span class="nb">необязательно — для счетов и документов</span></label>' +
+      (o.kratko ? '' : '<div class="pole" data-p="pochta"><label for="r-pochta">Почта <span class="nb">необязательно, для счетов и документов</span></label>' +
       '<input id="r-pochta" type="email" autocomplete="email" value="' + esc(p.pochta) + '">' +
-      '<p class="osh-t">Похоже, в адресе опечатка</p></div>';
+      '<p class="osh-t">Похоже, в адресе опечатка</p></div>');
     if (o.uslugi) {
       var otm = o.otmecheny || [];
       h += '<fieldset class="pole"><legend>Какие услуги интересны <span class="nb">необязательно</span></legend><div class="vybor">' +
         USLUGI.map(function (u) {
           return '<label><input type="checkbox" name="usl" value="' + u[0] + '"' + (otm.indexOf(u[0]) >= 0 ? ' checked' : '') + '>' +
             '<span>' + u[1] + (u[2] ? ' <i class="skoro">скоро</i>' : '') + '</span></label>';
-        }).join('') + '</div><p class="podskaz" data-skoro-pod hidden>Лавка и Витрина откроются позже — сообщим о запуске</p></fieldset>';
+        }).join('') + '</div><p class="podskaz" data-skoro-pod hidden>Лавка и Витрина откроются позже, сообщим о запуске</p></fieldset>';
     }
     if (o.kommentariy) {
       h += '<div class="pole"><label for="r-kom">Комментарий <span class="nb">необязательно</span></label>' +
         '<textarea id="r-kom" maxlength="500" placeholder="Что везёте и сколько">' + esc(p.kommentariy) + '</textarea></div>';
     }
     h += '<div class="pole" data-p="soglasie"><label class="galka"><input type="checkbox" id="r-sogl">' +
-      '<span>Согласен на обработку персональных данных — <a href="' + R + 'dokumenty/#soglasie" target="_blank">текст согласия</a></span></label>' +
+      '<span>Согласен на обработку персональных данных, <a href="' + R + 'dokumenty/#soglasie" target="_blank">текст согласия</a></span></label>' +
       '<p class="osh-t">Без согласия мы не можем сохранить данные</p></div>' +
       '<button class="btn" type="submit">' + (o.knopka || 'Получить код') + '</button></form>';
     box.innerHTML = h;
@@ -57,14 +57,15 @@ window.TuchaReg = (function () {
     inn.addEventListener('input', function () { inn.value = inn.value.replace(/\D/g, ''); });
     var pr = {
       inn: function () { return T.innOk(inn.value); },
-      kompaniya: function () { return komp.value.trim().length > 1; },
-      imya: function () { return imya.value.trim().length > 0; },
+      kompaniya: function () { return !komp || komp.value.trim().length > 1; },
+      imya: function () { return !imya || imya.value.trim().length > 0; },
       tel: function () { return T.telOk(tel.value); },
-      pochta: function () { return !pochta.value.trim() || T.pochtaOk(pochta.value); },
+      pochta: function () { return !pochta || !pochta.value.trim() || T.pochtaOk(pochta.value); },
       soglasie: function () { return sogl.checked; }
     };
+    if (o.kratko) { delete pr.kompaniya; delete pr.imya; delete pr.pochta; }
     function pokazat(k) { var ok = pr[k](); box.querySelector('[data-p="' + k + '"]').classList.toggle('osh', !ok); return ok; }
-    [[inn, 'inn'], [komp, 'kompaniya'], [imya, 'imya'], [tel, 'tel'], [pochta, 'pochta']].forEach(function (x) {
+    [[inn, 'inn'], [komp, 'kompaniya'], [imya, 'imya'], [tel, 'tel'], [pochta, 'pochta']].filter(function (x) { return x[0]; }).forEach(function (x) {
       x[0].addEventListener('blur', function () { if (x[0].value) pokazat(x[1]); });
       x[0].addEventListener('input', function () { var b = box.querySelector('[data-p="' + x[1] + '"]'); if (b.classList.contains('osh')) pokazat(x[1]); });
     });
@@ -86,8 +87,8 @@ window.TuchaReg = (function () {
       if (pervaya) { box.querySelector('[data-p="' + pervaya + '"] input').focus(); return; }
       if (dubl) { inn.focus(); return; }
       var d = {
-        inn: inn.value.replace(/\D/g, ''), kompaniya: komp.value.trim(), imya: imya.value.trim(),
-        tel: tel.value, pochta: pochta.value.trim(),
+        inn: inn.value.replace(/\D/g, ''), kompaniya: komp ? komp.value.trim() : 'Компания по ИНН ' + inn.value.replace(/\D/g, ''),
+        imya: imya ? imya.value.trim() : '', tel: tel.value, pochta: pochta ? pochta.value.trim() : '',
         uslugi: Array.prototype.map.call(box.querySelectorAll('[name=usl]:checked'), function (c) { return c.value; }),
         kommentariy: box.querySelector('#r-kom') ? box.querySelector('#r-kom').value.trim() : ''
       };

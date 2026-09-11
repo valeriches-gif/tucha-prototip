@@ -98,7 +98,7 @@ window.Tucha = (function () {
       '<input inputmode="numeric" maxlength="1" aria-label="Цифра 1" autocomplete="one-time-code">' +
       '<input inputmode="numeric" maxlength="1" aria-label="Цифра 2"><input inputmode="numeric" maxlength="1" aria-label="Цифра 3">' +
       '<input inputmode="numeric" maxlength="1" aria-label="Цифра 4"></div>' +
-      '<p><span class="demo">Демо: SMS пока не отправляются, код — ' + DEMO_KOD + '</span></p>' +
+      '<p><span class="demo">Демо: SMS пока не отправляются, код: ' + DEMO_KOD + '</span></p>' +
       '<p class="osh-k" aria-live="polite"></p>' +
       '<p><button class="btn-t" type="button" data-povtor disabled>Отправить ещё раз через 60 с</button></p>' +
       '<p class="muted" style="font-size:14px">Не пришёл код? Позвоните: <a href="tel:+74956658242">+7 (495) 665-82-42</a></p>' +
@@ -178,7 +178,10 @@ window.Tucha = (function () {
         var o = mu.parentNode.classList.toggle('open'); mu.setAttribute('aria-expanded', o);
       });
       document.addEventListener('click', function (e) { if (mu && !mu.parentNode.contains(e.target)) mu.parentNode.classList.remove('open'); });
-      window.addEventListener('scroll', function () { sh.classList.toggle('mini', window.scrollY > 40); }, { passive: true });
+      var dozor = document.createElement('div');
+      dozor.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:40px;pointer-events:none';
+      document.body.prepend(dozor);
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { sh.classList.toggle('mini', !e[0].isIntersecting); }).observe(dozor);
       if (sessiya()) sh.querySelectorAll('[data-vhod]').forEach(function (a) { a.textContent = 'Кабинет'; a.href = ROOT + 'kabinet/'; });
     }
 
@@ -266,7 +269,7 @@ window.Tucha = (function () {
 
     /* калькулятор хранения — для тех, кто хочет цифру без игры */
     document.querySelectorAll('form[data-kalk]').forEach(function (f) {
-      var SK = { 0: 0, 1: 15, 3: 20, 6: 30, 12: 40 };
+      var SK = { 0: 0, 1: 15, 2: 20, 3: 30 };
       function schet() {
         var p = Math.max(1, Math.min(3000, parseInt(f.elements.pal.value, 10) || 1));
         var s = +((f.querySelector('[name=srok]:checked') || {}).value || 0);
@@ -285,7 +288,7 @@ window.Tucha = (function () {
     if (pbox && st.get('tucha.bezPomoshi')) pbox.classList.add('skryta');
     px && px.addEventListener('click', function () {
       pbox.classList.add('skryta'); pp.classList.remove('vid'); st.set('tucha.bezPomoshi', 1);
-      toast('Помощник убран. Телефон — в шапке и подвале');
+      toast('Помощник убран. Телефон: в шапке и подвале');
     });
     /* у подвала помощник уходит, чтобы не закрывать телефон и адрес */
     var podval = document.querySelector('.podval');
@@ -296,6 +299,46 @@ window.Tucha = (function () {
       }).observe(podval);
     }
     document.querySelectorAll('[data-goal]').forEach(function (a) { a.addEventListener('click', function () { goal(a.getAttribute('data-goal')); }); });
+
+    /* разделы появляются при прокрутке, цифры считаются — через IntersectionObserver, без обработчика scroll */
+    var tiho = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var SETKI = '.setka, .dve-dorogi, .shagi, .kluch, .foto-setka, .klassy, .puti, .fakty';
+    if (!tiho && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('vidno');
+          io.unobserve(e.target);
+          e.target.querySelectorAll('[data-schet]').forEach(schitat);
+          if (e.target.hasAttribute('data-schet')) schitat(e.target);
+        });
+      }, { rootMargin: '0px 0px -6% 0px' });
+      var kandidaty = [];
+      document.querySelectorAll('main .sek .wrap > *, main .sek-t .wrap > *').forEach(function (el) { if (!el.matches(SETKI) && !el.matches('img')) kandidaty.push(el); });
+      document.querySelectorAll('main .foto-r, main .usl-foto, main .hran-hero-foto img, main .doroga-ill img').forEach(function (im) {
+        im.classList.add('otkr-foto');
+        io.observe(im);
+      });
+      document.querySelectorAll(SETKI.split(', ').map(function (s) { return 'main ' + s + ' > *'; }).join(', ')).forEach(function (el) { kandidaty.push(el); });
+      kandidaty.forEach(function (el) {
+        if (el.closest('.igra, .hero-mir') || (el.parentElement && el.parentElement.closest('.otkr'))) return;
+        el.classList.add('otkr');
+        el.style.setProperty('--i', Array.prototype.indexOf.call(el.parentElement.children, el) % 6);
+        io.observe(el);
+      });
+    }
+    function schitat(b) {
+      var m = /^(\D*)([\d\s]+(?:,\d+)?)(.*)$/.exec(b.getAttribute('data-schet') || '');
+      if (!m) return;
+      var cel = parseFloat(m[2].replace(/\s/g, '').replace(',', '.')), drob = m[2].indexOf(',') >= 0, t0 = null;
+      function k(now) {
+        if (t0 === null) t0 = now;
+        var t = Math.min(1, (now - t0) / 1100), v = cel * (1 - Math.pow(1 - t, 3));
+        b.textContent = m[1] + (drob ? v.toFixed(1).replace('.', ',') : Math.round(v).toLocaleString('ru-RU')) + m[3];
+        if (t < 1) requestAnimationFrame(k);
+      }
+      requestAnimationFrame(k);
+    }
   });
 
   return {

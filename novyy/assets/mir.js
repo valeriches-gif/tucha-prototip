@@ -6,8 +6,8 @@
 (function () {
   var T = window.Tucha, S = window.TuchaScena, Reg = window.TuchaReg, R = T.ROOT, esc = Reg.esc;
   var KEY = 'tucha.mir', STAVKA = 16.42;
-  var SKIDKA = { 1: 15, 3: 20, 6: 30, 12: 40 };
-  var UROVNI = ['', 'Персонаж', 'Связь', 'Постройка', 'Бонус', 'Карта'];
+  var SKIDKA = { 0: 0, 1: 15, 2: 20, 3: 30 };
+  var UROVNI = ['', 'Менеджер', 'Связь', 'Постройка', 'Бонус', 'Карта'];
   var PERS = {
     shturman: { ig: 'Штурман', pod: 'Коротко и по делу', fraza: 'Отвечаю быстро и по сути', st: [5, 2, 3] },
     hranitel: { ig: 'Хранитель', pod: 'Подробно, с фото и отчётами', fraza: 'Пришлю фото и отчёт по каждой поставке', st: [3, 5, 3] },
@@ -32,15 +32,15 @@
   var FRAZY = {
     hranenie: 'Фундамент на месте. Остальное можно ставить сверху.',
     obrabotka: 'Мастерская готова: приёмка, маркировка, сборка.',
-    dostavka: 'Телепорт на месте — товар поедет куда нужно.',
-    tamozhnya: 'Портал открыт — для грузов из-за рубежа.',
-    lavka: 'Лавка откроется позже — вы будете в списке первых.',
-    vitrina: 'Витрина откроется вместе с Лавкой — сообщим о запуске.'
+    dostavka: 'Телепорт на месте, товар поедет куда нужно.',
+    tamozhnya: 'Портал открыт: для грузов из-за рубежа.',
+    lavka: 'Лавка откроется позже, вы будете в списке первых.',
+    vitrina: 'Витрина откроется вместе с Лавкой, сообщим о запуске.'
   };
 
   var svg = document.getElementById('scena'), panel = document.getElementById('panel'), hud = document.getElementById('hud');
   var rech = document.getElementById('rech'), pop = document.getElementById('dostPop'), ozv = document.getElementById('ozv');
-  var sc = S.sozdat(svg, { root: R });
+  var sc = S.sozdat(svg, { root: R, naPrizemlenie: prygni });
   var dostroit = /[?&]dostroit/.test(location.search) && T.sessiya() && !!T.akk();
   var vozvrat = false, otkryt = null, prodolzhit = null, s;
 
@@ -49,7 +49,7 @@
       zayavki: 'kabinet', bloki: {}, pomosh: false, bonus: { hochu: null, tekst: '', fayl: '' }, bonusOtkryt: false, dost: [], done: false };
   }
   function defolt(k) {
-    return { hranenie: { pallety: 10, neznayu: false, rezhim: 'teply', etap: null, srok: 1 }, obrabotka: { ops: [] },
+    return { hranenie: { pallety: 10, neznayu: false, rezhim: 'teply', etap: null, srok: 0 }, obrabotka: { ops: [] },
       lavka: { gde: [], dostup: null }, vitrina: { gde: [] }, dostavka: { kuda: [] }, tamozhnya: { strana: '' } }[k];
   }
   function sohr() { s.t = Date.now(); T.st.set(KEY, s); }
@@ -68,7 +68,11 @@
   function pred(n) { return n === 5 ? (bonusOk() ? 4 : 3) : n - 1; }
 
   /* ---------- проводник, достижения, счётчики ---------- */
-  function govorit(t) { rech.textContent = t; rech.classList.remove('nov'); void rech.offsetWidth; rech.classList.add('nov'); }
+  function govorit(t) {
+    rech.textContent = t; rech.classList.remove('nov'); void rech.offsetWidth; rech.classList.add('nov');
+    var m = document.getElementById('rechMob');
+    if (m) m.textContent = t;
+  }
   function ozvuchit(t) { ozv.textContent = ''; setTimeout(function () { ozv.textContent = t; }, 50); }
   function vsplyt(zag, t, kl) {
     var d = document.createElement('div');
@@ -88,7 +92,7 @@
     var ok = bonusOk();
     if (ok && !s.bonusOtkryt) {
       s.bonusOtkryt = true; sohr();
-      vsplyt('Открыт бонус-уровень', 'Первые полгода — за наш счёт', 'bonus');
+      vsplyt('Открыт бонус-уровень', 'Первые полгода: за наш счёт', 'bonus');
       govorit('Вы только запускаетесь? Для вас открыт бонус-уровень.');
     } else if (!ok && s.bonusOtkryt) { s.bonusOtkryt = false; sohr(); }
     rHud();
@@ -107,10 +111,17 @@
       ' · </span>' + UROVNI[n] + '</p><div class="hud-schet"><span><b>' + bl + '</b>/6 блоков</span><span><b>' + s.dost.length + '</b>/7 достижений</span>' +
       (c ? '<span>≈ <b>' + rub(c) + '</b> в месяц</span>' : '') + '</div>';
   }
-  function scenaLyudi() {
+  function scenaLyudi(anim) {
     var n = nomer();
-    sc.persona(s.persona || (n > 1 ? 'auto' : null));
-    sc.kanal(n >= 2 ? s.kanal : null);
+    sc.k = n >= 2 ? s.kanal : null;
+    if (kritEst()) return sc.menedzher(sborka(), anim, imyaM());
+    if (n > 1 || s.persona) return sc.persona(s.persona || 'auto');
+    return sc.menedzher(null);
+  }
+  function prygni() {
+    var m = document.getElementById('malchik');
+    if (!m || tixo()) return;
+    m.classList.remove('pryg'); void m.offsetWidth; m.classList.add('pryg');
   }
 
   /* ---------- уровни ---------- */
@@ -138,10 +149,9 @@
   }
 
   function rIntro() {
-    panel.innerHTML = '<img class="intro-art" src="' + R + 'assets/img/art-magiya.jpg" alt="" width="940" height="529">' +
-      '<p class="eb">Мир Тучи · игра на пять минут</p>' +
+    panel.innerHTML = '<p class="eb">Мир Тучи · игра на пять минут</p>' +
       '<h1 class="mir-h" tabindex="-1">Постройте свой мир с Тучей</h1>' +
-      '<p class="lead-m">Пять шагов: кто будет на связи, как удобнее общаться и какие услуги нужны. Регистрация — в самом конце.</p>' +
+      '<p class="lead-m">Пять шагов: кто будет на связи, как удобнее общаться и какие услуги нужны. Регистрация: в самом конце.</p>' +
       '<ul class="fishki"><li><b>5</b>уровней</li><li><b>6</b>блоков</li><li><b>7</b>достижений</li></ul>' +
       (prodolzhit ? '<div class="plashka"><p>Продолжить строить? Вы остановились на уровне «' + UROVNI[prodolzhit] + '».</p>' +
         '<button type="button" class="btn btn-sm" data-prodolzhit>Продолжить</button><button type="button" class="btn-t" data-zanovo>Начать заново</button></div>' : '') +
@@ -149,34 +159,63 @@
       '<a class="btn-t" href="' + R + 'start/prosto/">Мне всё просто</a></div>';
   }
 
+  var KRIT = [
+    ['pol', 'Пол менеджера', [['nevazhno', 'Неважно'], ['zh', 'Женский'], ['m', 'Мужской']]],
+    ['vozrast', 'Возраст', [['nevazhno', 'Неважно'], ['do30', 'до 30'], ['30-45', '30-45'], ['45+', 'старше 45']]],
+    ['harakter', 'Характер общения', [['shturman', '<b>Штурман</b><small>Коротко и только по делу</small>'],
+      ['hranitel', '<b>Хранитель</b><small>Подробно, с фото и отчётами</small>'],
+      ['arhitektor', '<b>Архитектор</b><small>Сам предлагает, как сделать выгоднее</small>']]],
+    ['format', 'Кто на связи', [['chelovek', 'Живой менеджер'], ['bot', 'Помощник-бот, отвечает сразу']]]
+  ];
+  var KRIT_TEKST = { zh: 'женщина', m: 'мужчина', do30: 'до 30 лет', '30-45': '30-45 лет', '45+': 'старше 45',
+    shturman: 'коротко и по делу', hranitel: 'подробно, с фото и отчётами', arhitektor: 'ищет, где выгоднее', bot: 'бот, отвечает сразу' };
+  var KRIT_FRAZY = {
+    pol: 'Голова на месте: вот кто будет с вами на связи.',
+    vozrast: 'Добавили деталь: так видно опыт.',
+    harakter: 'Значок на груди показывает, как он работает.',
+    chelovek: 'На связи будет живой человек.',
+    bot: 'Помощник-бот отвечает сразу, днём и ночью.'
+  };
+  function znach(k) { var v = (s.kriterii || {})[k]; return v && v !== 'nevazhno' ? v : null; }
+  function kritEst() { return !!(znach('pol') || znach('vozrast') || znach('harakter') || znach('format') === 'bot'); }
+  function vyvesti() {
+    if (znach('format') === 'bot') return 'pomoshnik';
+    return znach('harakter') || (kritEst() ? 'auto' : null);
+  }
+  function opisKrit() {
+    return ['pol', 'vozrast', 'harakter', 'format'].map(znach).filter(function (v) { return v && KRIT_TEKST[v]; })
+      .map(function (v) { return KRIT_TEKST[v]; }).join(', ');
+  }
+  function imyaM() { var v = vyvesti(); return v ? S.PERS[v].ig : ''; }
+  function sborka() { return { pol: znach('pol'), vozrast: znach('vozrast'), harakter: znach('harakter'), bot: znach('format') === 'bot' }; }
   function r1() {
-    var h = zag(1, 'Выберите персонажа', 'Кто будет с вами на связи. Шаг можно пропустить — назначим сами.') + '<div class="persony">';
-    Object.keys(PERS).forEach(function (k) {
-      var p = PERS[k], zn = k === 'auto' ? 'М' : p.ig[0];
-      h += '<button type="button" class="persona' + (k === 'auto' ? ' persona-auto' : '') + '" data-p="' + k + '" aria-pressed="' + (s.persona === k) + '">' +
-        '<span class="p-zn" aria-hidden="true">' + zn + '</span><b>' + p.ig + '</b><span>' + p.pod + '</span>' +
-        (p.st ? '<span class="staty" aria-hidden="true">' + STATY.map(function (n, i) { return '<span>' + n + '<i style="--v:' + p.st[i] + '"></i></span>'; }).join('') + '</span>' : '') +
-        '</button>';
-    });
-    h += '</div><div class="persona-inf" data-inf aria-live="polite"' + (s.persona ? '' : ' hidden') + '>' + infPersony() + '</div>' +
+    s.kriterii = s.kriterii || {};
+    var h = zag(1, 'Какой менеджер вам подойдёт', 'Отметьте критерии, и менеджер соберётся из блоков у склада. Любой пункт можно оставить «неважно».') +
+      '<div class="krit">' + KRIT.map(function (g) {
+        return '<fieldset class="pole krit-g krit-' + g[0] + '"><legend>' + g[1] + '</legend>' +
+          radio('m-' + g[0], g[2], s.kriterii[g[0]] || (g[0] === 'format' ? 'chelovek' : 'nevazhno')) + '</fieldset>';
+      }).join('') + '</div>' +
+      '<div class="persona-inf" data-inf aria-live="polite">' + infPersony() + '</div>' +
       '<div class="chat-mir" data-chat-mir hidden></div>';
-    panel.innerHTML = h + niz(1);
+    panel.innerHTML = h + niz(1, { pod: '<p class="pomosh-str"><button type="button" class="btn-t" data-nevazhno>Неважно, подберите сами</button></p>' });
   }
   function infPersony() {
-    if (!s.persona) return '';
-    var p = PERS[s.persona];
+    if (!kritEst()) {
+      return '<span class="ava ava-foto" aria-hidden="true"></span><div><small class="eb">Критерии не заданы: назначим по очереди</small>' +
+        '<b>Любой из трёх</b><span class="muted">К клиентам выходят три менеджера. Отметьте критерии, покажем, кто подходит.</span></div>';
+    }
+    var v = vyvesti(), p = PERS[v];
     if (p.bot) {
-      return '<span class="ava" aria-hidden="true">П</span><div><b>Помощник выбран</b><span class="muted">«' + p.fraza + '». ' +
-        'Это бот, не живой человек. К договору подключится менеджер.</span>' +
+      return '<span class="ava" aria-hidden="true">П</span><div><b>На связи: помощник-бот</b><span class="muted">' + opisKrit() + '</span>' +
+        '<span class="muted">Это бот, не живой человек. К договору подключится менеджер.</span>' +
         '<button type="button" class="btn-t" data-chat-probovat>Спросить помощника прямо сейчас</button></div>';
     }
-    return '<span class="ava" aria-hidden="true">' + (s.persona === 'auto' ? 'М' : p.ig[0]) + '</span><div><b>' +
-      (s.persona === 'auto' ? 'Назначим менеджера сами' : p.ig + ' выбран') + '</b><span class="muted">' +
-      (p.fraza ? '«' + p.fraza + '»' : 'Он встанет у постройки, как только мы его назначим') + '</span></div>';
+    return '<span class="ava" aria-hidden="true">' + (v === 'auto' ? 'М' : p.ig[0]) + '</span><div><b>' +
+      (v === 'auto' ? 'Подберём под критерии' : 'Подходит: ' + p.ig) + '</b><span class="muted">' + opisKrit() + '</span>' +
+      (p.fraza ? '<span class="muted">«' + p.fraza + '»</span>' : '') + '</div>';
   }
-
   function r2() {
-    var h = zag(2, 'Связь', 'Шаг можно пропустить: позвоним, заявки — через кабинет.') +
+    var h = zag(2, 'Связь', 'Шаг можно пропустить: тогда позвоним, а заявки примем через кабинет.') +
       '<fieldset class="pole"><legend>Как с вами связаться?</legend>' + radio('kanal', KANALY, s.kanal) + '</fieldset>' +
       '<div data-mess' + (s.kanal === 'messenger' ? '' : ' hidden') + '><fieldset class="pole"><legend>Какой мессенджер</legend>' + radio('mess', MESS, s.messenger) + '</fieldset></div>' +
       '<div data-kontakt>' + poleKontakta() + '</div>' +
@@ -187,28 +226,64 @@
   function poleKontakta() {
     var k = s.kanal, tip = k === 'pochta' ? 'email' : (k === 'messenger' ? 'text' : 'tel');
     if (k === 'chat') {
-      return '<p class="podskaz chat-pod">Чат с помощником откроется в кабинете и в углу сайта. Помощник — бот, не живой человек: ' +
+      return '<p class="podskaz chat-pod">Чат с помощником откроется в кабинете и в углу сайта. Помощник: бот, не живой человек: ' +
         'отвечает сразу, днём и ночью. К договору подключится менеджер. ' +
         '<button type="button" class="btn-t" data-chat-probovat>Попробовать</button></p><div class="chat-mir" data-chat-mir hidden></div>';
     }
     var lab = k === 'pochta' ? 'Почта' : (k === 'messenger' ? 'Телефон или ник' : 'Телефон');
     return '<div class="pole"><label for="m-kont">' + lab + ' <span class="nb">необязательно</span></label>' +
       '<input id="m-kont" name="kontakt" type="' + tip + '" value="' + esc(s.kontakt) + '" autocomplete="' + (tip === 'email' ? 'email' : 'tel') + '">' +
-      '<p class="podskaz">Если оставите пустым — спросим при регистрации. До согласия храним только в вашем браузере.</p></div>';
+      '<p class="podskaz">Если оставите пустым, спросим при регистрации. До согласия храним только в вашем браузере.</p></div>';
   }
 
   function r3() {
     var pusto = !Object.keys(s.bloki).length;
-    var h = zag(3, 'Постройка', 'Нажмите на блок — он упадёт из тучи на место. Всё, что стоит сверху, опирается на склад.') +
+    var h = zag(3, 'Постройка', 'Нажмите на блок, он упадёт из тучи на место. Всё, что стоит сверху, опирается на склад.') +
       '<div class="palitra" role="group" aria-label="Блоки услуг">' + S.PORYADOK.map(function (k) {
         var B = S.BLOKI[k], est = !!s.bloki[k];
         return '<button type="button" class="blok-k" data-k="' + k + '" aria-pressed="' + est + '" aria-label="' +
-          (est ? B.ig + ' — ' + B.ob + ', добавлен' + ROD[k] + '. Открыть карточку' : 'Добавить ' + (k === 'hranenie' ? 'Точку сохранения' : k === 'obrabotka' ? 'Мастерскую' : k === 'lavka' ? 'Лавку' : k === 'vitrina' ? 'Витрину' : B.ig) + ' — ' + B.ob) + '">' +
-          '<i class="cv" style="background:' + B.fill + '"></i><span><b>' + B.ig + '</b><small>' + B.ob + '</small>' +
+          (est ? B.ig + ', ' + B.ob + ', добавлен' + ROD[k] + '. Открыть карточку' : 'Добавить ' + (k === 'hranenie' ? 'Точку сохранения' : k === 'obrabotka' ? 'Мастерскую' : k === 'lavka' ? 'Лавку' : k === 'vitrina' ? 'Витрину' : B.ig) + ', ' + B.ob) + '">' +
+          '<svg class="ik" data-ik="' + k + '" aria-hidden="true"></svg><span><b>' + B.ig + '</b><small>' + B.ob + '</small>' +
+          '<em class="opora">' + ({ obrabotka: 'на Точку сохранения', lavka: 'на Точку сохранения', vitrina: 'на Лавку' }[k] || 'на земле') + '</em>' +
           (B.skoro ? '<em class="skoro">скоро</em>' : '') + '</span><span class="gal" aria-hidden="true"></span></button>';
       }).join('') + '</div><div id="kartochka"></div>';
     panel.innerHTML = h + niz(3, { off: pusto, pod: pusto ? '<p class="pomosh-str"><button type="button" class="btn-t" data-pomosh>Пока не знаю, помогите собрать</button></p>' : '' });
     rKarta();
+    ikonkiIPeretaskivanie();
+  }
+  function ikonkiIPeretaskivanie() {
+    panel.querySelectorAll('[data-ik]').forEach(function (sv) { S.ikonka(sv, sv.getAttribute('data-ik')); });
+    if (!(window.matchMedia && matchMedia('(pointer: fine)').matches)) return;
+    var stage = document.getElementById('stage');
+    panel.querySelectorAll('.blok-k').forEach(function (b) {
+      b.addEventListener('pointerdown', function (e) {
+        if (e.button !== 0) return;
+        var k = b.dataset.k, x0 = e.clientX, y0 = e.clientY, ten = null;
+        function nad(ev) { var r = stage.getBoundingClientRect(); return ev.clientX > r.left && ev.clientX < r.right && ev.clientY > r.top && ev.clientY < r.bottom; }
+        function dvig(ev) {
+          if (!ten && Math.abs(ev.clientX - x0) + Math.abs(ev.clientY - y0) > 10) {
+            ten = document.createElement('div');
+            ten.className = 'ten-bloka';
+            ten.appendChild(b.querySelector('svg').cloneNode(true));
+            document.body.appendChild(ten);
+            stage.classList.add('priem');
+          }
+          if (ten) { ten.style.transform = 'translate(' + (ev.clientX - 44) + 'px,' + (ev.clientY - 44) + 'px)'; stage.classList.toggle('priem-nad', nad(ev)); }
+        }
+        function otpusk(ev) {
+          document.removeEventListener('pointermove', dvig);
+          document.removeEventListener('pointerup', otpusk);
+          if (!ten) return;
+          ten.remove();
+          stage.classList.remove('priem', 'priem-nad');
+          b.dataset.tyanuli = '1';
+          setTimeout(function () { delete b.dataset.tyanuli; }, 80);
+          if (nad(ev)) nazhat(k);
+        }
+        document.addEventListener('pointermove', dvig);
+        document.addEventListener('pointerup', otpusk);
+      });
+    });
   }
 
   function teloKarty(k) {
@@ -222,14 +297,14 @@
         '<fieldset class="pole"><legend>Режим</legend>' + radio('rezhim', [['teply', 'Тёплый'], ['holodny', 'Холодный'], ['nevazhno', 'Не важно']], b.rezhim) + '</fieldset>' +
         '<fieldset class="pole"><legend>Этап</legend>' + radio('etap', [['start', 'Только запускаемся'], ['rabotaem', 'Уже работаем']], b.etap) + '</fieldset>' +
         '<fieldset class="pole"><legend>Срок резервации <span class="nb">«Займи место под тучей»</span></legend>' +
-        radio('srok', [[1, '1 мес · −15 %'], [3, '3 мес · −20 %'], [6, '6 мес · −30 %'], [12, '12 мес · −40 %']], b.srok) + '</fieldset>' +
+        radio('srok', [[0, 'По факту'], [1, '1 мес · −15 %'], [2, '2 мес · −20 %'], [3, '3 мес и больше · −30 %']], b.srok) + '</fieldset>' +
         '<div class="raschet" data-raschet></div>';
     }
     if (k === 'obrabotka') return '<fieldset class="pole"><legend>Какие операции нужны <span class="nb">можно несколько</span></legend>' + galki('ops', OPS, b.ops) + '</fieldset>';
-    if (k === 'lavka') return '<p class="skoro-pl"><span class="skoro">скоро</span> Лавка откроется позже. Сообщим о запуске — вы в списке первых.</p>' +
+    if (k === 'lavka') return '<p class="skoro-pl"><span class="skoro">скоро</span> Лавка откроется позже. Сообщим о запуске, вы в списке первых.</p>' +
       '<fieldset class="pole"><legend>Где продаёте сейчас</legend>' + galki('gde', GDE, b.gde) + '</fieldset>' +
       '<fieldset class="pole"><legend>Готовы дать доступ к кабинету маркетплейса?</legend>' + radio('dostup', [['da', 'Да'], ['net', 'Нет'], ['pozzhe', 'Позже']], b.dostup) + '</fieldset>';
-    if (k === 'vitrina') return '<p class="skoro-pl"><span class="skoro">скоро</span> Витрина — место на полке Лавки. Откроется вместе с ней.</p>' +
+    if (k === 'vitrina') return '<p class="skoro-pl"><span class="skoro">скоро</span> Витрина: место на полке Лавки. Откроется вместе с ней.</p>' +
       '<fieldset class="pole"><legend>Где продаёте сейчас</legend>' + galki('gde', GDE, b.gde) + '</fieldset>';
     if (k === 'dostavka') return '<fieldset class="pole"><legend>Куда везём</legend>' + galki('kuda', KUDA, b.kuda) + '</fieldset>';
     return '<div class="pole"><label for="k-strana">Откуда или куда везёте</label><input id="k-strana" name="strana" type="text" list="strany" value="' + esc(b.strana) + '" placeholder="Страна">' +
@@ -241,7 +316,7 @@
     var k = otkryt;
     if (!k || !s.bloki[k]) { box.innerHTML = ''; document.body.classList.remove('list-otkryt'); return; }
     var B = S.BLOKI[k];
-    box.innerHTML = '<div class="list-fon" data-gotovo></div><div class="kartochka list" role="group" aria-label="' + B.ig + ' — настройки">' +
+    box.innerHTML = '<div class="list-fon" data-gotovo></div><div class="kartochka list" role="group" aria-label="' + B.ig + ', настройки">' +
       '<div class="k-verh"><i class="cv" style="background:' + B.fill + '"></i><h3>' + B.ig + ' · ' + B.ob + '</h3></div>' +
       '<button type="button" class="x" data-ubrat aria-label="Убрать блок ' + B.ig + '">×</button>' +
       '<div data-podtv></div>' + teloKarty(k) +
@@ -259,12 +334,12 @@
     if (!r || !h) return;
     r.innerHTML = h.neznayu ? 'Посчитаем вместе с менеджером, когда станет ясен объём.' :
       'Примерно <b>' + rub(cena()) + '</b> в месяц<small>' + h.pallety + ' ' + plural(h.pallety, 'паллета', 'паллеты', 'паллет') +
-      ' × 16,42 ₽ × 30 дней, скидка ' + (SKIDKA[h.srok] || 0) + ' %. Точнее посчитает менеджер</small>';
+      ' × 16,42 ₽ × 30 дней' + (SKIDKA[h.srok] ? ', скидка ' + SKIDKA[h.srok] + ' %' : '') + '. Точнее посчитает менеджер</small>';
   }
 
   function r4() {
     var b = s.bonus;
-    var h = zag(4, 'Для тех, кто запускается: первые полгода — за наш счёт', 'Спецпредложение «Развитие». Условия:') +
+    var h = zag(4, 'Для тех, кто запускается: первые полгода за наш счёт', 'Спецпредложение «Развитие». Условия:') +
       '<ul class="spis-ok"><li>Юрлицо или ИП на старте</li><li>Объём до 7 паллет или 7 000 кг</li><li>Бизнес-план в свободной форме</li>' +
       '<li>Договор не короче года</li><li>Отгрузки не больше 70 % от размещённого</li></ul>' +
       '<div class="pole"><label for="b-tekst">Расскажите о бизнесе <span class="nb">необязательно</span></label>' +
@@ -273,9 +348,9 @@
       '<div class="pole"><label for="b-fayl">Бизнес-план <span class="nb">PDF или DOC до 10 МБ</span></label>' +
       '<input id="b-fayl" name="bonus-fayl" type="file" accept=".pdf,.doc,.docx">' +
       (b.fayl ? '<p class="podskaz">Выбран: ' + esc(b.fayl) + '. Сам файл отправим после регистрации</p>' : '') +
-      '<p class="osh-t" data-fayl-osh>Файл больше 10 МБ — сожмите его или пришлите менеджеру</p></div>' +
+      '<p class="osh-t" data-fayl-osh>Файл больше 10 МБ, сожмите его или пришлите менеджеру</p></div>' +
       '<div class="shag-niz"><button type="button" class="btn-t" data-nazad>Назад</button>' +
-      '<button type="button" class="btn" data-bonus-da>' + (vozvrat ? 'Готово — хочу участвовать' : 'Хочу участвовать') + '</button>' +
+      '<button type="button" class="btn" data-bonus-da>' + (vozvrat ? 'Готово: хочу участвовать' : 'Хочу участвовать') + '</button>' +
       '<button type="button" class="btn-t" data-bonus-net>Пропустить</button></div>';
     panel.innerHTML = h;
   }
@@ -283,7 +358,7 @@
   function svodka(k) {
     var b = s.bloki[k];
     if (k === 'hranenie') return b.neznayu ? 'объём пока не знаю' : b.pallety + ' ' + plural(b.pallety, 'паллета', 'паллеты', 'паллет') + ' · ' +
-      ({ teply: 'тёплый', holodny: 'холодный', nevazhno: 'режим не важен' }[b.rezhim] || '') + ' · резерв ' + b.srok + ' мес' + (cena() ? ' · ≈ ' + rub(cena()) + ' в месяц' : '');
+      ({ teply: 'тёплый', holodny: 'холодный', nevazhno: 'режим не важен' }[b.rezhim] || '') + (b.srok ? ' · резерв ' + b.srok + (b.srok === 3 ? '+ мес' : ' мес') : ' · по факту') + (cena() ? ' · ≈ ' + rub(cena()) + ' в месяц' : '');
     if (k === 'obrabotka') return b.ops.length ? imena(OPS, b.ops) : 'операции обсудим';
     if (k === 'lavka' || k === 'vitrina') return 'скоро, сообщим о запуске' + (b.gde && b.gde.length ? ' · продаёте: ' + imena(GDE, b.gde) : '');
     if (k === 'dostavka') return b.kuda.length ? imena(KUDA, b.kuda) : 'направление обсудим';
@@ -293,14 +368,15 @@
     var p = PERS[s.persona || 'auto'], kan = imena(KANALY, [s.kanal]) + (s.kanal === 'messenger' ? ' · ' + s.messenger : '');
     var bloki = Object.keys(s.bloki);
     var stroki = [
-      ['Персонаж', s.persona && s.persona !== 'auto' ? p.ig + ' — «' + p.fraza + '»' : 'Назначим сами', 1],
-      ['Связь', kan + (s.kontakt ? ', ' + esc(s.kontakt) : '') + '. Заявки — ' + imena(ZAYAVKI, [s.zayavki]).toLowerCase(), 2],
+      ['Менеджер', kritEst() ? (vyvesti() === 'auto' ? 'подберём под критерии' : PERS[vyvesti()].ig) + ': ' + opisKrit() : 'подберём сами', 1],
+      ['Связь', kan + (s.kontakt ? ', ' + esc(s.kontakt) : '') + '. Заявки: ' + imena(ZAYAVKI, [s.zayavki]).toLowerCase(), 2],
       ['Постройка', bloki.length ? S.PORYADOK.filter(function (k) { return s.bloki[k]; }).map(function (k) {
         return '<span class="st-bl"><i class="cv" style="background:' + S.BLOKI[k].fill + '"></i><span><b>' + S.BLOKI[k].ig + '</b> · ' + esc(svodka(k)) + '</span></span>';
-      }).join('') : 'Нужна помощь — соберём вместе с менеджером', 3]
+      }).join('') : 'Нужна помощь: соберём вместе с менеджером', 3]
     ];
-    if (bonusOk()) stroki.push(['Бонус «Развитие»', s.bonus.hochu ? 'Хочу участвовать' + (s.bonus.tekst ? ': «' + esc(s.bonus.tekst.slice(0, 90)) + (s.bonus.tekst.length > 90 ? '…' : '') + '»' : '') : 'Пропущен', 4]);
-    panel.innerHTML = zag(5, 'Карта вашего мира', 'Проверьте — любой уровень можно поправить.') +
+    if (!bonusOk()) stroki.push(['Стартовый бонус', 'не подходит по условиям: нужен этап «только запускаемся» и до 7 паллет', 3]);
+    if (bonusOk()) stroki.push(['Стартовый бонус', s.bonus.hochu ? 'Хочу участвовать' + (s.bonus.tekst ? ': «' + esc(s.bonus.tekst.slice(0, 90)) + (s.bonus.tekst.length > 90 ? '…' : '') + '»' : '') : 'Пропущен', 4]);
+    panel.innerHTML = zag(5, 'Карта вашего мира', 'Проверьте: любой уровень можно поправить.') +
       '<div class="karta-mira">' + stroki.map(function (x) {
         return '<div class="karta-str"><div><b>' + x[0] + '</b><div class="kz">' + x[1] + '</div></div>' +
           '<button type="button" class="btn-t" data-izm="' + x[2] + '">Изменить</button></div>';
@@ -320,8 +396,10 @@
     sohr();
     try { history.replaceState(null, '', location.pathname + (n === 'intro' ? '' : '#shag-' + n)); } catch (e) {}
     scenaLyudi();
+    sc.podpisi(typeof n === 'number' && n >= 3);
     rHud();
     ({ intro: rIntro, 1: r1, 2: r2, 3: r3, 4: r4, 5: r5 })[n]();
+    panel.classList.remove('smena'); void panel.offsetWidth; panel.classList.add('smena');
     govorit(frazaShaga(n));
     if (!tiho) {
       var h = panel.querySelector('h1, h2');
@@ -331,11 +409,11 @@
   }
   function frazaShaga(n) {
     if (n === 'intro') return 'Привет! Я проводник. Выберем, кто будет на связи, и соберём склад из блоков.';
-    if (n === 1) return 'Кто будет с вами на связи? Выбранный персонаж встанет у постройки.';
+    if (n === 1) return 'Соберём менеджера из блоков: каждый ответ добавляет деталь.';
     if (n === 2) return 'Как вам удобнее общаться? От тучи к персонажу протянется связь.';
-    if (n === 3) return Object.keys(s.bloki).length ? 'Нажмите на блок, чтобы добавить его или открыть карточку.' : 'Нажмите на блок — он упадёт на место.';
-    if (n === 4) return 'Вы только запускаетесь — для вас открыт бонус-уровень.';
-    return dostroit ? 'Вот ваш мир. Сохраним изменения в кабинет?' : 'Вот ваш мир. Проверьте и сохраните — это последний шаг.';
+    if (n === 3) return Object.keys(s.bloki).length ? 'Нажмите на блок, чтобы добавить его или открыть карточку.' : 'Нажмите на блок, он упадёт на место.';
+    if (n === 4) return 'Вы только запускаетесь, для вас открыт бонус-уровень.';
+    return dostroit ? 'Вот ваш мир. Сохраним изменения в кабинет?' : 'Вот ваш мир. Проверьте и сохраните, это последний шаг.';
   }
   function dalee(n) {
     T.goal('mir_step_' + n);
@@ -348,7 +426,7 @@
     var novye = cepochka(k).filter(function (x) { return !s.bloki[x]; });
     novye.forEach(function (x) { s.bloki[x] = defolt(x); });
     otkryt = k; sohr();
-    if (novye.length > 1) govorit(k === 'vitrina' ? 'Витрина — это полка в Лавке. Поставил фундамент и Лавку.' : S.BLOKI[k].ig + ' стоит на складе — поставил фундамент.');
+    if (novye.length > 1) govorit(k === 'vitrina' ? 'Витрина: это полка в Лавке. Поставил фундамент и Лавку.' : S.BLOKI[k].ig + ' стоит на складе, поставил фундамент.');
     else govorit(FRAZY[k]);
     r3(); fokusBloka(k); rHud();
     sc.obnovit(s.bloki, true).then(function (upali) {
@@ -403,8 +481,9 @@
     box.hidden = false;
     var pred = {};
     if (s.kontakt) { if (/@/.test(s.kontakt)) pred.pochta = s.kontakt; else if (s.kontakt.replace(/\D/g, '').length >= 10) pred.tel = s.kontakt; }
-    box.innerHTML = '<h3 class="reg-h">Последний шаг — регистрация</h3><div data-forma></div>';
+    box.innerHTML = '<h3 class="reg-h">Сохранить мир: регистрация</h3><div data-forma></div>';
     Reg.forma(box.querySelector('[data-forma]'), {
+      kratko: true, knopka: 'Сохранить мой мир',
       predzapolnit: pred,
       onOk: function (d) {
         var m = JSON.parse(JSON.stringify(s)); m.done = true;
@@ -424,7 +503,7 @@
     panel.innerHTML = '<div class="final-t" tabindex="-1">' +
       '<img class="final-art" src="' + R + 'assets/img/art-palec.jpg" alt="Проводник показывает большой палец: мир сохранён" width="480" height="787">' +
       '<p class="eb">Уровень пройден</p><h2>Мир сохранён</h2>' +
-      '<p>' + (vKabinet ? 'Изменения уже в кабинете — менеджер их увидит.' : 'Анна ' + T.kakSvyazhetsya(s.kanal, s.messenger) + '.') + '</p>' +
+      '<p>' + (vKabinet ? 'Изменения уже в кабинете, менеджер их увидит.' : 'Анна ' + T.kakSvyazhetsya(s.kanal, s.messenger) + '.') + '</p>' +
       '<p class="muted">' + s.dost.length + ' из 7 достижений · ' + Object.keys(s.bloki).length + ' из 6 блоков</p>' +
       '<a class="btn" href="' + R + 'kabinet/?novyy=' + (vKabinet ? 'dostroil' : '1') + '">В кабинет</a></div>';
     panel.firstChild.focus({ preventScroll: true });
@@ -453,21 +532,22 @@
       panel.querySelectorAll('.persona').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.p === d.p); });
       var inf = panel.querySelector('[data-inf]'); inf.hidden = false; inf.innerHTML = infPersony();
       scenaLyudi(); sc.persona(d.p);
-      govorit(d.p === 'auto' ? 'Хорошо, назначим сами. Менеджер встанет у постройки.' : PERS[d.p].ig + ' уже у постройки. Дальше — связь.');
+      govorit(d.p === 'auto' ? 'Хорошо, назначим сами. Менеджер встанет у постройки.' : PERS[d.p].ig + ' уже у постройки. Дальше: связь.');
     }
     else if ('chatProbovat' in d) {
       var cm = panel.querySelector('[data-chat-mir]');
       if (cm && window.TuchaChat) {
         if (!cm.dataset.gotov) { cm.dataset.gotov = 1; TuchaChat.sozdat(cm, { vstroen: true, fokus: true }); }
         cm.hidden = false; t.hidden = true;
-        govorit('Спросите что угодно про склад — помощник ответит сразу.');
+        govorit('Спросите что угодно про склад, помощник ответит сразу.');
       }
     }
-    else if (d.k) nazhat(d.k);
+    else if (d.k) { if (!d.tyanuli) nazhat(d.k); }
     else if ('gotovo' in d) { var k = otkryt; otkryt = null; rKarta(); panel.querySelectorAll('.blok-k').forEach(function (b) { b.classList.toggle('otkryt', false); }); if (k) fokusBloka(k); }
     else if ('ubrat' in d) ubrat(otkryt);
     else if ('da' in d) ubrat(otkryt, true);
     else if ('net' in d) panel.querySelector('[data-podtv]').innerHTML = '';
+    else if ('nevazhno' in d) { s.kriterii = {}; s.persona = 'auto'; sohr(); dalee(1); }
     else if ('pomosh' in d) { s.pomosh = true; sohr(); T.goal('pomosh'); dalee(3); }
     else if ('bonusDa' in d) { s.bonus.hochu = true; sohr(); T.goal('bonus_yes'); dalee(4); }
     else if ('bonusNet' in d) { s.bonus.hochu = false; sohr(); dalee(4); }
@@ -484,8 +564,16 @@
       panel.querySelector('[data-kontakt]').innerHTML = poleKontakta();
       var tel = panel.querySelector('[name=kontakt][type=tel]'); if (tel) T.maska(tel);
       sc.kanal(s.kanal);
-      govorit({ zvonok: 'Позвоним — это быстрее всего.', pochta: 'Напишем письмо — удобно для документов.', messenger: 'Напишем в мессенджер.',
-        chat: 'Чат на сайте: помощник ответит сразу, днём и ночью.', vstrecha: 'Встретимся на складе — покажем всё вживую.' }[s.kanal]);
+      govorit({ zvonok: 'Позвоним: это быстрее всего.', pochta: 'Напишем письмо: удобно для документов.', messenger: 'Напишем в мессенджер.',
+        chat: 'Чат на сайте: помощник ответит сразу, днём и ночью.', vstrecha: 'Встретимся на складе, покажем всё вживую.' }[s.kanal]);
+    }
+    else if (nm.indexOf('m-') === 0) {
+      s.kriterii = s.kriterii || {};
+      s.kriterii[nm.slice(2)] = t.value;
+      s.persona = vyvesti(); sohr();
+      var inf = panel.querySelector('[data-inf]'); inf.innerHTML = infPersony();
+      scenaLyudi(true);
+      if (t.value !== 'nevazhno') govorit(KRIT_FRAZY[nm === 'm-format' ? t.value : nm.slice(2)]);
     }
     else if (nm === 'mess') { s.messenger = t.value; sohr(); }
     else if (nm === 'kontakt') { s.kontakt = t.value; sohr(); }
