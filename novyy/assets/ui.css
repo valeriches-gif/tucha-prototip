@@ -81,7 +81,7 @@ h2, h3, .h3 { font-weight: 800; letter-spacing: -.01em; }
 .podval a { color: #FFFFFF; }
 .podval h4 { color: #FFC079; font-family: var(--igr); }
 .podval .znak-p p { color: #FFFFFF; }
-.podval .znak-p img { background: #FFFFFF; border-radius: 14px; padding: 6px 8px; width: 150px; box-shadow: 0 4px 0 #0F2440; }
+.podval .znak-p img { width: 150px; height: auto; }
 .podval .niz { border-top-color: rgba(255, 255, 255, .14); color: #9FB3CA; }
 
 /* игровая панель уровней и ресурсы */
