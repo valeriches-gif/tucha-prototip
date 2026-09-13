@@ -83,6 +83,20 @@ h2, h3, .h3 { font-weight: 800; letter-spacing: -.01em; }
 .podval .znak-p p { color: #FFFFFF; }
 .podval .znak-p img { width: 150px; height: auto; }
 
+/* вход: два кабинета рядом, у «Мира Тучи» тёмная карточка с Проводником */
+.vhod-g { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 22px; align-items: start; }
+.vhod-k { position: relative; }
+.vhod-k h2 { font-family: var(--igr); font-size: 28px; margin: 2px 0 6px; }
+.vhod-pod { margin: 0 0 18px; max-width: 70%; }
+.vhod-mir { background: var(--navy) !important; color: #DCE6F2; }
+.vhod-mir h2 { color: #fff; }
+.vhod-mir .doroga-f { color: #FFB877; }
+.vhod-mir .pole > label { color: #fff; }
+.vhod-mir .demo-str .btn-t, .vhod-mir a:not(.btn) { color: #FFB877; }
+.vhod-pers { position: absolute; right: 22px; top: -26px; height: 128px; width: auto; }
+.demo-str { font-size: 15px; margin: 16px 0 0; }
+@media (max-width: 800px) { .vhod-g { grid-template-columns: minmax(0, 1fr); } .vhod-pers { height: 96px; top: -14px; } }
+
 /* Проводник в стиле 8 бит: увеличиваем без размытия, пиксели остаются квадратными */
 img[src*="8bit"], .ava-foto, .rech-mob::before { image-rendering: pixelated; }
 

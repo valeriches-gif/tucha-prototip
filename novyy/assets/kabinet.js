@@ -84,7 +84,7 @@
           '<div class="kab-kol">' + rStatus() + rUroven() + '</div></div><div class="setka s2 kab-niz">' + rManager() + rDost() + '</div>';
       } else {
         h += rStatus() + '<div class="setka s3 kab-niz">' + rManager() + rPrigotovit() + rUroven() + '</div>' +
-          '<div class="banner-mir"><div><b>Соберите свой мир</b><p>Те же услуги, в формате игры: персонаж, связь и постройка из блоков.</p></div>' +
+          '<div class="banner-mir"><div><b>Попробуйте «Мир Тучи»</b><p>Другой формат: персонаж по характеру, услуги из блоков и бонусы за выполненные условия.</p></div>' +
           '<a class="btn btn-2 btn-sm" href="' + R + 'start/mir/?dostroit=1">Собрать</a></div>';
       }
       return h;

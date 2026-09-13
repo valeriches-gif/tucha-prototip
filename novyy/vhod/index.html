@@ -11,9 +11,9 @@
 <link rel="icon" type="image/png" href="../assets/img/znachok.png">
 <link rel="preload" href="../assets/fonts/golos.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/site.css?v=202609111746">
-<link rel="stylesheet" href="../assets/ui.css?v=202609111746">
-<link rel="stylesheet" href="../assets/lavka.css?v=202609111746">
+<link rel="stylesheet" href="../assets/site.css?v=202609131417">
+<link rel="stylesheet" href="../assets/ui.css?v=202609131417">
+<link rel="stylesheet" href="../assets/lavka.css?v=202609131417">
 </head><body class="start">
 <a class="skryt-f" href="#glav">К содержанию</a>
 <div class="nebo" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -23,7 +23,7 @@
 <a href="../hranenie/">Хранение</a>
 <div class="menu-u"><button type="button" data-menu-u aria-expanded="false">Услуги <span aria-hidden="true">▾</span></button>
 <div class="spisok"><a href="../hranenie/"><span><b>Точка сохранения</b> <small>· хранение</small></span></a><a href="../obrabotka/"><span><b>Мастерская</b> <small>· обработка</small></span></a><a href="../dostavka/"><span><b>Телепорт</b> <small>· доставка</small></span></a><a href="../tamozhnya/"><span><b>Портал</b> <small>· таможня</small></span></a><a href="../lavka/"><span><b>Лавка</b> <small>· маркетплейс</small></span></a><a href="../vitrina/"><span><b>Витрина</b> <small>· продвижение</small></span></a></div></div>
-<a href="../hranenie/#tarify">Тарифы</a>
+<a href="../hranenie/#formaty">Форматы</a>
 <a href="../lavka/">Лавка</a>
 <a href="../kontakty/">Контакты</a>
 <a class="mob" href="../lavka/korzina/">Корзина</a>
@@ -39,15 +39,25 @@
 <a class="btn btn-sm" href="../start/">Начать</a>
 <button class="burger" type="button" data-burger aria-expanded="false" aria-label="Меню"><i></i><i></i><i></i></button>
 </div></div></header>
-<main id="glav"><section class="sek"><div class="wrap uzk-f"><div class="kart" id="vhodBox">
-<h1>Вход</h1>
-<form id="vhodForma" novalidate>
-<div class="pole"><label for="login">Телефон или почта</label><input id="login" type="text" autocomplete="username">
+<main id="glav"><section class="sek"><div class="wrap"><h1>Вход в кабинет</h1>
+<p class="muted" style="max-width:640px">У каждого формата свой кабинет. Войдите в тот, в котором работаете.</p>
+<div class="vhod-g">
+<div class="kart vhod-k vhod-prosto" id="vhod-prosto"><p class="doroga-f">Без тарифов</p><h2>Кабинет «Всё просто»</h2>
+<p class="vhod-pod">Статус, менеджер, услуги и документы в обычном виде.</p>
+<form novalidate data-vhod="prosto">
+<div class="pole"><label for="login-prosto">Телефон или почта</label><input id="login-prosto" type="text" autocomplete="username">
 <p class="osh-t">Введите телефон или почту</p></div>
-<div class="plashka" data-net hidden><p>Такого аккаунта нет. Начать работу?</p><a class="btn btn-sm" href="../start/">Начать</a></div>
-<button class="btn" type="submit">Получить код</button>
-</form>
-<p class="muted demo-str">Посмотреть кабинет на примере: <button class="btn-t" type="button" data-demo>войти как тестовый клиент</button></p>
+<div class="plashka" data-net hidden><p>Такого аккаунта нет. Зарегистрироваться одной формой?</p><a class="btn btn-sm" href="../start/prosto/">Заполнить форму</a></div>
+<button class="btn" type="submit">Получить код</button></form>
+<p class="demo-str">Посмотреть на примере: <button class="btn-t" type="button" data-demo="prosto">демо-кабинет «Всё просто»</button></p></div>
+<div class="kart vhod-k vhod-mir" id="vhod-mir"><img class="vhod-pers" src="../assets/img/provodnik-8bit.png" alt="" width="272" height="504"><p class="doroga-f">Игровой формат</p><h2>Кабинет «Мир Тучи»</h2>
+<p class="vhod-pod">Ваш мир из блоков, персонаж, уровни и достижения.</p>
+<form novalidate data-vhod="mir">
+<div class="pole"><label for="login-mir">Телефон или почта</label><input id="login-mir" type="text" autocomplete="username">
+<p class="osh-t">Введите телефон или почту</p></div>
+<div class="plashka" data-net hidden><p>Такого аккаунта нет. Собрать свой мир?</p><a class="btn btn-sm" href="../start/mir/">Собрать мир</a></div>
+<button class="btn" type="submit">Получить код</button></form>
+<p class="demo-str">Посмотреть на примере: <button class="btn-t" type="button" data-demo="mir">демо-кабинет «Мир Тучи»</button></p></div>
 </div></div></section></main>
 <footer class="podval"><div class="wrap"><div class="kol">
 <div class="znak-p"><img src="../assets/img/logo-v-svetl.png" alt="ТУЧА, Мировая Лавка" width="480" height="277" loading="lazy">
@@ -67,36 +77,49 @@
 </div></footer>
 
 <script>window.TUCHA_ROOT = '../';</script>
-<script src="../assets/site.js?v=202609111746"></script>
+<script src="../assets/site.js?v=202609131417"></script>
 <script>(function () {
-  var T = Tucha, box = document.getElementById('vhodBox'), f = document.getElementById('vhodForma'), inp = document.getElementById('login');
+  /* два входа: кабинет «Всё просто» и кабинет «Мир Тучи»; вход в своём формате задаёт вид кабинета */
+  var T = Tucha;
   function cifry(s) { return String(s || '').replace(/\D/g, ''); }
-  f.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = inp.value.trim(), pole = inp.closest('.pole'), a = T.akk();
-    var tel = cifry(v).length >= 10, ok = tel || T.pochtaOk(v);
-    pole.classList.toggle('osh', !ok);
-    if (!ok) { inp.focus(); return; }
-    var est = a && (tel ? cifry(a.tel).slice(-10) === cifry(v).slice(-10) : (a.pochta || '').toLowerCase() === v.toLowerCase());
-    f.querySelector('[data-net]').hidden = !!est;
-    if (!est) return;
-    var btn = f.querySelector('[type=submit]'); btn.classList.add('idet'); btn.textContent = 'Отправляем код…';
-    setTimeout(function () {
-      T.kodEkran(box, { kuda: tel ? T.telFormat(v) : v, nazad: function () { location.reload(); },
-        onOk: function () { T.voyti(); T.goal('vhod_ok'); location.href = T.ROOT + 'kabinet/'; } });
-      T.toast('Код отправлен');
-    }, 600);
+  document.querySelectorAll('form[data-vhod]').forEach(function (f) {
+    var vid = f.getAttribute('data-vhod'), karta = f.closest('.vhod-k'), inp = f.querySelector('input');
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = inp.value.trim(), pole = inp.closest('.pole'), a = T.akk();
+      var tel = cifry(v).length >= 10, ok = tel || T.pochtaOk(v);
+      pole.classList.toggle('osh', !ok);
+      if (!ok) { inp.focus(); return; }
+      var est = a && (tel ? cifry(a.tel).slice(-10) === cifry(v).slice(-10) : (a.pochta || '').toLowerCase() === v.toLowerCase());
+      f.querySelector('[data-net]').hidden = !!est;
+      if (!est) return;
+      var btn = f.querySelector('[type=submit]'); btn.classList.add('idet'); btn.textContent = 'Отправляем код…';
+      setTimeout(function () {
+        T.kodEkran(karta, { kuda: tel ? T.telFormat(v) : v, nazad: function () { location.reload(); },
+          onOk: function () { var ak = T.akk(); ak.vid = vid; T.st.set('tucha.akk', ak); T.voyti(); T.goal('vhod_ok_' + vid); location.href = T.ROOT + 'kabinet/'; } });
+        T.toast('Код отправлен');
+      }, 600);
+    });
   });
-  document.querySelector('[data-demo]').addEventListener('click', function () {
-    var bloki = { hranenie: { pallety: 24, neznayu: false, rezhim: 'teply', etap: 'rabotaem', srok: 3 },
-      obrabotka: { ops: ['priemka', 'markirovka'] }, dostavka: { kuda: ['msk'] } };
-    var dost = ['hranenie', 'obrabotka', 'dostavka'];
-    T.st.set('tucha.akk', { inn: '7700000000', kompaniya: 'ООО «Пример» (демо)', imya: 'Демо-клиент', tel: '+7 (900) 000-00-00',
-      pochta: '', put: 'mir', vid: 'mir', persona: 'hranitel', kanal: 'zvonok', messenger: 'Telegram', status: 1,
-      manager: 'Анна', sozdan: Date.now(), uslugi: Object.keys(bloki), dost: dost,
-      mir: { v: 1, t: Date.now(), shag: 5, maks: 5, persona: 'hranitel', kanal: 'zvonok', messenger: 'Telegram', kontakt: '',
-        zayavki: 'kabinet', bloki: bloki, pomosh: false, bonus: { hochu: null, tekst: '', fayl: '' }, dost: dost, done: true } });
-    T.voyti(); location.href = T.ROOT + 'kabinet/';
+  var bloki = { hranenie: { pallety: 24, neznayu: false, rezhim: 'teply', etap: 'rabotaem', srok: 3 },
+    obrabotka: { ops: ['priemka', 'markirovka'] }, dostavka: { kuda: ['msk'] } };
+  var dost = ['hranenie', 'obrabotka', 'dostavka'];
+  var DEMO = {
+    prosto: { inn: '7700000000', kompaniya: 'ООО «Пример» (демо)', imya: 'Демо-клиент', tel: '+7 (900) 000-00-00', pochta: '', tip: 'ul',
+      put: 'prosto', vid: 'prosto', persona: null, kanal: 'zvonok', messenger: 'Telegram', status: 1, manager: 'Анна',
+      uslugi: ['hranenie', 'obrabotka', 'dostavka'], dost: [], mir: null },
+    mir: { inn: '7700000000', kompaniya: 'ООО «Пример» (демо)', imya: 'Демо-клиент', tel: '+7 (900) 000-00-00', pochta: '', tip: 'ul',
+      put: 'mir', vid: 'mir', persona: 'hranitel', kanal: 'zvonok', messenger: 'Telegram', status: 1, manager: 'Анна',
+      uslugi: Object.keys(bloki), dost: dost,
+      mir: { v: 1, t: 0, shag: 5, maks: 5, persona: 'hranitel', kanal: 'zvonok', messenger: 'Telegram', kontakt: '',
+        zayavki: 'kabinet', bloki: bloki, pomosh: false, bonus: { hochu: null, tekst: '', fayl: '' }, dost: dost, done: true } }
+  };
+  document.querySelectorAll('[data-demo]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var d = JSON.parse(JSON.stringify(DEMO[b.getAttribute('data-demo')]));
+      d.sozdan = Date.now(); if (d.mir) d.mir.t = Date.now();
+      T.st.set('tucha.akk', d); T.voyti(); location.href = T.ROOT + 'kabinet/';
+    });
   });
 })();</script>
 </body></html>
