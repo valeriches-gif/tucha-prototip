@@ -177,6 +177,21 @@ p { margin: 0 0 1em; }
 .gruppa-v { margin: 36px 0 12px; }
 .cta-pol { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 24px; }
 .smena-str { margin: 12px 0 0; }
+.urov-shkala { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 6px 0 10px; }
+.urov-shkala i { height: 8px; border-radius: 4px; background: var(--line, #D6E2EE); }
+.urov-shkala i.on { background: var(--ora, #EF7F1A); }
+.urovni-sp { display: grid; gap: 14px; margin: 18px 0; }
+.urov-g { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+.urov.tek { outline: 3px solid var(--ora, #EF7F1A); outline-offset: -3px; }
+.urov.proyden { opacity: .72; }
+.paket-v label span b { display: block; }
+.put-urovni { margin: 14px 0 0; font-size: 15px; line-height: 1.5; }
+.zadanie { margin: 12px 0 0; padding: 12px 14px; border-radius: 12px; background: #FFF4E6; border-left: 4px solid var(--ora, #EF7F1A); }
+.zadanie b { display: block; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #B85A0A; }
+.zadanie p { margin: 4px 0 0; }
+.zadanie.sezon { background: #FFE9D1; }
+.zad-obmen { display: grid; gap: 2px; font-size: 14px; color: var(--mute, #5F6B7C); }
+@media (max-width: 700px) { .urov-g { grid-template-columns: minmax(0, 1fr); } }
 .smena .pole { margin: 14px 0 0; }
 
 /* формы */
@@ -624,7 +639,7 @@ legend { font-weight: 600; color: var(--navy); margin: 0 0 8px; font-size: 15px;
 .put h3 { font-size: 28px; margin: 4px 0 2px; }
 .put-pod { color: var(--orange2); font-weight: 600; margin: 0 0 10px; }
 .zaymi { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 32px; align-items: center; }
-.zaymi-p { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.zaymi-p { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
 .zaymi-p div { background: var(--navy); color: #C9D6E6; border-radius: 18px; padding: 18px; }
 .zaymi-p b { display: block; font-size: 30px; color: #FFFFFF; letter-spacing: -.02em; }
 .zaymi-p span { font-size: 14px; }

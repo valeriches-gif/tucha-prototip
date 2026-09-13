@@ -6,11 +6,11 @@
 (function () {
   var T = window.Tucha, S = window.TuchaScena, Reg = window.TuchaReg, R = T.ROOT, esc = Reg.esc;
   var KEY = 'tucha.mir', STAVKA = 16.42;
-  var SKIDKA = { 0: 0, 1: 15, 2: 20, 3: 30 };
+  var SKIDKA = { 0: 0, 1: 15, 3: 20, 6: 30, 12: 40 };   // «Займи место под Тучей»
   var UROVNI = ['', 'Персонаж', 'Связь', 'Постройка', 'Бонус', 'Карта'];
   var PERS = {
     shturman: { ig: 'Штурман', pod: 'Коротко и по делу', fraza: 'Отвечаю быстро и по сути', st: [5, 2, 3] },
-    hranitel: { ig: 'Хранитель', pod: 'Подробно, с фото и отчётами', fraza: 'Пришлю фото и отчёт по каждой поставке', st: [3, 5, 3] },
+    hranitel: { ig: 'Хранитель', pod: 'Подробно, всё объясняет', fraza: 'Расскажу подробно, что и почему', st: [3, 5, 3] },
     arhitektor: { ig: 'Архитектор', pod: 'Сам предложит, как выгоднее', fraza: 'Посмотрю, где можно сэкономить', st: [3, 3, 5] },
     pomoshnik: { ig: 'Помощник на сайте', pod: 'Бот, не живой человек: отвечает сразу, днём и ночью', fraza: 'Отвечу сразу, а сложное передам живому человеку', st: [5, 3, 3], bot: true },
     auto: { ig: 'Неважно, назначьте сами', pod: 'Персонаж назначится автоматически', fraza: '', st: null }
@@ -19,7 +19,7 @@
   var KANALY = [['zvonok', 'Звонок'], ['pochta', 'Почта'], ['messenger', 'Мессенджер'], ['chat', 'Чат на сайте'], ['vstrecha', 'Встреча на складе']];
   var MESS = [['Telegram', 'Telegram'], ['WhatsApp', 'WhatsApp'], ['MAX', 'MAX']];
   var ZAYAVKI = [['kabinet', 'В личном кабинете'], ['messenger', 'Сообщением в мессенджер'], ['manager', 'Через персонажа']];
-  var DOST = { hranenie: 'Фундамент заложен', obrabotka: 'Своя мастерская', lavka: 'Место в Лавке', vitrina: 'Полка в Витрине',
+  var DOST = { hranenie: 'Фундамент заложен', obrabotka: 'Своя мастерская', lavka: 'Мой магазин в Лавке', vitrina: 'Полка в Витрине',
     dostavka: 'Телепорт настроен', tamozhnya: 'Портал открыт', vse: 'Всё под одной тучей' };
   var ZAVISIT = { obrabotka: 'hranenie', lavka: 'hranenie', vitrina: 'lavka' };
   var IM = { obrabotka: 'Мастерская', lavka: 'Лавка', vitrina: 'Витрина' };
@@ -50,7 +50,7 @@
       zayavki: 'kabinet', bloki: {}, pomosh: false, bonus: { hochu: null, tekst: '', fayl: '' }, bonusOtkryt: false, dost: [], done: false };
   }
   function defolt(k) {
-    return { hranenie: { pallety: 10, neznayu: false, rezhim: 'teply', etap: null, srok: 0 }, obrabotka: { ops: [] },
+    return { hranenie: { pallety: 10, neznayu: false, rezhim: 'teply', etap: null, srok: 0, biznes: null }, obrabotka: { ops: [] },
       lavka: { gde: [], dostup: null }, vitrina: { gde: [], vedenie: null }, dostavka: { kuda: [] }, tamozhnya: { strana: '' } }[k];
   }
   function sohr() { s.t = Date.now(); T.st.set(KEY, s); }
@@ -164,12 +164,12 @@
     ['pol', 'Пол персонажа', [['nevazhno', 'Неважно'], ['zh', 'Женский'], ['m', 'Мужской']]],
     ['vozrast', 'Возраст', [['nevazhno', 'Неважно'], ['do30', 'до 30'], ['30-45', '30-45'], ['45+', 'старше 45']]],
     ['harakter', 'Характер общения', [['shturman', '<b>Штурман</b><small>Коротко и только по делу</small>'],
-      ['hranitel', '<b>Хранитель</b><small>Подробно, с фото и отчётами</small>'],
+      ['hranitel', '<b>Хранитель</b><small>Подробно, всё объясняет</small>'],
       ['arhitektor', '<b>Архитектор</b><small>Сам предлагает, как сделать выгоднее</small>']]],
     ['format', 'Кто на связи', [['chelovek', 'Живой человек'], ['bot', 'Помощник-бот, отвечает сразу']]]
   ];
   var KRIT_TEKST = { zh: 'женщина', m: 'мужчина', do30: 'до 30 лет', '30-45': '30-45 лет', '45+': 'старше 45',
-    shturman: 'коротко и по делу', hranitel: 'подробно, с фото и отчётами', arhitektor: 'ищет, где выгоднее', bot: 'бот, отвечает сразу' };
+    shturman: 'коротко и по делу', hranitel: 'подробно, всё объясняет', arhitektor: 'ищет, где выгоднее', bot: 'бот, отвечает сразу' };
   var KRIT_FRAZY = {
     pol: 'Голова на месте: вот кто будет с вами на связи.',
     vozrast: 'Добавили деталь: так видно опыт.',
@@ -191,7 +191,7 @@
   function sborka() { return { pol: znach('pol'), vozrast: znach('vozrast'), harakter: znach('harakter'), bot: znach('format') === 'bot' }; }
   function r1() {
     s.kriterii = s.kriterii || {};
-    var h = zag(1, 'Какой персонаж вам подойдёт', 'Отметьте критерии, и персонаж соберётся из блоков у склада. Любой пункт можно оставить «неважно». Не сойдётесь характерами: персонажа можно сменить в кабинете.') +
+    var h = zag(1, 'Какой персонаж вам подойдёт', 'Отметьте критерии, и персонаж соберётся из блоков у склада. Любой пункт можно оставить «неважно». Фото и отчёт по каждой приёмке получают все. Не сойдётесь характерами: персонажа можно сменить в кабинете.') +
       '<div class="krit">' + KRIT.map(function (g) {
         return '<fieldset class="pole krit-g krit-' + g[0] + '"><legend>' + g[1] + '</legend>' +
           radio('m-' + g[0], g[2], s.kriterii[g[0]] || (g[0] === 'format' ? 'chelovek' : 'nevazhno')) + '</fieldset>';
@@ -297,8 +297,10 @@
         '<label class="galka"><input type="checkbox" name="nez"' + (b.neznayu ? ' checked' : '') + '><span>Пока не знаю</span></label></div>' +
         '<fieldset class="pole"><legend>Режим</legend>' + radio('rezhim', [['teply', 'Тёплый'], ['holodny', 'Холодный'], ['nevazhno', 'Не важно']], b.rezhim) + '</fieldset>' +
         '<fieldset class="pole"><legend>Этап</legend>' + radio('etap', [['start', 'Только запускаемся'], ['rabotaem', 'Уже работаем']], b.etap) + '</fieldset>' +
-        '<fieldset class="pole"><legend>Срок резервации <span class="nb">«Займи место под тучей»</span></legend>' +
-        radio('srok', [[0, 'По факту'], [1, '1 мес · −15 %'], [2, '2 мес · −20 %'], [3, '3 мес и больше · −30 %']], b.srok) + '</fieldset>' +
+        '<fieldset class="pole"><legend>Какой у вас бизнес <span class="nb">пакет привилегий с уровня «Туча»</span></legend>' +
+        radio('biznes', T.PAKETY.map(function (p) { return [p.k, p.imya]; }), b.biznes) + '</fieldset>' +
+        '<fieldset class="pole"><legend>Срок резервации <span class="nb">«Займи место под Тучей»</span></legend>' +
+        radio('srok', [[0, 'По факту'], [1, '1 мес · −15 %'], [3, '3 мес · −20 %'], [6, '6 мес · −30 %'], [12, '12 мес · −40 %']], b.srok) + '</fieldset>' +
         '<div class="raschet" data-raschet></div>';
     }
     if (k === 'obrabotka') return '<fieldset class="pole"><legend>Какие операции нужны <span class="nb">можно несколько</span></legend>' + galki('ops', OPS, b.ops) + '</fieldset>';
@@ -341,12 +343,12 @@
 
   function r4() {
     var b = s.bonus;
-    var h = zag(4, 'Для тех, кто запускается: первые полгода за наш счёт', 'Спецпредложение «Развитие». Условия:') +
+    var h = zag(4, '«Расти с Тучей»: шесть месяцев хранения и обработки бесплатно', 'Для тех, кто запускает бизнес. Условия:') +
       '<ul class="spis-ok"><li>Юрлицо или ИП на старте</li><li>Объём до 7 паллет или 7 000 кг</li><li>Бизнес-план в свободной форме</li>' +
-      '<li>Договор не короче года</li><li>Отгрузки не больше 70 % от размещённого</li></ul>' +
+      '<li>Срок работы не меньше года</li><li>Отгрузки не больше 70 % от размещённого</li></ul>' +
       '<div class="pole"><label for="b-tekst">Расскажите о бизнесе <span class="nb">необязательно</span></label>' +
       '<textarea id="b-tekst" name="bonus-tekst" maxlength="2000">' + esc(b.tekst) + '</textarea>' +
-      '<p class="podskaz">Что продаёте, где, какой объём через полгода · <span data-schet>' + b.tekst.length + '</span> / 2000</p></div>' +
+      '<p class="podskaz">Каким видите бизнес через 3-5 лет, какая сфера, свои средства или кредитные, ссылки на сайт и соцсети · <span data-schet>' + b.tekst.length + '</span> / 2000</p></div>' +
       '<div class="pole"><label for="b-fayl">Бизнес-план <span class="nb">PDF или DOC до 10 МБ</span></label>' +
       '<input id="b-fayl" name="bonus-fayl" type="file" accept=".pdf,.doc,.docx">' +
       (b.fayl ? '<p class="podskaz">Выбран: ' + esc(b.fayl) + '. Сам файл отправим после регистрации</p>' : '') +
@@ -360,7 +362,7 @@
   function svodka(k) {
     var b = s.bloki[k];
     if (k === 'hranenie') return b.neznayu ? 'объём пока не знаю' : b.pallety + ' ' + plural(b.pallety, 'паллета', 'паллеты', 'паллет') + ' · ' +
-      ({ teply: 'тёплый', holodny: 'холодный', nevazhno: 'режим не важен' }[b.rezhim] || '') + (b.srok ? ' · резерв ' + b.srok + (b.srok === 3 ? '+ мес' : ' мес') : ' · по факту') + (cena() ? ' · ≈ ' + rub(cena()) + ' в месяц' : '');
+      ({ teply: 'тёплый', holodny: 'холодный', nevazhno: 'режим не важен' }[b.rezhim] || '') + (b.srok ? ' · резерв ' + b.srok + ' мес' : ' · по факту') + (b.biznes ? ' · ' + T.PAKETY.filter(function (p) { return p.k === b.biznes; })[0].imya.toLowerCase() : '') + (cena() ? ' · ≈ ' + rub(cena()) + ' в месяц' : '');
     if (k === 'obrabotka') return b.ops.length ? imena(OPS, b.ops) : 'операции обсудим';
     if (k === 'lavka') return b.gde && b.gde.length ? 'продаёте: ' + imena(GDE, b.gde) : 'площадки обсудим';
     if (k === 'vitrina') return (b.vedenie ? imena(VEDENIE, [b.vedenie]).toLowerCase() : 'ведение обсудим') + (b.gde && b.gde.length ? ' · продаёте: ' + imena(GDE, b.gde) : '');
@@ -384,6 +386,8 @@
         return '<div class="karta-str"><div><b>' + x[0] + '</b><div class="kz">' + x[1] + '</div></div>' +
           '<button type="button" class="btn-t" data-izm="' + x[2] + '">Изменить</button></div>';
       }).join('') + '</div>' +
+      '<p class="put-urovni"><b>Дальше: семь уровней «Мира Тучи»</b> ' + T.KLUB.map(function (u) { return u.imya; }).join(' → ') +
+      '. Уровень растёт за месяцы с выполненными условиями и даёт привилегии.</p>' +
       '<div class="shag-niz"><button type="button" class="btn-t" data-nazad>Назад</button>' +
       '<button type="button" class="btn" data-sohr>' + (dostroit ? 'Сохранить в кабинет' : 'Сохранить мой мир') + '</button></div>' +
       '<div id="reg" class="reg-blok" hidden></div>';
@@ -605,7 +609,7 @@
       b.neznayu = t.checked;
       panel.querySelectorAll('[name=pal], [name=pal-r]').forEach(function (i) { i.disabled = t.checked; });
     }
-    else if (nm === 'rezhim' || nm === 'etap' || nm === 'dostup' || nm === 'strana' || nm === 'vedenie') b[nm] = t.value;
+    else if (nm === 'rezhim' || nm === 'etap' || nm === 'dostup' || nm === 'strana' || nm === 'vedenie' || nm === 'biznes') b[nm] = t.value;
     else if (nm === 'srok') b.srok = +t.value;
     else if (nm === 'ops' || nm === 'gde' || nm === 'kuda') {
       b[nm] = Array.prototype.map.call(panel.querySelectorAll('.kartochka [name=' + nm + ']:checked'), function (c) { return c.value; });

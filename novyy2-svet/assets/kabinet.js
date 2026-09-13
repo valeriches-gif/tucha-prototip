@@ -7,10 +7,10 @@
   if (!T.sessiya()) { location.replace(R + 'vhod/'); return; }
   var a = T.akk();
   var STATUSY = ['Мир сохранён', 'Персонаж на связи', 'Готовим договор', 'Договор подписан', 'Товар под тучей'];
-  var RAZDELY = [['glavnaya', 'Главная'], ['uslugi', 'Услуги'], ['pokupki', 'Покупки'], ['zayavki', 'Заявки'], ['dokumenty', 'Документы'], ['manager', 'Персонаж'], ['nastroyki', 'Настройки']];
-  var DOST = { hranenie: 'Фундамент заложен', obrabotka: 'Своя мастерская', lavka: 'Место в Лавке', vitrina: 'Полка в Витрине',
+  var RAZDELY = [['glavnaya', 'Главная'], ['urovni', 'Уровни'], ['uslugi', 'Услуги'], ['pokupki', 'Покупки'], ['zayavki', 'Заявки'], ['dokumenty', 'Документы'], ['manager', 'Персонаж'], ['nastroyki', 'Настройки']];
+  var DOST = { hranenie: 'Фундамент заложен', obrabotka: 'Своя мастерская', lavka: 'Мой магазин в Лавке', vitrina: 'Полка в Витрине',
     dostavka: 'Телепорт настроен', tamozhnya: 'Портал открыт', vse: 'Всё под одной тучей' };
-  var PERS = { shturman: ['Штурман', 'Отвечаю быстро и по сути'], hranitel: ['Хранитель', 'Пришлю фото и отчёт по каждой поставке'],
+  var PERS = { shturman: ['Штурман', 'Отвечаю быстро и по сути'], hranitel: ['Хранитель', 'Расскажу подробно, что и почему'],
     arhitektor: ['Архитектор', 'Посмотрю, где можно сэкономить'], pomoshnik: ['Помощник на сайте', 'Отвечу сразу, а сложное передам живому человеку'] };
   var KANALY = [['zvonok', 'Звонок'], ['pochta', 'Почта'], ['messenger', 'Мессенджер'], ['chat', 'Чат на сайте'], ['vstrecha', 'Встреча на складе']];
   var box = document.getElementById('kab'), menu = document.getElementById('kabMenu');
@@ -28,7 +28,7 @@
   function pers() { return a.persona && PERS[a.persona] ? PERS[a.persona] : null; }
 
   function rMenu() {
-    menu.innerHTML = RAZDELY.map(function (r) {
+    menu.innerHTML = RAZDELY.filter(function (r) { return r[0] !== 'urovni' || mir(); }).map(function (r) {
       var zam = (r[0] === 'zayavki' || r[0] === 'dokumenty') && (a.status || 0) < 3;
       var nazv = r[0] === 'manager' && !mir() ? 'Менеджер' : r[1];
       return '<button type="button" data-r="' + r[0] + '"' + (r[0] === razdel ? ' class="on" aria-current="page"' : '') + '>' + nazv +
@@ -66,7 +66,7 @@
   function imya() { return a.manager || 'Анна'; }
   /* смена персонажа в «Мире Тучи»: собрать другого по характеру и полу, постройка и история остаются */
   var IMENA = { zh: ['Анна', 'Мария', 'Ольга'], m: ['Олег', 'Дмитрий', 'Игорь'] };
-  var HARAKTER = [['shturman', 'Штурман', 'коротко и по делу'], ['hranitel', 'Хранитель', 'подробно, с фото и отчётами'], ['arhitektor', 'Архитектор', 'сам предложит, как выгоднее']];
+  var HARAKTER = [['shturman', 'Штурман', 'коротко и по делу'], ['hranitel', 'Хранитель', 'подробно, всё объясняет'], ['arhitektor', 'Архитектор', 'сам предложит, как выгоднее']];
   function rSmena() {
     var kr = a.kriterii || (a.mir && a.mir.kriterii) || {};
     return '<div class="kart smena"><h2 class="h3">Сменить персонажа</h2>' +
@@ -98,11 +98,48 @@
   /* уровни только в «Мире Тучи»; во «Всё просто» тарифов и уровней нет, есть скидка за срок */
   function rUroven() {
     if (!mir()) return '<div class="kart uroven-k"><h2 class="h3">Скидка за срок</h2><p class="uroven"><b>' +
-      ({ 0: 'по факту', 1: '−15 %', 2: '−20 %', 3: '−30 %' }[(a.mir && a.mir.bloki && a.mir.bloki.hranenie && a.mir.bloki.hranenie.srok) || 0]) + '</b></p>' +
-      '<p class="muted" style="margin:0">Резервация мест: −15 % за месяц, −20 % за два, −30 % от трёх.</p></div>';
-    return '<div class="kart uroven-k"><h2 class="h3">Уровень</h2><p class="uroven"><b>Тучка</b></p>' +
-      '<p class="muted" style="margin:0">Дальше Туча и Туча Макс: за выполненные условия.</p></div>';
+      ({ 0: 'по факту', 1: '−15 %', 3: '−20 %', 6: '−30 %', 12: '−40 %' }[(a.mir && a.mir.bloki && a.mir.bloki.hranenie && a.mir.bloki.hranenie.srok) || 0]) + '</b></p>' +
+      '<p class="muted" style="margin:0">«Займи место под Тучей»: −15 % за месяц, −20 % за 3, −30 % за 6, −40 % за 12 месяцев.</p></div>';
+    var i = T.klubUroven(a.staj), u = T.KLUB[i], sl = T.KLUB[i + 1], ost = sl ? sl.mes - (a.staj || 0) : 0;
+    return '<div class="kart uroven-k"><div class="razdel-h"><h2 class="h3">Уровень</h2><span class="muted">' + (i + 1) + ' из ' + T.KLUB.length + '</span></div>' +
+      '<p class="uroven"><b>' + u.imya + '</b></p>' +
+      '<div class="urov-shkala" aria-hidden="true">' + T.KLUB.map(function (x, k) { return '<i' + (k <= i ? ' class="on"' : '') + '></i>'; }).join('') + '</div>' +
+      (sl ? '<p class="muted" style="margin:0">До уровня «' + sl.imya + '»: ' + ost + ' ' + mes(ost) + ' с выполненными условиями. Новые условия: ' + sl.zad.join('; ').toLowerCase() + '.</p>'
+        : '<p class="muted" style="margin:0">Вершина «Мира Тучи».</p>') +
+      '<p class="smena-str"><button type="button" class="btn-t" data-idi="urovni">Все уровни и привилегии</button></p>' +
+      (sl ? rZadanie() : '') +
+      (sl ? '<p class="demo-p"><button type="button" class="btn-t" data-demo-mes>Демо: месяц с выполненными условиями</button></p>' : '') + '</div>';
   }
+  /* короткая цель на ближайшие недели: задание месяца, награда +1 месяц стажа, не больше половины пути */
+  function rZadanie() {
+    var z = T.zadanieMesyaca(), sd = a.zadanieSdano === new Date().getMonth();
+    return '<div class="zadanie' + (z.sezon ? ' sezon' : '') + '"><b>' + (z.sezon ? 'Сезонное задание' : 'Задание месяца') + '</b><p>' + z.tekst + '</p>' +
+      '<p class="zad-obmen">Вы получаете: ' + z.vam + ' и +1 месяц стажа</p>' +
+      (sd ? '<p class="muted">Выполнено, стаж начислен</p>' : '') +
+      (sd ? '' : '<p class="demo-p"><button type="button" class="btn-t" data-demo-zad>Демо: задание выполнено</button></p>') + '</div>';
+  }
+  function mes(n) { var m = n % 10, d = n % 100; return d > 10 && d < 20 ? 'месяцев' : m === 1 ? 'месяц' : m > 1 && m < 5 ? 'месяца' : 'месяцев'; }
+  function li(x) { return '<li>' + x + '</li>'; }
+  var PRAVILA_KLUB = ['Условия проверяем раз в месяц по фактам. Месяц засчитан, если выполнены все условия ступени',
+    'Сорвались: счётчик замирает, а не обнуляется', 'Пауза до 60 дней уровень не сбрасывает', 'Бесплатный период в стаж не идёт',
+    'Скидка уровня не складывается с «Займи место под Тучей»: действует большая',
+    '«Приведи под тучу»: за приведённого клиента 2 месяца стажа, но не больше половины пути до следующей ступени',
+    'Отсрочка снимается при первой просрочке и возвращается через 3 месяца без просрочек',
+    'Задание месяца: одно, необязательное, в пиковые месяцы сезонное. Награда +1 месяц стажа, ускорение не больше половины пути до следующего уровня',
+    'Новый уровень: персонаж звонит и рассказывает, что открылось. Годовщина договора: звонок и итоги года',
+    'Постройка в кабинете растёт вместе с уровнем: больше товара на площадке, больше туча, на «Мировой Туче» глобус'];
+  /* момент перехода на уровень и годовщина договора: звонок персонажа, а не письмо */
+  function plashkaUrovnya() {
+    if (a.novyyUroven === undefined || a.novyyUroven === null) return '';
+    var u = T.KLUB[a.novyyUroven];
+    if (!u) return '';
+    var god = a.godovshchina ? '<p><b>Год под Тучей.</b> ' + imya() + ' позвонит поздравить и подведёт итоги года: сколько дали привилегии уровня.</p>' : '';
+    return '<div class="plashka plashka-ok plashka-ur" role="status"><p><b>Новый уровень: ' + u.imya + '.</b> ' + imya() +
+      ' позвонит и расскажет, что теперь открыто: ' + u.daet.join(', ').toLowerCase() + '.</p>' + god +
+      '<p class="muted">Знаете, кому ещё нужен склад? «Приведи под тучу»: за приведённого клиента 2 месяца стажа.</p>' +
+      '<p><button type="button" class="btn-t" data-ur-ok>Понятно</button></p></div>';
+  }
+  function paket() { return a.paket || (a.mir && a.mir.bloki && a.mir.bloki.hranenie && a.mir.bloki.hranenie.biznes) || ''; }
   function izmenitPostroyku() {
     return '<p class="cta-pol"><a class="btn" href="' + R + 'start/mir/?dostroit=1">Изменить постройку</a><span class="muted">Добавьте новые блоки или уберите лишние: откроется конструктор с вашей постройкой</span></p>';
   }
@@ -115,15 +152,30 @@
 
   var RENDER = {
     glavnaya: function () {
-      var h = plashka() + verh(mir() ? 'Мой мир' : (a.imya ? 'Здравствуйте, ' + esc(a.imya) : 'Здравствуйте'));
+      var h = plashka() + (mir() ? plashkaUrovnya() : '') + verh(mir() ? 'Мой мир' : (a.imya ? 'Здравствуйте, ' + esc(a.imya) : 'Здравствуйте'));
       if (mir()) {
         h += '<div class="kab-mir"><div class="mir-scena kab-scena"><svg id="kabScena" role="img" aria-label="Ваш мир: постройка под тучей"></svg></div>' +
           '<div class="kab-kol">' + rStatus() + rUroven() + '</div></div><div class="setka s2 kab-niz">' + rManager() + rDost() + '</div>';
       } else {
         h += rStatus() + '<div class="setka s3 kab-niz">' + rManager() + rPrigotovit() + rUroven() + '</div>' +
-          '<div class="banner-mir"><div><b>Попробуйте «Мир Тучи»</b><p>Другой формат: персонаж по характеру, услуги из блоков и бонусы за выполненные условия.</p></div>' +
+          '<div class="banner-mir"><div><b>Попробуйте «Мир Тучи»</b><p>Другой формат: персонаж по характеру, услуги из блоков и семь уровней с привилегиями за выполненные условия.</p></div>' +
           '<a class="btn btn-2 btn-sm" href="' + R + 'start/mir/?dostroit=1">Собрать</a></div>';
       }
+      return h;
+    },
+    urovni: function () {
+      if (!mir()) return RENDER.glavnaya();
+      var i = T.klubUroven(a.staj), pk = paket();
+      var h = verh('Уровни') + '<p class="muted">Семь ступеней «Мира Тучи». Уровень растёт за месяцы подряд с выполненными условиями, объём не важен. Условия копятся: на каждой ступени добавляются новые.</p>';
+      h += '<div class="urovni-sp">' + T.KLUB.map(function (u, k) {
+        return '<div class="kart urov' + (k === i ? ' tek' : k < i ? ' proyden' : '') + '"><div class="razdel-h"><h2 class="h3">' + (k + 1) + '. ' + u.imya + '</h2><span class="muted">' +
+          (k === i ? 'ваш уровень · ' : '') + u.kogda + '</span></div>' +
+          '<div class="urov-g"><div><b>Условия</b><ul class="spis-ok">' + u.zad.map(li).join('') + '</ul></div>' +
+          '<div><b>Что даёт</b><ul class="spis-ok">' + u.daet.map(li).join('') + '</ul></div></div></div>';
+      }).join('') + '</div>';
+      h += '<div class="kart"><h2 class="h3">Пакет под ваш бизнес</h2><p class="muted">Работает с уровня «Туча». Выберите, что ближе.</p><div class="vybor paket-v">' +
+        T.PAKETY.map(function (p) { return '<label><input type="radio" name="paket" value="' + p.k + '"' + (pk === p.k ? ' checked' : '') + '><span><b>' + p.imya + '</b> ' + p.daet + '</span></label>'; }).join('') + '</div></div>';
+      h += '<div class="kart"><h2 class="h3">Правила</h2><ul class="spis-ok">' + PRAVILA_KLUB.map(li).join('') + '</ul></div>';
       return h;
     },
     uslugi: function () {
@@ -198,6 +250,7 @@
       sc.obnovit(bl, false);
       sc.persona(a.persona || 'auto');
       sc.kanal(kanal());
+      if (mir() && sc.uroven) { var ui = T.klubUroven(a.staj); sc.uroven(ui, T.KLUB[ui].imya, T.KLUB.length, !!a.novyyUroven); }
     }
   }
 
@@ -211,6 +264,27 @@
     var d = t.dataset;
     if (d.idi) { pokaz(d.idi); box.querySelector('h1').focus({ preventScroll: true }); }
     else if ('smenit' in d) smenit();
+    else if ('demoZad' in d) {
+      var b0 = T.klubUroven(a.staj), sl0 = T.KLUB[b0 + 1], pr = T.KLUB[b0];
+      var polputi = sl0 ? Math.floor((sl0.mes - pr.mes) / 2) : 0, uzhe = a.uskorenie && a.uskorenie.ur === b0 ? a.uskorenie.n : 0;
+      a.zadanieSdano = new Date().getMonth();
+      if (sl0 && uzhe < Math.max(1, polputi)) {
+        a.staj = Math.min(24, (a.staj || 0) + 1); a.uskorenie = { ur: b0, n: uzhe + 1 };
+        var s1 = T.klubUroven(a.staj); a.novyyUroven = s1 > b0 ? s1 : a.novyyUroven;
+        sohr(); pokaz(razdel); T.toast('Задание выполнено: +1 месяц стажа');
+      } else { sohr(); pokaz(razdel); T.toast('Задание выполнено. Ускорение на этом уровне уже максимальное: половина пути'); }
+    }
+    else if ('urOk' in d) { a.novyyUroven = null; a.godovshchina = false; sohr(); pokaz(razdel); }
+    else if ('demoMes' in d) {
+      var bylo = T.klubUroven(a.staj);
+      a.staj = Math.min(24, (a.staj || 0) + 1);
+      var st = T.klubUroven(a.staj), sl = T.KLUB[st + 1];
+      a.novyyUroven = st > bylo ? st : null; a.godovshchina = a.staj === 12 || a.staj === 24;
+      if (a.godovshchina && a.novyyUroven === null) a.novyyUroven = st;
+      sohr(); pokaz(razdel);
+      T.toast(st > bylo ? 'Новый уровень: ' + T.KLUB[st].imya + '. ' + imya() + ' позвонит и расскажет о привилегиях.'
+        : 'Месяц засчитан.' + (sl ? ' До уровня «' + sl.imya + '»: ' + (sl.mes - a.staj) + ' ' + mes(sl.mes - a.staj) + '.' : ''));
+    }
     else if (d.vid) { a.vid = d.vid; sohr(); pokaz(razdel); T.toast(d.vid === 'mir' ? 'Вид: мир' : 'Вид: простой'); }
     else if ('demoStatus' in d) {
       a.status = Math.min(4, (a.status || 0) + 1); sohr(); pokaz(razdel);
@@ -235,6 +309,7 @@
     var t = e.target;
     if (t.name === 'vid') { a.vid = t.value; sohr(); T.toast(t.value === 'mir' ? 'Вид: мир' : 'Вид: простой'); }
     if (t.name === 'kanal') { a.kanal = t.value; sohr(); T.toast('Сохранено'); }
+    if (t.name === 'paket') { a.paket = t.value; sohr(); T.toast('Пакет выбран: учтём с уровня «Туча»'); }
   });
 
   pokaz(razdel);

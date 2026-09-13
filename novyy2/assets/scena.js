@@ -63,6 +63,7 @@
     I.doroga(this.mir);
     this.animBl.dekor = [];
     I.dekor(this.mir, { anim: this.animBl.dekor });
+    this.urovenG = el('g', {}, this.mir);            // товар на площадке прибавляется с уровнем клиента
     var zad = el('g', {}, this.mir), zd = el('g', {}, this.mir), self = this;
     this.gr = {};
     ['dostavka', 'tamozhnya'].forEach(function (k) { self.gr[k] = el('g', { 'data-blok': k }, zad); });
@@ -87,11 +88,14 @@
     });
     this.chastitsy = el('g', {}, svg);
     this.yaschiki = el('g', {}, svg);
-    this.tuchaG = el('g', {}, svg);
+    this.tuchaS = el('g', {}, svg);                  // масштаб тучи по уровню, внутри неё покачивание
+    this.tuchaG = el('g', {}, this.tuchaS);
     I.tucha(this.tuchaG);
+    this.globusG = el('g', {}, this.tuchaG);
     this.kanalG = el('g', {}, svg);
     this.podpG = el('g', { 'class': 'podpisi' }, svg);
     this.nadpis = el('g', { opacity: 0 }, svg);
+    this.urovenN = el('g', { 'class': 'uroven-n' }, svg);
     this.zhivoy();
   }
 
@@ -360,6 +364,32 @@
     }).then(function () { self.iskry(400, 300); return pauza(500); });
   };
 
+  /* ---------- уровень клиента: постройка растёт вместе с ним ----------
+     На каждом уровне на площадке прибавляется паллета с товаром, туча становится больше,
+     на вершине над тучей встаёт глобус. В углу табличка уровня. */
+  var ZAPAS = [[1.45, 1.4], [0.55, 2.2], [2.3, 0.55], [3.2, 0.55], [4.1, 0.55], [5.6, 2.95], [5.35, 5.6]];
+  Scena.prototype.uroven = function (i, imya, vsego, prazdnik) {
+    var g = this.urovenG, n = this.urovenN, gl = this.globusG;
+    vsego = vsego || 7;
+    g.innerHTML = ''; n.innerHTML = ''; gl.innerHTML = '';
+    for (var k = 0; k < Math.min(i, ZAPAS.length); k++) {
+      I.yaschik(g, ZAPAS[k][0], ZAPAS[k][1], 0, 0.5);
+      if (k >= 3) I.yaschik(g, ZAPAS[k][0], ZAPAS[k][1], 18, 0.5);
+    }
+    masshtab(this.tuchaS, 400, 118, 1 + i * 0.035);
+    if (i >= vsego - 1) {
+      el('circle', { cx: 400, cy: 34, r: 26, fill: '#2F7FD1' }, gl);
+      el('path', { d: 'M384 20 q9 -6 17 1 q-3 9 -12 11 q-8 -3 -5 -12 Z M405 36 q11 -3 14 6 q-6 11 -15 8 q-5 -6 1 -14 Z M388 44 q5 -1 7 3 q-2 5 -6 4 q-3 -3 -1 -7 Z', fill: '#5DB86A' }, gl);
+      el('circle', { cx: 391, cy: 25, r: 8, fill: '#FFFFFF', 'fill-opacity': .3 }, gl);
+    }
+    if (imya) {
+      var s = imya + ' · ' + (i + 1) + ' из ' + vsego, w = s.length * 6.9 + 22;
+      el('rect', { x: 124, y: 44, width: w, height: 24, rx: 12, fill: '#FFFFFF', 'fill-opacity': .95, stroke: '#EF7F1A', 'stroke-width': 1.5 }, n);
+      txt(n, 124 + w / 2, 60.5, s, { 'font-size': 12, 'font-weight': 700, fill: '#1E3A5F' });
+    }
+    if (prazdnik) this.iskry(400, 110);
+  };
+
   /* иконка здания для панели блоков */
   function ikonka(svg, k) {
     svg.innerHTML = '';
@@ -374,7 +404,123 @@
   }
 
   window.TuchaScena = {
-    BLOKI: BLOKI, PORYADOK: PORYADOK, PERS: PERS, KANAL: KANAL, SBORKA: SBORKA, ikonka: ikonka,
+    BLOKI: BLOKI, PORYADOK: PORYADOK, PERS: PERS, KANAL: KANAL, SBORKA: SBORKA, ikonka: ikonka, Scena: Scena,
     sozdat: function (svg, opts) { return new Scena(svg, opts); }
   };
 })();
+
+/* Персонаж на площадке для современной версии: не фигурка из кубиков, а человек в том же свете,
+   что и постройка. Куртка по характеру (Штурман оранжевая, Хранитель синяя, Архитектор голубая)
+   со значком на груди, причёска по полу, седина и очки у старшего, кепка у молодого, бот с экраном.
+   Части по-прежнему падают по одной, как в игре. Дописывается в scena.js сборщиком sait/magiya. */
+(function (S) {
+  if (!S || !S.Scena) return;
+  var I = window.TuchaIzo, el = I.el, txt = I.txt, P = I.P;
+  var MX = 6.0, MY = 4.4;
+  var KURTKA = { shturman: ['#F07F1A', '#C45E0A'], hranitel: ['#2F5E96', '#1F4675'], arhitektor: ['#6C9CC6', '#4B7BA6'] };
+  var NEYTR = ['#8A97A5', '#6B7785'];
+  var KOZHA = ['#F1C9A5', '#D9AC86'];
+
+  function tixo() { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; }
+  function tween(ms, f) {
+    return new Promise(function (r) {
+      var t0 = null;
+      function k(now) {
+        if (t0 === null) t0 = now;
+        var t = Math.min(1, (now - t0) / ms);
+        f(t * t);
+        if (t < 1) requestAnimationFrame(k); else r();
+      }
+      requestAnimationFrame(k);
+    });
+  }
+  function put(d, fill, G, dop) { return el('path', Object.assign({ d: d, fill: fill }, dop || {}), G); }
+
+  S.Scena.prototype.menedzher = function (ch, anim, imya) {
+    var self = this, g = this.lyudi;
+    this.ch = ch || null;
+    g.innerHTML = '';
+    if (!ch) { this.chPred = 0; this.kanal(this.k); return Promise.resolve(); }
+    var b = P(MX, MY, 0), x = b[0], y = b[1], vs = ch.vozrast === '45+', chasti = [];
+    el('ellipse', { cx: x, cy: y, rx: 20, ry: 8, fill: 'rgba(14,23,38,.32)' }, g);
+
+    /* ноги и ботинки */
+    chasti.push(function (G) {
+      el('rect', { x: x - 9, y: y - 30, width: 8, height: 27, rx: 3, fill: '#2E3946' }, G);
+      el('rect', { x: x + 1, y: y - 30, width: 8, height: 27, rx: 3, fill: '#1F2832' }, G);
+      el('rect', { x: x - 11, y: y - 6, width: 11, height: 6, rx: 2.5, fill: '#141B23' }, G);
+      el('rect', { x: x + 1, y: y - 6, width: 11, height: 6, rx: 2.5, fill: '#0F151C' }, G);
+    });
+
+    /* туловище: куртка по характеру, свет слева, тень справа, значок на груди */
+    chasti.push(function (G) {
+      var c = ch.bot ? ['#C9D2DB', '#9AA6B2'] : (KURTKA[ch.harakter] || NEYTR);
+      put('M' + (x - 15) + ' ' + (y - 26) + ' L' + (x - 14) + ' ' + (y - 52) + ' Q' + (x - 10) + ' ' + (y - 60) + ' ' + x + ' ' + (y - 60) + ' L' + x + ' ' + (y - 26) + ' Z', c[0], G);
+      put('M' + x + ' ' + (y - 60) + ' Q' + (x + 10) + ' ' + (y - 60) + ' ' + (x + 14) + ' ' + (y - 52) + ' L' + (x + 15) + ' ' + (y - 26) + ' L' + x + ' ' + (y - 26) + ' Z', c[1], G);
+      el('rect', { x: x - 19, y: y - 55, width: 6, height: 26, rx: 3, fill: c[0] }, G);
+      el('rect', { x: x + 13, y: y - 55, width: 6, height: 26, rx: 3, fill: c[1] }, G);
+      el('circle', { cx: x - 16, cy: y - 28, r: 3.2, fill: KOZHA[0] }, G);
+      el('circle', { cx: x + 16, cy: y - 28, r: 3.2, fill: KOZHA[1] }, G);
+      if (!ch.bot) put('M' + (x - 5) + ' ' + (y - 60) + ' L' + x + ' ' + (y - 52) + ' L' + (x + 5) + ' ' + (y - 60) + ' Z', '#F4F6F8', G);
+      el('rect', { x: x - 15, y: y - 29, width: 30, height: 3, fill: '#000', 'fill-opacity': .18 }, G);
+      var zn = el('g', { transform: 'translate(' + (x - 7) + ',' + (y - 44) + ')' }, G), w = '#FFFFFF';
+      el('circle', { cx: 0, cy: 0, r: 4.6, fill: '#16202E' }, zn);
+      if (ch.harakter === 'shturman') { el('circle', { cx: 0, cy: 0, r: 3, fill: 'none', stroke: w, 'stroke-width': 1 }, zn); put('M0 -2.4 L1 0 L0 2.4 L-1 0 Z', '#F07F1A', zn); }
+      else if (ch.harakter === 'hranitel') { el('rect', { x: -3, y: -2, width: 6, height: 4.2, rx: .8, fill: w }, zn); el('circle', { cx: 0, cy: .1, r: 1.3, fill: '#16202E' }, zn); }
+      else if (ch.harakter === 'arhitektor') txt(zn, 0, 2.6, '₽', { 'font-size': 7, 'font-weight': 800, fill: w });
+    });
+
+    /* голова: лицо или экран бота, причёска по полу, седина у старшего */
+    chasti.push(function (G) {
+      if (ch.bot) {
+        el('rect', { x: x - 11, y: y - 80, width: 22, height: 19, rx: 5, fill: '#DDE5EC' }, G);
+        el('rect', { x: x - 8, y: y - 77, width: 16, height: 13, rx: 3, fill: '#16202E' }, G);
+        el('rect', { x: x - 5, y: y - 73, width: 3, height: 4, rx: 1, fill: '#7FD8FF' }, G);
+        el('rect', { x: x + 2, y: y - 73, width: 3, height: 4, rx: 1, fill: '#7FD8FF' }, G);
+        return;
+      }
+      el('rect', { x: x - 3, y: y - 64, width: 6, height: 6, fill: KOZHA[1] }, G);
+      el('ellipse', { cx: x, cy: y - 72, rx: 9, ry: 10, fill: KOZHA[0] }, G);
+      put('M' + x + ' ' + (y - 82) + ' A9 10 0 0 1 ' + x + ' ' + (y - 62) + ' Z', KOZHA[1], G, { 'fill-opacity': .55 });
+      var vol = vs ? '#9EA6B0' : ch.pol === 'zh' ? '#8A5530' : '#3F2A1C';
+      if (ch.pol === 'zh') put('M' + (x - 10) + ' ' + (y - 60) + ' Q' + (x - 13) + ' ' + (y - 84) + ' ' + x + ' ' + (y - 84) + ' Q' + (x + 13) + ' ' + (y - 84) + ' ' + (x + 10) + ' ' + (y - 60) + ' L' + (x + 7) + ' ' + (y - 62) + ' Q' + (x + 8) + ' ' + (y - 76) + ' ' + x + ' ' + (y - 77) + ' Q' + (x - 8) + ' ' + (y - 76) + ' ' + (x - 7) + ' ' + (y - 62) + ' Z', vol, G);
+      else put('M' + (x - 9.5) + ' ' + (y - 71) + ' Q' + (x - 10) + ' ' + (y - 84) + ' ' + x + ' ' + (y - 83) + ' Q' + (x + 10) + ' ' + (y - 84) + ' ' + (x + 9.5) + ' ' + (y - 71) + ' Q' + x + ' ' + (y - 78) + ' ' + (x - 9.5) + ' ' + (y - 71) + ' Z', vol, G);
+      el('circle', { cx: x - 3.4, cy: y - 72, r: 1.2, fill: '#16202E' }, G);
+      el('circle', { cx: x + 3.4, cy: y - 72, r: 1.2, fill: '#16202E' }, G);
+      put('M' + (x - 3) + ' ' + (y - 67) + ' Q' + x + ' ' + (y - 65) + ' ' + (x + 3) + ' ' + (y - 67), 'none', G, { stroke: '#A2584A', 'stroke-width': 1.1, 'stroke-linecap': 'round' });
+    });
+
+    /* деталь: антенна бота, кепка у молодого, очки у остальных */
+    if (ch.vozrast || ch.bot) chasti.push(function (G) {
+      if (ch.bot) {
+        el('line', { x1: x, y1: y - 80, x2: x, y2: y - 88, stroke: '#2A3440', 'stroke-width': 1.6 }, G);
+        el('circle', { cx: x, cy: y - 90, r: 2.8, fill: '#F07F1A' }, G);
+        return;
+      }
+      if (ch.vozrast === 'do30') {
+        put('M' + (x - 10) + ' ' + (y - 76) + ' Q' + x + ' ' + (y - 90) + ' ' + (x + 10) + ' ' + (y - 76) + ' Z', '#F07F1A', G);
+        el('rect', { x: x - 2, y: y - 78, width: 16, height: 3, rx: 1.5, fill: '#C45E0A' }, G);
+        return;
+      }
+      [-3.6, 3.6].forEach(function (d) { el('circle', { cx: x + d, cy: y - 72, r: 3.1, fill: 'rgba(255,255,255,.25)', stroke: '#16202E', 'stroke-width': 1.1 }, G); });
+      el('line', { x1: x - .6, y1: y - 72, x2: x + .6, y2: y - 72, stroke: '#16202E', 'stroke-width': 1.1 }, G);
+    });
+
+    var gr = chasti.map(function () { return el('g', {}, g); });
+    var podp = txt(g, x, y + 22, '', { 'font-size': 12, 'font-weight': 800, fill: '#FFFFFF', stroke: '#16202E', 'stroke-width': 3, 'paint-order': 'stroke' });
+    var bylo = this.chPred || 0, stalo = chasti.length;
+    this.chPred = stalo;
+    var cep = Promise.resolve();
+    chasti.forEach(function (f, i) {
+      var nov = anim && !tixo() && i >= bylo;
+      if (!nov) { f(gr[i]); return; }
+      cep = cep.then(function () {
+        f(gr[i]);
+        return tween(380, function (t) { gr[i].setAttribute('transform', 'translate(0,' + (-130 * (1 - t)).toFixed(1) + ')'); })
+          .then(function () { gr[i].removeAttribute('transform'); self.pyl(x, y); if (self.o.naPrizemlenie) self.o.naPrizemlenie('m'); });
+      });
+    });
+    if (anim && stalo <= bylo) { var v = P(MX, MY, 70); this.iskry(v[0], v[1]); }
+    return cep.then(function () { podp.textContent = imya || ''; self.kanal(self.k); });
+  };
+})(window.TuchaScena);

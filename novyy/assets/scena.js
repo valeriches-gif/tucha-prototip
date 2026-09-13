@@ -63,6 +63,7 @@
     I.doroga(this.mir);
     this.animBl.dekor = [];
     I.dekor(this.mir, { anim: this.animBl.dekor });
+    this.urovenG = el('g', {}, this.mir);            // товар на площадке прибавляется с уровнем клиента
     var zad = el('g', {}, this.mir), zd = el('g', {}, this.mir), self = this;
     this.gr = {};
     ['dostavka', 'tamozhnya'].forEach(function (k) { self.gr[k] = el('g', { 'data-blok': k }, zad); });
@@ -87,11 +88,14 @@
     });
     this.chastitsy = el('g', {}, svg);
     this.yaschiki = el('g', {}, svg);
-    this.tuchaG = el('g', {}, svg);
+    this.tuchaS = el('g', {}, svg);                  // масштаб тучи по уровню, внутри неё покачивание
+    this.tuchaG = el('g', {}, this.tuchaS);
     I.tucha(this.tuchaG);
+    this.globusG = el('g', {}, this.tuchaG);
     this.kanalG = el('g', {}, svg);
     this.podpG = el('g', { 'class': 'podpisi' }, svg);
     this.nadpis = el('g', { opacity: 0 }, svg);
+    this.urovenN = el('g', { 'class': 'uroven-n' }, svg);
     this.zhivoy();
   }
 
@@ -360,6 +364,32 @@
     }).then(function () { self.iskry(400, 300); return pauza(500); });
   };
 
+  /* ---------- уровень клиента: постройка растёт вместе с ним ----------
+     На каждом уровне на площадке прибавляется паллета с товаром, туча становится больше,
+     на вершине над тучей встаёт глобус. В углу табличка уровня. */
+  var ZAPAS = [[1.45, 1.4], [0.55, 2.2], [2.3, 0.55], [3.2, 0.55], [4.1, 0.55], [5.6, 2.95], [5.35, 5.6]];
+  Scena.prototype.uroven = function (i, imya, vsego, prazdnik) {
+    var g = this.urovenG, n = this.urovenN, gl = this.globusG;
+    vsego = vsego || 7;
+    g.innerHTML = ''; n.innerHTML = ''; gl.innerHTML = '';
+    for (var k = 0; k < Math.min(i, ZAPAS.length); k++) {
+      I.yaschik(g, ZAPAS[k][0], ZAPAS[k][1], 0, 0.5);
+      if (k >= 3) I.yaschik(g, ZAPAS[k][0], ZAPAS[k][1], 18, 0.5);
+    }
+    masshtab(this.tuchaS, 400, 118, 1 + i * 0.035);
+    if (i >= vsego - 1) {
+      el('circle', { cx: 400, cy: 34, r: 26, fill: '#2F7FD1' }, gl);
+      el('path', { d: 'M384 20 q9 -6 17 1 q-3 9 -12 11 q-8 -3 -5 -12 Z M405 36 q11 -3 14 6 q-6 11 -15 8 q-5 -6 1 -14 Z M388 44 q5 -1 7 3 q-2 5 -6 4 q-3 -3 -1 -7 Z', fill: '#5DB86A' }, gl);
+      el('circle', { cx: 391, cy: 25, r: 8, fill: '#FFFFFF', 'fill-opacity': .3 }, gl);
+    }
+    if (imya) {
+      var s = imya + ' · ' + (i + 1) + ' из ' + vsego, w = s.length * 6.9 + 22;
+      el('rect', { x: 124, y: 44, width: w, height: 24, rx: 12, fill: '#FFFFFF', 'fill-opacity': .95, stroke: '#EF7F1A', 'stroke-width': 1.5 }, n);
+      txt(n, 124 + w / 2, 60.5, s, { 'font-size': 12, 'font-weight': 700, fill: '#1E3A5F' });
+    }
+    if (prazdnik) this.iskry(400, 110);
+  };
+
   /* иконка здания для панели блоков */
   function ikonka(svg, k) {
     svg.innerHTML = '';
@@ -374,7 +404,7 @@
   }
 
   window.TuchaScena = {
-    BLOKI: BLOKI, PORYADOK: PORYADOK, PERS: PERS, KANAL: KANAL, SBORKA: SBORKA, ikonka: ikonka,
+    BLOKI: BLOKI, PORYADOK: PORYADOK, PERS: PERS, KANAL: KANAL, SBORKA: SBORKA, ikonka: ikonka, Scena: Scena,
     sozdat: function (svg, opts) { return new Scena(svg, opts); }
   };
 })();
