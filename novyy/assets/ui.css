@@ -67,6 +67,19 @@ h2, h3, .h3 { font-weight: 800; letter-spacing: -.01em; }
 .eb { display: inline-block; background: rgba(255, 255, 255, .75); color: var(--orange2); border-radius: 999px; padding: 5px 14px;
   box-shadow: inset 0 1px 0 #FFFFFF, 0 2px 0 #D6E4F1; letter-spacing: .06em; }
 
+/* переключатель трёх версий сайта: одинаковый в обычной, 8-битной и современной */
+.tv-versii { background: #0E1726; color: #8C9BAE; font: 13px/1.3 'Golos Text', system-ui, sans-serif; }
+.tv-versii .wrap { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 16px; min-height: 40px; }
+.tv-versii nav { display: inline-flex; gap: 2px; padding: 2px; border-radius: 4px; background: rgba(255, 255, 255, .08); }
+.tv-versii nav a { color: #D5DEE8; text-decoration: none; font-weight: 600; padding: 5px 12px; border-radius: 3px; transition: background-color .2s ease, color .2s ease; }
+.tv-versii nav a[aria-current] { background: #F07F1A; color: #16202E; }
+.tv-versii nav a:not([aria-current]):hover { background: rgba(255, 255, 255, .12); color: #fff; }
+.tv-v-gl a { color: #F5A55C; }
+.tv-v-gl a[aria-current] { color: #fff; font-weight: 600; text-decoration: none; }
+.tv-v-vse { margin-left: auto; color: #F5A55C; }
+.tv-versii a:focus-visible { outline: 2px solid #7FD8FF; outline-offset: 2px; }
+@media (max-width: 640px) { .tv-v-z { display: none; } .tv-v-vse { margin-left: 0; } }
+
 /* облака на небе страницы: мягко и редко */
 .nebo { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
 .nebo i { position: absolute; display: block; background: #FFFFFF; border-radius: 999px;

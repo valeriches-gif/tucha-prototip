@@ -541,7 +541,19 @@ transition: border-color .2s ease, color .2s ease; }
 }
 </style>
 </head>
-<body>
+<body><!--versii--><style>
+.tv-versii{background:#0E1726;color:#8C9BAE;font:13px/1.3 'Golos Text',system-ui,sans-serif;position:relative;z-index:1000}
+.tv-versii .tv-w{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;align-items:center;flex-wrap:wrap;gap:6px 16px;min-height:40px}
+.tv-versii nav{display:inline-flex;gap:2px;padding:2px;border-radius:4px;background:rgba(255,255,255,.08)}
+.tv-versii nav a{color:#D5DEE8;text-decoration:none;font-weight:600;padding:5px 12px;border-radius:3px}
+.tv-versii nav a[aria-current]{background:#F07F1A;color:#16202E}
+.tv-versii nav a:not([aria-current]):hover{background:rgba(255,255,255,.12);color:#fff}
+.tv-versii .tv-v-vse{margin-left:auto;color:#F5A55C}
+.tv-versii a:focus-visible{outline:2px solid #7FD8FF;outline-offset:2px}
+@media(max-width:640px){.tv-versii .tv-v-z{display:none}.tv-versii .tv-v-vse{margin-left:0}}
+</style><div class="tv-versii"><div class="tv-w"><span class="tv-v-z">Версия сайта</span>
+<nav aria-label="Версия сайта"><a href="./" aria-current="page">Обычная</a><a href="novyy/">8 бит</a><a href="novyy2/">Современная</a></nav>
+<a class="tv-v-vse" href="tri/">Сравнить три версии</a></div></div><!--/versii-->
 
 <div id="dc-root">
 

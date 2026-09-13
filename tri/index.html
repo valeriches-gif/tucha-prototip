@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Три версии сайта Тучи</title>
+<link rel="icon" type="image/png" href="../novyy/assets/img/znachok.png">
+<style>
+@font-face { font-family: 'Sklad'; src: url(../novyy2/assets/fonts/sklad-900.woff2) format('woff2'); font-weight: 900; font-display: swap; }
+@font-face { font-family: 'Sklad'; src: url(../novyy2/assets/fonts/sklad-700.woff2) format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Golos Text'; src: url(../novyy/assets/fonts/golos.woff2) format('woff2'); font-weight: 400 900; font-display: swap; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #E8EEF2; color: #16202E; font: 16px/1.5 'Golos Text', system-ui, sans-serif; }
+.shap { background: #0E1726; color: #fff; padding: 40px 24px 36px; position: relative; }
+.shap::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 10px;
+  background: repeating-linear-gradient(-45deg, #F07F1A 0 14px, #16202E 14px 28px); }
+.wrap { max-width: 1240px; margin: 0 auto; }
+.shap img { height: 56px; display: block; margin-bottom: 22px; }
+h1 { font-family: 'Sklad', sans-serif; font-weight: 900; text-transform: uppercase; font-size: clamp(40px, 6vw, 76px); line-height: .92; margin: 0 0 10px; }
+.shap p { margin: 0; color: #C7D2DE; max-width: 640px; font-size: 18px; }
+main { padding: 44px 24px 64px; }
+.setka { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.v { display: flex; flex-direction: column; background: #fff; color: inherit; text-decoration: none; border-radius: 3px;
+  box-shadow: 0 1px 0 #CBD4DC, 0 18px 34px -26px rgba(22, 32, 46, .45); transition: transform .25s cubic-bezier(.23, 1, .32, 1); }
+.okno { display: block; border-bottom: 1px solid #D5DDE4; }
+.bar { display: flex; gap: 5px; padding: 8px 10px; background: #EEF2F5; }
+.bar i { width: 8px; height: 8px; border-radius: 50%; background: #C5CFD8; }
+.okno img { display: block; width: 100%; height: auto; }
+.t { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px 20px; flex: 1; }
+.t b { font-family: 'Sklad', sans-serif; font-weight: 900; text-transform: uppercase; font-size: 32px; line-height: 1; }
+.t span { color: #5B6878; }
+.t em { margin-top: auto; padding-top: 10px; font-style: normal; font-family: 'Sklad', sans-serif; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .04em; align-self: flex-start; background: #F07F1A; color: #16202E; padding: 9px 16px; border-radius: 4px; }
+.v:focus-visible { outline: 3px solid #1E90D2; outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) { .v:hover { transform: translateY(-4px); } }
+@media (max-width: 900px) { .setka { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .v { transition: none; } }
+</style></head><body>
+<header class="shap"><div class="wrap">
+<img src="../novyy/assets/img/logo-v-svetl.png" alt="ТУЧА, Мировая Лавка" width="480" height="277">
+<h1>Три версии сайта</h1>
+<p>Один склад и один смысл, три подачи. Откройте любую: вверху каждой страницы есть переключатель, чтобы сравнить с тем же местом в другой версии.</p>
+</div></header>
+<main><div class="wrap setka"><a class="v" href="../">
+<span class="okno"><span class="bar"><i></i><i></i><i></i></span><img src="img/obych.jpg" alt="Главная страница, версия «Обычная»" width="960" height="595"></span>
+<span class="t"><b>Обычная</b><span>Классический сайт: услуги, цены, калькулятор, Витрина и кабинеты. Без игры.</span><em>Открыть</em></span></a><a class="v" href="../novyy/">
+<span class="okno"><span class="bar"><i></i><i></i><i></i></span><img src="img/8bit.jpg" alt="Главная страница, версия «8 бит»" width="960" height="595"></span>
+<span class="t"><b>8 бит</b><span>Игровой в пиксельном стиле: мир собирается из блоков, Проводник 8 бит, два формата работы.</span><em>Открыть</em></span></a><a class="v" href="../novyy2/">
+<span class="okno"><span class="bar"><i></i><i></i><i></i></span><img src="img/mod.jpg" alt="Главная страница, версия «Современная»" width="960" height="595"></span>
+<span class="t"><b>Современная</b><span>Игровой в стилистике склада: стеллажи, крафт-короба, адресные ярлыки, тонкие линии энергии.</span><em>Открыть</em></span></a></div></main>
+</body></html>

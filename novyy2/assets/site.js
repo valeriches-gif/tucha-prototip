@@ -203,7 +203,7 @@ window.Tucha = (function () {
     if (st.get('tucha.variant') === 'pechat') document.querySelectorAll('a.logo').forEach(function (a) { a.href = ROOT + '../novyy/pechat/'; });
 
     document.querySelectorAll('[data-dobavit]').forEach(function (b) {
-      b.addEventListener('click', function () { var k = b.getAttribute('data-dobavit'); dobMetku(k); goal('dobavit_' + k); location.href = ROOT + '../novyy/start/'; });
+      b.addEventListener('click', function () { var k = b.getAttribute('data-dobavit'); dobMetku(k); goal('dobavit_' + k); location.href = ROOT + 'start/'; });
     });
 
     document.querySelectorAll('[data-vybrali]').forEach(function (e) {

@@ -157,7 +157,7 @@
       (prodolzhit ? '<div class="plashka"><p>Продолжить строить? Вы остановились на уровне «' + UROVNI[prodolzhit] + '».</p>' +
         '<button type="button" class="btn btn-sm" data-prodolzhit>Продолжить</button><button type="button" class="btn-t" data-zanovo>Начать заново</button></div>' : '') +
       '<div class="cta-pol"><button type="button" class="btn"' + (prodolzhit ? ' data-zanovo-start' : ' data-start') + '>Начать строить</button>' +
-      '<a class="btn-t" href="' + R + 'start/prosto/">Мне всё просто</a></div>';
+      '<a class="btn-t" href="' + R + '../novyy/start/prosto/">Мне всё просто</a></div>';
   }
 
   var KRIT = [
@@ -506,14 +506,14 @@
     hud.hidden = true; rech.hidden = true; pop.innerHTML = '';
     document.body.classList.add('mir-final');
     panel.innerHTML = '<div class="final-t" tabindex="-1">' +
-      '<img class="final-art" src="' + R + '../novyy/assets/img/art-palec.jpg" alt="Проводник показывает большой палец: мир сохранён" width="480" height="787">' +
+      '<img class="final-art" src="' + R + 'assets/img/art-palec.jpg" alt="Проводник показывает большой палец: мир сохранён" width="480" height="787">' +
       '<p class="eb">Уровень пройден</p><h2>Мир сохранён</h2>' +
       '<p>' + (vKabinet ? 'Изменения уже в кабинете, ваш персонаж их увидит.' : 'Анна ' + T.kakSvyazhetsya(s.kanal, s.messenger) + '.') + '</p>' +
       '<p class="muted">' + s.dost.length + ' из 7 достижений · ' + Object.keys(s.bloki).length + ' из 6 блоков</p>' +
       '<a class="btn" href="' + R + 'kabinet/?novyy=' + (vKabinet ? 'dostroil' : '1') + '">В кабинет</a></div>';
     panel.firstChild.focus({ preventScroll: true });
     if (window.innerWidth < 900) svg.scrollIntoView({ behavior: tixo() ? 'auto' : 'smooth', block: 'center' });
-    sc.final('Всё под одной тучей', R + '../novyy/assets/img/koltso.png').then(function () {
+    sc.final('Всё под одной тучей', R + 'assets/img/koltso.png').then(function () {
       if (!tixo()) setTimeout(function () { location.href = R + 'kabinet/?novyy=' + (vKabinet ? 'dostroil' : '1'); }, 1500);
     });
   }

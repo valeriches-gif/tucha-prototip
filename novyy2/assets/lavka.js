@@ -144,7 +144,7 @@ window.TuchaLavka = (function () {
       }).join('') + '</div>';
   }
   function tint(t) { return 'linear-gradient(150deg,' + mix(t.cvet, '#FFFFFF', .84) + ',' + mix(t.cvet, '#FFFFFF', .62) + ')'; }
-  function ssylka(t) { return R + '../novyy/lavka/tovar/?id=' + t.id; }
+  function ssylka(t) { return R + 'lavka/tovar/?id=' + t.id; }
 
   function kartochka(t, o) {
     o = o || {};
@@ -177,7 +177,7 @@ window.TuchaLavka = (function () {
     var t = PO_ID[id];
     dobavit(id, u, q);
     polet(ot);
-    T.toast('В корзине: ' + t.name.split(',')[0] + ', ' + edN(t, u, q), { deystvie: 'Открыть корзину', onClick: function () { location.href = R + '../novyy/lavka/korzina/'; } });
+    T.toast('В корзине: ' + t.name.split(',')[0] + ', ' + edN(t, u, q), { deystvie: 'Открыть корзину', onClick: function () { location.href = R + 'lavka/korzina/'; } });
   }
 
   /* ---------- каталог ---------- */
@@ -290,7 +290,7 @@ window.TuchaLavka = (function () {
     }).join('');
     box.innerHTML =
       '<nav class="kroshki" aria-label="Путь"><a href="' + R + '../novyy/lavka/">Лавка</a><span aria-hidden="true">/</span>' +
-      '<a href="' + R + '../novyy/lavka/?kat=' + encodeURIComponent(t.cat) + '">' + esc(t.cat) + '</a><span aria-hidden="true">/</span><span>' + esc(t.name.split(',')[0]) + '</span></nav>' +
+      '<a href="' + R + 'lavka/?kat=' + encodeURIComponent(t.cat) + '">' + esc(t.cat) + '</a><span aria-hidden="true">/</span><span>' + esc(t.name.split(',')[0]) + '</span></nav>' +
       '<div class="tv-g"><div class="tv-foto" style="background:' + tint(t) + '">' +
       (t.badge ? '<span class="lv-badge">' + esc(t.badge) + '</span>' : '') + upak(t, 'upak upak-bol') +
       '<span class="lv-mesto">' + PIN + 'Химки, ' + esc(t.mesto) + '</span></div>' +
@@ -332,7 +332,7 @@ window.TuchaLavka = (function () {
       if (b.hasAttribute('data-minus')) shag(inp, -1);
       else if (b.hasAttribute('data-plus')) shag(inp, 1);
       else if (b.hasAttribute('data-v')) vKorzinu(t.id, u, Math.max(1, parseInt(inp.value, 10) || 1), box.querySelector('.upak-bol'));
-      else if (b.hasAttribute('data-kupit')) { dobavit(t.id, u, Math.max(1, parseInt(inp.value, 10) || 1)); location.href = R + '../novyy/lavka/zakaz/'; }
+      else if (b.hasAttribute('data-kupit')) { dobavit(t.id, u, Math.max(1, parseInt(inp.value, 10) || 1)); location.href = R + 'lavka/zakaz/'; }
       else if (b.hasAttribute('data-v-korz')) vKorzinu(+b.getAttribute('data-v-korz'), 'box', 1, b.closest('.lv-k').querySelector('.upak'));
     });
     var ryadom = D.tovary.filter(function (x) { return x.id !== t.id && (x.cat === t.cat || x.sel === t.sel); });
@@ -492,7 +492,7 @@ window.TuchaLavka = (function () {
         var_('oplata', 'karta', z.oplata, 'Картой', 'спишем сразу, чек на почту') +
         (komp ? var_('oplata', 'schet', z.oplata, 'По счёту', 'УПД и накладная, 3 дня на оплату') : '') +
         var_('oplata', 'poluch', z.oplata, 'При получении', 'наличными или картой на складе') + '</div></fieldset>' +
-        '<div class="pole" data-p="sogl"><label class="galka"><input type="checkbox" name="sogl"><span>Согласен на обработку персональных данных, <a href="' + R + '../novyy/dokumenty/#soglasie" target="_blank">текст согласия</a></span></label>' +
+        '<div class="pole" data-p="sogl"><label class="galka"><input type="checkbox" name="sogl"><span>Согласен на обработку персональных данных, <a href="' + R + 'dokumenty/#soglasie" target="_blank">текст согласия</a></span></label>' +
         '<p class="osh-t">Без согласия мы не можем оформить заказ</p></div>' +
         '<div class="shag-niz"><button type="button" class="btn-t" data-nazad>Назад</button><button type="submit" class="btn">' +
         (z.oplata === 'karta' ? 'Оплатить ' + rub(vsego()) : z.oplata === 'schet' ? 'Выставить счёт' : 'Забронировать товар') + '</button></div>' +
@@ -643,7 +643,7 @@ window.TuchaLavka = (function () {
         T.toast('Статус: ' + STATUSY[o.tip === 'sam' ? 'sam' : 'dost'][o.status] + '. Отправили SMS');
       } else if (b.hasAttribute('data-povtor')) {
         sp[+b.getAttribute('data-povtor')].poz.forEach(function (x) { if (PO_ID[x.id]) dobavit(x.id, x.u, x.q); });
-        T.toast('Положили в корзину тот же набор', { deystvie: 'Открыть корзину', onClick: function () { location.href = R + '../novyy/lavka/korzina/'; } });
+        T.toast('Положили в корзину тот же набор', { deystvie: 'Открыть корзину', onClick: function () { location.href = R + 'lavka/korzina/'; } });
       }
     });
     risovat();

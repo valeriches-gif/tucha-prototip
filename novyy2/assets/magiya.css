@@ -53,6 +53,7 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
 .magiya .btn-sm, .m-btn-sm { min-height: 42px; font-size: 16px; padding: 0 16px; }
 .magiya .btn-2, .m-btn-2 { background: transparent; color: inherit; box-shadow: inset 0 0 0 2px currentColor; }
 .magiya .btn-2 { color: var(--m-chernila); }
+.magiya :is(.banner-mir, .doroga-mir, .vhod-mir, .kl-hran, .kl-tp, .m-final, .m-kadr) .btn-2 { color: #fff; }
 .magiya .btn-2:hover, .m-btn-2:hover { background: rgba(127, 140, 160, .14); }
 .m-btn-tyomn { background: var(--m-chernila); color: #fff; }
 .m-btn-tyomn:hover { background: #26344A; }
@@ -225,6 +226,61 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
 .m-final-pr { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
 .m-tel { font-family: 'Sklad'; font-weight: 900; font-size: clamp(32px, 3.4vw, 48px); line-height: 1; color: #fff; text-decoration: none; white-space: nowrap; }
 .m-tel:hover { color: #F5A55C; }
+
+/* внутренние страницы: вместо мягкого объёма — бумага, ярлыки и таблички.
+   Переменные мягкого слоя (ui.css) становятся плоскими, поэтому хранение, Лавка, корзина,
+   заказ, форма, игра и кабинет переходят в складской вид без переписывания каждой страницы. */
+.magiya {
+  --bel-grad: linear-gradient(#FFFFFF, #FFFFFF); --bel-kray: #CBD4DC;
+  --ora-grad: linear-gradient(#F07F1A, #F07F1A); --ora-kray: #B85A0A;
+  --glub: 0 1px 0 #CBD4DC, 0 18px 34px -26px rgba(22, 32, 46, .45); --glub-s: 0 1px 0 #CBD4DC, 0 10px 20px -16px rgba(22, 32, 46, .4);
+  --navy: #16202E; --kontur: #16202E; --orange: #F07F1A; --orange2: #B85A0A; --sky-t: #EEF2F5; --r: 3px;
+}
+.magiya main :is(.kart, .pult, .put, .doroga, .usl-k, .klass, .kalk, .kartochka, .dver, .zamok, .cena-k, .shagi div, .fakty-p > div,
+  .kto-vy-k, .voprosy details, .cta-pers, .razvitie, .banner-mir, .persona-inf, .kl, .vhod-k, .lv-k, .kz-str, .kz-itog, .lv-filtr,
+  .tv-dost > div, .tv-otz, .lv-pusto, .pk, .zk-var > span, .tv-u > span, .lv-fakty li, .sf-para div, .kab-menu, .usl-hero .usl-scena,
+  .mir-scena, .promo, .klassy article, .cena-sek .klassy > *) {
+  border-radius: 3px !important; }
+.magiya main :is(.kart, .put, .doroga:not(.doroga-mir), .usl-k, .klass, .kalk, .kartochka, .dver, .zamok, .cena-k, .shagi div, .fakty-p > div,
+  .kto-vy-k, .voprosy details, .lv-k, .kz-str, .kz-itog, .lv-filtr, .tv-dost > div, .tv-otz, .lv-pusto, .pk) {
+  background-image: none !important; background-color: #FFFFFF; box-shadow: 0 1px 0 #CBD4DC, 0 18px 34px -26px rgba(22, 32, 46, .45) !important; }
+.magiya main h2 { font-family: 'Sklad'; font-weight: 900; text-transform: uppercase; letter-spacing: 0; line-height: .95; }
+.magiya main h3, .magiya main .h3 { font-family: 'Sklad'; font-weight: 700; letter-spacing: .01em; }
+.magiya h1 { text-shadow: none; }
+.magiya .muted { color: var(--m-seryy); }
+.magiya .eb { background: var(--m-chernila); color: #fff; border-radius: 2px; box-shadow: none; font-family: 'Sklad'; font-weight: 700;
+  letter-spacing: .08em; padding: 3px 9px; }
+.magiya .igr-imya { background: #fff; border-radius: 2px; box-shadow: 0 2px 0 rgba(0, 0, 0, .12); border-left: 6px solid var(--m-balka);
+  font-family: 'Sklad'; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+/* выбор: квадратные ярлыки, выбранный — тёмный, как код места */
+.magiya .vybor span { border-radius: 3px; background: #fff; background-image: none; box-shadow: inset 0 0 0 2px #C5CFD8; text-shadow: none; }
+.magiya .vybor label:active span { transform: none; box-shadow: inset 0 0 0 2px var(--m-chernila); }
+.magiya .vybor input:checked + span { background: var(--m-chernila); background-image: none; color: #fff; box-shadow: none; text-shadow: none; }
+.magiya .pole input[type=text], .magiya .pole input[type=tel], .magiya .pole input[type=email], .magiya .pole input[type=number],
+.magiya .pole textarea, .magiya .pole select, .magiya .lv-poisk input, .magiya .shtepper { border-radius: 3px; border: 2px solid #C5CFD8; box-shadow: none; background: #fff; }
+.magiya .pole input:focus, .magiya .pole textarea:focus, .magiya .pole select:focus, .magiya .lv-poisk input:focus { border-color: var(--m-balka); box-shadow: 0 0 0 3px rgba(240, 127, 26, .22); }
+.magiya input[type=checkbox], .magiya input[type=radio] { accent-color: var(--m-balka); }
+.magiya .btn-t { color: var(--m-chernila); }
+.magiya .btn[disabled] { background: #C5CFD8; color: #6B7786; box-shadow: none; transform: none; }
+/* Лавка и корзина: ярлыки вместо таблеток */
+.magiya :is(.lv-chips button, .lv-pod button, .kz-u button, .lv-badge, .lv-lest span, .lv-mesto, .tv-u i, .pk-st, .zk-shagi li, .zk-shagi i) { border-radius: 3px !important; }
+.magiya :is(.lv-chips button, .lv-pod button) { background: #fff; box-shadow: inset 0 0 0 2px #C5CFD8; }
+.magiya :is(.lv-chips button, .lv-pod button)[aria-pressed=true] { background: var(--m-chernila); color: #fff; box-shadow: none; }
+.magiya .lv-badge { box-shadow: none; }
+.magiya .lv-lest span:nth-child(3) { box-shadow: none; }
+.magiya .korz-l { border-radius: 3px; box-shadow: none; }
+.magiya .kz-mesta i { border-radius: 2px; }
+.magiya .zk-karta { border-radius: 6px; box-shadow: none; }
+/* игра: табло уровней, реплика-ярлык, кнопки блоков как короба с ярлыком */
+.magiya .stage .hud { background: var(--m-angar); border-radius: 3px; box-shadow: 0 2px 0 rgba(0, 0, 0, .4); }
+.magiya .provodnik-v .rech, .magiya .hero-malchik .rech { border-radius: 3px; background: #fff; background-image: none; box-shadow: 0 3px 0 rgba(0, 0, 0, .25); }
+.magiya .provodnik-v .rech::before, .magiya .hero-malchik .rech::before { background: var(--m-chernila); color: #fff; border-radius: 2px; box-shadow: none; font-family: 'Sklad'; }
+.magiya .blok-k { border-radius: 3px; background: #fff; box-shadow: inset 0 0 0 2px #C5CFD8; }
+.magiya .blok-k[aria-pressed=true] { background: #FBF3EA; box-shadow: inset 0 0 0 2px var(--m-balka); }
+.magiya .dost { border-radius: 3px; background: var(--m-chernila); border-left: 6px solid var(--m-balka); }
+.magiya .kab-menu button { border-radius: 3px; }
+.magiya .kab-menu button.on { background: var(--m-chernila); color: #fff; }
+.magiya .toast { border-radius: 3px; }
 
 /* общие страницы (форма, вход, кабинет): заголовки табличным шрифтом */
 .magiya main h1, .magiya .kab-h { font-family: 'Sklad'; font-weight: 900; text-transform: uppercase; letter-spacing: 0; line-height: .92; }

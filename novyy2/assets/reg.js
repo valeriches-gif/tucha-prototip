@@ -22,7 +22,7 @@ window.TuchaReg = (function () {
       '<input id="r-inn" type="text" inputmode="numeric" maxlength="12" autocomplete="off" value="' + esc(p.inn) + '">' +
       '<p class="podskaz">10 цифр у компании, 12 у ИП</p><p class="osh-t">Проверьте ИНН: 10 цифр у компании или 12 у ИП</p></div>' +
       '<div data-est-akk hidden class="plashka"><p>С этим ИНН уже есть аккаунт. Войти или написать нам?</p>' +
-      '<a class="btn btn-sm" href="' + R + 'vhod/">Войти</a><a class="btn-t" href="https://t.me/tucha_ml">Написать нам</a></div>' +
+      '<a class="btn btn-sm" href="' + R + '../novyy/vhod/">Войти</a><a class="btn-t" href="https://t.me/tucha_ml">Написать нам</a></div>' +
       (o.kratko ? '<div class="pole" data-p="imya" data-fl><label for="r-imya">ФИО</label>' +
       '<input id="r-imya" type="text" maxlength="80" autocomplete="name" value="' + esc(p.imya) + '">' +
       '<p class="osh-t">Впишите фамилию и имя</p></div>' :
@@ -52,7 +52,7 @@ window.TuchaReg = (function () {
         '<textarea id="r-kom" maxlength="500" placeholder="Что везёте и сколько">' + esc(p.kommentariy) + '</textarea></div>';
     }
     h += '<div class="pole" data-p="soglasie"><label class="galka"><input type="checkbox" id="r-sogl">' +
-      '<span>Согласен на обработку персональных данных, <a href="' + R + '../novyy/dokumenty/#soglasie" target="_blank">текст согласия</a></span></label>' +
+      '<span>Согласен на обработку персональных данных, <a href="' + R + 'dokumenty/#soglasie" target="_blank">текст согласия</a></span></label>' +
       '<p class="osh-t">Без согласия мы не можем сохранить данные</p></div>' +
       '<button class="btn" type="submit">' + (o.knopka || 'Получить код') + '</button></form>';
     box.innerHTML = h;
