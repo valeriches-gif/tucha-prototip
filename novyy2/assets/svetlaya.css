@@ -26,16 +26,13 @@ body.m-svet { --m-den: #FFFFFF; --m-den-kray: #D5DDE4; background: #EEF2F5; }
 .m-svet .podval .tel-bol { color: var(--m-chernila); }
 .m-svet .podval .niz { border-top-color: var(--m-den-kray); color: var(--m-seryy); }
 
-/* первый экран днём: светлый арт как отпечаток на стеллаже */
+/* первый экран днём: Проводник с арта, низ уходит за ярлыки мест, без рамки и подписи */
 .m-svet .m-hero { background: linear-gradient(180deg, #FFFFFF 0%, #E4ECF2 100%); color: var(--m-chernila); }
-.m-svet .m-hero-art { left: auto; right: max(24px, calc((100vw - 1200px) / 2)); top: 44px; bottom: auto; width: min(34%, 400px); aspect-ratio: 480 / 600;
-  overflow: visible; transform: rotate(2.5deg); background: #fff; padding: 12px 12px 42px; box-shadow: 0 2px 0 rgba(0, 0, 0, .12), 0 30px 50px -30px rgba(22, 32, 46, .5); }
-.m-svet .m-hero-art img { position: static; inset: auto; width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; transform: none; transition: none; }
-.m-svet .m-hero-art::after { inset: auto; left: 50%; top: -14px; width: 120px; height: 30px; transform: translateX(-50%) rotate(-3deg);
-  background: linear-gradient(90deg, rgba(255, 246, 222, .55), rgba(238, 218, 180, .75) 50%, rgba(255, 246, 222, .55)); }
+.m-svet .m-hero-art { left: auto; right: max(16px, calc((100vw - 1200px) / 2)); top: 24px; bottom: 58px; width: min(40%, 470px); overflow: visible; }
+.m-svet .m-hero-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%;
+  transform: translate3d(calc(var(--mx, 0) * -6px), 0, 0); transition: transform .7s var(--ease-out); }
+.m-svet .m-hero-art::after { display: none; }
 .m-svet .m-vihr { display: none; }
-.m-svet .m-hero-art::before { content: 'Проводник Тучи'; position: absolute; left: 16px; right: 16px; bottom: 10px; font-family: 'Marker', cursive;
-  font-size: 22px; color: var(--m-stoyka); text-align: center; }
 .m-svet .m-h1 { color: var(--m-chernila); }
 .m-svet .m-h1::before { background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, .9) 47%, rgba(255, 255, 255, .4) 53%, transparent 62%); }
 .m-svet .m-h1::after { background: repeating-linear-gradient(-9deg, transparent 0 46px, rgba(22, 32, 46, .05) 46px 48px); }
@@ -79,7 +76,7 @@ body.m-svet { --m-den: #FFFFFF; --m-den-kray: #D5DDE4; background: #EEF2F5; }
 .m-svet .dost { background: #fff; color: var(--m-chernila); box-shadow: 0 1px 0 #D0D9E1, 0 12px 22px -14px rgba(22, 32, 46, .4); }
 
 @media (max-width: 1000px) {
-  .m-svet .m-hero-art { position: relative; right: auto; top: auto; width: min(70%, 320px); margin: 0 auto 12px; opacity: 1; display: block; }
+  .m-svet .m-hero-art { position: relative; inset: auto; width: min(46%, 200px); height: 300px; margin: 0 auto 8px; opacity: 1; display: block; }
   .m-svet .m-hero { padding-top: 28px; }
 }
 @media (max-width: 700px) {

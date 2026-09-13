@@ -26,13 +26,12 @@ body.m-svet { --m-den: #FFFFFF; --m-den-kray: #D5DDE4; background: #EEF2F5; }
 .m-svet .podval .tel-bol { color: var(--m-chernila); }
 .m-svet .podval .niz { border-top-color: var(--m-den-kray); color: var(--m-seryy); }
 
-/* первый экран днём: Проводник в полный рост стоит на полу склада, без рамки и подписи */
+/* первый экран днём: Проводник с арта, низ уходит за ярлыки мест, без рамки и подписи */
 .m-svet .m-hero { background: linear-gradient(180deg, #FFFFFF 0%, #E4ECF2 100%); color: var(--m-chernila); }
-.m-svet .m-hero-art { left: auto; right: max(24px, calc((100vw - 1200px) / 2 + 40px)); top: 28px; bottom: 150px; width: min(30%, 340px); overflow: visible; }
+.m-svet .m-hero-art { left: auto; right: max(16px, calc((100vw - 1200px) / 2)); top: 24px; bottom: 58px; width: min(40%, 470px); overflow: visible; }
 .m-svet .m-hero-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%;
   transform: translate3d(calc(var(--mx, 0) * -6px), 0, 0); transition: transform .7s var(--ease-out); }
-.m-svet .m-hero-art::after { inset: auto; left: 18%; right: 18%; bottom: -8px; height: 20px; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(22, 32, 46, .22), transparent); }
+.m-svet .m-hero-art::after { display: none; }
 .m-svet .m-vihr { display: none; }
 .m-svet .m-h1 { color: var(--m-chernila); }
 .m-svet .m-h1::before { background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, .9) 47%, rgba(255, 255, 255, .4) 53%, transparent 62%); }

@@ -50,7 +50,7 @@ window.TuchaChat = (function () {
     o = o || {};
     var id = 'chat' + (++n);
     box.innerHTML = '<div class="chat' + (o.vstroen ? ' chat-v' : '') + '">' +
-      '<div class="chat-verh"><img src="' + R + 'assets/img/maskot.webp" alt="" width="34" height="62">' +
+      '<div class="chat-verh"><img src="' + R + 'assets/img/provodnik-golova.webp" alt="" width="34" height="34">' +
       '<div><b>Помощник Тучи</b><span>бот, не живой человек · отвечает сразу</span></div>' +
       (o.zakryt ? '<button type="button" class="chat-x" aria-label="Закрыть чат">×</button>' : '') + '</div>' +
       '<div class="chat-lenta" role="log" aria-live="polite"></div>' +

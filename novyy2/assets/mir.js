@@ -506,7 +506,7 @@
     hud.hidden = true; rech.hidden = true; pop.innerHTML = '';
     document.body.classList.add('mir-final');
     panel.innerHTML = '<div class="final-t" tabindex="-1">' +
-      '<img class="final-art" src="' + R + 'assets/img/art-palec.jpg" alt="Проводник показывает большой палец: мир сохранён" width="480" height="787">' +
+      '<img class="final-art" src="' + R + 'assets/img/provodnik-palec.webp" alt="Проводник показывает большой палец: мир сохранён" width="781" height="900">' +
       '<p class="eb">Уровень пройден</p><h2>Мир сохранён</h2>' +
       '<p>' + (vKabinet ? 'Изменения уже в кабинете, ваш персонаж их увидит.' : 'Анна ' + T.kakSvyazhetsya(s.kanal, s.messenger) + '.') + '</p>' +
       '<p class="muted">' + s.dost.length + ' из 7 достижений · ' + Object.keys(s.bloki).length + ' из 6 блоков</p>' +
