@@ -33,6 +33,30 @@ body.m-svet { --m-den: #FFFFFF; --m-den-kray: #D5DDE4; background: #EEF2F5; }
   transform: translate3d(calc(var(--mx, 0) * -6px), 0, 0); transition: transform .7s var(--ease-out); }
 .m-svet .m-hero-art::after { display: none; }
 .m-svet .m-vihr { display: none; }
+/* стеллаж за Проводником: размеры от ширины арта (cqw), верхняя балка чуть выше облака, стеллаж сдвигается слабее мальчика */
+.m-svet .m-hero-art { container-type: size; }
+.m-svet .m-hs { --hs-l: -16cqw; display: block; position: absolute; inset: 0; pointer-events: none;
+  transform: translate3d(calc(var(--mx, 0) * -2px), 0, 0); transition: transform .7s var(--ease-out); }
+.m-hs-st { position: absolute; top: -24px; bottom: 0; width: 18px;
+  background: repeating-linear-gradient(180deg, transparent 0 14px, rgba(8, 16, 30, .55) 14px 22px) center / 6px 100% no-repeat,
+              linear-gradient(90deg, #1F4E8C, #3A78C2 50%, #1F4E8C); }
+.m-hs-st-l { left: var(--hs-l); }
+.m-hs-st-r { right: 2cqw; }
+.m-hs-b { position: absolute; left: var(--hs-l); right: 2cqw; height: 13px; background: var(--m-balka); box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .2); }
+.m-hs-b1, .m-hs-b0 { --b1: min(calc(115.2cqw + 14px), calc(100cqh - 26cqw)); bottom: var(--b1); }
+.m-hs-b0 { bottom: calc(var(--b1) + 34cqw); }
+/* третья полка только когда помещается по высоте целиком (арт выше 1,7 своей ширины), иначе её режет шапка */
+@container (min-aspect-ratio: 47 / 80) { .m-hs-b0 { display: none; } }
+.m-hs-b2 { bottom: 50cqw; }
+.m-hs-k { position: absolute; left: var(--x); bottom: calc(100% + var(--y, 0px)); width: var(--w); height: var(--h); border-radius: 2px 2px 1px 1px;
+  background: repeating-linear-gradient(90deg, rgba(110, 70, 30, .07) 0 2px, transparent 2px 6px), linear-gradient(180deg, #DDBB93, #C99F72);
+  box-shadow: inset 0 -5px 0 rgba(80, 50, 20, .12); }
+.m-hs-kr { left: auto; right: var(--r); }
+.m-hs-k::before { content: ''; position: absolute; left: 50%; top: 0; width: 32%; height: 42%; transform: translateX(-50%);
+  background: linear-gradient(90deg, rgba(255, 246, 222, 0), rgba(255, 246, 222, .5) 18%, rgba(238, 218, 180, .45) 82%, rgba(255, 246, 222, 0)); }
+.m-hs-k .m-trafaret { left: 10%; top: auto; bottom: 14%; width: 30%; height: auto; }
+.m-hs-y { position: absolute; left: 8%; bottom: 12%; background: #fff; padding: 4px 5px; border-radius: 2px; box-shadow: 0 1px 0 rgba(0, 0, 0, .18); }
+.m-hs-y .m-kod { display: block; font-size: 11px; padding: 1px 5px; }
 .m-svet .m-h1 { color: var(--m-chernila); }
 .m-svet .m-h1::before { background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, .9) 47%, rgba(255, 255, 255, .4) 53%, transparent 62%); }
 .m-svet .m-h1::after { background: repeating-linear-gradient(-9deg, transparent 0 46px, rgba(22, 32, 46, .05) 46px 48px); }
@@ -75,10 +99,17 @@ body.m-svet { --m-den: #FFFFFF; --m-den-kray: #D5DDE4; background: #EEF2F5; }
 .m-svet .hud-schet b { color: var(--m-chernila); }
 .m-svet .dost { background: #fff; color: var(--m-chernila); box-shadow: 0 1px 0 #D0D9E1, 0 12px 22px -14px rgba(22, 32, 46, .4); }
 
+/* на средних ширинах заголовок ближе к арту: стеллаж не выходит левее картинки, нижний левый короб убран за мальчика */
+@media (max-width: 1240px) {
+  .m-svet .m-hs { --hs-l: 0cqw; }
+  .m-hs-kn { display: none; }
+}
 @media (max-width: 1000px) {
   .m-svet .m-hero-art { position: relative; inset: auto; width: min(46%, 200px); height: 300px; margin: 0 auto 8px; opacity: 1; display: block; }
   .m-svet .m-hero { padding-top: 28px; }
+  .m-svet .m-hs { display: none; }
 }
+@media (prefers-reduced-motion: reduce) { .m-svet .m-hs { transition: none; transform: none; } }
 @media (max-width: 700px) {
   .m-kn-hero { margin-bottom: 0; }
   .m-svet .m-kadr img { height: 220px; }

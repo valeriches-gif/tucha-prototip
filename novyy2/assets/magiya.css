@@ -83,6 +83,7 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
 .m-anim .m-vihr path:nth-child(2) { animation-duration: 4.6s; animation-delay: -2s; stroke-width: 1.2; }
 .m-anim .m-vihr path:nth-child(3) { animation-duration: 7.2s; animation-delay: -1s; }
 @keyframes mVihr { to { stroke-dashoffset: -100; } }
+.m-hs { display: none; }
 
 .m-hero-g { position: relative; z-index: 2; min-height: clamp(400px, 54vh, 560px); display: flex; align-items: center; }
 .m-hero-t { max-width: 620px; }
@@ -100,7 +101,7 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
   background: repeating-linear-gradient(-9deg, transparent 0 46px, rgba(255, 255, 255, .06) 46px 48px); }
 .m-anim .m-h1:not(.namotka)::after { opacity: 0; }
 .m-anim .m-h1.namotka::before { animation: mNamotka 1.4s var(--ease-in-out) .15s both; }
-@keyframes mNamotka { 0% { transform: translateX(-130%) skewX(-12deg); opacity: 1; } 100% { transform: translateX(130%) skewX(-12deg); opacity: 1; } }
+@keyframes mNamotka { 0% { transform: translateX(-130%) skewX(-12deg); opacity: 1; } 80% { opacity: 1; } 100% { transform: translateX(130%) skewX(-12deg); opacity: 0; } }
 .m-lead { font-size: 19px; line-height: 1.5; color: #C7D2DE; max-width: 520px; margin: 0 0 30px; }
 .m-kn { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 14px; }
 
