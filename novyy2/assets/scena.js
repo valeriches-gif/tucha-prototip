@@ -238,7 +238,7 @@
       el('line', { x1: 8.5, y1: 11.6, x2: 7.1, y2: 11.6, stroke: '#1E3A5F', 'stroke-width': 1.3 }, L);
     });
     var gr = chasti.map(function () { return el('g', {}, g); });
-    var podp = txt(g, ten[0], ten[1] + 24, '', { 'font-size': 12, 'font-weight': 800, fill: '#1E3A5F' });
+    var podp = txt(g, ten[0], ten[1] + 24, '', { 'font-size': 12, 'font-weight': 800, fill: '#FFFFFF', stroke: '#16202E', 'stroke-width': 3, 'paint-order': 'stroke' });
     var bylo = this.chPred || 0, stalo = chasti.length;
     this.chPred = stalo;
     var cep = Promise.resolve();

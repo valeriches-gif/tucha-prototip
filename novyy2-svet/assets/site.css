@@ -176,6 +176,8 @@ p { margin: 0 0 1em; }
 .voprosy details p { padding: 0 0 18px; margin: 0; color: #3A4A60; }
 .gruppa-v { margin: 36px 0 12px; }
 .cta-pol { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 24px; }
+.smena-str { margin: 12px 0 0; }
+.smena .pole { margin: 14px 0 0; }
 
 /* формы */
 .pole { margin: 0 0 18px; }

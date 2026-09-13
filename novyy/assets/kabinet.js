@@ -43,7 +43,7 @@
   function plashka() {
     if (!novyy) return '';
     var t = novyy === 'dostroil' ? 'Мир сохранён. Изменения уже видит ваш персонаж.' :
-      mir() ? 'Ваш мир сохранён. Анна ' + T.kakSvyazhetsya(kanal(), a.messenger) + '.' :
+      mir() ? 'Ваш мир сохранён. ' + imya() + ' ' + T.kakSvyazhetsya(kanal(), a.messenger) + '.' :
       'Готово. Менеджер позвонит в рабочее время, пн-пт с 9:00 до 18:00.';
     return '<div class="plashka plashka-ok" role="status"><p>' + t + '</p></div>';
   }
@@ -55,12 +55,41 @@
   }
   function rManager(podrobno) {
     var p = pers(), st = a.status || 0;
-    return '<div class="kart manager"><div class="m-verh"><span class="ava" aria-hidden="true">А</span><div><b>Анна</b><span class="muted">' +
+    return '<div class="kart manager"><div class="m-verh"><span class="ava" aria-hidden="true">' + imya()[0] + '</span><div><b>' + imya() + '</b><span class="muted">' +
       (p ? p[0] + ' · ' : '') + 'ваш ' + ktoNaSvyazi() + '</span></div></div>' +
       (p && podrobno ? '<p class="fraza">«' + p[1] + '»</p>' : '') +
-      '<p>' + (st < 1 ? 'Анна ' + T.kakSvyazhetsya(kanal(), a.messenger) + '.' : 'На связи в рабочее время: пн-пт с 9:00 до 18:00.') + '</p>' +
+      '<p>' + (st < 1 ? imya() + ' ' + T.kakSvyazhetsya(kanal(), a.messenger) + '.' : 'На связи в рабочее время: пн-пт с 9:00 до 18:00.') + '</p>' +
       '<div class="m-kn"><a class="btn btn-2 btn-sm" href="tel:+74956658242" data-goal="call_click">Позвонить</a>' +
-      '<a class="btn btn-2 btn-sm" href="https://t.me/tucha_ml">Написать в Telegram</a></div></div>';
+      '<a class="btn btn-2 btn-sm" href="https://t.me/tucha_ml">Написать в Telegram</a></div>' +
+      (mir() && !podrobno ? '<p class="smena-str"><button type="button" class="btn-t" data-idi="manager">Не сошлись характерами? Сменить персонажа</button></p>' : '') + '</div>';
+  }
+  function imya() { return a.manager || 'Анна'; }
+  /* смена персонажа в «Мире Тучи»: собрать другого по характеру и полу, постройка и история остаются */
+  var IMENA = { zh: ['Анна', 'Мария', 'Ольга'], m: ['Олег', 'Дмитрий', 'Игорь'] };
+  var HARAKTER = [['shturman', 'Штурман', 'коротко и по делу'], ['hranitel', 'Хранитель', 'подробно, с фото и отчётами'], ['arhitektor', 'Архитектор', 'сам предложит, как выгоднее']];
+  function rSmena() {
+    var kr = a.kriterii || (a.mir && a.mir.kriterii) || {};
+    return '<div class="kart smena"><h2 class="h3">Сменить персонажа</h2>' +
+      '<p class="muted">Не сошлись характерами? Соберите другого. Постройка, заявки и история останутся.</p>' +
+      '<fieldset class="pole"><legend>Характер общения</legend><div class="vybor">' + HARAKTER.map(function (x) {
+        return '<label><input type="radio" name="sm-harakter" value="' + x[0] + '"' + ((a.persona || '') === x[0] ? ' checked' : '') + '><span><b>' + x[1] + '</b>: ' + x[2] + '</span></label>';
+      }).join('') + '</div></fieldset>' +
+      '<fieldset class="pole"><legend>Пол</legend><div class="vybor">' + [['nevazhno', 'Неважно'], ['zh', 'Женский'], ['m', 'Мужской']].map(function (x) {
+        return '<label><input type="radio" name="sm-pol" value="' + x[0] + '"' + ((kr.pol || 'nevazhno') === x[0] ? ' checked' : '') + '><span>' + x[1] + '</span></label>';
+      }).join('') + '</div></fieldset>' +
+      '<p><button type="button" class="btn btn-sm" data-smenit>Сменить персонажа</button></p></div>';
+  }
+  function smenit() {
+    var h = box.querySelector('[name=sm-harakter]:checked'), pl = box.querySelector('[name=sm-pol]:checked');
+    var pol = pl ? pl.value : 'nevazhno', bylo = imya();
+    if (!h) { T.toast('Выберите характер общения'); return; }
+    var spisok = pol === 'm' ? IMENA.m : pol === 'zh' ? IMENA.zh : IMENA.zh.concat(IMENA.m);
+    var nov = spisok.filter(function (x) { return x !== bylo; })[0];
+    a.persona = h.value; a.manager = nov;
+    a.kriterii = Object.assign({}, a.kriterii || {}, { harakter: h.value, pol: pol });
+    if (a.mir) { a.mir.persona = h.value; a.mir.kriterii = Object.assign({}, a.mir.kriterii || {}, { harakter: h.value, pol: pol }); }
+    sohr(); pokaz('manager');
+    T.toast('Персонаж сменён: ' + nov + ', ' + PERS[h.value][0] + '. ' + nov + ' ' + T.kakSvyazhetsya(kanal(), a.messenger) + '.');
   }
   function rPrigotovit() {
     return '<div class="kart"><h2 class="h3">Что приготовить к разговору</h2><ul class="spis-ok">' +
@@ -74,10 +103,14 @@
     return '<div class="kart uroven-k"><h2 class="h3">Уровень</h2><p class="uroven"><b>Тучка</b></p>' +
       '<p class="muted" style="margin:0">Дальше Туча и Туча Макс: за выполненные условия.</p></div>';
   }
+  function izmenitPostroyku() {
+    return '<p class="cta-pol"><a class="btn" href="' + R + 'start/mir/?dostroit=1">Изменить постройку</a><span class="muted">Добавьте новые блоки или уберите лишние: откроется конструктор с вашей постройкой</span></p>';
+  }
   function rDost() {
     var d = a.dost || (a.mir && a.mir.dost) || [];
     return '<div class="kart"><div class="razdel-h"><h2 class="h3">Достижения</h2><span class="muted">' + d.length + ' из 7</span></div><div class="ach">' +
-      Object.keys(DOST).map(function (k) { return '<span class="' + (d.indexOf(k) >= 0 ? 'est' : '') + '">' + DOST[k] + '</span>'; }).join('') + '</div></div>';
+      Object.keys(DOST).map(function (k) { return '<span class="' + (d.indexOf(k) >= 0 ? 'est' : '') + '">' + DOST[k] + '</span>'; }).join('') + '</div>' +
+      '<p class="smena-str"><a class="btn-t" href="' + R + 'start/mir/?dostroit=1">Изменить постройку: добавить или убрать блоки</a></p></div>';
   }
 
   var RENDER = {
@@ -101,7 +134,7 @@
         return '<div class="usl-str"><span class="st-bl"><i class="cv" style="background:' + B.fill + '"></i><span><b>' + B.ig + '</b> · ' + B.ob + '</span></span>' +
           '<span class="muted">' + ((a.status || 0) >= 3 ? 'в договоре' : 'обсудим при звонке') + '</span></div>';
       }).join('') : '<p class="pusto">Услуги пока не выбраны. Добавьте нужные: учтём их в договоре.</p>') + '</div>';
-      if (mir()) h += '<p class="cta-pol"><a class="btn" href="' + R + 'start/mir/?dostroit=1">Достроить</a><span class="muted">Откроется конструктор с вашей постройкой</span></p>';
+      if (mir()) h += izmenitPostroyku();
       else if (net.length) {
         h += '<div class="kart dobavit-usl"><h2 class="h3">Добавить услугу</h2><div class="vybor">' + net.map(function (x) {
           return '<label><input type="checkbox" name="nov-usl" value="' + x[0] + '"><span>' + x[1] + '</span></label>';
@@ -128,7 +161,7 @@
         '<p class="muted">Счета и акты появятся после первой приёмки.</p>';
     },
     manager: function () {
-      return verh(mir() ? 'Персонаж' : 'Менеджер') + '<div class="setka s2">' + rManager(true) +
+      return verh(mir() ? 'Персонаж' : 'Менеджер') + '<div class="setka s2">' + rManager(true) + (mir() ? rSmena() : '') +
         '<div class="kart"><h2 class="h3">Чат</h2><p class="muted">Сейчас отвечает помощник, бот, не живой человек: сразу, днём и ночью. ' +
         (mir() ? 'Чат с вашим персонажем' : 'Чат с менеджером') + ' откроется после договора.</p><div data-chat-kab></div></div></div>';
     },
@@ -176,7 +209,9 @@
     var t = e.target.closest('button');
     if (!t) return;
     var d = t.dataset;
-    if (d.vid) { a.vid = d.vid; sohr(); pokaz(razdel); T.toast(d.vid === 'mir' ? 'Вид: мир' : 'Вид: простой'); }
+    if (d.idi) { pokaz(d.idi); box.querySelector('h1').focus({ preventScroll: true }); }
+    else if ('smenit' in d) smenit();
+    else if (d.vid) { a.vid = d.vid; sohr(); pokaz(razdel); T.toast(d.vid === 'mir' ? 'Вид: мир' : 'Вид: простой'); }
     else if ('demoStatus' in d) {
       a.status = Math.min(4, (a.status || 0) + 1); sohr(); pokaz(razdel);
       T.toast('Статус: ' + statusy()[a.status] + (a.status > 0 ? '. Отправили вам сообщение' : ''));
