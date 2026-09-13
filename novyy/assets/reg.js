@@ -12,23 +12,27 @@ window.TuchaReg = (function () {
 
   function forma(box, o) {
     o = o || {};
-    var p = o.predzapolnit || {}, R = T.ROOT;
+    var p = o.predzapolnit || {}, R = T.ROOT, fl = p.tip === 'fl';
+    /* юрлицо или ИП — с ИНН и названием; физическое лицо — без ИНН, с ФИО */
     var h = '<form novalidate class="reg">' +
       '<fieldset class="pole reg-tip"><legend>Вы регистрируетесь как</legend><div class="vybor">' +
-      '<label><input type="radio" name="r-tip" value="ul"' + (p.tip !== 'ip' ? ' checked' : '') + '><span>Юрлицо: ООО, АО</span></label>' +
-      '<label><input type="radio" name="r-tip" value="ip"' + (p.tip === 'ip' ? ' checked' : '') + '><span>Индивидуальный предприниматель</span></label></div></fieldset>' +
-      '<div class="pole" data-p="inn"><label for="r-inn">ИНН</label>' +
+      '<label><input type="radio" name="r-tip" value="ul"' + (fl ? '' : ' checked') + '><span>Юрлицо или ИП</span></label>' +
+      '<label><input type="radio" name="r-tip" value="fl"' + (fl ? ' checked' : '') + '><span>Физическое лицо</span></label></div></fieldset>' +
+      '<div class="pole" data-p="inn" data-ul><label for="r-inn">ИНН</label>' +
       '<input id="r-inn" type="text" inputmode="numeric" maxlength="12" autocomplete="off" value="' + esc(p.inn) + '">' +
-      '<p class="podskaz" data-inn-pod></p><p class="osh-t" data-inn-osh></p></div>' +
+      '<p class="podskaz">10 цифр у компании, 12 у ИП</p><p class="osh-t">Проверьте ИНН: 10 цифр у компании или 12 у ИП</p></div>' +
       '<div data-est-akk hidden class="plashka"><p>С этим ИНН уже есть аккаунт. Войти или написать нам?</p>' +
       '<a class="btn btn-sm" href="' + R + 'vhod/">Войти</a><a class="btn-t" href="https://t.me/tucha_ml">Написать нам</a></div>' +
-      (o.kratko ? '' : '<div class="pole" data-p="kompaniya"><label for="r-komp" data-komp-l>Название компании</label>' +
+      (o.kratko ? '<div class="pole" data-p="imya" data-fl><label for="r-imya">ФИО</label>' +
+      '<input id="r-imya" type="text" maxlength="80" autocomplete="name" value="' + esc(p.imya) + '">' +
+      '<p class="osh-t">Впишите фамилию и имя</p></div>' :
+      '<div class="pole" data-p="kompaniya" data-ul><label for="r-komp">Название компании или ИП</label>' +
       '<input id="r-komp" type="text" maxlength="160" autocomplete="organization" value="' + esc(p.kompaniya) + '">' +
       '<p class="podskaz">В рабочей версии подставится само по ИНН из справочника компаний</p>' +
       '<p class="osh-t">Впишите название компании или ИП</p></div>' +
-      '<div class="pole" data-p="imya"><label for="r-imya">Как к вам обращаться</label>' +
-      '<input id="r-imya" type="text" maxlength="60" autocomplete="name" value="' + esc(p.imya) + '">' +
-      '<p class="osh-t">Как к вам обращаться?</p></div>') +
+      '<div class="pole" data-p="imya"><label for="r-imya" data-imya-l>Как к вам обращаться</label>' +
+      '<input id="r-imya" type="text" maxlength="80" autocomplete="name" value="' + esc(p.imya) + '">' +
+      '<p class="osh-t" data-imya-osh>Как к вам обращаться?</p></div>') +
       '<div class="pole" data-p="tel"><label for="r-tel">Телефон</label>' +
       '<input id="r-tel" type="tel" autocomplete="tel" value="' + esc(p.tel) + '">' +
       '<p class="podskaz">На него придёт код</p><p class="osh-t">Не хватает цифр в номере</p></div>' +
@@ -40,7 +44,7 @@ window.TuchaReg = (function () {
       h += '<fieldset class="pole"><legend>Какие услуги интересны <span class="nb">необязательно</span></legend><div class="vybor">' +
         USLUGI.map(function (u) {
           return '<label><input type="checkbox" name="usl" value="' + u[0] + '"' + (otm.indexOf(u[0]) >= 0 ? ' checked' : '') + '>' +
-            '<span>' + u[1] + (u[2] ? ' <i class="skoro">скоро</i>' : '') + '</span></label>';
+            '<span>' + u[1] + '</span></label>';
         }).join('') + '</div><p class="podskaz" data-skoro-pod hidden>Лавка работает: расскажем при звонке, как выставить ваш товар</p></fieldset>';
     }
     if (o.kommentariy) {
@@ -58,33 +62,28 @@ window.TuchaReg = (function () {
     T.maska(tel);
     if (tel.value) tel.value = T.telFormat(tel.value);
     inn.addEventListener('input', function () { inn.value = inn.value.replace(/\D/g, ''); });
-    /* юрлицо или ИП: от выбора зависят длина ИНН и подпись поля с названием */
     function tip() { var r = box.querySelector('[name=r-tip]:checked'); return r ? r.value : 'ul'; }
+    function fiz() { return tip() === 'fl'; }
+    /* поля другого типа прячем и снимаем с них ошибки: физлицу не нужны ИНН и название */
     function podTip() {
-      var ip = tip() === 'ip', kl = box.querySelector('[data-komp-l]');
-      box.querySelector('[data-inn-pod]').textContent = ip ? '12 цифр, как в листе записи ЕГРИП' : '10 цифр, как в выписке ЕГРЮЛ';
-      box.querySelector('[data-inn-osh]').textContent = ip ? 'Проверьте ИНН: у предпринимателя 12 цифр' : 'Проверьте ИНН: у компании 10 цифр';
-      if (kl) kl.textContent = ip ? 'ФИО предпринимателя' : 'Название компании';
+      box.querySelectorAll('[data-ul]').forEach(function (e) { e.hidden = fiz(); if (fiz()) e.classList.remove('osh'); });
+      box.querySelectorAll('[data-fl]').forEach(function (e) { e.hidden = !fiz(); if (!fiz()) e.classList.remove('osh'); });
+      if (fiz()) el('[data-est-akk]').hidden = true;
+      var il = box.querySelector('[data-imya-l]'), io = box.querySelector('[data-imya-osh]');
+      if (il) il.textContent = fiz() ? 'ФИО' : 'Как к вам обращаться';
+      if (io) io.textContent = fiz() ? 'Впишите фамилию и имя' : 'Как к вам обращаться?';
     }
-    box.querySelectorAll('[name=r-tip]').forEach(function (r) {
-      r.addEventListener('change', function () { podTip(); if (inn.value) pokazat('inn'); });
-    });
-    /* ввели ИНН другого вида: переключаем выбор сами, а не показываем ошибку */
-    function avtoTip() {
-      var d = inn.value.replace(/\D/g, '');
-      if (T.innOk(d) && (d.length === 12) !== (tip() === 'ip')) { box.querySelector('[name=r-tip][value=' + (d.length === 12 ? 'ip' : 'ul') + ']').checked = true; podTip(); }
-    }
-    inn.addEventListener('blur', avtoTip);
+    box.querySelectorAll('[name=r-tip]').forEach(function (r) { r.addEventListener('change', podTip); });
     podTip();
     var pr = {
-      inn: function () { var d = inn.value.replace(/\D/g, ''); return T.innOk(d) && (d.length === 12) === (tip() === 'ip'); },
-      kompaniya: function () { return !komp || komp.value.trim().length > 1; },
-      imya: function () { return !imya || imya.value.trim().length > 0; },
+      inn: function () { return fiz() || T.innOk(inn.value.replace(/\D/g, '')); },
+      kompaniya: function () { return !komp || fiz() || komp.value.trim().length > 1; },
+      imya: function () { return !imya || (o.kratko && !fiz()) || imya.value.trim().length > (fiz() ? 2 : 0); },
       tel: function () { return T.telOk(tel.value); },
       pochta: function () { return !pochta || !pochta.value.trim() || T.pochtaOk(pochta.value); },
       soglasie: function () { return sogl.checked; }
     };
-    if (o.kratko) { delete pr.kompaniya; delete pr.imya; delete pr.pochta; }
+    if (o.kratko) { delete pr.kompaniya; delete pr.pochta; }
     function pokazat(k) { var ok = pr[k](); box.querySelector('[data-p="' + k + '"]').classList.toggle('osh', !ok); return ok; }
     [[inn, 'inn'], [komp, 'kompaniya'], [imya, 'imya'], [tel, 'tel'], [pochta, 'pochta']].filter(function (x) { return x[0]; }).forEach(function (x) {
       x[0].addEventListener('blur', function () { if (x[0].value) pokazat(x[1]); });
@@ -101,16 +100,15 @@ window.TuchaReg = (function () {
 
     f.addEventListener('submit', function (e) {
       e.preventDefault();
-      avtoTip();
       var pervaya = null;
       Object.keys(pr).forEach(function (k) { if (!pokazat(k) && !pervaya) pervaya = k; });
-      var akk = T.akk(), dubl = akk && akk.inn === inn.value.replace(/\D/g, '');
+      var akk = T.akk(), dubl = !fiz() && akk && akk.inn && akk.inn === inn.value.replace(/\D/g, '');
       el('[data-est-akk]').hidden = !dubl;
       if (pervaya) { box.querySelector('[data-p="' + pervaya + '"] input').focus(); return; }
       if (dubl) { inn.focus(); return; }
       var d = {
-        tip: tip(), inn: inn.value.replace(/\D/g, ''),
-        kompaniya: komp ? komp.value.trim() : (tip() === 'ip' ? 'ИП, ИНН ' : 'Компания по ИНН ') + inn.value.replace(/\D/g, ''),
+        tip: tip(), inn: fiz() ? '' : inn.value.replace(/\D/g, ''),
+        kompaniya: fiz() ? 'Частное лицо' : komp ? komp.value.trim() : 'Компания по ИНН ' + inn.value.replace(/\D/g, ''),
         imya: imya ? imya.value.trim() : '', tel: tel.value, pochta: pochta ? pochta.value.trim() : '',
         uslugi: Array.prototype.map.call(box.querySelectorAll('[name=usl]:checked'), function (c) { return c.value; }),
         kommentariy: box.querySelector('#r-kom') ? box.querySelector('#r-kom').value.trim() : ''

@@ -36,7 +36,7 @@
     }).join('');
   }
   function verh(h) {
-    return '<div class="kab-verh"><div><h1 class="kab-h">' + h + '</h1><p class="muted">' + esc(a.kompaniya) + ' · ИНН ' + esc(a.inn) + '</p></div>' +
+    return '<div class="kab-verh"><div><h1 class="kab-h">' + h + '</h1><p class="muted">' + (a.tip === 'fl' ? 'Частное лицо · ' + esc(a.imya || a.tel) : esc(a.kompaniya) + ' · ИНН ' + esc(a.inn)) + '</p></div>' +
       '<div class="vid-pereklyuch" role="group" aria-label="Вид кабинета"><button type="button" data-vid="prosto"' + (mir() ? '' : ' class="on" aria-pressed="true"') + '>Простой</button>' +
       '<button type="button" data-vid="mir"' + (mir() ? ' class="on" aria-pressed="true"' : '') + '>Мир</button></div></div>';
   }
@@ -66,9 +66,13 @@
     return '<div class="kart"><h2 class="h3">Что приготовить к разговору</h2><ul class="spis-ok">' +
       '<li>Объём и тип товара: паллеты, коробки, вес</li><li>Даты первой поставки</li><li>Нужны ли маркировка, сборка и доставка</li></ul></div>';
   }
+  /* уровни только в «Мире Тучи»; во «Всё просто» тарифов и уровней нет, есть скидка за срок */
   function rUroven() {
+    if (!mir()) return '<div class="kart uroven-k"><h2 class="h3">Скидка за срок</h2><p class="uroven"><b>' +
+      ({ 0: 'по факту', 1: '−15 %', 2: '−20 %', 3: '−30 %' }[(a.mir && a.mir.bloki && a.mir.bloki.hranenie && a.mir.bloki.hranenie.srok) || 0]) + '</b></p>' +
+      '<p class="muted" style="margin:0">Резервация мест: −15 % за месяц, −20 % за два, −30 % от трёх.</p></div>';
     return '<div class="kart uroven-k"><h2 class="h3">Уровень</h2><p class="uroven"><b>Тучка</b></p>' +
-      '<p class="muted" style="margin:0">Дальше Туча и Туча Макс, скоро.</p></div>';
+      '<p class="muted" style="margin:0">Дальше Туча и Туча Макс: за выполненные условия.</p></div>';
   }
   function rDost() {
     var d = a.dost || (a.mir && a.mir.dost) || [];
@@ -95,12 +99,12 @@
       h += '<div class="kart">' + (u.length ? u.map(function (k) {
         var B = S.BLOKI[k];
         return '<div class="usl-str"><span class="st-bl"><i class="cv" style="background:' + B.fill + '"></i><span><b>' + B.ig + '</b> · ' + B.ob + '</span></span>' +
-          '<span class="muted">' + (B.skoro ? 'скоро: сообщим о запуске' : (a.status || 0) >= 3 ? 'в договоре' : 'обсудим при звонке') + '</span></div>';
+          '<span class="muted">' + ((a.status || 0) >= 3 ? 'в договоре' : 'обсудим при звонке') + '</span></div>';
       }).join('') : '<p class="pusto">Услуги пока не выбраны. Добавьте нужные: учтём их в договоре.</p>') + '</div>';
       if (mir()) h += '<p class="cta-pol"><a class="btn" href="' + R + 'start/mir/?dostroit=1">Достроить</a><span class="muted">Откроется конструктор с вашей постройкой</span></p>';
       else if (net.length) {
         h += '<div class="kart dobavit-usl"><h2 class="h3">Добавить услугу</h2><div class="vybor">' + net.map(function (x) {
-          return '<label><input type="checkbox" name="nov-usl" value="' + x[0] + '"><span>' + x[1] + (x[2] ? ' <i class="skoro">скоро</i>' : '') + '</span></label>';
+          return '<label><input type="checkbox" name="nov-usl" value="' + x[0] + '"><span>' + x[1] + '</span></label>';
         }).join('') + '</div><p><button type="button" class="btn btn-sm" data-dob-usl>Добавить</button></p></div>';
       }
       return h;

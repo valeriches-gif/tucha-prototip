@@ -279,7 +279,7 @@
     if (!this.podp) return;
     PORYADOK.forEach(function (k) {
       if (!self.est[k]) return;
-      var p = I.GEO[k].pod, s = BLOKI[k].ig + (BLOKI[k].skoro ? ' · скоро' : ''), w = s.length * 6.6 + 18;
+      var p = I.GEO[k].pod, s = BLOKI[k].ig, w = s.length * 6.6 + 18;
       var x = p[2] === 'end' ? p[0] - w : p[2] === 'start' ? p[0] : p[0] - w / 2;
       el('rect', { x: x, y: p[1] - 14, width: w, height: 20, rx: 10, fill: '#FFFFFF', 'fill-opacity': .94, stroke: '#D6E2EE' }, g);
       txt(g, x + w / 2, p[1] + 0.5, s, { 'font-size': 11, 'font-weight': 700, fill: '#1E3A5F' });

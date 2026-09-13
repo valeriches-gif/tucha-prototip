@@ -246,7 +246,7 @@
           (est ? B.ig + ', ' + B.ob + ', добавлен' + ROD[k] + '. Открыть карточку' : 'Добавить ' + (k === 'hranenie' ? 'Точку сохранения' : k === 'obrabotka' ? 'Мастерскую' : k === 'lavka' ? 'Лавку' : k === 'vitrina' ? 'Витрину' : B.ig) + ', ' + B.ob) + '">' +
           '<svg class="ik" data-ik="' + k + '" aria-hidden="true"></svg><span><b>' + B.ig + '</b><small>' + B.ob + '</small>' +
           '<em class="opora">' + ({ obrabotka: 'на Точку сохранения', lavka: 'на Точку сохранения', vitrina: 'на Лавку' }[k] || 'на земле') + '</em>' +
-          (B.skoro ? '<em class="skoro">скоро</em>' : '') + '</span><span class="gal" aria-hidden="true"></span></button>';
+          '</span><span class="gal" aria-hidden="true"></span></button>';
       }).join('') + '</div><div id="kartochka"></div>';
     panel.innerHTML = h + niz(3, { off: pusto, pod: pusto ? '<p class="pomosh-str"><button type="button" class="btn-t" data-pomosh>Пока не знаю, помогите собрать</button></p>' : '' });
     rKarta();
