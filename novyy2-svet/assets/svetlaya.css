@@ -1,0 +1,86 @@
+/* Светлая тема современной версии: тот же склад днём. Грузится после magiya.css, body.m-svet.
+   Полоска, шапка и подвал одного светлого цвета; вместо тёмного арта — светлый, как отпечаток,
+   приклеенный скотчем к стеллажу; игра в дневном ангаре. Материалы склада те же. */
+body.m-svet { --m-den: #FFFFFF; --m-den-kray: #D5DDE4; background: #EEF2F5; }
+
+/* полоска версий, шапка и подвал — один светлый цвет */
+.m-svet .tv-versii { background: var(--m-den); color: var(--m-seryy); border-bottom: 1px solid var(--m-den-kray); }
+.m-svet .tv-versii nav { background: #EEF2F5; }
+.m-svet .tv-versii nav a { color: var(--m-chernila); }
+.m-svet .tv-versii nav a:not([aria-current]):hover { background: #DDE4EA; color: var(--m-chernila); }
+.m-svet .tv-v-gl a, .m-svet .tv-v-vse { color: var(--m-balka-t); }
+.m-svet .tv-v-gl a[aria-current] { color: var(--m-chernila); }
+.m-svet .shapka { background: var(--m-den); border-bottom: 1px solid var(--m-den-kray); }
+.m-svet .shapka .nav a, .m-svet .shapka .vhod-l, .m-svet .shapka .tel b { color: var(--m-chernila); }
+.m-svet .shapka .nav a:hover, .m-svet .shapka .vhod-l:hover { color: var(--m-balka-t); }
+.m-svet .shapka .tel span { color: var(--m-seryy); }
+.m-svet .shapka .burger i { background: var(--m-chernila); }
+.m-svet .shapka.open .nav { background: var(--m-den); }
+.m-svet .sf-metka { background: var(--m-chernila); color: #fff; box-shadow: none; }
+.m-svet .korz-l { background: #EEF2F5; color: var(--m-chernila); }
+.m-svet .podval { background: var(--m-den); color: var(--m-seryy); border-top: 1px solid var(--m-den-kray); }
+.m-svet .podval a { color: var(--m-chernila); }
+.m-svet .podval h4 { color: var(--m-balka-t); }
+.m-svet .podval .znak-p p { color: var(--m-chernila); }
+.m-svet .podval .znak-p .sf-p { color: var(--m-balka-t); }
+.m-svet .podval .tel-bol { color: var(--m-chernila); }
+.m-svet .podval .niz { border-top-color: var(--m-den-kray); color: var(--m-seryy); }
+
+/* первый экран днём: Проводник в полный рост стоит на полу склада, без рамки и подписи */
+.m-svet .m-hero { background: linear-gradient(180deg, #FFFFFF 0%, #E4ECF2 100%); color: var(--m-chernila); }
+.m-svet .m-hero-art { left: auto; right: max(24px, calc((100vw - 1200px) / 2 + 40px)); top: 28px; bottom: 150px; width: min(30%, 340px); overflow: visible; }
+.m-svet .m-hero-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%;
+  transform: translate3d(calc(var(--mx, 0) * -6px), 0, 0); transition: transform .7s var(--ease-out); }
+.m-svet .m-hero-art::after { inset: auto; left: 18%; right: 18%; bottom: -8px; height: 20px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(22, 32, 46, .22), transparent); }
+.m-svet .m-vihr { display: none; }
+.m-svet .m-h1 { color: var(--m-chernila); }
+.m-svet .m-h1::before { background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, .9) 47%, rgba(255, 255, 255, .4) 53%, transparent 62%); }
+.m-svet .m-h1::after { background: repeating-linear-gradient(-9deg, transparent 0 46px, rgba(22, 32, 46, .05) 46px 48px); }
+.m-svet .m-lead { color: #3E4B5B; }
+.m-svet .m-btn-2 { color: var(--m-chernila); }
+.m-svet .m-sticker { box-shadow: 0 2px 0 rgba(0, 0, 0, .18); }
+.m-svet .m-sticker span { box-shadow: inset 0 0 0 1px var(--m-den-kray); }
+.m-svet .m-yarlyk { box-shadow: 0 1px 0 var(--m-den-kray), 0 12px 22px -16px rgba(22, 32, 46, .4); }
+
+/* «Мир Тучи» светлой карточкой: картинка сверху, текст на белом */
+.m-svet .m-kadr { flex-direction: column; align-items: stretch; background: #fff; color: var(--m-chernila); min-height: 0;
+  box-shadow: 0 1px 0 #D0D9E1, 0 22px 44px -28px rgba(22, 32, 46, .45); }
+.m-svet .m-kadr img { position: static; height: 280px; }
+.m-svet .m-kadr::after { display: none; }
+.m-svet .m-kadr h3 { color: var(--m-chernila); }
+.m-svet .m-kadr p { color: var(--m-seryy); }
+.m-svet .m-kadr-sh { color: var(--m-stoyka); }
+.m-svet .m-sp li { color: #33405A; }
+
+/* финал и тёмные карточки внутренних страниц — светлые */
+.m-svet .m-final { background: #fff; color: var(--m-chernila); box-shadow: 0 1px 0 #D0D9E1, 0 22px 44px -28px rgba(22, 32, 46, .45); }
+.m-svet .m-final .m-h3, .m-svet .m-tel { color: var(--m-chernila); }
+.m-svet .m-final p { color: var(--m-seryy); }
+.m-svet :is(.m-final, .banner-mir, .doroga-mir, .vhod-mir) .btn-2, .m-svet .m-final .m-btn-2 { color: var(--m-chernila); }
+.m-svet main :is(.banner-mir, .doroga-mir, .vhod-mir, .kl-hran, .kl-tp, .cta-pers, .razvitie) {
+  background: #fff !important; background-image: none !important; color: var(--m-chernila) !important; box-shadow: inset 0 6px 0 var(--m-balka), 0 1px 0 #D0D9E1, 0 18px 34px -26px rgba(22, 32, 46, .45) !important; }
+.m-svet main :is(.banner-mir, .doroga-mir, .vhod-mir, .kl-hran, .kl-tp) :is(h2, h3, b, p, .muted, .metka, li, label, .pole > label) { color: var(--m-chernila) !important; }
+.m-svet .vhod-mir .doroga-f, .m-svet .doroga-mir .doroga-f { color: var(--m-balka-t) !important; }
+.m-svet .vhod-mir .demo-str .btn-t, .m-svet .vhod-mir a:not(.btn) { color: var(--m-balka-t); }
+
+/* игра в дневном ангаре */
+.m-svet .stage { background: radial-gradient(60% 50% at 70% 0%, rgba(255, 214, 160, .45), transparent 70%), linear-gradient(180deg, #F6F9FB 0%, #DCE6EE 100%); }
+.m-svet .stage::before { opacity: .35; background: repeating-linear-gradient(180deg, transparent 0 70px, rgba(240, 127, 26, .45) 70px 76px),
+  repeating-linear-gradient(90deg, rgba(31, 78, 140, .35) 0 12px, transparent 12px 170px); }
+.m-svet .stage .hud { background: #fff; color: var(--m-chernila); box-shadow: 0 1px 0 #D0D9E1, 0 10px 20px -14px rgba(22, 32, 46, .4); }
+.m-svet .hud-urovni li { border-top-color: #D5DDE4; }
+.m-svet .hud-urovni span { color: var(--m-seryy); }
+.m-svet .hud-urovni li.on b { color: var(--m-balka-t); }
+.m-svet .hud-schet { color: var(--m-seryy); }
+.m-svet .hud-schet b { color: var(--m-chernila); }
+.m-svet .dost { background: #fff; color: var(--m-chernila); box-shadow: 0 1px 0 #D0D9E1, 0 12px 22px -14px rgba(22, 32, 46, .4); }
+
+@media (max-width: 1000px) {
+  .m-svet .m-hero-art { position: relative; inset: auto; width: min(46%, 200px); height: 300px; margin: 0 auto 8px; opacity: 1; display: block; }
+  .m-svet .m-hero { padding-top: 28px; }
+}
+@media (max-width: 700px) {
+  .m-kn-hero { margin-bottom: 0; }
+  .m-svet .m-kadr img { height: 220px; }
+}

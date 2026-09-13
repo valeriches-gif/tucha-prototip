@@ -1,0 +1,116 @@
+/* Помощник на сайте — бот, не живой человек. Отвечает сразу, днём и ночью,
+   по базе частых вопросов; чего не знает — предлагает передать человеку.
+   В рабочей версии сюда подключается настоящий бот, окно остаётся тем же.
+   История хранится в браузере, поэтому разговор продолжается на любой странице. */
+window.TuchaChat = (function () {
+  var T = window.Tucha, R = T.ROOT;
+  var PRIVET = 'Здравствуйте! Я помощник Тучи, бот, не живой человек. Отвечаю сразу, днём и ночью. ' +
+    'Сложный вопрос передам живому человеку.';
+  var BAZA = [
+    { k: ['минимал', 'одной паллет', 'одну паллет', 'от скольк', 'мало товар', 'небольш'], a: 'Минимального объёма нет, храним от одной паллеты.' },
+    { k: ['цен', 'стоит', 'стоимост', 'тариф', 'прайс', 'почём', 'дорого'], a: 'Хранение: от 16,42 ₽ за паллето-место в сутки, с НДС. При резервации мест на срок, скидка. Обработку, доставку и таможню считаем по запросу. <a href="~/hranenie/#kalk">Посчитать хранение</a>' },
+    { k: ['адрес', 'где вы', 'где наход', 'добрать', 'проезд', 'подолино', 'химки', 'на карте'], a: 'Химки, д. Подолино, стр. 2с2: 10 минут от МКАД и Шереметьева. <a href="~/kontakty/">Схема проезда</a>' },
+    { k: ['часы', 'график', 'во сколько', 'выходн', 'суббот', 'воскрес', 'время работ', 'режим работ'], a: 'Склад и люди на связи работают пн-пт с 9:00 до 18:00. Я на связи всегда.' },
+    { k: ['договор', 'подпис', 'заключ'], a: 'Договор подписываем в день обращения, около 20 минут.' },
+    { k: ['документ', 'упд', 'акт', 'счёт', 'счет', 'закрыва'], a: 'Даём договор ответственного хранения, счета и закрывающие документы, УПД и акты. Работаем с НДС.' },
+    { k: ['ндс'], a: 'Да, работаем с НДС. Цены на сайте указаны с НДС.' },
+    { k: ['маркир', 'честн', 'этикет'], a: 'Наносим коды «Честного знака» и ведём их учёт для отгрузок по FBS.' },
+    { k: ['fbs', 'фбс', 'вайлдб', 'wildberr', 'озон', 'ozon', 'маркетплейс', 'фулфил'], a: 'Собираем заказы и отгружаем по FBS на Wildberries и Ozon. <a href="~/obrabotka/">Про Мастерскую</a>' },
+    { k: ['достав', 'отвез', 'перевоз', 'транспорт', 'кросс'], a: 'Возим по Москве и области, по России и за рубеж, передаём в транспортные компании. Есть кросс-докинг. <a href="~/dostavka/">Про Телепорт</a>' },
+    { k: ['тамож', 'вэд', 'импорт', 'растамож', 'из китая'], a: 'Помогаем участникам ВЭД с оформлением и сопровождением груза, храним после выпуска. <a href="~/tamozhnya/">Про Портал</a>' },
+    { k: ['фото', 'приемк', 'принима', 'принят'], a: 'При приёмке фотографируем каждую паллету, два кадра, и присылаем фото с документами.' },
+    { k: ['посмотр', 'приехать', 'экскурс', 'показать склад'], a: 'Приезжайте: покажем склад. Время согласуйте по телефону <a href="tel:+74956658242">+7 (495) 665-82-42</a>, пн-пт с 9:00 до 18:00.' },
+    { k: ['витрин', 'продавать', 'выставить', 'продавц'], a: 'Витрина: внутренняя часть для компаний. Выставляете свой товар со склада на продажу в Лавке, сборку и отгрузку делаем мы, выплата по пятницам. <a href="~/vitrina/">Собрать карточку</a>' },
+    { k: ['лавк', 'купить', 'покупател', 'корзин', 'заказ товар'], a: 'Лавка: магазин для покупателей. Товар прямо со склада, забрать можно в день заказа. <a href="~/lavka/">Открыть каталог</a>' },
+    { k: ['физлиц', 'физ лиц', 'частн', 'личные вещ'], a: 'Да: при регистрации выберите «Физическое лицо», ИНН не нужен. А покупки для частных лиц: в <a href="~/lavka/">Лавке</a>.' },
+    { k: ['резерв', 'займи', 'брониров', 'скидк'], a: '«Займи место под тучей», резервация мест на срок со скидкой на хранение. Сетку скидок назовём при звонке.' },
+    { k: ['класс', 'стеллаж', 'напольн', 'ячейк', 'хранени', 'склад'], a: 'Есть стеллажное, напольное и мелкоячеистое хранение, склады классов A, B и C. <a href="~/hranenie/">Про Точку сохранения</a>' },
+    { k: ['начать', 'зарегистр', 'регистрац', 'кабинет', 'заявк'], a: 'Начать можно двумя путями: <a href="~/start/prosto/">короткая форма</a> или <a href="~/start/mir/">Мир Тучи</a> в формате игры.' },
+    { k: ['человек', 'менеджер', 'оператор', 'живой', 'позвон', 'связат'], a: 'Позову живого человека: звоните <a href="tel:+74956658242">+7 (495) 665-82-42</a> или <a href="https://t.me/tucha_ml">напишите в Telegram</a>. Могу и передать ваш вопрос, ответят в рабочее время.', peredat: true },
+    { k: ['привет', 'здравств', 'добрый'], a: 'Здравствуйте! Спросите про хранение, цены, документы или доставку.' },
+    { k: ['спасиб'], a: 'Пожалуйста! Если появятся вопросы, пишите.' }
+  ];
+  var BYSTRO = ['Сколько стоит хранение?', 'Есть минимальный объём?', 'Какие документы?', 'Позовите человека'];
+  var n = 0;
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function norm(s) { return String(s).toLowerCase().replace(/ё/g, 'е'); }
+  function otvet(v) {
+    var t = norm(v), luch = null, max = 0;
+    BAZA.forEach(function (x) {
+      var o = x.k.reduce(function (s, k) { return s + (t.indexOf(norm(k)) >= 0 ? 1 : 0); }, 0);
+      if (o > max) { max = o; luch = x; }
+    });
+    return luch;
+  }
+  function istoriya() { return T.st.get('tucha.chat') || []; }
+  function zapisat(m) { var h = istoriya(); h.push(m); T.st.set('tucha.chat', h.slice(-30)); }
+
+  function sozdat(box, o) {
+    o = o || {};
+    var id = 'chat' + (++n);
+    box.innerHTML = '<div class="chat' + (o.vstroen ? ' chat-v' : '') + '">' +
+      '<div class="chat-verh"><img src="' + R + 'assets/img/maskot.webp" alt="" width="34" height="62">' +
+      '<div><b>Помощник Тучи</b><span>бот, не живой человек · отвечает сразу</span></div>' +
+      (o.zakryt ? '<button type="button" class="chat-x" aria-label="Закрыть чат">×</button>' : '') + '</div>' +
+      '<div class="chat-lenta" role="log" aria-live="polite"></div>' +
+      '<div class="chat-bystro"></div>' +
+      '<form class="chat-forma"><label class="skryt" for="' + id + '">Ваш вопрос</label>' +
+      '<input id="' + id + '" type="text" placeholder="Спросите про хранение, цены, документы" autocomplete="off" maxlength="300">' +
+      '<button class="btn btn-sm" type="submit">Спросить</button></form>' +
+      (o.niz ? '<div class="chat-niz">' + o.niz + '</div>' : '') + '</div>';
+    var lenta = box.querySelector('.chat-lenta'), inp = box.querySelector('input'), bys = box.querySelector('.chat-bystro');
+
+    function soob(kto, html, bez) {
+      var d = document.createElement('div');
+      d.className = 'chat-s ' + kto;
+      d.innerHTML = html.replace(/~\//g, R);
+      lenta.appendChild(d);
+      lenta.scrollTop = lenta.scrollHeight;
+      if (!bez) zapisat({ kto: kto, html: html });
+      return d;
+    }
+    function sprosit(v) {
+      v = v.trim();
+      if (!v) return;
+      soob('ya', esc(v));
+      T.goal('chat_vopros');
+      var p = soob('bot pechat', 'печатает…', true);
+      setTimeout(function () {
+        p.remove();
+        var x = otvet(v);
+        if (x) {
+          soob('bot', x.a);
+          if (x.peredat) knopkaPeredat();
+        } else {
+          soob('bot', 'Пока не знаю ответа. Передать вопрос живому человеку? Он ответит в рабочее время, пн-пт с 9:00 до 18:00.');
+          knopkaPeredat(v);
+        }
+      }, 550);
+    }
+    function knopkaPeredat(v) {
+      var b = document.createElement('div');
+      b.className = 'chat-s bot deystvie';
+      b.innerHTML = '<button type="button" class="btn btn-2 btn-sm">Передать человеку</button>';
+      b.querySelector('button').onclick = function () {
+        b.remove();
+        soob('bot', 'Передал. Ответим в рабочее время. Если срочно: <a href="tel:+74956658242">+7 (495) 665-82-42</a>.');
+        T.goal('chat_menedzher');
+        T.toast('Вопрос передан (демо)');
+      };
+      lenta.appendChild(b);
+      lenta.scrollTop = lenta.scrollHeight;
+    }
+    var h = istoriya();
+    if (!h.length) soob('bot', PRIVET);
+    else h.forEach(function (m) { soob(m.kto, m.html, true); });
+    bys.innerHTML = BYSTRO.map(function (q) { return '<button type="button">' + q + '</button>'; }).join('');
+    bys.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) sprosit(b.textContent); });
+    box.querySelector('form').addEventListener('submit', function (e) { e.preventDefault(); sprosit(inp.value); inp.value = ''; });
+    if (o.zakryt) box.querySelector('.chat-x').onclick = o.zakryt;
+    if (o.fokus) inp.focus({ preventScroll: true });
+    return { sprosit: sprosit };
+  }
+
+  return { sozdat: sozdat };
+})();
