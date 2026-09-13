@@ -21,7 +21,14 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>"); }
 
 /* полоска сравнения и шапка «ночной ангар» */
-.m-polosa { background: #0A1220; color: #8C9BAE; font-size: 13px; }
+/* полоска, шапка и подвал одного цвета: ночной ангар */
+.m-polosa { background: var(--m-angar); color: #8C9BAE; font-size: 13px; border-bottom: 1px solid rgba(255, 255, 255, .08); }
+.magiya .podval { position: relative; background: var(--m-angar); background-image: none; border-top: 0; }
+.magiya .podval::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 12px;
+  background: repeating-linear-gradient(-45deg, var(--m-balka) 0 16px, var(--m-chernila) 16px 32px); }
+/* фокус с клавиатуры виден на всех новых элементах */
+.m-btn:focus-visible, .m-korob:focus-visible, .m-nakladnaya:focus-visible, .m-kadr:focus-visible, .m-polka-l:focus-visible,
+.m-tel:focus-visible, .magiya .shapka a:focus-visible { outline: 3px solid var(--m-energiya); outline-offset: 3px; }
 .m-polosa .wrap { display: flex; justify-content: space-between; gap: 12px; min-height: 34px; align-items: center; flex-wrap: wrap; }
 .m-polosa a { color: #F5A55C; }
 .magiya .shapka { background: var(--m-angar); border-bottom: 1px solid rgba(255, 255, 255, .08); box-shadow: none; }
