@@ -220,6 +220,11 @@ window.Tucha = (function () {
       e.querySelector('button').onclick = function () { st.del('tucha.mir'); e.innerHTML = ''; toast('Анкета очищена'); };
     });
 
+    var mobCta = document.querySelector('[data-mob-cta]'), hero = document.querySelector('.hero-usl, .usl-hero, .hran-hero');
+    if (mobCta && hero && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (z) { mobCta.classList.toggle('vid', !z[0].isIntersecting); }).observe(hero);
+    } else if (mobCta) mobCta.classList.add('vid');
+
     var rb = document.querySelector('[data-rasshifr]'), rt = document.querySelector('[data-rasshifr-t]');
     rb && rb.addEventListener('click', function () {
       var o = rb.getAttribute('aria-expanded') !== 'true';

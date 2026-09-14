@@ -247,3 +247,46 @@ img[src*="8bit"], .ava-foto, .rech-mob::before { image-rendering: pixelated; }
   .btn:active, .vybor label:active span, .pult .blok-k:active { transform: none; }
   .tucha-rasshifr b { animation: proyav 300ms ease backwards; }
 }
+
+/* ===== второй вариант: детали склада ===== */
+/* адресный ярлык места: код, число, подпись, штрихкод */
+.fakty-yarl .yarl { position: relative; padding: 14px 18px 40px !important; border-top: 6px solid #FF8A1F !important; }
+.yarl-kod { display: inline-block; margin-bottom: 8px; padding: 2px 8px; border-radius: 6px; background: #16304F; color: #fff;
+  font: 700 12px/1.4 var(--igr); letter-spacing: .08em; }
+.yarl-shtrih { position: absolute; left: 18px; right: 18px; bottom: 14px; height: 16px; opacity: .8;
+  background: repeating-linear-gradient(90deg, #16304F 0 2px, transparent 2px 4px, #16304F 4px 5px, transparent 5px 8px, #16304F 8px 11px, transparent 11px 13px); }
+/* сканер: штрихкод и бегущий лазер */
+.skaner { position: relative; display: flex; align-items: center; gap: 14px; margin: 14px 0 4px; }
+.skaner-kod { position: relative; display: block; width: 120px; height: 38px; border-radius: 6px; background-color: #fff;
+  background-image: repeating-linear-gradient(90deg, #16304F 0 2px, transparent 2px 4px, #16304F 4px 5px, transparent 5px 8px, #16304F 8px 11px, transparent 11px 13px);
+  background-size: 100% 26px; background-position: 0 6px; background-repeat: no-repeat; overflow: hidden; }
+.skaner-luch { position: absolute; left: -6px; top: 0; width: 132px; height: 3px; border-radius: 2px; background: #FF3B30;
+  box-shadow: 0 0 10px 2px rgba(255, 59, 48, .7); animation: skan 2.2s ease-in-out infinite; }
+@keyframes skan { 0%, 100% { transform: translateY(4px); } 50% { transform: translateY(34px); } }
+.skaner-t { font: 700 13px/1.2 var(--igr); letter-spacing: .06em; text-transform: uppercase; color: #FFB36B; }
+/* стеллаж: синие стойки, оранжевые балки, короба с наклейками */
+.stel-usl { position: relative; padding: 0 18px; }
+.stel-stoyka { position: absolute; top: -10px; bottom: 0; width: 14px; border-radius: 6px 6px 0 0;
+  background: radial-gradient(circle, rgba(10, 26, 44, .55) 2px, transparent 2.5px) center 6px / 14px 14px repeat-y, #2A5693; }
+.stel-l { left: 0; } .stel-r { right: 0; }
+.stel-usl ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.stel-usl li { display: flex; align-items: flex-end; padding: 14px 8px 0; border-bottom: 14px solid #FF8A1F; box-shadow: 0 5px 0 #C45E0A; margin-bottom: 26px; }
+.korob-u { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 128px; padding: 14px 10px 12px;
+  border-radius: 8px 8px 2px 2px; background: repeating-linear-gradient(90deg, rgba(110, 70, 30, .07) 0 3px, transparent 3px 9px), linear-gradient(180deg, #E2C095, #CCA273);
+  box-shadow: inset 0 -10px 0 rgba(80, 50, 20, .12); }
+.korob-u::before { content: ''; position: absolute; left: 50%; top: 0; width: 26%; height: 22px; translate: -50% 0; background: rgba(255, 244, 220, .55); }
+.nakleyka { position: relative; display: block; width: 100%; padding: 8px 10px 9px; border-radius: 4px; background: #fff; box-shadow: 0 2px 0 rgba(0, 0, 0, .12);
+  font-size: 15px; line-height: 1.3; color: #16304F; font-weight: 600; text-align: left; }
+.nakleyka small { display: block; margin-bottom: 4px; font: 700 11px/1 var(--igr); letter-spacing: .08em; color: #E0700F; }
+.nakleyka b { display: block; font-family: var(--igr); font-size: 17px; }
+.o-nas-g .stel-usl { margin: 20px 0 8px; }
+.o-nas-g .stel-usl ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.o-nas-g .nakleyka { font-weight: 500; font-size: 14px; color: #33465E; }
+@media (max-width: 700px) {
+  .stel-usl ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .korob-u { min-height: 112px; }
+  .nakleyka { font-size: 14px; }
+  .o-nas-g .stel-usl ul { grid-template-columns: minmax(0, 1fr); }
+  .o-nas-g .korob-u { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .skaner-luch { animation: none; transform: translateY(18px); } }
