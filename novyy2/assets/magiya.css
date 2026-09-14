@@ -221,6 +221,10 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
 .m-strelka { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; font-family: 'Sklad'; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: 17px; }
 .m-strelka::after { content: '→'; transition: transform .2s var(--ease-out); }
 @media (hover: hover) and (pointer: fine) { .m-polka-l:hover .m-strelka::after { transform: translateX(5px); } }
+.m-sek-lavka { padding-top: 0; }
+.m-sek-lavka .lv-dom-h { margin-bottom: 28px; }
+.m-sek-lavka .m-h2 { margin-bottom: 10px; }
+.m-sek-lavka .m-pod { margin: 0; }
 
 /* финал: низкий, телефон одной строкой */
 .m-sek-niz { padding-top: 0; }
@@ -334,3 +338,6 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
   .m-vihr path, .m-h1::before, .m-yarlyk::after { animation: none !important; }
   .m-hero-art img, .m-vihr, .m-kadr img { transition: none; transform: none; }
 }
+
+/* верхняя полка без «свободного места»: три короба на всю ширину */
+.m-ryad-verh { grid-template-columns: repeat(2, minmax(0, 1fr)); }

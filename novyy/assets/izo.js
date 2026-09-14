@@ -1,6 +1,6 @@
 /* Изометрия «Мира Тучи»: геометрия и рисунки зданий.
    Остров 7×7 плиток, плитка 72×36. Склад стоит в центре, на нём
-   Мастерская (спереди слева) и Лавка (сзади справа), над Лавкой Витрина.
+   Мастерская (спереди слева) и Витрина (сзади справа, лицом вправо).
    Телепорт — площадка слева, Портал — арка справа, дорога по переднему краю.
    Каждое здание рисуется функцией (группа, t, ctx): t — доля высоты
    (для анимации роста), ctx.anim — куда складывать живые детали. */
@@ -26,7 +26,7 @@ window.TuchaIzo = (function () {
     hranenie: { x: 2, y: 2, w: 3, d: 3, z: 0, h: H1, pod: [400, 402, 'middle'] },
     obrabotka: { x: 2, y: 3.5, w: 3, d: 1.5, z: H1, h: H2, pod: [282, 288, 'end'] },
     lavka: { x: 2, y: 2, w: 3, d: 1.5, z: H1, h: H2, pod: [518, 288, 'start'] },
-    vitrina: { x: 2.5, y: 2.25, w: 2, d: 1, z: H1 + H2, h: H3, pod: [427, 198, 'middle'] },
+    vitrina: { x: 2.9, y: 2, w: 2, d: 1.5, z: H1, h: 40, pod: [443, 238, 'middle'] },
     dostavka: { x: 0.3, y: 4.55, w: 1.7, d: 1.7, z: 0, h: 10, pod: [247, 394, 'middle'] },
     tamozhnya: { x: 4.84, y: 0.35, w: 0.64, d: 1.5, z: 0, h: 70, pod: [546, 250, 'middle'] }
   };
@@ -143,7 +143,7 @@ window.TuchaIzo = (function () {
     boks(g, 2, 2, 3, 3, 0, h, C.sklad);
     if (t < .92) return;
     poly(g, [P(2.14, 2.14, h), P(4.86, 2.14, h), P(4.86, 4.86, h), P(2.14, 4.86, h)], '#36659A');
-    if (!ctx.est || (!ctx.est.obrabotka && !ctx.est.lavka)) {
+    if (!ctx.est || (!ctx.est.obrabotka && !ctx.est.vitrina)) {
       boks(g, 2.6, 2.7, .5, .5, h, 8, { top: '#5E86B4', px: '#1E3A5F', py: '#2C5486' });
       boks(g, 3.6, 3.9, .5, .5, h, 8, { top: '#5E86B4', px: '#1E3A5F', py: '#2C5486' });
     }
@@ -204,19 +204,22 @@ window.TuchaIzo = (function () {
     txt(T2, 16, 13.5, 'ОТКРЫТО', { 'font-size': 6.5, 'font-weight': 800, fill: '#FFC247', 'letter-spacing': '.06em' });
   }
   function vitrinaRis(g, t, ctx) {
-    var z = H1 + H2, h = H3 * t;
-    boks(g, 2.5, 2.25, 2, 1, z, h, { top: '#FFFFFF', px: '#9FD8F7', py: '#CDEBFB' }, { 'fill-opacity': .92 });
+    var z = H1, h = 40 * t;
+    boks(g, 2.9, 2, 2, 1.5, z, h, { top: '#FFFFFF', px: '#9FD8F7', py: '#CDEBFB' }, { 'fill-opacity': .92 });
     if (t < .92) return;
-    /* Витрина: стеклянная полка с подсветкой, товар на ней, звезда «первая полка» */
-    var L = granY(g, 2.5, 2.25, 2, 1, z, h);
+    /* Витрина: стеклянный павильон на складе, товар на полках, звезда «первая полка».
+       Стоит сзади справа, поэтому главное лицо правое: левое закрывает Мастерская */
+    var L = granY(g, 2.9, 2, 2, 1.5, z, h);
     el('rect', { x: 3, y: 3, width: 66, height: 3, rx: 1.5, fill: '#FFF4B8' }, L);
     for (var i = 0; i < 5; i++) el('rect', { x: 7 + i * 12.5, y: 14, width: 8, height: 11, rx: 1.5, fill: ['#FF8A1F', '#1E3A5F', '#3AA7EA', '#6BB36B', '#B58CC9'][i] }, L);
     el('line', { x1: 3, y1: 25.5, x2: 69, y2: 25.5, stroke: '#1B3A63', 'stroke-width': 1.2 }, L);
     el('line', { x1: 52, y1: 5, x2: 64, y2: 13, stroke: '#FFFFFF', 'stroke-width': 2.2, 'stroke-opacity': .9 }, L);
-    var R = granX(g, 2.5, 2.25, 2, 1, z, h);
-    el('rect', { x: 3, y: 6, width: 30, height: 12, rx: 3, fill: '#FF8A1F' }, R);
-    txt(R, 18, 14.8, 'ВИТРИНА', { 'font-size': 6.6, 'font-weight': 800, fill: '#FFFFFF', 'letter-spacing': '.05em' });
-    var v = P(4.5, 2.25, z + h), zv = el('g', { transform: 'translate(' + v[0].toFixed(1) + ',' + (v[1] - 10).toFixed(1) + ')' }, g);
+    var R = granX(g, 2.9, 2, 2, 1.5, z, h);
+    el('rect', { x: 3, y: 3, width: 32, height: 11, rx: 3, fill: '#FF8A1F' }, R);
+    txt(R, 19, 11, 'ВИТРИНА', { 'font-size': 6.8, 'font-weight': 800, fill: '#FFFFFF', 'letter-spacing': '.05em' });
+    for (var j = 0; j < 4; j++) el('rect', { x: 5 + j * 12, y: 20, width: 8, height: 13, rx: 1.5, fill: ['#3AA7EA', '#FF8A1F', '#6BB36B', '#1E3A5F'][j] }, R);
+    el('line', { x1: 3, y1: 33.5, x2: 51, y2: 33.5, stroke: '#1B3A63', 'stroke-width': 1.2 }, R);
+    var v = P(4.9, 2, z + h), zv = el('g', { transform: 'translate(' + v[0].toFixed(1) + ',' + (v[1] - 10).toFixed(1) + ')' }, g);
     el('path', { d: 'M0 -9 L2.6 -2.8 L9 -2.6 L4 1.6 L5.6 8 L0 4.4 L-5.6 8 L-4 1.6 L-9 -2.6 L-2.6 -2.8 Z', fill: '#FFC247', stroke: '#1B3A63', 'stroke-width': 1 }, zv);
     if (ctx) ctx.anim.push({ tip: 'zvezda', el: zv, x: v[0], y: v[1] - 10 });
   }

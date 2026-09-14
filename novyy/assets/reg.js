@@ -6,7 +6,7 @@ window.TuchaReg = (function () {
   var USLUGI = [
     ['hranenie', 'Точка сохранения · хранение'], ['obrabotka', 'Мастерская · обработка'],
     ['dostavka', 'Телепорт · доставка'], ['tamozhnya', 'Портал · таможня'],
-    ['lavka', 'Лавка · маркетплейс'], ['vitrina', 'Витрина · продвижение']
+    ['vitrina', 'Витрина · продвижение']
   ];
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
@@ -45,7 +45,7 @@ window.TuchaReg = (function () {
         USLUGI.map(function (u) {
           return '<label><input type="checkbox" name="usl" value="' + u[0] + '"' + (otm.indexOf(u[0]) >= 0 ? ' checked' : '') + '>' +
             '<span>' + u[1] + '</span></label>';
-        }).join('') + '</div><p class="podskaz" data-skoro-pod hidden>Лавка работает: расскажем при звонке, как выставить ваш товар</p></fieldset>';
+        }).join('') + '</div><p class="podskaz" data-skoro-pod hidden>Витрина работает: расскажем при звонке, как выставить ваш товар в Лавке</p></fieldset>';
     }
     if (o.kommentariy) {
       h += '<div class="pole"><label for="r-kom">Комментарий <span class="nb">необязательно</span></label>' +
@@ -93,7 +93,7 @@ window.TuchaReg = (function () {
     var skPod = box.querySelector('[data-skoro-pod]');
     function skoroPod() {
       if (!skPod) return;
-      skPod.hidden = !box.querySelector('[name=usl][value=lavka]:checked, [name=usl][value=vitrina]:checked');
+      skPod.hidden = !box.querySelector('[name=usl][value=vitrina]:checked');
     }
     box.querySelectorAll('[name=usl]').forEach(function (c) { c.addEventListener('change', skoroPod); });
     skoroPod();

@@ -1,7 +1,7 @@
 /* «Мир Тучи» — регистрация в формате игры.
-   Пять уровней: Персонаж · Связь · Постройка · Бонус · Карта. Слева сцена
-   с мальчиком-проводником, справа вопросы уровня. За блоки открываются
-   достижения, бонус-уровень появляется, только если положен.
+   Пять шагов: Персонаж · Связь · Постройка · Бонус · Карта. Слева сцена
+   с мальчиком-проводником, справа вопросы шага. За блоки открываются
+   достижения, бонус-шаг появляется, только если положен.
    Ответы сохраняются в браузере после каждого действия, регистрация — в конце. */
 (function () {
   var T = window.Tucha, S = window.TuchaScena, Reg = window.TuchaReg, R = T.ROOT, esc = Reg.esc;
@@ -19,11 +19,11 @@
   var KANALY = [['zvonok', 'Звонок'], ['pochta', 'Почта'], ['messenger', 'Мессенджер'], ['chat', 'Чат на сайте'], ['vstrecha', 'Встреча на складе']];
   var MESS = [['Telegram', 'Telegram'], ['WhatsApp', 'WhatsApp'], ['MAX', 'MAX']];
   var ZAYAVKI = [['kabinet', 'В личном кабинете'], ['messenger', 'Сообщением в мессенджер'], ['manager', 'Через персонажа']];
-  var DOST = { hranenie: 'Фундамент заложен', obrabotka: 'Своя мастерская', lavka: 'Мой магазин в Лавке', vitrina: 'Полка в Витрине',
+  var DOST = { hranenie: 'Фундамент заложен', obrabotka: 'Своя мастерская', vitrina: 'Полка в Витрине',
     dostavka: 'Телепорт настроен', tamozhnya: 'Портал открыт', vse: 'Всё под одной тучей' };
-  var ZAVISIT = { obrabotka: 'hranenie', lavka: 'hranenie', vitrina: 'lavka' };
-  var IM = { obrabotka: 'Мастерская', lavka: 'Лавка', vitrina: 'Витрина' };
-  var ROD = { hranenie: 'а', obrabotka: 'а', lavka: 'а', vitrina: 'а', dostavka: '', tamozhnya: '' };
+  var ZAVISIT = { obrabotka: 'hranenie', vitrina: 'hranenie' };
+  var IM = { obrabotka: 'Мастерская', vitrina: 'Витрина' };
+  var ROD = { hranenie: 'а', obrabotka: 'а', vitrina: 'а', dostavka: '', tamozhnya: '' };
   var OPS = [['priemka', 'Приёмка'], ['markirovka', 'Маркировка «Честный знак»'], ['sborka', 'Сборка заказов'], ['upakovka', 'Упаковка'], ['fbs', 'FBS на WB и Ozon']];
   var GDE = [['wb', 'Wildberries'], ['ozon', 'Ozon'], ['sayt', 'Свой сайт'], ['nigde', 'Пока нигде']];
   var KUDA = [['msk', 'Москва и область'], ['rf', 'Россия'], ['mir', 'За рубеж']];
@@ -35,7 +35,6 @@
     obrabotka: 'Мастерская готова: приёмка, маркировка, сборка.',
     dostavka: 'Телепорт на месте, товар поедет куда нужно.',
     tamozhnya: 'Портал открыт: для грузов из-за рубежа.',
-    lavka: 'Лавка открыта: товар продаётся прямо с полки, где лежит.',
     vitrina: 'Витрина стоит: ваш товар на первой полке Лавки.'
   };
 
@@ -51,7 +50,7 @@
   }
   function defolt(k) {
     return { hranenie: { pallety: 10, neznayu: false, rezhim: 'teply', etap: null, srok: 0, biznes: null }, obrabotka: { ops: [] },
-      lavka: { gde: [], dostup: null }, vitrina: { gde: [], vedenie: null }, dostavka: { kuda: [] }, tamozhnya: { strana: '' } }[k];
+      vitrina: { gde: [], vedenie: null }, dostavka: { kuda: [] }, tamozhnya: { strana: '' } }[k];
   }
   function sohr() { s.t = Date.now(); T.st.set(KEY, s); }
   function tixo() { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; }
@@ -64,7 +63,7 @@
     if (!h || h.neznayu || !(+h.pallety > 0)) return 0;
     return +h.pallety * STAVKA * 30 * (1 - (SKIDKA[h.srok] || 0) / 100);
   }
-  function bonusOk() { var h = s.bloki.hranenie; return !!(h && h.etap === 'start' && !h.neznayu && +h.pallety > 0 && +h.pallety <= 7); }
+  function bonusOk() { var h = s.bloki.hranenie; return !!(h && h.etap === 'start' && h.biznes !== 'fl' && !h.neznayu && +h.pallety > 0 && +h.pallety <= 7); }
   function sled(n) { return n === 3 ? (bonusOk() ? 4 : 5) : n + 1; }
   function pred(n) { return n === 5 ? (bonusOk() ? 4 : 3) : n - 1; }
 
@@ -93,8 +92,8 @@
     var ok = bonusOk();
     if (ok && !s.bonusOtkryt) {
       s.bonusOtkryt = true; sohr();
-      vsplyt('Открыт бонус-уровень', 'Первые полгода: за наш счёт', 'bonus');
-      govorit('Вы только запускаетесь? Для вас открыт бонус-уровень.');
+      vsplyt('Открыт бонус-шаг', 'Первые полгода: за наш счёт', 'bonus');
+      govorit('Вы только запускаетесь? Для вас открыт бонус-шаг.');
     } else if (!ok && s.bonusOtkryt) { s.bonusOtkryt = false; sohr(); }
     rHud();
   }
@@ -103,13 +102,13 @@
     hud.hidden = !n;
     if (!n) return;
     var bl = Object.keys(s.bloki).length, c = cena();
-    hud.innerHTML = '<ol class="hud-urovni" aria-label="Уровни">' + [1, 2, 3, 4, 5].map(function (k) {
+    hud.innerHTML = '<ol class="hud-urovni" aria-label="Шаги">' + [1, 2, 3, 4, 5].map(function (k) {
       var kl = k === n ? 'on' : (k < n || (s.maks >= k && k !== 4)) ? 'done' : '';
       if (k === 4) kl = bonusOk() ? (k === n ? 'on' : (s.bonus.hochu !== null ? 'done' : 'otkryt')) : 'pusto';
-      return '<li class="' + kl + '"' + (k === n ? ' aria-current="step"' : '') + '><span>' + (k === 4 ? 'Бонус' : 'Уровень ' + (k === 5 ? 4 + (bonusOk() ? 1 : 0) : k)) +
+      return '<li class="' + kl + '"' + (k === n ? ' aria-current="step"' : '') + '><span>' + (k === 4 ? 'Бонус' : 'Шаг ' + (k === 5 ? 4 + (bonusOk() ? 1 : 0) : k)) +
         '</span><b>' + UROVNI[k] + '</b></li>';
-    }).join('') + '</ol><p class="hud-tek"><span>' + (n === 4 ? 'Бонус-уровень' : 'Уровень ' + (n === 5 && !bonusOk() ? 4 : n) + ' из ' + (bonusOk() ? 5 : 4)) +
-      ' · </span>' + UROVNI[n] + '</p><div class="hud-schet"><span><b>' + bl + '</b>/6 блоков</span><span><b>' + s.dost.length + '</b>/7 достижений</span>' +
+    }).join('') + '</ol><p class="hud-tek"><span>' + (n === 4 ? 'Бонус-шаг' : 'Шаг ' + (n === 5 && !bonusOk() ? 4 : n) + ' из ' + (bonusOk() ? 5 : 4)) +
+      ' · </span>' + UROVNI[n] + '</p><div class="hud-schet"><span><b>' + bl + '</b>/5 блоков</span><span><b>' + s.dost.length + '</b>/6 достижений</span>' +
       (c ? '<span>≈ <b>' + rub(c) + '</b> в месяц</span>' : '') + '</div>';
   }
   function scenaLyudi(anim) {
@@ -135,7 +134,7 @@
       (o.pod || '') + '</div>';
   }
   function zag(n, h, pod) {
-    var nom = n === 4 ? 'Бонус-уровень' : 'Уровень ' + (n === 5 && !bonusOk() ? 4 : n) + ' из ' + (bonusOk() ? 5 : 4);
+    var nom = n === 4 ? 'Бонус-шаг' : 'Шаг ' + (n === 5 && !bonusOk() ? 4 : n) + ' из ' + (bonusOk() ? 5 : 4);
     return '<p class="eb">' + nom + '</p><h2 tabindex="-1">' + h + '</h2>' + (pod ? '<p class="muted">' + pod + '</p>' : '');
   }
   function radio(nm, spisok, tek) {
@@ -153,8 +152,8 @@
     panel.innerHTML = '<p class="eb">Мир Тучи · игра на пять минут</p>' +
       '<h1 class="mir-h" tabindex="-1">Постройте свой мир с Тучей</h1>' +
       '<p class="lead-m">Пять шагов: кто будет на связи, как удобнее общаться и какие услуги нужны. Регистрация: в самом конце.</p>' +
-      '<ul class="fishki"><li><b>5</b>уровней</li><li><b>6</b>блоков</li><li><b>7</b>достижений</li></ul>' +
-      (prodolzhit ? '<div class="plashka"><p>Продолжить строить? Вы остановились на уровне «' + UROVNI[prodolzhit] + '».</p>' +
+      '<ul class="fishki"><li><b>5</b>шагов</li><li><b>5</b>блоков</li><li><b>6</b>достижений</li></ul>' +
+      (prodolzhit ? '<div class="plashka"><p>Продолжить строить? Вы остановились на шаге «' + UROVNI[prodolzhit] + '».</p>' +
         '<button type="button" class="btn btn-sm" data-prodolzhit>Продолжить</button><button type="button" class="btn-t" data-zanovo>Начать заново</button></div>' : '') +
       '<div class="cta-pol"><button type="button" class="btn"' + (prodolzhit ? ' data-zanovo-start' : ' data-start') + '>Начать строить</button>' +
       '<a class="btn-t" href="' + R + 'start/prosto/">Мне всё просто</a></div>';
@@ -243,9 +242,9 @@
       '<div class="palitra" role="group" aria-label="Блоки услуг">' + S.PORYADOK.map(function (k) {
         var B = S.BLOKI[k], est = !!s.bloki[k];
         return '<button type="button" class="blok-k" data-k="' + k + '" aria-pressed="' + est + '" aria-label="' +
-          (est ? B.ig + ', ' + B.ob + ', добавлен' + ROD[k] + '. Открыть карточку' : 'Добавить ' + (k === 'hranenie' ? 'Точку сохранения' : k === 'obrabotka' ? 'Мастерскую' : k === 'lavka' ? 'Лавку' : k === 'vitrina' ? 'Витрину' : B.ig) + ', ' + B.ob) + '">' +
+          (est ? B.ig + ', ' + B.ob + ', добавлен' + ROD[k] + '. Открыть карточку' : 'Добавить ' + (k === 'hranenie' ? 'Точку сохранения' : k === 'obrabotka' ? 'Мастерскую' : k === 'vitrina' ? 'Витрину' : B.ig) + ', ' + B.ob) + '">' +
           '<svg class="ik" data-ik="' + k + '" aria-hidden="true"></svg><span><b>' + B.ig + '</b><small>' + B.ob + '</small>' +
-          '<em class="opora">' + ({ obrabotka: 'на Точку сохранения', lavka: 'на Точку сохранения', vitrina: 'на Лавку' }[k] || 'на земле') + '</em>' +
+          '<em class="opora">' + ({ obrabotka: 'на Точку сохранения', vitrina: 'на Точку сохранения' }[k] || 'на земле') + '</em>' +
           '</span><span class="gal" aria-hidden="true"></span></button>';
       }).join('') + '</div><div id="kartochka"></div>';
     panel.innerHTML = h + niz(3, { off: pusto, pod: pusto ? '<p class="pomosh-str"><button type="button" class="btn-t" data-pomosh>Пока не знаю, помогите собрать</button></p>' : '' });
@@ -297,17 +296,14 @@
         '<label class="galka"><input type="checkbox" name="nez"' + (b.neznayu ? ' checked' : '') + '><span>Пока не знаю</span></label></div>' +
         '<fieldset class="pole"><legend>Режим</legend>' + radio('rezhim', [['teply', 'Тёплый'], ['holodny', 'Холодный'], ['nevazhno', 'Не важно']], b.rezhim) + '</fieldset>' +
         '<fieldset class="pole"><legend>Этап</legend>' + radio('etap', [['start', 'Только запускаемся'], ['rabotaem', 'Уже работаем']], b.etap) + '</fieldset>' +
-        '<fieldset class="pole"><legend>Какой у вас бизнес <span class="nb">пакет привилегий с уровня «Туча»</span></legend>' +
+        '<fieldset class="pole"><legend>Кто будет хранить <span class="nb">пакет привилегий с уровня «Туча»</span></legend>' +
         radio('biznes', T.PAKETY.map(function (p) { return [p.k, p.imya]; }), b.biznes) + '</fieldset>' +
         '<fieldset class="pole"><legend>Срок резервации <span class="nb">«Займи место под Тучей»</span></legend>' +
         radio('srok', [[0, 'По факту'], [1, '1 мес · −15 %'], [3, '3 мес · −20 %'], [6, '6 мес · −30 %'], [12, '12 мес · −40 %']], b.srok) + '</fieldset>' +
         '<div class="raschet" data-raschet></div>';
     }
     if (k === 'obrabotka') return '<fieldset class="pole"><legend>Какие операции нужны <span class="nb">можно несколько</span></legend>' + galki('ops', OPS, b.ops) + '</fieldset>';
-    if (k === 'lavka') return '<p class="podskaz">Покупатели берут товар прямо со склада: сборку и отгрузку делаем мы.</p>' +
-      '<fieldset class="pole"><legend>Где продаёте сейчас</legend>' + galki('gde', GDE, b.gde) + '</fieldset>' +
-      '<fieldset class="pole"><legend>Готовы дать доступ к кабинету маркетплейса?</legend>' + radio('dostup', [['da', 'Да'], ['net', 'Нет'], ['pozzhe', 'Позже']], b.dostup) + '</fieldset>';
-    if (k === 'vitrina') return '<p class="podskaz">Место на первой полке Лавки: вашу карточку видят первой.</p>' +
+    if (k === 'vitrina') return '<p class="podskaz">Для компаний: ваш товар со склада продаётся в Лавке, сборку и отгрузку делаем мы.</p>' +
       '<fieldset class="pole"><legend>Кто ведёт витрину</legend>' + radio('vedenie', VEDENIE, b.vedenie) + '</fieldset>' +
       '<fieldset class="pole"><legend>Где продаёте сейчас</legend>' + galki('gde', GDE, b.gde) + '</fieldset>';
     if (k === 'dostavka') return '<fieldset class="pole"><legend>Куда везём</legend>' + galki('kuda', KUDA, b.kuda) + '</fieldset>';
@@ -364,7 +360,6 @@
     if (k === 'hranenie') return b.neznayu ? 'объём пока не знаю' : b.pallety + ' ' + plural(b.pallety, 'паллета', 'паллеты', 'паллет') + ' · ' +
       ({ teply: 'тёплый', holodny: 'холодный', nevazhno: 'режим не важен' }[b.rezhim] || '') + (b.srok ? ' · резерв ' + b.srok + ' мес' : ' · по факту') + (b.biznes ? ' · ' + T.PAKETY.filter(function (p) { return p.k === b.biznes; })[0].imya.toLowerCase() : '') + (cena() ? ' · ≈ ' + rub(cena()) + ' в месяц' : '');
     if (k === 'obrabotka') return b.ops.length ? imena(OPS, b.ops) : 'операции обсудим';
-    if (k === 'lavka') return b.gde && b.gde.length ? 'продаёте: ' + imena(GDE, b.gde) : 'площадки обсудим';
     if (k === 'vitrina') return (b.vedenie ? imena(VEDENIE, [b.vedenie]).toLowerCase() : 'ведение обсудим') + (b.gde && b.gde.length ? ' · продаёте: ' + imena(GDE, b.gde) : '');
     if (k === 'dostavka') return b.kuda.length ? imena(KUDA, b.kuda) : 'направление обсудим';
     return b.strana || 'страну обсудим';
@@ -381,7 +376,7 @@
     ];
     if (!bonusOk()) stroki.push(['Стартовый бонус', 'не подходит по условиям: нужен этап «только запускаемся» и до 7 паллет', 3]);
     if (bonusOk()) stroki.push(['Стартовый бонус', s.bonus.hochu ? 'Хочу участвовать' + (s.bonus.tekst ? ': «' + esc(s.bonus.tekst.slice(0, 90)) + (s.bonus.tekst.length > 90 ? '…' : '') + '»' : '') : 'Пропущен', 4]);
-    panel.innerHTML = zag(5, 'Карта вашего мира', 'Проверьте: любой уровень можно поправить.') +
+    panel.innerHTML = zag(5, 'Карта вашего мира', 'Проверьте: любой шаг можно поправить.') +
       '<div class="karta-mira">' + stroki.map(function (x) {
         return '<div class="karta-str"><div><b>' + x[0] + '</b><div class="kz">' + x[1] + '</div></div>' +
           '<button type="button" class="btn-t" data-izm="' + x[2] + '">Изменить</button></div>';
@@ -419,13 +414,13 @@
     if (n === 1) return 'Соберём персонажа из блоков: каждый ответ добавляет деталь.';
     if (n === 2) return 'Как вам удобнее общаться? От тучи к персонажу протянется связь.';
     if (n === 3) return dostroit ? 'Меняйте постройку: новый блок нажатием, лишний убирается крестиком в карточке.' : Object.keys(s.bloki).length ? 'Нажмите на блок, чтобы добавить его или открыть карточку.' : 'Нажмите на блок, он упадёт на место.';
-    if (n === 4) return 'Вы только запускаетесь, для вас открыт бонус-уровень.';
+    if (n === 4) return 'Вы только запускаетесь, для вас открыт бонус-шаг.';
     return dostroit ? 'Вот ваш мир. Сохраним изменения в кабинет?' : 'Вот ваш мир. Проверьте и сохраните, это последний шаг.';
   }
   var PROYDEN = { 1: 'Персонаж выбран', 2: 'Связь настроена', 3: 'Постройка готова', 4: 'Бонус учтён' };
   function dalee(n) {
     T.goal('mir_step_' + n);
-    if (!vozvrat && PROYDEN[n]) vsplyt('Уровень пройден', PROYDEN[n], 'uroven');
+    if (!vozvrat && PROYDEN[n]) vsplyt('Шаг пройден', PROYDEN[n], 'uroven');
     if (vozvrat) { vozvrat = false; pokaz(5); return; }
     pokaz(sled(n));
   }
@@ -435,13 +430,13 @@
     var novye = cepochka(k).filter(function (x) { return !s.bloki[x]; });
     novye.forEach(function (x) { s.bloki[x] = defolt(x); });
     otkryt = k; sohr();
-    if (novye.length > 1) govorit(k === 'vitrina' ? 'Витрина: это полка в Лавке. Поставил фундамент и Лавку.' : S.BLOKI[k].ig + ' стоит на складе, поставил фундамент.');
+    if (novye.length > 1) govorit(S.BLOKI[k].ig + ' стоит на складе, поставил фундамент.');
     else govorit(FRAZY[k]);
     r3(); fokusBloka(k); rHud();
     sc.obnovit(s.bloki, true).then(function (upali) {
       upali.forEach(function (x) { T.goal('blok_add_' + x); dostizhenie(x); });
       if (upali.length) ozvuchit(upali.map(function (x) { return S.BLOKI[x].ig + ' добавлен' + ROD[x]; }).join('. '));
-      if (Object.keys(s.bloki).length === 6) dostizhenie('vse');
+      if (Object.keys(s.bloki).length === 5) dostizhenie('vse');
       proverBonus();
     });
   }
@@ -511,9 +506,9 @@
     document.body.classList.add('mir-final');
     panel.innerHTML = '<div class="final-t" tabindex="-1">' +
       '<img class="final-art" src="' + R + 'assets/img/palec-8bit.png" alt="Проводник показывает большой палец: мир сохранён" width="272" height="504">' +
-      '<p class="eb">Уровень пройден</p><h2>Мир сохранён</h2>' +
+      '<p class="eb">Шаг пройден</p><h2>Мир сохранён</h2>' +
       '<p>' + (vKabinet ? 'Изменения уже в кабинете, ваш персонаж их увидит.' : 'Анна ' + T.kakSvyazhetsya(s.kanal, s.messenger) + '.') + '</p>' +
-      '<p class="muted">' + s.dost.length + ' из 7 достижений · ' + Object.keys(s.bloki).length + ' из 6 блоков</p>' +
+      '<p class="muted">' + s.dost.length + ' из 6 достижений · ' + Object.keys(s.bloki).length + ' из 5 блоков</p>' +
       '<a class="btn" href="' + R + 'kabinet/?novyy=' + (vKabinet ? 'dostroil' : '1') + '">В кабинет</a></div>';
     panel.firstChild.focus({ preventScroll: true });
     if (window.innerWidth < 900) svg.scrollIntoView({ behavior: tixo() ? 'auto' : 'smooth', block: 'center' });
@@ -640,7 +635,10 @@
       if (s.shag !== 'intro' && !pryamo && !q) prodolzhit = s.shag;
     } else s = nov();
     s.dost = s.dost || []; s.bonus = s.bonus || { hochu: null, tekst: '', fayl: '' };
-    var metki = T.metki();
+    /* Лавки в постройке больше нет: это магазин для покупателей */
+    if (s.bloki) delete s.bloki.lavka;
+    s.dost = s.dost.filter(function (x) { return x !== 'lavka'; });
+    var metki = T.metki().filter(function (k) { return S.BLOKI[k]; });
     if (q && S.BLOKI[q[1]]) metki.push(q[1]);
     metki.forEach(function (k) { cepochka(k).forEach(function (x) { if (!s.bloki[x]) s.bloki[x] = defolt(x); }); if (!otkryt) otkryt = k; });
     if (metki.length) { T.st.del('tucha.metki'); prodolzhit = null; }
@@ -650,7 +648,7 @@
     sc.obnovit(s.bloki, false);
     /* блоки, выбранные на страницах услуг, тоже засчитываем — молча, без всплывашек */
     Object.keys(s.bloki).forEach(function (k) { if (s.dost.indexOf(k) < 0) s.dost.push(k); });
-    if (Object.keys(s.bloki).length === 6 && s.dost.indexOf('vse') < 0) s.dost.push('vse');
+    if (Object.keys(s.bloki).length === 5 && s.dost.indexOf('vse') < 0) s.dost.push('vse');
     try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
     pokaz(prodolzhit ? 'intro' : s.shag, true);
     if (metki.length && s.shag === 'intro') govorit('Вы уже выбрали: ' + metki.map(function (k) { return S.BLOKI[k].ig; }).join(', ') + '. Этот блок уже стоит в постройке.');

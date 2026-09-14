@@ -1,20 +1,18 @@
 /* Сцена «Мира Тучи»: летающий остров-двор склада и Туча над ним.
    Блоки падают из тучи ящиками, ударяются о площадку и вырастают
    в здания. Мир живёт: туча покачивается, грузовик ездит между
-   Телепортом и Порталом, в Мастерской крутится шестерёнка, кран на
-   стройке Лавки качает ящик. Менеджер собирается из блоков по критериям.
+   Телепортом и Порталом, в Мастерской крутится шестерёнка. Менеджер собирается из блоков по критериям.
    Рисунки — в izo.js. При отключённой анимации всё просто стоит. */
 (function () {
   var I = window.TuchaIzo, el = I.el, txt = I.txt, P = I.P, boks = I.boks;
   var BLOKI = {
     hranenie: { ig: 'Точка сохранения', ob: 'хранение', fill: '#1E3A5F', opora: null },
     obrabotka: { ig: 'Мастерская', ob: 'обработка', fill: '#1E90D2', opora: 'hranenie' },
-    lavka: { ig: 'Лавка', ob: 'маркетплейс', fill: '#EF7F1A', opora: 'hranenie' },
-    vitrina: { ig: 'Витрина', ob: 'продвижение', fill: '#F7B267', opora: 'lavka' },
+    vitrina: { ig: 'Витрина', ob: 'продвижение', fill: '#F7B267', opora: 'hranenie' },
     dostavka: { ig: 'Телепорт', ob: 'доставка', fill: '#5AAEE0', opora: null },
     tamozhnya: { ig: 'Портал', ob: 'таможня', fill: '#2C5486', opora: null }
   };
-  var PORYADOK = ['hranenie', 'obrabotka', 'lavka', 'vitrina', 'dostavka', 'tamozhnya'];
+  var PORYADOK = ['hranenie', 'obrabotka', 'vitrina', 'dostavka', 'tamozhnya'];
   var KANAL = { zvonok: 'звонок', pochta: 'почта', messenger: 'мессенджер', vstrecha: 'встреча', chat: 'чат на сайте' };
   var PERS = {
     shturman: { ig: 'Штурман', b: 'Ш' }, hranitel: { ig: 'Хранитель', b: 'Х' },
@@ -67,7 +65,7 @@
     var zad = el('g', {}, this.mir), zd = el('g', {}, this.mir), self = this;
     this.gr = {};
     ['dostavka', 'tamozhnya'].forEach(function (k) { self.gr[k] = el('g', { 'data-blok': k }, zad); });
-    ['hranenie', 'lavka', 'vitrina', 'obrabotka'].forEach(function (k) { self.gr[k] = el('g', { 'data-blok': k }, zd); });
+    ['hranenie', 'vitrina', 'obrabotka'].forEach(function (k) { self.gr[k] = el('g', { 'data-blok': k }, zd); });
     if (o.onKlik) {
       svg.classList.add('klik');
       Object.keys(self.gr).forEach(function (k) {
@@ -146,8 +144,7 @@
     if (this.est[k]) return Promise.resolve();
     var self = this, geo = I.GEO[k];
     this.est[k] = true;
-    if (k === 'vitrina' && this.est.lavka) this.risovat('lavka', 1);            // кран с Лавки уходит
-    if ((k === 'obrabotka' || k === 'lavka') && this.est.hranenie) this.risovat('hranenie', 1);
+    if ((k === 'obrabotka' || k === 'vitrina') && this.est.hranenie) this.risovat('hranenie', 1);
     if (!anim || tixo()) { this.risovat(k, 1); this.podpisi(); return Promise.resolve(); }
     var cx = geo.x + geo.w / 2, cy = geo.y + geo.d / 2, niz = P(cx, cy, geo.z)[1], verh = 150;
     var ya = el('g', {}, this.yaschiki);
@@ -174,8 +171,7 @@
     if (!this.est[k]) return Promise.resolve();
     var self = this;
     delete this.est[k];
-    if (k === 'vitrina' && this.est.lavka) this.risovat('lavka', 1);
-    if ((k === 'obrabotka' || k === 'lavka') && this.est.hranenie) this.risovat('hranenie', 1);
+    if ((k === 'obrabotka' || k === 'vitrina') && this.est.hranenie) this.risovat('hranenie', 1);
     if (!anim || tixo()) { this.risovat(k, 0); this.podpisi(); return Promise.resolve(); }
     return tween(320, EASE.vniz, function (t) { self.risovat(k, 1 - t); }).then(function () { self.risovat(k, 0); self.podpisi(); });
   };
