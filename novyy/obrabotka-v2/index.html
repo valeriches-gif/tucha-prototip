@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Макет: Обработка, второй вариант | Туча</title>
+<meta name="description" content="Приёмка, маркировка «Честный знак», комплектация, упаковка, сборка заказов и отгрузка по FBS на Wildberries и Ozon, на складе в Химках.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1E3A5F">
+<meta property="og:title" content="Обработка товара и фулфилмент для маркетплейсов, Мастерская | Туча">
+<meta property="og:description" content="Приёмка, маркировка «Честный знак», комплектация, упаковка, сборка заказов и отгрузка по FBS на Wildberries и Ozon, на складе в Химках.">
+<meta property="og:image" content="../assets/img/scena-prosto-8bit.png">
+<link rel="icon" type="image/png" href="../assets/img/znachok.png">
+<link rel="preload" href="../assets/fonts/golos.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css?v=202609141319">
+<link rel="stylesheet" href="../assets/ui.css?v=202609141319">
+<link rel="stylesheet" href="../assets/lavka.css?v=202609141319">
+<style>
+/* ===== Второй вариант страницы услуги, 8 бит ===== */
+.v2 { --v2-navy: #1E3A5F; --v2-ink: #1B2B40; --v2-text: #33465E; --v2-ora: #FF8A1F; --v2-ora2: #E0700F; --v2-nebo1: #8FD0FF; --v2-nebo2: #D9F0FF;
+  --v2-trava: #6BB36B; --v2-trava2: #4A7F3F; --v2-kraft: #D9A86A; --v2-fon: #F3F8FC; color: var(--v2-ink); }
+body:has(.v2) { background: var(--v2-fon, #F3F8FC); }
+body:has(.v2) .nebo { display: none; }
+.v2 h1, .v2 h2, .v2 h3 { text-wrap: balance; }
+
+/* пиксельная рамка: ступенчатые углы, только у главного */
+.px8 { --s: 8px; clip-path: polygon(var(--s) 0, calc(100% - var(--s)) 0, calc(100% - var(--s)) var(--s), 100% var(--s), 100% calc(100% - var(--s)),
+  calc(100% - var(--s)) calc(100% - var(--s)), calc(100% - var(--s)) 100%, var(--s) 100%, var(--s) calc(100% - var(--s)), 0 calc(100% - var(--s)), 0 var(--s), var(--s) var(--s)); }
+
+/* первый экран: небо, пиксельные облака, трава */
+.v2-hero { position: relative; overflow: hidden; background: linear-gradient(180deg, var(--v2-nebo1) 0%, var(--v2-nebo2) 78%); padding-block: 34px 0; }
+.v2-oblaka i { position: absolute; width: 12px; height: 12px; background: #fff; opacity: .9;
+  box-shadow: 12px 0 #fff, 24px 0 #fff, 36px 0 #fff, 48px 0 #fff, 12px -12px #fff, 24px -12px #fff, 36px -12px #fff, 24px -24px #fff, 0 12px #E6F3FC, 12px 12px #E6F3FC, 24px 12px #E6F3FC, 36px 12px #E6F3FC, 48px 12px #E6F3FC;
+  transform: scale(var(--k, 4)); transform-origin: 0 0; animation: v2plyv 40s linear infinite; }
+.v2-oblaka i:nth-child(1) { left: 4%; top: 70px; --k: 4; }
+.v2-oblaka i:nth-child(2) { left: 46%; top: 36px; --k: 3; animation-duration: 55s; }
+.v2-oblaka i:nth-child(3) { left: 78%; top: 110px; --k: 5; animation-duration: 48s; }
+.v2-oblaka i:nth-child(4) { left: 28%; top: 180px; --k: 2; animation-duration: 62s; }
+@keyframes v2plyv { from { translate: 0 0; } to { translate: -160px 0; } }
+.v2-hero-g { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 16px 40px; align-items: end; }
+.v2-hero-t { padding-bottom: 76px; }
+.v2-lokaciya { display: inline-flex; align-items: center; column-gap: 12px; margin: 0 0 18px; padding-right: 12px; font: 700 15px/1 'Rubik', sans-serif;
+  color: var(--v2-navy); background: #fff; box-shadow: 0 0 0 3px var(--v2-navy); }
+.v2-lokaciya span { background: var(--v2-navy); color: #fff; padding: 8px 12px; }
+.v2-h1 { font: 900 clamp(38px, 4.3vw, 60px)/1 'Rubik', sans-serif; letter-spacing: -.01em; margin: 0 0 18px; color: #fff;
+  -webkit-text-stroke: clamp(6px, .7vw, 10px) var(--v2-navy); paint-order: stroke fill; text-shadow: 0 clamp(6px, .7vw, 10px) 0 var(--v2-navy); }
+.v2-h1-s { font-size: clamp(34px, 4.2vw, 58px); }
+.v2-lead { font: 500 19px/1.5 'Golos Text', sans-serif; color: var(--v2-ink); max-width: 46ch; margin: 0 0 26px; }
+.v2-kn { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: center; }
+
+/* пиксельные кнопки */
+.v2-btn { --s: 6px; position: relative; display: inline-block; border: 0; padding: 0; background: var(--v2-navy); cursor: pointer; text-decoration: none;
+  clip-path: polygon(var(--s) 0, calc(100% - var(--s)) 0, calc(100% - var(--s)) var(--s), 100% var(--s), 100% calc(100% - var(--s)), calc(100% - var(--s)) calc(100% - var(--s)), calc(100% - var(--s)) 100%, var(--s) 100%, var(--s) calc(100% - var(--s)), 0 calc(100% - var(--s)), 0 var(--s), var(--s) var(--s));
+  padding: 5px 5px 11px; transition: transform 120ms cubic-bezier(.23, 1, .32, 1); }
+.v2-btn span { display: block; padding: 14px 24px 13px; font: 800 18px/1 'Rubik', sans-serif; color: #fff; background: linear-gradient(#FFB36B 0 50%, var(--v2-ora) 50%); white-space: nowrap; }
+.v2-btn-2 span { color: var(--v2-navy); background: linear-gradient(#FFFFFF 0 50%, #E3F1FB 50%); }
+.v2-btn:active { transform: translateY(4px); padding-bottom: 7px; margin-bottom: 4px; }
+.v2-btn:focus-visible { outline: 3px solid var(--v2-ora2); outline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) { .v2-btn:hover span { filter: brightness(1.06); } }
+
+/* мир: постройка на всю колонку, без карточки */
+.v2-mir { position: relative; align-self: end; margin-right: 60px; }
+.v2-mir svg { display: block; width: 100%; height: auto; margin-bottom: -18px; }
+.v2-mir svg [data-blok="dostavka"], .v2-mir svg [data-blok="tamozhnya"], .v2-mir svg [data-blok="vitrina"] { opacity: .5; transition: opacity .4s; }
+.v2-geroy { position: absolute; right: -2%; bottom: 40px; display: flex; flex-direction: column; align-items: flex-end; }
+.v2-geroy img { width: clamp(72px, 7vw, 118px); height: auto; image-rendering: pixelated; }
+.v2-rech { margin: 0 0 12px; max-width: 200px; padding: 10px 14px; font: 700 14px/1.3 'Rubik', sans-serif; color: var(--v2-navy); background: #fff;
+  box-shadow: 0 0 0 3px var(--v2-navy), 0 6px 0 3px var(--v2-navy); position: relative; }
+.v2-rech::after { content: ''; position: absolute; right: 30px; bottom: -15px; width: 12px; height: 12px; background: #fff; box-shadow: 3px 3px 0 var(--v2-navy), 3px 0 0 var(--v2-navy), 0 3px 0 var(--v2-navy); }
+.v2-zdes { animation: v2zdes 1.1s ease-in-out infinite; }
+@keyframes v2zdes { 50% { transform: translateY(-6px); } }
+
+/* трава */
+.v2-trava { position: relative; z-index: 2; height: 40px; background: repeating-conic-gradient(#6BB36B 0 25%, #5EA75E 0 50%) 0 0 / 20px 20px;
+  box-shadow: inset 0 8px 0 #93D493, inset 0 -12px 0 #4A7F3F; }
+
+/* полоса характеристик */
+.v2-staty { background: var(--v2-navy); color: #fff; }
+.v2-staty-g { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.v2-staty-g > div { padding: 22px 24px; border-left: 3px solid rgba(255, 255, 255, .12); display: flex; flex-direction: column; gap: 4px; }
+.v2-staty-g > div:first-child { border-left: 0; padding-left: 0; }
+.v2-staty b { font: 900 30px/1 'Rubik', sans-serif; color: #FFB36B; }
+.v2-staty span { font: 500 15px/1.3 'Golos Text', sans-serif; color: #C9D8EA; }
+
+/* секции */
+.v2-sek { padding-block: 72px; }
+.v2-eb { display: inline-block; margin: 0 0 10px; font: 700 13px/1 'Rubik', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--v2-ora2); }
+.v2-h2 { font: 800 clamp(30px, 3.4vw, 44px)/1.05 'Rubik', sans-serif; color: var(--v2-navy); margin: 0 0 30px; }
+.v2-tekst { font: 400 17px/1.55 'Golos Text', sans-serif; color: var(--v2-text); max-width: 42ch; }
+.v2-tekst a, .v2-ssylka { color: var(--v2-navy); font-weight: 700; }
+
+/* путь товара: лента, по которой едет короб */
+.v2-lenta { position: relative; height: 28px; margin: 6px 0 0; background: repeating-linear-gradient(90deg, #2C4A6E 0 18px, #3B5E86 18px 36px); box-shadow: inset 0 -6px 0 #16304F;
+  animation: v2lenta 1s linear infinite; }
+@keyframes v2lenta { to { background-position: 36px 0; } }
+.v2-korob { position: absolute; left: 0; bottom: 22px; width: 46px; height: 40px; background: linear-gradient(#E7BE86 0 30%, var(--v2-kraft) 30%); box-shadow: 0 0 0 3px var(--v2-navy), inset -10px 0 0 rgba(0, 0, 0, .1);
+  animation: v2edet 9s cubic-bezier(.65, 0, .35, 1) infinite; }
+.v2-korob::before { content: ''; position: absolute; left: 50%; top: 0; width: 8px; height: 100%; translate: -50% 0; background: rgba(255, 255, 255, .35); }
+@keyframes v2edet { 0% { left: calc(12.5% - 23px); opacity: 0; } 4%, 12% { left: calc(12.5% - 23px); opacity: 1; } 29%, 37% { left: calc(37.5% - 23px); } 54%, 62% { left: calc(62.5% - 23px); } 79%, 95% { left: calc(87.5% - 23px); opacity: 1; } 100% { left: calc(87.5% - 23px); opacity: 0; } }
+.v2-shagi { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.v2-st { position: relative; padding: 30px 22px 6px; border-left: 3px dashed #BCD3E6; }
+.v2-st:first-child { border-left: 0; }
+.v2-st::before { content: ''; position: absolute; left: 50%; top: -6px; width: 14px; height: 14px; translate: -50% 0; background: var(--v2-ora); box-shadow: 0 0 0 3px var(--v2-navy); }
+.v2-st-n { display: inline-grid; place-items: center; width: 34px; height: 34px; margin-bottom: 12px; font: 900 18px/1 'Rubik', sans-serif; color: #fff; background: var(--v2-navy); }
+.v2-st h3 { font: 800 24px/1.1 'Rubik', sans-serif; color: var(--v2-navy); margin: 0 0 6px; }
+.v2-st > p { font: 400 16px/1.45 'Golos Text', sans-serif; color: var(--v2-text); margin: 0 0 14px; }
+.v2-st ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.v2-st ul li { position: relative; padding-left: 20px; font: 600 15px/1.35 'Golos Text', sans-serif; color: var(--v2-ink); }
+.v2-st ul li::before { content: ''; position: absolute; left: 0; top: .42em; width: 9px; height: 9px; background: var(--v2-trava); box-shadow: 0 0 0 2px var(--v2-trava2); }
+
+/* цена: главный блок в пиксельной рамке */
+.v2-sek-cena { background: #E4F1FA; }
+.v2-cena-g { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+.v2-cena { --s: 10px; position: relative; padding: 34px 36px 40px; background: #fff; }
+.v2-cena::after { content: ''; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 0 6px var(--v2-navy), inset 0 -14px 0 0 #CFE3F3; }
+.v2-cena b { display: block; font: 900 clamp(36px, 4vw, 54px)/1 'Rubik', sans-serif; color: var(--v2-ora); -webkit-text-stroke: 5px var(--v2-navy); paint-order: stroke fill; margin: 2px 0 12px; }
+.v2-cena p:not(.v2-eb) { font: 500 18px/1.5 'Golos Text', sans-serif; color: var(--v2-ink); margin: 0 0 24px; max-width: 44ch; }
+.v2-foto { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-content: center; }
+.v2-foto .v2-eb { grid-column: 1 / -1; }
+.v2-foto figure { margin: 0; }
+.v2-foto img { display: block; width: 100%; height: auto; aspect-ratio: 270 / 121; object-fit: cover; box-shadow: 0 0 0 3px var(--v2-navy); border-radius: 0; }
+.v2-foto figcaption { margin-top: 8px; font: 500 13px/1.3 'Golos Text', sans-serif; color: var(--v2-text); }
+
+/* вопросы на всю ширину */
+.v2-vopr-g { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 20px 56px; align-items: start; }
+.v2-vopr-sp { display: grid; gap: 12px; }
+.v2-vopr { background: #fff; box-shadow: 0 0 0 3px var(--v2-navy), 0 6px 0 3px #BCD3E6; }
+.v2-vopr summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 16px; padding: 18px 22px; font: 700 18px/1.3 'Rubik', sans-serif; color: var(--v2-navy); }
+.v2-vopr summary::-webkit-details-marker { display: none; }
+.v2-vopr summary::after { content: '+'; font: 900 24px/1 'Rubik', sans-serif; color: var(--v2-ora2); }
+.v2-vopr[open] summary::after { content: '−'; }
+.v2-vopr p { margin: 0; padding: 0 22px 20px; font: 400 17px/1.55 'Golos Text', sans-serif; color: var(--v2-text); max-width: 60ch; }
+.v2-vopr summary:focus-visible { outline: 3px solid var(--v2-ora2); outline-offset: 2px; }
+
+/* финал */
+.v2-final { position: relative; overflow: hidden; background: linear-gradient(180deg, var(--v2-nebo2), var(--v2-nebo1)); padding-block: 64px 0; }
+.v2-final-g { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end; }
+.v2-final-g > div { padding-bottom: 60px; }
+.v2-palec { display: block; width: clamp(110px, 12vw, 190px); height: auto; image-rendering: pixelated; margin-bottom: -4px; }
+
+@media (max-width: 980px) {
+  .v2-hero-g, .v2-cena-g, .v2-vopr-g { grid-template-columns: minmax(0, 1fr); }
+  .v2-hero-t { padding-bottom: 8px; }
+  .v2-shagi { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 26px; }
+  .v2-st:nth-child(3) { border-left: 0; }
+  .v2-lenta { display: none; }
+  .v2-st::before { display: none; }
+}
+@media (max-width: 640px) {
+  .v2-staty-g { grid-template-columns: minmax(0, 1fr); }
+  .v2-staty-g > div { border-left: 0; border-top: 3px solid rgba(255, 255, 255, .12); padding-left: 0; }
+  .v2-staty-g > div:first-child { border-top: 0; }
+  .v2-shagi { grid-template-columns: minmax(0, 1fr); }
+  .v2-st { border-left: 0; padding-left: 0; }
+  .v2-foto { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .v2-final-g { grid-template-columns: minmax(0, 1fr); }
+  .v2-palec { justify-self: end; }
+  .v2-btn span { font-size: 16px; padding: 13px 18px 12px; }
+  .v2-geroy { display: none; }
+  .v2-sek { padding-block: 52px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-oblaka i, .v2-lenta, .v2-korob, .v2-zdes { animation: none; }
+  .v2-korob { left: calc(12.5% - 23px); }
+}
+</style>
+</head><body>
+<a class="skryt-f" href="#glav">К содержанию</a>
+<div class="nebo" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="tv-versii"><div class="wrap"><span class="tv-v-z">Версия сайта</span><nav aria-label="Версия сайта"><a href="../../">Обычная</a><a href="../" aria-current="page">8 бит</a><a href="../../novyy2/">Современная</a></nav><a class="tv-v-vse" href="../../tri/">Сравнить три версии</a></div></div>
+<header class="shapka" id="shapka"><div class="wrap">
+<a class="logo" href="../"><img src="../assets/img/logo.png" alt="ТУЧА, Мировая Лавка: на главную" width="132" height="40"></a><span class="sf-metka">СпейсФлоу</span>
+<nav class="nav" aria-label="Главное меню">
+<a href="../hranenie/">Хранение</a>
+<div class="menu-u"><button type="button" data-menu-u aria-expanded="false">Услуги <span aria-hidden="true">▾</span></button>
+<div class="spisok"><a href="../hranenie/"><span><b>Точка сохранения</b> <small>· хранение</small></span></a><a href="../obrabotka/"><span><b>Мастерская</b> <small>· обработка</small></span></a><a href="../dostavka/"><span><b>Телепорт</b> <small>· доставка</small></span></a><a href="../tamozhnya/"><span><b>Портал</b> <small>· таможня</small></span></a><a href="../lavka/"><span><b>Лавка</b> <small>· маркетплейс</small></span></a><a href="../vitrina/"><span><b>Витрина</b> <small>· продвижение</small></span></a></div></div>
+<a href="../hranenie/#formaty">Форматы</a>
+<a href="../lavka/">Лавка</a>
+<a href="../kontakty/">Контакты</a>
+<a class="mob" href="../lavka/korzina/">Корзина</a>
+<a class="mob" href="../o-kompanii/">О компании</a>
+<a class="mob" href="../vhod/" data-vhod>Войти</a>
+<a class="mob" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a>
+<a class="mob" href="https://t.me/tucha_ml">Telegram</a>
+</nav>
+<div class="shapka-prav">
+<a class="tel" href="tel:+74956658242" data-goal="call_click"><b>+7 (495) 665-82-42</b><span>пн-пт 9:00-18:00</span></a>
+<a class="korz-l" href="../lavka/korzina/" aria-label="Корзина Лавки"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.2l2.2 10.2a1.6 1.6 0 0 0 1.6 1.3h7.7a1.6 1.6 0 0 0 1.5-1.2L20 8H6.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.6" fill="currentColor"/><circle cx="17" cy="19.5" r="1.6" fill="currentColor"/></svg><b data-korz-n hidden>0</b></a>
+<a class="vhod-l" href="../vhod/" data-vhod>Войти</a>
+<a class="btn btn-sm" href="../start/">Начать</a>
+<button class="burger" type="button" data-burger aria-expanded="false" aria-label="Меню"><i></i><i></i><i></i></button>
+</div></div></header>
+<main id="glav" class="v2">
+<section class="v2-hero">
+  <div class="v2-oblaka" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="wrap v2-hero-g">
+    <div class="v2-hero-t">
+      <p class="v2-lokaciya"><span>Мастерская</span>обработка</p>
+      <h1 class="v2-h1">Обработка товара и&nbsp;фулфилмент</h1>
+      <p class="v2-lead">Готовим товар к продаже прямо на складе: принимаем, маркируем, собираем и отгружаем на маркетплейсы.</p>
+      <div class="v2-kn">
+        <button class="v2-btn" type="button" data-dobavit="obrabotka"><span>Добавить в мой мир</span></button>
+        <a class="v2-btn v2-btn-2" href="tel:+74956658242" data-goal="call_click"><span>Позвонить</span></a>
+      </div>
+    </div>
+    <div class="v2-mir">
+      <svg id="v2Scena" role="img" aria-label="Постройка под тучей: Мастерская стоит на Точке сохранения"></svg>
+      <div class="v2-geroy" aria-hidden="true">
+        <p class="v2-rech">Мастерская готова: приёмка, маркировка, сборка.</p>
+        <img src="../assets/img/provodnik-8bit.png" alt="" width="136" height="252">
+      </div>
+    </div>
+  </div>
+  <div class="v2-trava" aria-hidden="true"></div>
+</section>
+
+<section class="v2-staty" aria-label="Коротко">
+  <div class="wrap v2-staty-g">
+    <div><b>FBS</b><span>отгрузка на Wildberries и Ozon</span></div>
+    <div><b>«Честный знак»</b><span>печатаем и клеим коды</span></div>
+    <div><b>2 кадра</b><span>фото каждой паллеты при приёмке</span></div>
+  </div>
+</section>
+
+<section class="v2-sek">
+  <div class="wrap">
+    <p class="v2-eb">Что входит</p>
+    <h2 class="v2-h2">Путь товара через Мастерскую</h2>
+    <div class="v2-lenta" aria-hidden="true"><i class="v2-korob"></i></div>
+    <ol class="v2-shagi"><li class="v2-st" style="--i:0"><span class="v2-st-n">1</span><h3>Приёмка</h3><p>Пересчитываем и фотографируем</p><ul><li>Приёмка с пересчётом и фото</li></ul></li><li class="v2-st" style="--i:1"><span class="v2-st-n">2</span><h3>Маркировка</h3><p>Печатаем и клеим коды</p><ul><li>Маркировка «Честный знак»</li></ul></li><li class="v2-st" style="--i:2"><span class="v2-st-n">3</span><h3>Сборка</h3><p>Комплектуем и упаковываем заказы</p><ul><li>Комплектация и упаковка</li><li>Сборка заказов</li></ul></li><li class="v2-st" style="--i:3"><span class="v2-st-n">4</span><h3>Отгрузка</h3><p>Везём на маркетплейс или клиенту</p><ul><li>Отгрузка по FBS на Wildberries и Ozon</li></ul></li></ol>
+  </div>
+</section>
+
+<section class="v2-sek v2-sek-cena">
+  <div class="wrap v2-cena-g">
+    <div class="v2-cena px8">
+      <p class="v2-eb">Цена</p>
+      <b>По прайсу операций</b>
+      <p>Считаем по количеству единиц и сложности операций, пришлём расчёт.</p>
+      <div class="v2-kn">
+        <a class="v2-btn" href="../start/" ><span>Получить расчёт</span></a>
+        <a class="v2-ssylka" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a>
+      </div>
+    </div>
+    <div class="v2-foto">
+      <p class="v2-eb">Склад настоящий</p>
+      <figure><img src="../assets/img/foto-m3.jpg" alt="Ячейки и сборка" width="270" height="121" loading="lazy"><figcaption>Ячейки и сборка</figcaption></figure>
+      <figure><img src="../assets/img/foto-m1.jpg" alt="Зона приёмки" width="270" height="121" loading="lazy"><figcaption>Зона приёмки</figcaption></figure>
+      <figure><img src="../assets/img/foto-m4.jpg" alt="Отгрузка" width="270" height="121" loading="lazy"><figcaption>Отгрузка</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="v2-sek">
+  <div class="wrap v2-vopr-g">
+    <div>
+      <p class="v2-eb">Подсказки</p>
+      <h2 class="v2-h2">Частые вопросы</h2>
+      <p class="v2-tekst">Не нашли ответ? <a href="../voprosy/">Все вопросы</a> или позвоните, ответим сразу.</p>
+    </div>
+    <div class="v2-vopr-sp"><details class="v2-vopr"><summary>Кто наносит маркировку?</summary><p>Мы: печатаем и клеим коды «Честного знака» и ведём их учёт для отгрузок по FBS.</p></details><details class="v2-vopr"><summary>Сколько занимает приёмка?</summary><p>Зависит от объёма и операций, назовём срок при заявке.</p></details><details class="v2-vopr"><summary>Отгружаете на маркетплейсы?</summary><p>Да, собираем заказы и отгружаем по FBS на Wildberries и Ozon.</p></details></div>
+  </div>
+</section>
+
+<section class="v2-final">
+  <div class="v2-oblaka" aria-hidden="true"><i></i><i></i></div>
+  <div class="wrap v2-final-g">
+    <div>
+      <h2 class="v2-h1 v2-h1-s">Добавить Мастерскую в свой мир?</h2>
+      <p class="v2-lead">Блок сразу встанет в конструктор, а в простой форме услуга будет отмечена.</p>
+      <div class="v2-kn">
+        <button class="v2-btn" type="button" data-dobavit="obrabotka"><span>Добавить в мой мир</span></button>
+        <a class="v2-btn v2-btn-2" href="tel:+74956658242" data-goal="call_click"><span>Позвонить</span></a>
+      </div>
+    </div>
+    <img class="v2-palec" src="../assets/img/palec-8bit.png" alt="" width="190" height="352" loading="lazy">
+  </div>
+  <div class="v2-trava" aria-hidden="true"></div>
+</section>
+</main>
+<footer class="podval"><div class="wrap"><div class="kol">
+<div class="znak-p"><img src="../assets/img/logo-v-svetl.png" alt="ТУЧА, Мировая Лавка" width="480" height="277" loading="lazy">
+<p class="sf-p">СпейсФлоу</p><p>Всё под одной тучей</p><a class="tel-bol" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a></div>
+<div><h4>Услуги</h4><ul><li><a href="../hranenie/">Точка сохранения · хранение</a></li><li><a href="../obrabotka/">Мастерская · обработка</a></li><li><a href="../dostavka/">Телепорт · доставка</a></li><li><a href="../tamozhnya/">Портал · таможня</a></li><li><a href="../lavka/">Лавка · маркетплейс</a></li><li><a href="../vitrina/">Витрина · продвижение</a></li></ul></div>
+<div><h4>Компания</h4><ul><li><a href="../o-kompanii/">О компании</a></li><li><a href="../voprosy/">Вопрос-ответ</a></li>
+<li><a href="../kontakty/">Контакты</a></li></ul></div>
+<div><h4>Клиентам</h4><ul><li><a href="../vhod/" data-vhod>Войти</a></li><li><a href="../start/">Начать</a></li>
+<li><a href="../start/mir/">Мир Тучи</a></li></ul></div>
+<div><h4>Контакты</h4><ul><li><a href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a></li>
+<li><a href="tel:+79296340988">+7 (929) 634-09-88</a></li><li><a href="mailto:info@tucha-ml.ru">info@tucha-ml.ru</a></li>
+<li><a href="https://t.me/tucha_ml">Telegram</a> · <a href="https://wa.me/79296340988">WhatsApp</a></li><li>пн-пт 9:00-18:00</li></ul></div>
+</div>
+<div class="niz"><span>ООО «Туча - Мировая Лавка» · <a href="https://yandex.ru/maps/org/tucha_mirovaya_lavka">Московская обл., г. о. Химки, д. Подолино, Промышленная зона, 2Б</a> · <a href="../dokumenty/#rekvizity">реквизиты</a> ·
+<a href="../dokumenty/#politika">политика обработки данных</a> · <a href="../dokumenty/#soglasie">согласие</a></span>
+<span>© 2026 · тестовая версия сайта</span></div>
+</div></footer>
+<div class="pomosh" data-pomosh-box>
+<p class="pomosh-rech">Есть вопрос?</p>
+<button class="pomosh-kn" type="button" data-pomosh aria-expanded="false" aria-label="Нужна помощь? Открыть контакты">
+<img src="../assets/img/provodnik-8bit.png" alt="" width="80" height="148"></button>
+<button class="pomosh-x" type="button" data-pomosh-x aria-label="Убрать помощника">×</button>
+</div>
+<div class="pomosh-panel" role="dialog" aria-label="Помощник Тучи">
+<div data-chat-box><div class="zapas"><b>Нужна помощь?</b>
+<p class="muted">Пн-пт с 9:00 до 18:00 отвечаем сразу, в другое время, перезвоним утром.</p>
+<a href="tel:+74956658242" data-goal="call_click">Позвонить: +7 (495) 665-82-42</a>
+<a href="https://t.me/tucha_ml">Написать в Telegram</a>
+<a href="../kontakty/#perezvon">Перезвоните мне</a></div></div>
+</div>
+<script>window.TUCHA_ROOT = '../';</script>
+<script src="../assets/site.js?v=202609141319"></script>
+<script src="../assets/chat.js?v=202609141319"></script>
+<script src="../assets/izo.js?v=202609141319"></script>
+<script src="../assets/scena.js?v=202609141319"></script>
+<script>(function () {
+  var svg = document.getElementById('v2Scena');
+  var sc = TuchaScena.sozdat(svg, { root: Tucha.ROOT });
+  var por = ['hranenie', 'obrabotka', 'vitrina', 'dostavka', 'tamozhnya'], bl = {}, i = 0;
+  function zdes() {
+    /* метка «Вы здесь» над Мастерской, как на карте в игре */
+    var NS = 'http://www.w3.org/2000/svg', g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'v2-zdes');
+    g.innerHTML = '<rect x="206" y="196" width="118" height="34" fill="#1E3A5F"/><rect x="210" y="200" width="110" height="26" fill="#FF8A1F"/>' +
+      '<text x="265" y="219" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="15" fill="#fff">Вы здесь</text>' +
+      '<rect x="256" y="230" width="18" height="6" fill="#1E3A5F"/><rect x="260" y="236" width="10" height="6" fill="#1E3A5F"/><rect x="263" y="242" width="4" height="5" fill="#1E3A5F"/>';
+    svg.appendChild(g);
+  }
+  var tiho = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (tiho) { por.forEach(function (k) { bl[k] = 1; }); sc.obnovit(bl, false); zdes(); return; }
+  (function sled() { if (i >= por.length) { zdes(); return; } bl[por[i++]] = 1; sc.obnovit(bl, true).then(function () { setTimeout(sled, 80); }); })();
+})();</script>
+</body></html>
