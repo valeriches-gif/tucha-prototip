@@ -249,6 +249,7 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
 .magiya .lv-st-cen b { font-family: 'Sklad'; font-weight: 900; font-size: 17px; color: var(--m-chernila); }
 .m-sek-lavka .lv-dom-h { margin-bottom: 28px; }
 .m-sek-lavka .m-h2 { margin-bottom: 10px; }
+.m-sek-stellazh .m-h2 { margin-bottom: 34px; }
 .m-sek-lavka .m-pod { margin: 0; }
 
 /* финал: низкий, телефон одной строкой */
