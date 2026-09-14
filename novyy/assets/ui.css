@@ -79,6 +79,12 @@ h2, h3, .h3 { font-weight: 800; letter-spacing: -.01em; }
 .tv-v-vse { margin-left: auto; color: #F5A55C; }
 .tv-versii a:focus-visible { outline: 2px solid #7FD8FF; outline-offset: 2px; }
 @media (max-width: 640px) { .tv-v-z { display: none; } .tv-v-vse { margin-left: 0; } }
+/* вариант страницы: такой же переключатель, выбранный белым, чтобы не спорить с версией */
+.tv-v-seg { display: inline-flex; gap: 2px; margin-left: 6px; padding: 2px; border-radius: 4px; background: rgba(255, 255, 255, .08); vertical-align: middle; }
+.tv-v-seg a { color: #D5DEE8; text-decoration: none; font-weight: 600; padding: 5px 12px; border-radius: 3px; transition: background-color .2s ease, color .2s ease; }
+.tv-v-seg a[aria-current] { background: #fff; color: #16202E; }
+@media (hover: hover) and (pointer: fine) { .tv-v-seg a:not([aria-current]):hover { background: rgba(255, 255, 255, .12); color: #fff; } }
+@media (max-width: 640px) { .tv-versii .wrap { column-gap: 10px; } .tv-v-seg a { padding: 5px 9px; } }
 
 /* облака на небе страницы: мягко и редко */
 .nebo { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }

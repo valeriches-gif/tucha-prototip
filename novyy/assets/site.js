@@ -196,12 +196,6 @@ window.Tucha = (function () {
     }
     korzObnovit();
 
-    /* вариант главной: выбор запоминается, логотип внутренних страниц ведёт на выбранную */
-    document.querySelectorAll('[data-variant]').forEach(function (a) {
-      a.addEventListener('click', function () { st.set('tucha.variant', a.getAttribute('data-variant')); });
-    });
-    if (st.get('tucha.variant') === 'pechat') document.querySelectorAll('a.logo').forEach(function (a) { a.href = ROOT + 'pechat/'; });
-
     document.querySelectorAll('[data-dobavit]').forEach(function (b) {
       b.addEventListener('click', function () { var k = b.getAttribute('data-dobavit'); dobMetku(k); goal('dobavit_' + k); location.href = ROOT + 'start/'; });
     });
