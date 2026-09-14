@@ -296,3 +296,20 @@ img[src*="8bit"], .ava-foto, .rech-mob::before { image-rendering: pixelated; }
   .o-nas-g .korob-u { min-height: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .skaner-luch { animation: none; transform: translateY(18px); } }
+
+/* ===== второй вариант главной: видео со склада рядом с «весь путь товара» ===== */
+.o-nas-video { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 56px; align-items: start; }
+.video-sklad { position: relative; margin: 0; }
+.video-sklad video { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 22px;
+  background: #16304F; box-shadow: 0 30px 60px -30px rgba(30, 58, 95, .45); }
+.video-metka { position: absolute; left: 14px; top: 14px; z-index: 1; padding: 5px 12px; border-radius: 999px; background: #FF8A1F; color: #fff;
+  font: 700 13px/1.2 var(--igr); box-shadow: 0 3px 0 #C45E0A; }
+.video-sklad figcaption { margin-top: 12px; font-size: 14px; color: var(--mute); }
+@media (max-width: 900px) {
+  .o-nas-video { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .video-sklad { width: min(100%, 300px); margin: 0 auto; }
+}
+@media (max-width: 700px) {
+  .o-nas-g .stel-usl li { padding-top: 6px; margin-bottom: 18px; }
+  .o-nas-g .korob-u { min-height: 0; }
+}
