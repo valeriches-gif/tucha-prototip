@@ -213,6 +213,20 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
 .m-bilet:nth-of-type(2) { transform: rotate(1.5deg); }
 .m-bilet b { display: block; font-family: 'Sklad'; font-weight: 900; text-transform: uppercase; font-size: 28px; line-height: 1; margin-bottom: 2px; }
 .m-dva { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+/* о складе: текст и путь товара ярлыками, между ними лента */
+.m-o-sklade { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 24px 48px; align-items: start; margin: 0 0 44px; }
+.m-o-t p { font-size: 19px; line-height: 1.55; color: var(--m-seryy); margin: 0 0 16px; max-width: 60ch; }
+.m-o-t p:first-child { color: var(--m-chernila); }
+.m-o-t .m-kn { margin-top: 26px; }
+.m-o-ssylka { margin-top: 0; color: var(--m-chernila); text-decoration: none; }
+@media (hover: hover) and (pointer: fine) { .m-o-ssylka:hover::after { transform: translateX(5px); } }
+.m-put { position: relative; display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.m-put::before { content: ''; position: absolute; left: 33px; top: 20px; bottom: 20px; width: 4px; background: var(--m-balka); }
+.m-put li { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 16px; padding: 14px 18px;
+  background: #fff; border-radius: 2px; box-shadow: 0 1px 0 #CBD4DC, 0 18px 34px -26px rgba(22, 32, 46, .45); }
+.m-put .m-kod { grid-row: span 2; align-self: start; margin-top: 2px; }
+.m-put b { font-family: 'Sklad'; font-weight: 900; text-transform: uppercase; font-size: 26px; line-height: 1; color: var(--m-chernila); }
+.m-put li > span:last-child { font-size: 15px; color: var(--m-seryy); margin-top: 4px; }
 .m-polka-l { position: relative; display: block; padding: 24px 28px 24px; background: #fff; color: var(--m-chernila); text-decoration: none; border-radius: 2px;
   border-top: 12px solid var(--m-balka); box-shadow: 0 18px 36px -26px rgba(22, 32, 46, .45); }
 .m-polka-v { border-top-color: var(--m-stoyka); }
@@ -298,6 +312,15 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
 .magiya .dost { border-radius: 3px; background: var(--m-chernila); border-left: 6px solid var(--m-balka); }
 .magiya .kab-menu button { border-radius: 3px; }
 .magiya .kab-menu button.on { background: var(--m-chernila); color: #fff; }
+/* кабинет «Мир Тучи» в языке склада: тёмная полоса ангара, оранжевая балка, прямые углы */
+.magiya .km-hud { border-radius: 3px; background: var(--m-angar); box-shadow: inset 0 -5px 0 var(--m-balka), 0 18px 34px -24px rgba(22, 32, 46, .6); }
+.magiya :is(.km-imya, .km-schet b, .km-znak b) { font-family: 'Sklad'; font-weight: 900; text-transform: uppercase; }
+.magiya .km-xp, .magiya .km-xp i { border-radius: 0; }
+.magiya .km-xp i { background: repeating-linear-gradient(-45deg, #F07F1A 0 10px, #D96A0C 10px 20px); }
+.magiya :is(.km-schet span, .km-a, .kab-vid-mir .kab-kol .zadanie, .kab-vid-mir .manager .fraza, .kab-vid-mir .zad-obmen) { border-radius: 3px; }
+.magiya .km-put i { border-radius: 3px; }
+.magiya .km-put b { font-family: 'Sklad'; font-weight: 700; font-size: 15px; }
+.magiya .kab-vid-prosto .kab-menu button.on { background: #fff; color: var(--m-chernila); box-shadow: inset 3px 0 0 var(--m-chernila); }
 .magiya .toast { border-radius: 3px; }
 
 /* общие страницы (форма, вход, кабинет): заголовки табличным шрифтом */
@@ -317,7 +340,7 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
   .m-hero-art { width: 100%; opacity: .55; }
   .m-hero-art::after { background: linear-gradient(90deg, rgba(14, 23, 38, .92) 0%, rgba(14, 23, 38, .6) 70%), linear-gradient(0deg, var(--m-angar) 0%, rgba(14, 23, 38, 0) 40%); }
   .m-yarlyki { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .m-formaty, .m-dva { grid-template-columns: minmax(0, 1fr); }
+  .m-formaty, .m-dva, .m-o-sklade { grid-template-columns: minmax(0, 1fr); }
   .m-ryad { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .m-final { grid-template-columns: minmax(0, 1fr); }
   .m-final-pr { align-items: flex-start; }

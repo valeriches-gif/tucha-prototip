@@ -57,7 +57,7 @@
     var p = pers(), st = a.status || 0;
     return '<div class="kart manager"><div class="m-verh"><span class="ava" aria-hidden="true">' + imya()[0] + '</span><div><b>' + imya() + '</b><span class="muted">' +
       (p ? p[0] + ' · ' : '') + 'ваш ' + ktoNaSvyazi() + '</span></div></div>' +
-      (p && podrobno ? '<p class="fraza">«' + p[1] + '»</p>' : '') +
+      (p && (podrobno || mir()) ? '<p class="fraza">«' + p[1] + '»</p>' : '') +
       '<p>' + (st < 1 ? imya() + ' ' + T.kakSvyazhetsya(kanal(), a.messenger) + '.' : 'На связи в рабочее время: пн-пт с 9:00 до 18:00.') + '</p>' +
       '<div class="m-kn"><a class="btn btn-2 btn-sm" href="tel:+74956658242" data-goal="call_click">Позвонить</a>' +
       '<a class="btn btn-2 btn-sm" href="https://t.me/tucha_ml">Написать в Telegram</a></div>' +
@@ -95,21 +95,63 @@
     return '<div class="kart"><h2 class="h3">Что приготовить к разговору</h2><ul class="spis-ok">' +
       '<li>Объём и тип товара: паллеты, коробки, вес</li><li>Даты первой поставки</li><li>Нужны ли маркировка, сборка и доставка</li></ul></div>';
   }
-  /* уровни только в «Мире Тучи»; во «Всё просто» тарифов и уровней нет, есть скидка за срок */
-  function rUroven() {
-    if (!mir()) return '<div class="kart uroven-k"><h2 class="h3">Скидка за срок</h2><p class="uroven"><b>' +
-      ({ 0: 'по факту', 1: '−15 %', 3: '−20 %', 6: '−30 %', 12: '−40 %' }[(a.mir && a.mir.bloki && a.mir.bloki.hranenie && a.mir.bloki.hranenie.srok) || 0]) + '</b></p>' +
-      '<p class="muted" style="margin:0">«Займи место под Тучей»: −15 % за месяц, −20 % за 3, −30 % за 6, −40 % за 12 месяцев.</p></div>';
-    var i = T.klubUroven(a.staj), u = T.KLUB[i], sl = T.KLUB[i + 1], ost = sl ? sl.mes - (a.staj || 0) : 0;
-    return '<div class="kart uroven-k"><div class="razdel-h"><h2 class="h3">Уровень</h2><span class="muted">' + (i + 1) + ' из ' + T.KLUB.length + '</span></div>' +
-      '<p class="uroven"><b>' + u.imya + '</b></p>' +
-      '<div class="urov-shkala" aria-hidden="true">' + T.KLUB.map(function (x, k) { return '<i' + (k <= i ? ' class="on"' : '') + '></i>'; }).join('') + '</div>' +
-      (sl ? '<p class="muted" style="margin:0">До уровня «' + sl.imya + '»: ' + ost + ' ' + mes(ost) + ' с выполненными условиями. ' + (fl() ? 'Условие: ' : 'Новые условия: ') + usloviya(i + 1).map(sMaloy).join('; ') + '.</p>'
-        : '<p class="muted" style="margin:0">Вершина «Мира Тучи».</p>') +
-      '<p class="smena-str"><button type="button" class="btn-t" data-idi="urovni">Все уровни и привилегии</button></p>' +
-      (sl ? rZadanie() : '') +
-      (sl ? '<p class="demo-p"><button type="button" class="btn-t" data-demo-mes>Демо: месяц с выполненными условиями</button></p>' : '') + '</div>';
+  /* во «Всё просто» тарифов и уровней нет, есть скидка за срок */
+  var SROK = [[1, '−15 %'], [3, '−20 %'], [6, '−30 %'], [12, '−40 %']];
+  function srok() { return (a.mir && a.mir.bloki && a.mir.bloki.hranenie && a.mir.bloki.hranenie.srok) || 0; }
+  function rSkidka() {
+    var s = srok();
+    return '<div class="kart uroven-k"><div class="razdel-h"><h2 class="h3">Скидка за срок</h2><span class="muted">' + (s ? 'резервация на ' + s + ' ' + mes(s) : 'сейчас по факту') + '</span></div>' +
+      '<table class="kp-tabl"><caption class="skryt">«Займи место под Тучей»: скидка за резервацию мест</caption><tbody>' + SROK.map(function (x) {
+        return '<tr' + (x[0] === s ? ' class="on"' : '') + '><td>' + x[0] + ' ' + mes(x[0]) + '</td><td>' + x[1] + '</td></tr>';
+      }).join('') + '</tbody></table><p class="muted kp-mel">«Займи место под Тучей»: места и цена за вами, оплата вперёд.</p></div>';
   }
+
+  /* «Всё просто»: обычный кабинет склада. Сводка, быстрые действия, ход подключения, менеджер */
+  function rSvodka() {
+    var st = a.status || 0, sp = statusy(), u = uslugi(), pal = a.mir && a.mir.bloki && a.mir.bloki.hranenie && a.mir.bloki.hranenie.pallety;
+    var ya = [
+      ['Статус', sp[st], 'шаг ' + (st + 1) + ' из ' + sp.length],
+      ['Услуги', u.length ? u.length + ' ' + (u.length === 1 ? 'услуга' : u.length < 5 ? 'услуги' : 'услуг') : 'не выбраны', u.map(function (k) { return S.BLOKI[k].ob; }).join(', ') || 'добавьте в разделе «Услуги»'],
+      ['Места на складе', st >= 4 && pal ? pal : 'пока нет', st >= 4 && pal ? 'паллето-мест занято' : 'после первой приёмки'],
+      ['Менеджер', imya(), 'пн-пт с 9:00 до 18:00']
+    ];
+    return '<div class="kp-svodka">' + ya.map(function (y) {
+      return '<div><span class="kp-z">' + y[0] + '</span><b>' + esc(String(y[1])) + '</b><span class="muted">' + esc(y[2]) + '</span></div>';
+    }).join('') + '</div>';
+  }
+  var DEYSTVIYA = [['Заявить приёмку', 'привезти товар на склад', 'zayavki'], ['Заказать отгрузку', 'забрать или отправить товар', 'zayavki'],
+    ['Заказать доставку', 'отвезти по адресу', 'zayavki'], ['Документы', 'договор, счета и акты', 'dokumenty']];
+  function rDeystviya() {
+    var zakr = (a.status || 0) < 3;
+    return '<div class="kp-deystviya">' + DEYSTVIYA.map(function (d) {
+      return '<button type="button" class="kp-d" data-idi="' + d[2] + '"><b>' + d[0] + '</b><span>' + (zakr ? 'после договора' : d[1]) + '</span></button>';
+    }).join('') + '</div>';
+  }
+
+  /* «Мир Тучи»: полоса уровня, как в игре. Щит с номером, шкала пути до следующего уровня, стаж и достижения */
+  function rHud() {
+    var i = T.klubUroven(a.staj), u = T.KLUB[i], sl = T.KLUB[i + 1], staj = a.staj || 0, d = dost();
+    var dolya = sl ? Math.max(0, Math.min(1, (staj - u.mes) / (sl.mes - u.mes))) : 1, ost = sl ? sl.mes - staj : 0;
+    return '<div class="km-hud uroven-k">' +
+      '<div class="km-znak" aria-hidden="true"><b>' + (i + 1) + '</b></div>' +
+      '<div class="km-ur"><span class="km-z">Уровень ' + (i + 1) + ' из ' + T.KLUB.length + '</span><b class="km-imya">' + u.imya + '</b>' +
+      '<div class="km-xp" role="progressbar" aria-label="Путь до следующего уровня" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + Math.round(dolya * 100) + '">' +
+      '<i style="width:' + (dolya * 100).toFixed(1) + '%"></i></div>' +
+      '<span class="km-pod">' + (sl ? 'До «' + sl.imya + '»: ' + ost + ' ' + mes(ost) + ' с выполненными условиями' : 'Вершина «Мира Тучи»') + '</span></div>' +
+      '<div class="km-schet"><span><b>' + staj + '</b>' + mes(staj) + ' стажа</span><span><b>' + d.length + '</b>из 6 достижений</span></div>' +
+      (sl ? '<p class="km-demo"><button type="button" class="btn-t" data-demo-mes>Демо: месяц с выполненными условиями</button></p>' : '') + '</div>';
+  }
+  /* карта семи уровней: пройденные закрашены, текущий светится, следующие ждут */
+  function rKartaUr() {
+    var i = T.klubUroven(a.staj), sl = T.KLUB[i + 1];
+    return '<div class="kart km-karta"><div class="razdel-h"><h2 class="h3">Карта уровней</h2><button type="button" class="btn-t" data-idi="urovni">Все уровни и привилегии</button></div>' +
+      '<ol class="km-put">' + T.KLUB.map(function (u, k) {
+        return '<li class="' + (k < i ? 'proyden' : k === i ? 'tek' : '') + '"' + (k === i ? ' aria-current="step"' : '') + '><i aria-hidden="true">' + (k < i ? '' : k + 1) + '</i>' +
+          '<b>' + u.imya + '</b><span>' + (u.mes ? u.mes + ' мес' : 'старт') + '</span></li>';
+      }).join('') + '</ol>' +
+      (sl ? '<p class="muted km-usl">' + (fl() ? 'Условие' : 'Новые условия') + ' на уровне «' + sl.imya + '»: ' + usloviya(i + 1).map(sMaloy).join('; ') + '.</p>' : '') + '</div>';
+  }
+  function dost() { return a.dost || (a.mir && a.mir.dost) || []; }
   /* короткая цель на ближайшие недели: задание месяца, награда +1 месяц стажа, не больше половины пути */
   function rZadanie() {
     var z = T.zadanieMesyaca(), sd = a.zadanieSdano === new Date().getMonth();
@@ -148,9 +190,13 @@
     return '<p class="cta-pol"><a class="btn" href="' + R + 'start/mir/?dostroit=1">Изменить постройку</a><span class="muted">Добавьте новые блоки или уберите лишние: откроется конструктор с вашей постройкой</span></p>';
   }
   function rDost() {
-    var d = a.dost || (a.mir && a.mir.dost) || [];
-    return '<div class="kart"><div class="razdel-h"><h2 class="h3">Достижения</h2><span class="muted">' + d.length + ' из 6</span></div><div class="ach">' +
-      Object.keys(DOST).map(function (k) { return '<span class="' + (d.indexOf(k) >= 0 ? 'est' : '') + '">' + DOST[k] + '</span>'; }).join('') + '</div>' +
+    var d = dost();
+    return '<div class="kart km-dost"><div class="razdel-h"><h2 class="h3">Достижения</h2><span class="muted">' + d.length + ' из 6</span></div><div class="km-ach">' +
+      Object.keys(DOST).map(function (k) {
+        var est = d.indexOf(k) >= 0;
+        return '<div class="km-a' + (est ? ' est' : '') + '">' + (k === 'vse' ? '<i class="km-a-zv" aria-hidden="true"></i>' : '<svg class="km-a-ik" data-ik="' + k + '" aria-hidden="true"></svg>') +
+          '<span>' + DOST[k] + '</span>' + (est ? '' : '<small>ещё закрыто</small>') + '</div>';
+      }).join('') + '</div>' +
       '<p class="smena-str"><a class="btn-t" href="' + R + 'start/mir/?dostroit=1">Изменить постройку: добавить или убрать блоки</a></p></div>';
   }
 
@@ -158,12 +204,13 @@
     glavnaya: function () {
       var h = plashka() + (mir() ? plashkaUrovnya() : '') + verh(mir() ? 'Мой мир' : (a.imya ? 'Здравствуйте, ' + esc(a.imya) : 'Здравствуйте'));
       if (mir()) {
-        h += '<div class="kab-mir"><div class="mir-scena kab-scena"><svg id="kabScena" role="img" aria-label="Ваш мир: постройка под тучей"></svg></div>' +
-          '<div class="kab-kol">' + rStatus() + rUroven() + '</div></div><div class="setka s2 kab-niz">' + rManager() + rDost() + '</div>';
+        var verhUr = T.KLUB[T.klubUroven(a.staj) + 1];
+        h += rHud() + '<div class="kab-mir"><div class="mir-scena kab-scena"><svg id="kabScena" role="img" aria-label="Ваш мир: постройка под тучей"></svg></div>' +
+          '<div class="kab-kol">' + (verhUr ? rZadanie() : '') + rStatus() + '</div></div>' + rKartaUr() +
+          '<div class="setka s2 kab-niz">' + rManager() + rDost() + '</div>';
       } else {
-        h += rStatus() + '<div class="setka s3 kab-niz">' + rManager() + rPrigotovit() + rUroven() + '</div>' +
-          '<div class="banner-mir"><div><b>Попробуйте «Мир Тучи»</b><p>Другой формат: персонаж по характеру, услуги из блоков и семь уровней с привилегиями за выполненные условия.</p></div>' +
-          '<a class="btn btn-2 btn-sm" href="' + R + 'start/mir/?dostroit=1">Собрать</a></div>';
+        h += rSvodka() + rDeystviya() + '<div class="kp-g"><div>' + rStatus() + rPrigotovit() + '</div><div>' + rManager() + rSkidka() + '</div></div>' +
+          '<p class="kp-mir">Нужен игровой формат? <a href="' + R + 'start/mir/?dostroit=1">Посмотреть «Мир Тучи»</a>: персонаж по характеру, услуги из блоков, семь уровней привилегий.</p>';
       }
       return h;
     },
@@ -242,7 +289,10 @@
     razdel = r;
     try { history.replaceState(null, '', location.pathname + (novyy ? location.search : '') + '#' + r); } catch (e) {}
     rMenu();
+    var obertka = box.closest('.kab');
+    if (obertka) { obertka.classList.toggle('kab-vid-mir', mir()); obertka.classList.toggle('kab-vid-prosto', !mir()); }
     box.innerHTML = RENDER[r]();
+    box.querySelectorAll('.km-a-ik[data-ik]').forEach(function (s) { S.ikonka(s, s.getAttribute('data-ik')); });
     var ch = box.querySelector('[data-chat-kab]');
     if (ch && window.TuchaChat) TuchaChat.sozdat(ch, { vstroen: true });
     var pk = box.querySelector('[data-pokupki-kab]');
