@@ -222,6 +222,15 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
 .m-strelka::after { content: '→'; transition: transform .2s var(--ease-out); }
 @media (hover: hover) and (pointer: fine) { .m-polka-l:hover .m-strelka::after { transform: translateX(5px); } }
 .m-sek-lavka { padding-top: 0; }
+/* стеллаж Лавки: стойки и балки как на складе */
+.magiya .lv-stellazh { border-radius: 2px; background: linear-gradient(#DFE6EC, #EEF2F5 80%); }
+.magiya .lv-st-stoyka { width: 18px; border-radius: 0;
+  background: repeating-linear-gradient(180deg, transparent 0 14px, rgba(8, 16, 30, .55) 14px 22px) center / 6px 100% no-repeat,
+              linear-gradient(90deg, #1F4E8C, #3A78C2 50%, #1F4E8C); }
+.magiya .lv-st-balka { height: 13px; border-radius: 0; background: var(--m-balka); box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .2); }
+.magiya .lv-st-cen, .magiya .lv-st-t:nth-child(2) .lv-st-cen { transform: translateX(-50%); border-radius: 2px; border-top: 4px solid var(--m-chernila);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, .14); }
+.magiya .lv-st-cen b { font-family: 'Sklad'; font-weight: 900; font-size: 17px; color: var(--m-chernila); }
 .m-sek-lavka .lv-dom-h { margin-bottom: 28px; }
 .m-sek-lavka .m-h2 { margin-bottom: 10px; }
 .m-sek-lavka .m-pod { margin: 0; }

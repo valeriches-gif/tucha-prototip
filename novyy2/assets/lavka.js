@@ -261,6 +261,20 @@ window.TuchaLavka = (function () {
   }
   API.vitrinka = vitrinka;
 
+  /* стеллаж в герое Лавки: настоящий товар на полках, ценник на балке под каждым */
+  function polka(box) {
+    var ids = (box.getAttribute('data-ids') || '5,4,3,1,6,8').split(',').map(Number).filter(function (id) { return PO_ID[id]; });
+    box.innerHTML = '<span class="lv-st-stoyka lv-st-l" aria-hidden="true"></span><span class="lv-st-stoyka lv-st-r" aria-hidden="true"></span>' +
+      [ids.slice(0, 3), ids.slice(3, 6)].map(function (ryad, n) {
+        return '<div class="lv-st-ryad">' + ryad.map(function (id, k) {
+          var t = PO_ID[id];
+          return '<a class="lv-st-t" href="' + ssylka(t) + '" style="--i:' + (n * 3 + k) + '">' + upak(t, 'lv-st-upak') +
+            '<span class="lv-st-cen"><b>от ' + rub(t.pal) + '</b><small>' + esc(t.name.split(',')[0]) + '</small></span></a>';
+        }).join('') + '</div><span class="lv-st-balka" aria-hidden="true"></span>';
+      }).join('');
+  }
+  API.polka = polka;
+
   /* ---------- когда можно забрать: заказ до 16:00 в будни собираем в тот же день ---------- */
   function kogdaZabrat() {
     var d = new Date(), den = d.getDay(), h = d.getHours();
