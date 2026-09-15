@@ -11,9 +11,9 @@
 <link rel="icon" type="image/png" href="../../assets/img/znachok.png">
 <link rel="preload" href="../../assets/fonts/golos.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/site.css?v=202609151445">
-<link rel="stylesheet" href="../../assets/ui.css?v=202609151445">
-<link rel="stylesheet" href="../../assets/lavka.css?v=202609151445">
+<link rel="stylesheet" href="../../assets/site.css?v=202609151459">
+<link rel="stylesheet" href="../../assets/ui.css?v=202609151459">
+<link rel="stylesheet" href="../../assets/lavka.css?v=202609151459">
 </head><body class="start prosto-vid">
 <a class="skryt-f" href="#glav">К содержанию</a>
 <div class="nebo" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -66,8 +66,8 @@
 </div></footer>
 
 <script>window.TUCHA_ROOT = '../../';</script>
-<script src="../../assets/site.js?v=202609151445"></script>
-<script src="../../assets/reg.js?v=202609151445"></script>
+<script src="../../assets/site.js?v=202609151459"></script>
+<script src="../../assets/reg.js?v=202609151459"></script>
 <script>(function () {
   var T = Tucha, m = T.anketa(), iz = /[?&]iz=mir/.test(location.search) && m;
   var otm = T.metki(), pred = {}, kalk = /[?&]kalk=(\d+)-(\d+)/.exec(location.search);
@@ -78,9 +78,19 @@
   /* уже вошли: кабинет с хранением есть, повторно не регистрируем; покупатель дописывает хранение в свой аккаунт */
   var ses = T.sessiya() ? T.akk() : null;
   if (ses && ses.put) {
-    document.getElementById('forma').innerHTML = '<h2 class="h3">У вас уже есть кабинет</h2><p class="muted">Вы вошли как ' + TuchaReg.esc(ses.imya || ses.kompaniya || ses.tel) +
-      ', формат «' + (ses.vid === 'mir' ? 'Мир Тучи' : 'Всё просто') + '». Сменить формат можно в настройках кабинета.</p>' +
-      '<p class="cta-pol"><a class="btn" href="' + T.ROOT + (T.v2() ? 'v2/' : '') + 'kabinet/">Открыть кабинет</a></p>';
+    var kab = T.ROOT + (T.v2() ? 'v2/' : '') + 'kabinet/', kto = TuchaReg.esc(ses.imya || ses.kompaniya || ses.tel), fb = document.getElementById('forma');
+    if (ses.vid === 'mir') {          /* выбрали «Всё просто», а кабинет в «Мире Тучи»: переходим одной кнопкой, данные и заявки остаются */
+      fb.innerHTML = '<h2 class="h3">Перейти на «Всё просто»?</h2><p class="muted">Вы вошли как ' + kto + ', сейчас кабинет в «Мире Тучи». ' +
+        'В «Всё просто» он станет обычным: без уровней и персонажа, со скидкой за срок. Данные и заявки останутся.</p>' +
+        '<p class="cta-pol"><button type="button" class="btn" data-na-prosto>Перейти на «Всё просто»</button><a class="btn-t" href="' + kab + '">Остаться в «Мире Тучи»</a></p>';
+      fb.querySelector('[data-na-prosto]').addEventListener('click', function () {
+        var ak = T.akk(); ak.vid = 'prosto'; T.st.set('tucha.akk', ak); T.goal('format_prosto');
+        T.zagruzka({ zag: 'Открываем кабинет', shagi: ['меняем формат', 'открываем кабинет'] }).then(function () { location.href = kab; });
+      });
+      return;
+    }
+    fb.innerHTML = '<h2 class="h3">У вас уже есть кабинет «Всё просто»</h2><p class="muted">Вы вошли как ' + kto + '.</p>' +
+      '<p class="cta-pol"><a class="btn" href="' + kab + '">Открыть кабинет</a></p>';
     return;
   }
   if (ses) { pred.tel = ses.tel; pred.imya = ses.imya; pred.pochta = ses.pochta; if (ses.inn) { pred.inn = ses.inn; pred.kompaniya = ses.kompaniya; } else pred.tip = 'fl'; }

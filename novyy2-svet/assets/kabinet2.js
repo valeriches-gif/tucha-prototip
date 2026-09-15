@@ -31,6 +31,15 @@
   function mes(n) { var m = n % 10, d = n % 100; return d > 10 && d < 20 ? 'месяцев' : m === 1 ? 'месяц' : m > 1 && m < 5 ? 'месяца' : 'месяцев'; }
   function dataTxt(t) { return new Date(t).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }); }
   function li(x) { return '<li>' + x + '</li>'; }
+  /* личное: приветствие по времени суток и имени, главное дело сейчас */
+  function privet() { var h = new Date().getHours(); return (h >= 5 && h < 12 ? 'Доброе утро' : h >= 12 && h < 18 ? 'Добрый день' : h >= 18 && h < 23 ? 'Добрый вечер' : 'Доброй ночи') + (imyaKl() ? ', ' + imyaKl() : ''); }
+  function imyaKl() { return a.imya && !/^(Клиент|Демо-клиент)$/.test(a.imya) ? esc(a.imya.split(' ')[0]) : ''; }
+  function glavnoe() {
+    var sp = zayavki().filter(function (z) { return z.st < ZSTATUS[z.vid].length - 1; });
+    if (!sp.length) return fl() ? 'Ваши вещи на местах, заявок в работе нет' : 'Товар на местах, заявок в работе нет';
+    var z = sp[sp.length - 1];
+    return 'Сейчас: ' + ZNAZV[z.vid].toLowerCase() + ' № ' + z.n + ', ' + esc(z.opis) + ' · ' + ZSTATUS[z.vid][z.st].toLowerCase();
+  }
 
   /* ---------- демо-данные: заполняются один раз, дальше меняются действиями ---------- */
   var DEN = 864e5, SEYCHAS = Date.now();
@@ -201,6 +210,7 @@
   function rRech() {
     var sp = sposob(), t = sp === 'manager' ? 'Нужно что-то со складом? Напишите мне в двух словах, заявку оформлю сам.' :
       sp === 'messenger' ? 'Заявки присылайте в ' + mess() + ': форма в кабинете подготовит сообщение.' : 'Заявки оформляются здесь, в кабинете. Я на связи, если что-то пойдёт не так.';
+    if (imyaKl()) t = imyaKl() + ', ' + t.charAt(0).toLowerCase() + t.slice(1);          /* персонаж обращается по имени */
     return '<div class="k2-rech"><span class="ava" aria-hidden="true">' + imya()[0] + '</span><p><b>' + imya() + ':</b> ' + t + '</p></div>';
   }
 
@@ -414,7 +424,11 @@
 
   /* ---------- настройки ---------- */
   function rNastroyki() {
-    var h = '<div class="setka s2">' + (pokupatel() ? '' :
+    var h = '<div class="setka s2">' +
+      '<div class="kart"><h2 class="h3">Мои данные</h2>' + pole('my-imya', 'Имя и фамилия', '<input id="my-imya" name="my-imya" type="text" autocomplete="name" value="' + esc(a.imya || '') + '">') +
+        pole('my-tel', 'Телефон', '<input id="my-tel" name="my-tel" type="tel" autocomplete="tel" value="' + esc(a.tel || '') + '">') +
+        pole('my-pochta', 'Почта', '<input id="my-pochta" name="my-pochta" type="email" autocomplete="email" value="' + esc(a.pochta || '') + '">') +
+        '<p class="muted k2-mel">По этому номеру вы входите в кабинет и получаете SMS о приёмках.</p></div>' + (pokupatel() ? '' :
       '<div class="kart"><h2 class="h3">Формат работы</h2><div class="vybor"><label><input type="radio" name="vid" value="prosto"' + (mir() ? '' : ' checked') + '><span>Всё просто</span></label>' +
       '<label><input type="radio" name="vid" value="mir"' + (mir() ? ' checked' : '') + '><span>Мир Тучи</span></label></div>' +
       '<p class="muted k2-mel">«Всё просто»: обычный кабинет, скидка за срок. «Мир Тучи»: ваш мир, уровни и персонаж. Данные и заявки не меняются.</p></div>') +
@@ -449,10 +463,10 @@
     return '<div class="k2-pers"><div><b>' + (novyy === 'dostroil' ? 'Сохранено' : 'Добро пожаловать под тучу') + '</b><p>' + t + '</p></div><button type="button" class="btn-t" data-privet-ok>Понятно</button></div>';
   }
   function rObzor() {
-    if (pokupatel()) return verh('Здравствуйте' + (a.imya ? ', ' + esc(a.imya.split(' ')[0]) : ''), 'Ваши покупки в Лавке') + '<div data-pokupki-kab></div>' +
+    if (pokupatel()) return verh(privet(), 'Ваши покупки в Лавке') + '<div data-pokupki-kab></div>' +
       '<div class="k2-pers"><div><b>Хотите хранить вещи или товар?</b><p>Выберите формат: аккаунт тот же, покупки останутся здесь.</p></div>' +
       '<a class="btn btn-sm" href="' + R + (T.v2() ? 'v2/' : '') + 'start/#format">Выбрать формат</a></div>';
-    if (!dogovor()) return rPrivet() + verh(mir() ? 'Мой мир' : 'Здравствуйте' + (a.imya ? ', ' + esc(a.imya) : ''), 'Кабинет откроется полностью после договора: заявки, остатки и документы.') +
+    if (!dogovor()) return rPrivet() + verh(mir() ? 'Мой мир' : privet(), 'Кабинет откроется полностью после договора: заявки, остатки и документы.') +
       (mir() ? rHud() : '') + '<div class="kp-g"><div>' + rStatus() + '<div class="kart"><h2 class="h3">Что приготовить к разговору</h2><ul class="spis-ok"><li>Объём и тип товара: паллеты, коробки, вес</li><li>Даты первой поставки</li><li>Нужны ли маркировка, сборка и доставка</li></ul></div></div><div>' + rSvyazKratko() + '</div></div>';
     if (mir()) {
       return rPrivet() + verh('Мой мир', fl() ? 'Ваши вещи под тучей' : 'Нажмите на постройку: откроется нужный раздел') + rHud() +
@@ -463,7 +477,7 @@
     var s = schet();
     var svodka = fl() ? [['Места', '3 места', 'тёплая зона'], ['Заявок в работе', String(zayavki().filter(function (z) { return z.st < ZSTATUS[z.vid].length - 1; }).length), 'статусы в «Заявках»'], ['Счёт за месяц', rub(s.itog), 'до 15 числа'], ['Поддержка', imya(), 'пн-пт 9:00-18:00']] :
       [['Занято', mesta() + ' паллето-мест', 'платите за занятые'], ['Заявок в работе', String(zayavki().filter(function (z) { return z.st < ZSTATUS[z.vid].length - 1; }).length), 'статусы в «Заявках»'], ['Счёт за месяц', a.oplacheno === new Date().getMonth() ? 'оплачен' : rub(s.itog), 'до 15 числа'], ['Менеджер', imya(), 'пн-пт 9:00-18:00']];
-    return rPrivet() + verh('Здравствуйте' + (a.imya ? ', ' + esc(a.imya.split(' ')[0]) : '')) +
+    return rPrivet() + verh(privet(), glavnoe()) +
       '<div class="kp-svodka">' + svodka.map(function (y) { return '<div><span class="kp-z">' + y[0] + '</span><b>' + y[1] + '</b><span class="muted">' + y[2] + '</span></div>'; }).join('') + '</div>' +
       rDeystviya() + '<div class="kp-g"><div>' + rSobytiya() + rFoto(fl() ? 1 : 3) + '</div><div>' + rSchet(false) + rSvyazKratko() + '</div></div>';
   }
@@ -607,6 +621,10 @@
       risovatPr(); return;
     }
     if (t.name === 'mashina') { var pp = box.querySelector('[data-poputki]'); if (pp) pp.hidden = t.value !== 'попутка'; }
+    else if (/^my-/.test(t.name)) {          /* мои данные: сохраняем сразу */
+      if (t.name === 'my-tel' && !T.telOk(t.value)) { T.toast('Телефон: нужно 11 цифр'); t.value = a.tel || ''; return; }
+      if (t.name === 'my-pochta' && t.value.trim() && !T.pochtaOk(t.value)) { T.toast('Проверьте почту'); t.value = a.pochta || ''; return; }
+      a[t.name.slice(3)] = t.value.trim(); sohr(); T.toast('Сохранено'); }
     else if (t.name === 'vid') { a.vid = t.value; sohr(); pokaz('nastroyki'); T.toast(mir() ? 'Формат: Мир Тучи' : 'Формат: Всё просто'); }
     else if (t.name === 'kanal') { a.kanal = t.value; sohr(); var m = box.querySelector('[data-mess]'); if (m) m.hidden = t.value !== 'messenger'; T.toast('Сохранено'); }
     else if (t.name === 'messenger') { a.messenger = t.value; sohr(); T.toast('Сохранено'); }
