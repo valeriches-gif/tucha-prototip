@@ -502,26 +502,12 @@
   }
 
   function final(vKabinet) {
-    if (T.v2()) {
-      var imyaP = (T.akk() || {}).manager || 'Анна';
-      T.zagruzka({ zag: vKabinet ? 'Сохраняем мир' : 'Загружаем ваш мир',
-        shagi: vKabinet ? ['сохраняем постройку', 'обновляем кабинет'] : ['сохраняем постройку', 'ставим точку сохранения', 'зовём персонажа ' + imyaP, 'открываем ваш мир'] })
-        .then(function () { location.href = R + 'v2/kabinet/?novyy=' + (vKabinet ? 'dostroil' : '1'); });
-      return;
-    }
+    /* вместо заставки: загрузка как в игре, потом кабинет своего варианта */
     hud.hidden = true; rech.hidden = true; pop.innerHTML = '';
-    document.body.classList.add('mir-final');
-    panel.innerHTML = '<div class="final-t" tabindex="-1">' +
-      '<img class="final-art" src="' + R + 'assets/img/palec-8bit.png" alt="Проводник показывает большой палец: мир сохранён" width="272" height="504">' +
-      '<p class="eb">Шаг пройден</p><h2>Мир сохранён</h2>' +
-      '<p>' + (vKabinet ? 'Изменения уже в кабинете, ваш персонаж их увидит.' : 'Анна ' + T.kakSvyazhetsya(s.kanal, s.messenger) + '.') + '</p>' +
-      '<p class="muted">' + s.dost.length + ' из 6 достижений · ' + Object.keys(s.bloki).length + ' из 5 блоков</p>' +
-      '<a class="btn" href="' + R + 'kabinet/?novyy=' + (vKabinet ? 'dostroil' : '1') + '">В кабинет</a></div>';
-    panel.firstChild.focus({ preventScroll: true });
-    if (window.innerWidth < 900) svg.scrollIntoView({ behavior: tixo() ? 'auto' : 'smooth', block: 'center' });
-    sc.final('Всё под одной тучей', R + 'assets/img/koltso.png').then(function () {
-      if (!tixo()) setTimeout(function () { location.href = R + 'kabinet/?novyy=' + (vKabinet ? 'dostroil' : '1'); }, 1500);
-    });
+    var imyaP = (T.akk() || {}).manager || 'Анна';
+    T.zagruzka({ zag: vKabinet ? 'Сохраняем мир' : 'Загружаем ваш мир',
+      shagi: vKabinet ? ['сохраняем постройку', 'обновляем кабинет'] : ['сохраняем постройку', 'ставим точку сохранения', 'зовём персонажа ' + imyaP, 'открываем ваш мир'] })
+      .then(function () { location.href = R + (T.v2() ? 'v2/' : '') + 'kabinet/?novyy=' + (vKabinet ? 'dostroil' : '1'); });
   }
 
   /* ---------- события: одно делегирование на всю панель ---------- */
@@ -627,6 +613,8 @@
 
   /* ---------- запуск ---------- */
   (function init() {
+    if (!/#shag-\d/.test(location.hash)) T.zagruzka({ zag: dostroit ? 'Открываем ваш мир' : 'Загружаем Мир Тучи', ubrat: true, shag: 420,
+      shagi: dostroit ? ['достаём постройку', 'зовём персонажа'] : ['рисуем остров', 'поднимаем тучу', 'будим Проводника'] });
     var bylo = T.anketa();
     var q = /[?&]blok=(\w+)/.exec(location.search), pryamo = /[?&]prodolzhit/.test(location.search) || /#shag-\d/.test(location.hash);
     if (dostroit) {

@@ -424,12 +424,21 @@ window.Tucha = (function () {
       var tm = setInterval(function () {
         i++;
         if (i < shagi.length) { t.textContent = shagi[i]; nn.textContent = (i + 1) + '/' + shagi.length; p.style.width = ((i + 1) / shagi.length * 100) + '%'; return; }
-        clearInterval(tm); ok();
+        clearInterval(tm);
+        if (o.ubrat) { el.classList.remove('vid'); document.body.classList.remove('zgr-idet'); setTimeout(function () { el.remove(); }, 260); }
+        ok();
       }, shag);
     });
   }
-  function v2() { return /[?&]v2=1/.test(location.search) || /\/v2\//.test(location.pathname); }
+  /* второй вариант: метка из адреса или со страниц /v2/ держится в сессии; на страницах первого варианта (кроме общих start и lavka) снимается */
+  function v2() {
+    var ss = null; try { ss = window.sessionStorage; } catch (e) {}
+    if (/[?&]v2=1/.test(location.search) || /\/v2\//.test(location.pathname)) { try { ss.setItem('tucha.v2', '1'); } catch (e) {} return true; }
+    if (!/\/(start|lavka)\//.test(location.pathname)) { try { ss.removeItem('tucha.v2'); } catch (e) {} return false; }
+    try { return ss.getItem('tucha.v2') === '1'; } catch (e) { return false; }
+  }
 
+  v2();
   function klubUroven(staj) { var i = 0; KLUB.forEach(function (u, k) { if ((staj || 0) >= u.mes) i = k; }); return i; }
 
   return {
