@@ -711,3 +711,10 @@ body.zgr-idet { overflow: hidden; }
 .u-pr { display: none; }
 .prosto-vid .u-ig { display: none; }
 .prosto-vid .u-pr { display: inline; }
+
+/* «Всё просто»: деловые значки меню и иконка помощника вместо игровых */
+.k2-pik { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: .75; }
+.kab.k2 .kab-menu button.on .k2-pik { opacity: 1; }
+.chat-ik { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--navy); }
+.chat-ik svg { width: 21px; height: 21px; fill: none; stroke: #FFFFFF; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 900px) { .kab.k2 .kab-menu .k2-pik { display: none; } }

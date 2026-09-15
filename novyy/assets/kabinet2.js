@@ -84,6 +84,16 @@
       ['vitrina', 'Витрина']].concat(estPokupki('ul') ? [['pokupki', 'Покупки']] : []).concat([['dengi', 'Документы и счета'], ['svyaz', mir() ? 'Персонаж' : 'Менеджер']]).concat(mir() ? [['urovni', 'Уровни']] : []).concat([['nastroyki', 'Настройки']]);
   }
   var IKONKI = { sklad: 'hranenie', zayavki: 'dostavka', vitrina: 'vitrina', dengi: 'tamozhnya', svyaz: 'obrabotka' };
+  var PIK = {          /* «Всё просто»: простые линейные значки разделов */
+    obzor: '<path d="M4 11.5 12 5l8 6.5"/><path d="M6.5 10v9h11v-9"/><path d="M10 19v-5h4v5"/>',
+    sklad: '<path d="M4 8l8-4 8 4-8 4z"/><path d="M4 8v8l8 4 8-4V8"/><path d="M12 12v8"/>',
+    zayavki: '<rect x="6" y="5" width="12" height="15" rx="2"/><path d="M9.5 5V3.8h5V5"/><path d="M9 10h6M9 13.5h6M9 17h4"/>',
+    vitrina: '<path d="M4.5 9.5 6 5h12l1.5 4.5"/><path d="M4.5 9.5c0 1.3 1.1 2.3 2.5 2.3s2.5-1 2.5-2.3c0 1.3 1.1 2.3 2.5 2.3s2.5-1 2.5-2.3c0 1.3 1.1 2.3 2.5 2.3s2.5-1 2.5-2.3"/><path d="M6 12v7h12v-7"/><path d="M10 19v-4h4v4"/>',
+    pokupki: '<path d="M6 8h12l-1 12H7z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
+    dengi: '<path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M9.5 12h6M9.5 15.5h6"/>',
+    svyaz: '<path d="M5 13v-1a7 7 0 0 1 14 0v1"/><rect x="4" y="13" width="3.5" height="5" rx="1.5"/><rect x="16.5" y="13" width="3.5" height="5" rx="1.5"/><path d="M18 18c0 1.5-1.5 2.5-4 2.5"/>',
+    nastroyki: '<path d="M5 7h9M18 7h1M5 17h1M10 17h9M5 12h4M13 12h6"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/><circle cx="11" cy="12" r="2"/>'
+  };
   var razdel = (location.hash || '').slice(1) || 'obzor';
   function estRazdel(r) { return razdely().some(function (x) { return x[0] === r; }); }
   if (!estRazdel(razdel)) razdel = 'obzor';
@@ -92,7 +102,8 @@
     menu.innerHTML = razdely().map(function (r) {
       var zam = !dogovor() && (r[0] === 'sklad' || r[0] === 'zayavki' || r[0] === 'dengi');
       return '<button type="button" data-r="' + r[0] + '"' + (r[0] === razdel ? ' class="on" aria-current="page"' : '') + '>' +
-        (mir() && IKONKI[r[0]] ? '<svg class="k2-mik" data-ik="' + IKONKI[r[0]] + '" aria-hidden="true"></svg>' : '') + '<span>' + r[1] +
+        (mir() ? (IKONKI[r[0]] ? '<svg class="k2-mik" data-ik="' + IKONKI[r[0]] + '" aria-hidden="true"></svg>' : '') :
+          PIK[r[0]] ? '<svg class="k2-pik" viewBox="0 0 24 24" aria-hidden="true">' + PIK[r[0]] + '</svg>' : '') + '<span>' + r[1] +
         (zam ? '<small>после договора</small>' : '') + '</span></button>';
     }).join('');
   }
