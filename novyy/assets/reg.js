@@ -4,9 +4,9 @@
 window.TuchaReg = (function () {
   var T = window.Tucha;
   var USLUGI = [
-    ['hranenie', 'Точка сохранения · хранение'], ['obrabotka', 'Мастерская · обработка'],
-    ['dostavka', 'Телепорт · доставка'], ['tamozhnya', 'Портал · таможня'],
-    ['vitrina', 'Витрина · продвижение']
+    ['hranenie', 'Хранение'], ['obrabotka', 'Обработка'],          /* форма «Всё просто»: обычные названия, без игровых */
+    ['dostavka', 'Доставка'], ['tamozhnya', 'Таможня'],
+    ['vitrina', 'Витрина']
   ];
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
@@ -103,10 +103,14 @@ window.TuchaReg = (function () {
       e.preventDefault();
       var pervaya = null;
       Object.keys(pr).forEach(function (k) { if (!pokazat(k) && !pervaya) pervaya = k; });
-      var akk = T.akk(), dubl = !fiz() && akk && akk.inn && akk.inn === inn.value.replace(/\D/g, '');
+      /* номер или ИНН уже есть, а не вошли: предлагаем войти, второй аккаунт не заводим */
+      var akk = T.akk(), cif = function (x) { return String(x || '').replace(/\D/g, ''); };
+      var dublInn = !fiz() && !!akk && !!akk.inn && akk.inn === cif(inn.value);
+      var dubl = !T.sessiya() && !!akk && (dublInn || (!!akk.tel && cif(akk.tel).slice(-10) === cif(tel.value).slice(-10)));
+      el('[data-est-akk] p').textContent = dublInn ? 'С этим ИНН уже есть аккаунт. Войти или написать нам?' : 'С этим номером уже есть аккаунт. Войти или написать нам?';
       el('[data-est-akk]').hidden = !dubl;
       if (pervaya) { box.querySelector('[data-p="' + pervaya + '"] input').focus(); return; }
-      if (dubl) { inn.focus(); return; }
+      if (dubl) { (dublInn ? inn : tel).focus(); return; }
       var d = {
         tip: tip(), inn: fiz() ? '' : inn.value.replace(/\D/g, ''),
         kompaniya: fiz() ? 'Частное лицо' : komp ? komp.value.trim() : 'Компания по ИНН ' + inn.value.replace(/\D/g, ''),
@@ -133,6 +137,8 @@ window.TuchaReg = (function () {
       uslugi: d.uslugi || [], kommentariy: d.kommentariy || '', status: 0, sozdan: Date.now(),
       manager: 'Анна', dost: []
     }, dop || {});
+    var bylo = T.sessiya() ? T.akk() : null;          /* покупатель из Лавки дописывает хранение: личный профиль и покупки остаются */
+    if (bylo && !bylo.put) { akk.lichnyy = !!(bylo.lichnyy || bylo.tip === 'fl'); akk.pokupatel = true; }
     akk.vid = akk.vid || akk.put;
     T.st.set('tucha.akk', akk);
     T.voyti();

@@ -193,6 +193,9 @@ window.Tucha = (function () {
       document.body.prepend(dozor);
       if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { sh.classList.toggle('mini', !e[0].isIntersecting); }).observe(dozor);
       if (sessiya()) sh.querySelectorAll('[data-vhod]').forEach(function (a) { a.textContent = 'Кабинет'; a.href = ROOT + (/\/v2\//.test(location.pathname) ? 'v2/' : '') + 'kabinet/'; });
+      if (sessiya()) document.querySelectorAll('[data-est-vhod]').forEach(function (p) {          /* уже вошли: не «Войти», а свой кабинет */
+        var ak = akk(); p.innerHTML = 'Вы вошли как <b>' + String(ak.imya || ak.kompaniya || ak.tel || '').replace(/[<>&"]/g, '') + '</b>. <a href="' + ROOT + (v2() ? 'v2/' : '') + 'kabinet/">Открыть кабинет</a>';
+      });
     }
     korzObnovit();
 
@@ -385,16 +388,19 @@ window.Tucha = (function () {
   ];
   /* частным лицам (решение 14.09): уровни те же, условие одно, оплата вовремя; бесплатного периода нет */
   function klubUsloviya(i, fl) {
-    if (!fl) return KLUB[i].zad;
-    return i ? ['Счёт оплачен вовремя'] : ['Договор заключён'];
+    if (fl) return i ? ['Счёт оплачен вовремя'] : ['Договор заключён'];
+    if (!i) return KLUB[0].zad;
+    var sp = [];
+    for (var k = 1; k <= i; k++) sp = sp.concat(KLUB[k].zad);          /* условия копятся от ступени к ступени */
+    return i >= 2 ? sp.filter(function (x) { return x !== 'Счёт оплачен вовремя'; }) : sp;   /* с «Тучи» оплата строже: за 5 рабочих дней */
   }
   /* задание месяца: одно необязательное, в пиковые месяцы сезонное; награда +1 месяц стажа */
-  var REZ = { tekst: 'Займите места к сезону: резервация «Займи место под Тучей» от 3 месяцев', vam: 'скидка 20 % на хранение и места за вами' };
+  var REZ = { tekst: 'Займите места к сезону: резервация «Займи место под Тучей» от 3 месяцев', vam: 'скидка 20 % на хранение и места за вами', fl: true };
   var VITR = { tekst: 'Выставьте товар на Витрину: от 3 карточек с фото', vam: 'новый канал продаж без переезда товара' };
   var ZADANIYA = {
     1: { tekst: 'Разберите остатки после сезона: товара без движения не больше 10 %', vam: 'не платите за хранение того, что не продаётся' },
     2: REZ, 3: REZ, 4: VITR,
-    5: { tekst: 'Приведите под тучу знакомую компанию', vam: 'ещё 2 месяца стажа по «Приведи под тучу»' },
+    5: { tekst: 'Приведите под тучу знакомую компанию', vam: 'условие «Мировой Тучи» на год выполнено' },
     6: { tekst: 'Весь месяц заявки на приёмку до 16:00 накануне', vam: 'приёмка без ожидания' },
     7: VITR, 8: REZ,
     9: { tekst: 'Весь месяц товар приезжает промаркированным', vam: 'товар быстрее уходит в продажу' },

@@ -703,3 +703,11 @@ body.zgr-idet { overflow: hidden; }
 [data-vremya="utro"] .vh3-ten, [data-vremya="den"] .vh3-ten { background: rgba(22, 48, 79, .16); }
 [data-vremya="vecher"] .vh3-ten { background: rgba(60, 30, 20, .22); }
 @media (max-width: 900px) { .vh3-svetilo { transform: scale(.7); transform-origin: top right; } }
+
+/* игра: Витрина недоступна частному лицу */
+.blok-k.blok-net { opacity: .5; cursor: not-allowed; }
+
+/* «Всё просто»: обычные названия услуг в шапке и подвале */
+.u-pr { display: none; }
+.prosto-vid .u-ig { display: none; }
+.prosto-vid .u-pr { display: inline; }

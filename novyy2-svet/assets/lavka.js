@@ -542,11 +542,29 @@ window.TuchaLavka = (function () {
           '<div><dt>Сумма</dt><dd>' + rub(o.itog) + ', с НДС</dd></div><div><dt>Оплатить до</dt><dd>' + data(o.t + 3 * 864e5) + '</dd></div></dl>' +
           '<p class="muted">Счёт отправили на почту. УПД и накладную приложим при отгрузке.</p>' : '') +
         (o.oplata === 'karta' ? '<p class="muted">Оплатили картой •••• ' + o.karta + '. Чек ' + (o.pochta ? 'отправили на ' + esc(o.pochta) : 'придёт SMS') + '.</p>' : '') +
-        '<div class="cta-pol"><a class="btn" href="' + R + '../novyy/lavka/pokupki/">Мои покупки</a><a class="btn btn-2" href="' + R + '../novyy/lavka/">Вернуться в Лавку</a></div></div>';
+        (o.zametka ? '<div class="plashka"><p>' + esc(o.zametka) + '</p></div>' : '') +
+        '<div class="cta-pol"><a class="btn" href="' + (T.sessiya() ? R + (T.v2() ? 'v2/' : '') + 'kabinet/#pokupki' : R + 'lavka/pokupki/') + '">Мои покупки</a><a class="btn btn-2" href="' + R + '../novyy/lavka/">Вернуться в Лавку</a></div></div>';
+    }
+    /* заказ и аккаунт: вошли, заказ в своём профиле (личный профиль в одно касание); не вошли, аккаунт по номеру из заказа */
+    function privyazat(o) {
+      var ak = T.akk(), cif = function (x) { return String(x || '').replace(/\D/g, ''); }, t = '';
+      if (T.sessiya() && ak) {
+        if (o.pr === 'fl' && !ak.lichnyy && ak.tip !== 'fl') { ak.lichnyy = true; t = 'Личный профиль добавлен в кабинет: там ваши покупки.'; }
+        if (o.pr === 'ul' && (!ak.kompaniya || ak.tip === 'fl')) { ak.inn = o.inn; ak.kompaniya = o.komp.trim(); if (ak.tip === 'fl') { ak.lichnyy = true; ak.tip = 'ul'; } t = 'Компания добавлена в кабинет.'; }
+        ak.profil = o.pr; T.st.set('tucha.akk', ak);
+        return t;
+      }
+      if (ak && ak.tel && cif(ak.tel).slice(-10) === cif(o.tel).slice(-10)) return 'Заказ появится в кабинете: войдите по номеру ' + o.tel + '.';
+      T.st.set('tucha.akk', { tip: o.pr, inn: o.pr === 'ul' ? o.inn : '', kompaniya: o.pr === 'ul' ? o.komp.trim() : '', imya: o.imya.trim(), tel: o.tel, pochta: o.pochta,
+        pokupatel: true, lichnyy: o.pr === 'fl', profil: o.pr, status: 0, manager: 'Анна', uslugi: [], dost: [], sozdan: Date.now() });
+      T.voyti(); T.goal('lavka_akk');
+      return 'Аккаунт создан по номеру ' + o.tel + ': заказы и статусы в кабинете.';
     }
     function oformit(dop) {
       var sp = T.st.get(KZ) || [];
       var o = Object.assign({ n: 4181 + sp.length, t: Date.now(), poz: k, sum: it.sum, dost: dostCena(), itog: vsego(), status: 0 }, z, dop || {});
+      o.pr = z.na === 'komp' ? 'ul' : 'fl';
+      o.zametka = privyazat(o);
       sp.unshift(o); T.st.set(KZ, sp);
       sohrKorz([]);
       T.goal('lavka_zakaz');
@@ -625,16 +643,19 @@ window.TuchaLavka = (function () {
   API.zakaz = zakaz;
 
   /* ---------- мои покупки ---------- */
-  function pokupki(box) {
+  function pokupki(box, pr) {
+    /* вошли: покупки живут в кабинете; в кабинете показываем заказы своего профиля */
+    if (T.sessiya() && box.hasAttribute('data-lavka')) { location.replace(R + (T.v2() ? 'v2/' : '') + 'kabinet/#pokupki'); return; }
     function risovat() {
-      var sp = T.st.get(KZ) || [];
+      var sp = (T.st.get(KZ) || []).map(function (o, j) { return { o: o, j: j }; }).filter(function (x) { return !pr || (x.o.pr || 'fl') === pr; });
       if (!sp.length) {
         box.innerHTML = '<div class="lv-pusto lv-pusto-bol"><b>Покупок пока нет</b><p class="muted">Здесь появятся заказы из Лавки: статус, сборка и до какого числа товар ждёт на складе.</p>' +
           '<a class="btn" href="' + R + '../novyy/lavka/">Открыть Лавку</a></div>';
         return;
       }
-      box.innerHTML = sp.map(function (o, j) {
-        var st = STATUSY[o.tip === 'sam' ? 'sam' : 'dost'];
+      var akB = T.sessiya() ? T.akk() : null;
+      box.innerHTML = sp.map(function (x) {
+        var o = x.o, j = x.j, st = STATUSY[o.tip === 'sam' ? 'sam' : 'dost'];
         return '<article class="pk kart"><div class="pk-verh"><div><h2 class="h3">Заказ № ' + o.n + '</h2><p class="muted">от ' + data(o.t) + ' · ' + TIPY[o.tip] + ' · ' + OPL[o.oplata].toLowerCase() + '</p></div>' +
           '<span class="pk-st' + (o.status >= 3 ? ' pk-st-ok' : '') + '">' + st[o.status] + '</span></div>' +
           '<div class="zk-status">' + st.map(function (x, i) { return '<span class="' + (i < o.status ? 'done' : i === o.status ? 'on' : '') + '">' + x + '</span>'; }).join('') + '</div>' +
@@ -646,7 +667,7 @@ window.TuchaLavka = (function () {
           '<p class="cta-pol">' + (o.status < 3 ? '<button type="button" class="btn-t" data-demo="' + j + '">Демо: следующий статус</button>' : '') +
           '<button type="button" class="btn btn-2 btn-sm" data-povtor="' + j + '">Повторить заказ</button></p></div></article>';
       }).join('') +
-        (T.sessiya() ? '<div class="banner-mir"><div><b>Забрать вместе с вашим товаром</b><p>Покупки лежат в том же ангаре, что и ваши паллеты. Закажите выдачу, и соберём всё к одному времени.</p></div>' +
+        (akB && akB.put ? '<div class="banner-mir"><div><b>Забрать вместе с вашим товаром</b><p>Покупки лежат в том же ангаре, что и ваши паллеты. Закажите выдачу, и соберём всё к одному времени.</p></div>' +
           '<a class="btn btn-2 btn-sm" href="tel:+74956658242">Заказать выдачу</a></div>' : '');
     }
     box.addEventListener('click', function (e) {
@@ -711,10 +732,14 @@ window.TuchaLavka = (function () {
       p.classList.toggle('osh', !ok);
       if (!ok) { f.querySelector('#vt-name').focus(); return; }
       var sp = T.st.get('tucha.vitrina') || []; sp.push(Object.assign({ t: Date.now() }, v)); T.st.set('tucha.vitrina', sp);
+      if (a && a.kompaniya) {          /* вошла компания: карточка сразу видна в кабинете, раздел «Витрина» */
+        var ak = T.akk(); ak.vitrina = ak.vitrina || { vedenie: v.vedenie || 'sam', karty: [] };
+        ak.vitrina.karty.push({ art: '', name: v.name.trim(), na: 1, st: 'proverka' }); T.st.set('tucha.akk', ak);
+      }
       T.goal('vitrina_zayavka');
       f.innerHTML = '<div class="gotovo"><b>Карточка на проверке</b>Пётр Ким посмотрит товар на складе и позвонит ' + kogdaZvonok() +
         ': проверит упаковку и маркировку, подскажет цену по рынку. После проверки карточка появится в Лавке.</div>' +
-        '<p class="cta-pol"><a class="btn btn-2 btn-sm" href="' + R + '../novyy/lavka/">Посмотреть Лавку</a>' + (a ? '' : '<a class="btn btn-sm" href="' + R + '../novyy/start/">Начать работу со складом</a>') + '</p>';
+        '<p class="cta-pol"><a class="btn btn-2 btn-sm" href="' + R + '../novyy/lavka/">Посмотреть Лавку</a>' + (a ? (a.kompaniya ? '<a class="btn btn-sm" href="' + R + (T.v2() ? 'v2/' : '') + 'kabinet/#vitrina">Витрина в кабинете</a>' : '') : '<a class="btn btn-sm" href="' + R + '../novyy/start/">Начать работу со складом</a>') + '</p>';
     });
     risovat();
   }

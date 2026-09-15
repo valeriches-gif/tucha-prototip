@@ -240,11 +240,11 @@
     var pusto = !Object.keys(s.bloki).length;
     var h = zag(3, 'Постройка', (dostroit ? 'Добавьте новые блоки или уберите лишние: всё сохранится в кабинет.' : 'Нажмите на блок, он упадёт из тучи на место. Всё, что стоит сверху, опирается на склад. Блоки можно менять и потом, в кабинете.')) +
       '<div class="palitra" role="group" aria-label="Блоки услуг">' + S.PORYADOK.map(function (k) {
-        var B = S.BLOKI[k], est = !!s.bloki[k];
-        return '<button type="button" class="blok-k" data-k="' + k + '" aria-pressed="' + est + '" aria-label="' +
+        var B = S.BLOKI[k], est = !!s.bloki[k], net = k === 'vitrina' && !est && flIgra();
+        return '<button type="button" class="blok-k' + (net ? ' blok-net' : '') + '" data-k="' + k + '" aria-pressed="' + est + '"' + (net ? ' aria-disabled="true"' : '') + ' aria-label="' +
           (est ? B.ig + ', ' + B.ob + ', добавлен' + ROD[k] + '. Открыть карточку' : 'Добавить ' + (k === 'hranenie' ? 'Точку сохранения' : k === 'obrabotka' ? 'Мастерскую' : k === 'vitrina' ? 'Витрину' : B.ig) + ', ' + B.ob) + '">' +
           '<svg class="ik" data-ik="' + k + '" aria-hidden="true"></svg><span><b>' + B.ig + '</b><small>' + B.ob + '</small>' +
-          '<em class="opora">' + ({ obrabotka: 'на Точку сохранения', vitrina: 'на Точку сохранения' }[k] || 'на земле') + '</em>' +
+          '<em class="opora">' + (net ? 'для компаний и ИП' : { obrabotka: 'на Точку сохранения', vitrina: 'на Точку сохранения' }[k] || 'на земле') + '</em>' +
           '</span><span class="gal" aria-hidden="true"></span></button>';
       }).join('') + '</div><div id="kartochka"></div>';
     panel.innerHTML = h + niz(3, { off: pusto, pod: pusto ? '<p class="pomosh-str"><button type="button" class="btn-t" data-pomosh>Пока не знаю, помогите собрать</button></p>' : '' });
@@ -374,8 +374,8 @@
         return '<span class="st-bl"><i class="cv" style="background:' + S.BLOKI[k].fill + '"></i><span><b>' + S.BLOKI[k].ig + '</b> · ' + esc(svodka(k)) + '</span></span>';
       }).join('') : 'Нужна помощь: соберём вместе при звонке', 3]
     ];
-    if (!bonusOk()) stroki.push(['Стартовый бонус', 'не подходит по условиям: нужен этап «только запускаемся» и до 7 паллет', 3]);
-    if (bonusOk()) stroki.push(['Стартовый бонус', s.bonus.hochu ? 'Хочу участвовать' + (s.bonus.tekst ? ': «' + esc(s.bonus.tekst.slice(0, 90)) + (s.bonus.tekst.length > 90 ? '…' : '') + '»' : '') : 'Пропущен', 4]);
+    if (!bonusOk()) stroki.push(['«Расти с Тучей»', flIgra() ? 'для компаний и ИП, частным лицам не открывается' : 'не подходит по условиям: нужен этап «только запускаемся» и до 7 паллет', 3]);
+    if (bonusOk()) stroki.push(['«Расти с Тучей»', s.bonus.hochu ? 'Хочу участвовать' + (s.bonus.tekst ? ': «' + esc(s.bonus.tekst.slice(0, 90)) + (s.bonus.tekst.length > 90 ? '…' : '') + '»' : '') : 'Пропущен', 4]);
     panel.innerHTML = zag(5, 'Карта вашего мира', 'Проверьте: любой шаг можно поправить.') +
       '<div class="karta-mira">' + stroki.map(function (x) {
         return '<div class="karta-str"><div><b>' + x[0] + '</b><div class="kz">' + x[1] + '</div></div>' +
@@ -424,9 +424,13 @@
     if (vozvrat) { vozvrat = false; pokaz(5); return; }
     pokaz(sled(n));
   }
+  var flAkk = false;          /* меняем постройку частного лица из кабинета: кто он, уже известно по аккаунту */
+  function flIgra() { return flAkk || !!(s.bloki.hranenie && s.bloki.hranenie.biznes === 'fl'); }          /* частное лицо товар не продаёт */
+  function vseBloki() { return Object.keys(s.bloki).length === (flIgra() ? 4 : 5); }
   function cepochka(k) { var c = [], x = k; while (x) { c.unshift(x); x = ZAVISIT[x]; } return c; }
   function nazhat(k) {
     if (s.bloki[k]) { otkryt = k; r3(); fokusBloka(k); return; }
+    if (k === 'vitrina' && flIgra()) { govorit('Витрина для компаний и ИП: частное лицо товар не продаёт.'); return; }
     var novye = cepochka(k).filter(function (x) { return !s.bloki[x]; });
     novye.forEach(function (x) { s.bloki[x] = defolt(x); });
     otkryt = k; sohr();
@@ -436,7 +440,7 @@
     sc.obnovit(s.bloki, true).then(function (upali) {
       upali.forEach(function (x) { T.goal('blok_add_' + x); dostizhenie(x); });
       if (upali.length) ozvuchit(upali.map(function (x) { return S.BLOKI[x].ig + ' добавлен' + ROD[x]; }).join('. '));
-      if (Object.keys(s.bloki).length === 5) dostizhenie('vse');
+      if (vseBloki()) dostizhenie('vse');
       proverBonus();
     });
   }
@@ -598,7 +602,12 @@
       b.neznayu = t.checked;
       panel.querySelectorAll('[name=pal], [name=pal-r]').forEach(function (i) { i.disabled = t.checked; });
     }
-    else if (nm === 'rezhim' || nm === 'etap' || nm === 'dostup' || nm === 'strana' || nm === 'vedenie' || nm === 'biznes') b[nm] = t.value;
+    else if (nm === 'rezhim' || nm === 'etap' || nm === 'dostup' || nm === 'strana' || nm === 'vedenie' || nm === 'biznes') {
+      b[nm] = t.value;
+      if (nm === 'biznes' && t.value === 'fl' && s.bloki.vitrina) {          /* частное лицо: Витрину убираем, она для компаний */
+        delete s.bloki.vitrina; sohr(); sc.obnovit(s.bloki, true); T.toast('Витрина убрана: она для компаний и ИП'); r3(); rHud(); return;
+      }
+    }
     else if (nm === 'srok') b.srok = +t.value;
     else if (nm === 'ops' || nm === 'gde' || nm === 'kuda') {
       b[nm] = Array.prototype.map.call(panel.querySelectorAll('.kartochka [name=' + nm + ']:checked'), function (c) { return c.value; });
@@ -614,6 +623,8 @@
 
   /* ---------- запуск ---------- */
   (function init() {
+    var akS = T.sessiya() ? T.akk() : null;          /* кабинет с хранением уже есть: не регистрируем заново, а меняем постройку */
+    if (akS && akS.put && !dostroit) { location.replace(location.pathname + '?dostroit=1' + (T.v2() ? '&v2=1' : '')); return; }
     if (!/#shag-\d/.test(location.hash)) T.zagruzka({ zag: dostroit ? 'Открываем ваш мир' : 'Загружаем Мир Тучи', ubrat: true, shag: 420,
       shagi: dostroit ? ['достаём постройку', 'зовём персонажа'] : ['рисуем остров', 'поднимаем тучу', 'будим Проводника'] });
     var bylo = T.anketa();
@@ -625,6 +636,8 @@
       (a.uslugi || []).forEach(function (k) { if (S.BLOKI[k] && !s.bloki[k]) s.bloki[k] = {}; });
       Object.keys(s.bloki).forEach(function (k) { s.bloki[k] = Object.assign(defolt(k), s.bloki[k]); });
       if (!a.mir) { s.persona = a.persona || null; s.kanal = a.kanal || 'zvonok'; }
+      flAkk = a.tip === 'fl';
+      if (flAkk) { if (s.bloki.hranenie) s.bloki.hranenie.biznes = 'fl'; delete s.bloki.vitrina; }
       s.shag = 3; s.maks = 5;
     } else if (bylo && !bylo.done) {
       s = bylo;
@@ -644,7 +657,7 @@
     sc.obnovit(s.bloki, false);
     /* блоки, выбранные на страницах услуг, тоже засчитываем — молча, без всплывашек */
     Object.keys(s.bloki).forEach(function (k) { if (s.dost.indexOf(k) < 0) s.dost.push(k); });
-    if (Object.keys(s.bloki).length === 5 && s.dost.indexOf('vse') < 0) s.dost.push('vse');
+    if (vseBloki() && s.dost.indexOf('vse') < 0) s.dost.push('vse');
     try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
     pokaz(prodolzhit ? 'intro' : s.shag, true);
     if (metki.length && s.shag === 'intro') govorit('Вы уже выбрали: ' + metki.map(function (k) { return S.BLOKI[k].ig; }).join(', ') + '. Этот блок уже стоит в постройке.');

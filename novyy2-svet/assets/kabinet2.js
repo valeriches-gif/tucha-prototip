@@ -17,6 +17,10 @@
   if (a.profil === 'ul' && !a.kompaniya) a.profil = 'fl';
   function fl() { return a.profil === 'fl'; }
   function mir() { return a.vid === 'mir'; }
+  function pokupatel() { return !!a.pokupatel && !a.put; }          /* аккаунт из Лавки: покупает, хранения пока нет */
+  function estPokupki(pr) { return (T.st.get('tucha.zakazy') || []).some(function (o) { return (o.pr || 'fl') === pr; }); }
+  var IMENA = { zh: ['Анна', 'Мария', 'Ольга'], m: ['Олег', 'Дмитрий', 'Игорь'] };
+  function polPers() { return IMENA.m.indexOf(imya()) >= 0 ? 'm' : 'zh'; }
   function dogovor() { return (a.status || 0) >= 3; }
   function imya() { return a.manager || 'Анна'; }
   function kto() { return mir() ? 'персонаж' : 'менеджер'; }
@@ -50,7 +54,7 @@
       { t: SEYCHAS - 6 * DEN, opis: 'Кофе в зёрнах, 6 паллет', plomba: '0048217', mesto: 'A-02-09', kadr: 'kadr-stellazhi.jpg' },
       { t: SEYCHAS - 11 * DEN, opis: 'Чай чёрный, 4 паллеты', plomba: '0048102', mesto: 'A-02-07', kadr: 'kadr-pogruzchik.jpg' },
       { t: SEYCHAS - 17 * DEN, opis: 'Стаканы бумажные, 3 паллеты', plomba: '0047955', mesto: 'B-01-02', kadr: 'kadr-priemka.jpg' }];
-    a.vitrina = { vedenie: 'sam', karty: [
+    if (!a.vitrina) a.vitrina = { vedenie: 'sam', karty: [
       { art: 'KOF-1K', id: 5, name: 'Кофе в зёрнах, арабика 100 %, 1 кг', na: 40, st: 'prodaja' },
       { art: 'CHAY-500', id: 4, name: 'Чай чёрный листовой, 500 г', na: 30, st: 'prodaja' }] };
     sohr();
@@ -62,14 +66,15 @@
 
   /* ---------- разделы: одна логика, свои названия в каждом виде и профиле ---------- */
   function razdely() {
+    if (pokupatel()) return [['obzor', 'Главная'], ['pokupki', 'Покупки'], ['svyaz', 'Поддержка'], ['nastroyki', 'Настройки']];
     if (fl()) return [
       ['obzor', mir() ? 'Мой мир' : 'Главная'], ['sklad', mir() ? 'Точка сохранения' : 'Мои вещи'], ['zayavki', 'Заявки'],
       ['pokupki', 'Покупки'], ['dengi', 'Документы и счета'], ['svyaz', mir() ? 'Персонаж' : 'Поддержка']].concat(mir() ? [['urovni', 'Уровни']] : []).concat([['nastroyki', 'Настройки']]);
     return [
       ['obzor', mir() ? 'Мой мир' : 'Главная'], ['sklad', mir() ? 'Точка сохранения' : 'Остатки'], ['zayavki', 'Заявки'],
-      ['vitrina', 'Витрина'], ['dengi', 'Документы и счета'], ['svyaz', mir() ? 'Персонаж' : 'Менеджер']].concat(mir() ? [['urovni', 'Уровни']] : []).concat([['nastroyki', 'Настройки']]);
+      ['vitrina', 'Витрина']].concat(estPokupki('ul') ? [['pokupki', 'Покупки']] : []).concat([['dengi', 'Документы и счета'], ['svyaz', mir() ? 'Персонаж' : 'Менеджер']]).concat(mir() ? [['urovni', 'Уровни']] : []).concat([['nastroyki', 'Настройки']]);
   }
-  var IKONKI = { sklad: 'hranenie', zayavki: 'dostavka', vitrina: 'vitrina', pokupki: 'vitrina', dengi: 'tamozhnya', svyaz: 'obrabotka' };
+  var IKONKI = { sklad: 'hranenie', zayavki: 'dostavka', vitrina: 'vitrina', dengi: 'tamozhnya', svyaz: 'obrabotka' };
   var razdel = (location.hash || '').slice(1) || 'obzor';
   function estRazdel(r) { return razdely().some(function (x) { return x[0] === r; }); }
   if (!estRazdel(razdel)) razdel = 'obzor';
@@ -134,15 +139,18 @@
         return '<button type="button" class="k2-foto-k" data-foto="' + i + '"><img src="' + R + 'assets/img/' + p.kadr + '" alt="" loading="lazy"><span><b>' + dataTxt(p.t) + '</b>' + esc(p.opis) + '</span></button>';
       }).join('') + '</div><p class="muted k2-mel">Снимки хранятся весь договор и год после: если товар пришёл битым, это видно на фото приёмки.</p></div>';
   }
+  function rezervMes() {          /* срок резервации: из настроек, а если не меняли, то выбранный в игре */
+    if (a.rezerv != null) return +a.rezerv;
+    var h = a.mir && a.mir.bloki && a.mir.bloki.hranenie;
+    return h ? +(h.srok || 0) : 0;
+  }
   function schet() {
     var m = mesta(), dni = 30, hr = m * dni * STAVKA, stroki = [['Хранение · ' + m + ' ' + (fl() ? 'места' : 'паллето-мест') + ' × ' + dni + ' дней', hr]];
-    if (mir()) {
-      var ur = T.klubUroven(a.staj), sk = ur >= 6 ? 15 : ur >= 5 ? 10 : ur >= 4 ? 5 : 0;
-      if (sk) stroki.push(['Скидка уровня «' + T.KLUB[ur].imya + '» · −' + sk + ' %', -hr * sk / 100]);
-    } else if (a.rezerv) {
-      var p = { 1: 15, 3: 20, 6: 30, 12: 40 }[a.rezerv] || 0;
-      if (p) stroki.push(['Резервация на ' + a.rezerv + ' ' + mes(a.rezerv) + ' · −' + p + ' %', -hr * p / 100]);
-    }
+    /* резервация в обоих форматах; в «Мире Тучи» со скидкой уровня не складывается: действует большая */
+    var rm = rezervMes(), p = { 1: 15, 3: 20, 6: 30, 12: 40 }[rm] || 0;
+    var ur = mir() ? T.klubUroven(a.staj) : 0, sk = mir() ? (T.KLUB[ur].skidka || 0) : 0;
+    if (p && p >= sk) stroki.push(['Резервация на ' + rm + ' ' + mes(rm) + ' · −' + p + ' %', -hr * p / 100]);
+    else if (sk) stroki.push(['Скидка уровня «' + T.KLUB[ur].imya + '» · −' + sk + ' %', -hr * sk / 100]);
     if (!fl()) stroki.push(['Операции · по прайсу, сверх бесплатных', 0]);
     var itog = stroki.reduce(function (s, x) { return s + x[1]; }, 0);
     return { stroki: stroki, itog: itog };
@@ -187,6 +195,7 @@
   }
   function rZadanie() {
     var z = T.zadanieMesyaca();
+    if (fl() && !z.fl) return '';          /* частному лицу только задания, которые к нему относятся */
     return '<div class="zadanie' + (z.sezon ? ' sezon' : '') + '"><b>' + (z.sezon ? 'Сезонное задание' : 'Задание месяца') + '</b><p>' + z.tekst + '</p><p class="zad-obmen">Вы получаете: ' + z.vam + ' и +1 месяц стажа</p></div>';
   }
   function rRech() {
@@ -405,10 +414,10 @@
 
   /* ---------- настройки ---------- */
   function rNastroyki() {
-    var h = '<div class="setka s2">' +
+    var h = '<div class="setka s2">' + (pokupatel() ? '' :
       '<div class="kart"><h2 class="h3">Формат работы</h2><div class="vybor"><label><input type="radio" name="vid" value="prosto"' + (mir() ? '' : ' checked') + '><span>Всё просто</span></label>' +
       '<label><input type="radio" name="vid" value="mir"' + (mir() ? ' checked' : '') + '><span>Мир Тучи</span></label></div>' +
-      '<p class="muted k2-mel">«Всё просто»: обычный кабинет, скидка за срок. «Мир Тучи»: ваш мир, уровни и персонаж. Данные и заявки не меняются.</p></div>' +
+      '<p class="muted k2-mel">«Всё просто»: обычный кабинет, скидка за срок. «Мир Тучи»: ваш мир, уровни и персонаж. Данные и заявки не меняются.</p></div>') +
       '<div class="kart"><h2 class="h3">Профили</h2>' + (a.kompaniya ? '<div class="usl-str"><span><b>' + esc(a.kompaniya) + '</b><br><span class="muted">ИНН ' + esc(a.inn) + '</span></span><button type="button" class="btn-t" data-profil="ul">' + (fl() ? 'Перейти' : 'текущий') + '</button></div>' : '') +
       (a.lichnyy || a.tip === 'fl' ? '<div class="usl-str"><span><b>' + esc(a.imya || 'Личный профиль') + '</b><br><span class="muted">частное лицо</span></span><button type="button" class="btn-t" data-profil="fl">' + (fl() ? 'текущий' : 'Перейти') + '</button></div>' : '<p><button type="button" class="btn btn-2 btn-sm" data-lichnyy>Добавить личный профиль</button></p>') +
       (a.kompaniya ? '' : '<form class="k2-inn" novalidate data-org>' + pole('org-inn', 'Добавить организацию: ИНН', '<input id="org-inn" name="inn" type="text" inputmode="numeric" maxlength="12" placeholder="10 или 12 цифр">') + '<button class="btn btn-2 btn-sm" type="submit">Добавить</button></form>') + '</div>' +
@@ -420,9 +429,11 @@
         return '<label><input type="radio" name="sposob" value="' + x[0] + '"' + (sposob() === x[0] ? ' checked' : '') + '><span>' + x[1] + '</span></label>'; }).join('') + '</div><p class="muted k2-mel">Выбрали при сборке мира. Можно поменять в любой момент.</p></div>' +
       '<div class="kart"><h2 class="h3">Персонаж</h2><div class="vybor">' + HARAKTER.map(function (x) {
         return '<label><input type="radio" name="harakter" value="' + x[0] + '"' + (a.persona === x[0] ? ' checked' : '') + '><span><b>' + x[1] + '</b>: ' + x[2] + '</span></label>'; }).join('') + '</div>' +
+      '<div class="vybor k2-top">' + [['zh', 'Женский'], ['m', 'Мужской']].map(function (x) {
+        return '<label><input type="radio" name="pol" value="' + x[0] + '"' + (polPers() === x[0] ? ' checked' : '') + '><span>' + x[1] + '</span></label>'; }).join('') + '</div>' +
       '<p class="muted k2-mel">Сменить можно, если не сошлись характерами: постройка и история останутся.</p><p><a class="btn btn-2 btn-sm" href="' + R + 'start/mir/?dostroit=1' + (T.v2() ? '&v2=1' : '') + '">Изменить постройку</a></p></div>';
-    else h += '<div class="kart"><h2 class="h3">Скидка за срок</h2><div class="vybor">' + [[0, 'По факту'], [1, '1 мес · −15 %'], [3, '3 мес · −20 %'], [6, '6 мес · −30 %'], [12, '12 мес · −40 %']].map(function (x) {
-        return '<label><input type="radio" name="rezerv" value="' + x[0] + '"' + ((a.rezerv || 0) === x[0] ? ' checked' : '') + '><span>' + x[1] + '</span></label>'; }).join('') + '</div><p class="muted k2-mel">«Займи место под тучей»: места и цена за вами, оплата вперёд.</p></div>';
+    if (!pokupatel()) h += '<div class="kart"><h2 class="h3">' + (mir() ? 'Резервация мест' : 'Скидка за срок') + '</h2><div class="vybor">' + [[0, 'По факту'], [1, '1 мес · −15 %'], [3, '3 мес · −20 %'], [6, '6 мес · −30 %'], [12, '12 мес · −40 %']].map(function (x) {
+        return '<label><input type="radio" name="rezerv" value="' + x[0] + '"' + (rezervMes() === x[0] ? ' checked' : '') + '><span>' + x[1] + '</span></label>'; }).join('') + '</div><p class="muted k2-mel">«Займи место под Тучей»: места и цена за вами, оплата вперёд.' + (mir() ? ' Со скидкой уровня не складывается: действует большая.' : '') + '</p></div>';
     h += (fl() ? '<div class="kart"><h2 class="h3">Адреса доставки</h2><p class="muted">' + (a.adres ? esc(a.adres) : 'Пока нет: добавится после первой доставки.') + '</p></div>' :
       '<div class="kart"><h2 class="h3">Доступ сотрудникам</h2><p>Сейчас входит ' + esc(a.imya || 'один человек') + ', ' + esc(a.tel || '') + '.</p><p class="muted k2-mel">Добавим кладовщика или бухгалтера с отдельными правами по запросу.</p></div>') +
       '<div class="kart"><h2 class="h3">Выход</h2><p class="muted">Вход держится 30 дней на этом устройстве.</p><p class="cta-pol"><button type="button" class="btn btn-2 btn-sm" data-vyyti>Выйти</button><button type="button" class="btn-t" data-steret>Стереть демо-данные</button></p></div></div>';
@@ -438,6 +449,9 @@
     return '<div class="k2-pers"><div><b>' + (novyy === 'dostroil' ? 'Сохранено' : 'Добро пожаловать под тучу') + '</b><p>' + t + '</p></div><button type="button" class="btn-t" data-privet-ok>Понятно</button></div>';
   }
   function rObzor() {
+    if (pokupatel()) return verh('Здравствуйте' + (a.imya ? ', ' + esc(a.imya.split(' ')[0]) : ''), 'Ваши покупки в Лавке') + '<div data-pokupki-kab></div>' +
+      '<div class="k2-pers"><div><b>Хотите хранить вещи или товар?</b><p>Выберите формат: аккаунт тот же, покупки останутся здесь.</p></div>' +
+      '<a class="btn btn-sm" href="' + R + (T.v2() ? 'v2/' : '') + 'start/#format">Выбрать формат</a></div>';
     if (!dogovor()) return rPrivet() + verh(mir() ? 'Мой мир' : 'Здравствуйте' + (a.imya ? ', ' + esc(a.imya) : ''), 'Кабинет откроется полностью после договора: заявки, остатки и документы.') +
       (mir() ? rHud() : '') + '<div class="kp-g"><div>' + rStatus() + '<div class="kart"><h2 class="h3">Что приготовить к разговору</h2><ul class="spis-ok"><li>Объём и тип товара: паллеты, коробки, вес</li><li>Даты первой поставки</li><li>Нужны ли маркировка, сборка и доставка</li></ul></div></div><div>' + rSvyazKratko() + '</div></div>';
     if (mir()) {
@@ -458,7 +472,7 @@
     return verh('Уровни', 'Семь ступеней «Мира Тучи». Уровень растёт за месяцы подряд с выполненными условиями, объём не важен.') +
       '<div class="urovni-sp">' + T.KLUB.map(function (u, k) {
         return '<div class="kart urov' + (k === i ? ' tek' : k < i ? ' proyden' : '') + '"><div class="razdel-h"><h2 class="h3">' + (k + 1) + '. ' + u.imya + '</h2><span class="muted">' + (k === i ? 'ваш уровень · ' : '') + u.kogda + '</span></div>' +
-          '<div class="urov-g"><div><b>Условия</b><ul class="spis-ok">' + T.klubUsloviya(k, fl()).map(li).join('') + '</ul></div><div><b>Что даёт</b><ul class="spis-ok">' + u.daet.map(li).join('') + '</ul></div></div></div>';
+          '<div class="urov-g"><div><b>Условия</b><ul class="spis-ok">' + (fl() ? T.klubUsloviya(k, true) : (k >= 2 ? ['Условия прошлых уровней'] : []).concat(u.zad)).map(li).join('') + '</ul></div><div><b>Что даёт</b><ul class="spis-ok">' + u.daet.filter(function (x) { return !fl() || !/Витрин/.test(x); }).map(li).join('') + '</ul></div></div></div>';
       }).join('') + '</div>';
   }
 
@@ -479,12 +493,13 @@
       if (!dogovor()) return verh('Документы и счета') + zamok('Откроется после договора', 'Договор, счета и акты появятся здесь.');
       return verh('Документы и счета') + rDengi();
     },
-    svyaz: function () { return verh(mir() ? 'Персонаж' : fl() ? 'Поддержка' : 'Менеджер') + rSvyaz(); },
+    svyaz: function () { return verh(mir() ? 'Персонаж' : fl() || pokupatel() ? 'Поддержка' : 'Менеджер') + rSvyaz(); },
     urovni: function () { return mir() ? rUrovni() : rObzor(); },
     nastroyki: function () { return verh('Настройки') + rNastroyki(); }
   };
 
   function pokaz(r, fokus) {
+    document.body.classList.toggle('prosto-vid', !mir());          /* в «Всё просто» и шапка с обычными названиями услуг */
     if (!estRazdel(r)) r = 'obzor';
     if (r !== 'vitrina') novaya = false;
     razdel = r;
@@ -495,7 +510,7 @@
     box.innerHTML = RENDER[r]();
     document.querySelectorAll('.k2-mik[data-ik]').forEach(function (s) { S.ikonka(s, s.getAttribute('data-ik')); });
     var ch = box.querySelector('[data-chat-kab]'); if (ch && window.TuchaChat) TuchaChat.sozdat(ch, { vstroen: true });
-    var pk = box.querySelector('[data-pokupki-kab]'); if (pk && L) L.pokupki(pk);
+    var pk = box.querySelector('[data-pokupki-kab]'); if (pk && L) L.pokupki(pk, pokupatel() ? null : a.profil);
     risovatPr();
     var svg = box.querySelector('#kabScena');
     if (svg) {
@@ -596,7 +611,11 @@
     else if (t.name === 'kanal') { a.kanal = t.value; sohr(); var m = box.querySelector('[data-mess]'); if (m) m.hidden = t.value !== 'messenger'; T.toast('Сохранено'); }
     else if (t.name === 'messenger') { a.messenger = t.value; sohr(); T.toast('Сохранено'); }
     else if (t.name === 'sposob') { a.zayavkiSposob = t.value; sohr(); T.toast({ kabinet: 'Заявки: в кабинете', messenger: 'Заявки: сообщением в ' + mess(), manager: 'Заявки: через персонажа' }[t.value]); }
-    else if (t.name === 'harakter') { var bylo = imya(), sp = ['Анна', 'Олег', 'Мария', 'Дмитрий'].filter(function (x) { return x !== bylo; }); a.persona = t.value; a.manager = sp[0]; sohr(); T.toast('Персонаж сменён: ' + a.manager + '. Постройка и история остались'); }
+    else if (t.name === 'harakter' || t.name === 'pol') {          /* новый персонаж: имя своего пола, постройка и история остаются */
+      var bylo = imya(), pol = t.name === 'pol' ? t.value : polPers();
+      if (t.name === 'harakter') a.persona = t.value;
+      a.manager = IMENA[pol].filter(function (x) { return x !== bylo; })[0]; sohr(); pokaz('nastroyki');
+      T.toast('Персонаж сменён: ' + a.manager + '. Постройка и история остались'); }
     else if (t.name === 'rezerv') { a.rezerv = +t.value; sohr(); T.toast(+t.value ? 'Резервация на ' + t.value + ' ' + mes(+t.value) + ': скидка в счёте' : 'Оплата по факту'); }
     else if (t.name === 'vedenie') { a.vitrina.vedenie = t.value; sohr(); pokaz('vitrina'); T.toast('Ведение сменится с первого числа'); }
   });
