@@ -485,6 +485,7 @@
     box.hidden = false;
     var pred = {};
     if (s.kontakt) { if (/@/.test(s.kontakt)) pred.pochta = s.kontakt; else if (s.kontakt.replace(/\D/g, '').length >= 10) pred.tel = s.kontakt; }
+    if (s.bloki.hranenie && s.bloki.hranenie.biznes === 'fl') pred.tip = 'fl';          /* кто вы, уже ответили в игре: не спрашиваем заново */
     box.innerHTML = '<h3 class="reg-h">Сохранить мир: регистрация</h3><div data-forma></div>';
     Reg.forma(box.querySelector('[data-forma]'), {
       kratko: true, knopka: 'Сохранить мой мир',

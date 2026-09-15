@@ -13,6 +13,7 @@ window.TuchaReg = (function () {
   function forma(box, o) {
     o = o || {};
     var p = o.predzapolnit || {}, R = T.ROOT, fl = p.tip === 'fl';
+    if (!p.tel && !p.pochta) { try { var sVhoda = sessionStorage.getItem('tucha.vhod'); if (sVhoda) { p = Object.assign({}, p); if (/@/.test(sVhoda)) p.pochta = sVhoda; else p.tel = sVhoda; } } catch (e) {} }   /* номер, который вводили на входе */
     /* юрлицо или ИП — с ИНН и названием; физическое лицо — без ИНН, с ФИО */
     var h = '<form novalidate class="reg">' +
       '<fieldset class="pole reg-tip"><legend>Вы регистрируетесь как</legend><div class="vybor">' +
@@ -22,7 +23,7 @@ window.TuchaReg = (function () {
       '<input id="r-inn" type="text" inputmode="numeric" maxlength="12" autocomplete="off" value="' + esc(p.inn) + '">' +
       '<p class="podskaz">10 цифр у компании, 12 у ИП</p><p class="osh-t">Проверьте ИНН: 10 цифр у компании или 12 у ИП</p></div>' +
       '<div data-est-akk hidden class="plashka"><p>С этим ИНН уже есть аккаунт. Войти или написать нам?</p>' +
-      '<a class="btn btn-sm" href="' + R + '../novyy/vhod/">Войти</a><a class="btn-t" href="https://t.me/tucha_ml">Написать нам</a></div>' +
+      '<a class="btn btn-sm" href="' + R + (T.v2() ? 'v2/' : '') + 'vhod/">Войти</a><a class="btn-t" href="https://t.me/tucha_ml">Написать нам</a></div>' +
       (o.kratko ? '<div class="pole" data-p="imya" data-fl><label for="r-imya">ФИО</label>' +
       '<input id="r-imya" type="text" maxlength="80" autocomplete="name" value="' + esc(p.imya) + '">' +
       '<p class="osh-t">Впишите фамилию и имя</p></div>' :

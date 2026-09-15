@@ -647,3 +647,33 @@ body.zgr-idet { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .vh3-zv, .vh3-t1, .vh3-t2, .vh3-korob, .vh3-geroy, .vh3-ten, .vh3-palleta::after, .pv-golova, .pv-golova-morgaet { animation: none !important; }
 }
+
+/* загрузка мира: небесная, как главная, а не тёмно-синяя */
+.zgr { background: linear-gradient(180deg, #8FD0F5 0%, #BDE3F8 55%, #DDF1FC 100%); color: #16304F; }
+.zgr::before { opacity: 1; background:
+  radial-gradient(circle at 30% 60%, #fff 0 16px, transparent 17px) 12% 18% / 120px 44px no-repeat,
+  radial-gradient(circle at 60% 45%, #fff 0 22px, transparent 23px) 16% 16% / 120px 44px no-repeat,
+  radial-gradient(circle at 30% 60%, #fff 0 14px, transparent 15px) 82% 70% / 110px 40px no-repeat,
+  radial-gradient(circle at 60% 45%, #fff 0 19px, transparent 20px) 85% 68% / 110px 40px no-repeat; }
+.zgr-kv i { background: rgba(22, 48, 79, .12); }
+@keyframes zgr-kv { 0% { background: #16304F; } 25% { background: #FF8A1F; } 50% { background: #FFFFFF; } 75% { background: rgba(22, 48, 79, .12); } }
+.zgr-sh { color: #33506F; }
+.zgr-sh b { color: #DE7212; }
+.zgr-pol { background: rgba(22, 48, 79, .15); }
+.zgr-niz { color: rgba(22, 48, 79, .5); }
+
+/* один вход: форма слева, Проводник справа; первый вход: выбор формата */
+.vh3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+.vh3-put { display: flex; flex-direction: column; gap: 2px; margin: 0 0 12px; padding: 16px 18px; border-radius: 16px; border: 2px solid #E3EAF1;
+  background: #fff; color: var(--mute); font-size: 15px; text-decoration: none; transition: border-color .16s ease, transform .16s cubic-bezier(.23, 1, .32, 1); }
+.vh3-put b { font: 800 22px/1.2 var(--igr); color: var(--navy); }
+.vh3-put-mir { background: var(--navy); border-color: var(--navy); color: #DCE6F2; }
+.vh3-put-mir b { color: #fff; }
+.vh3-put-mir .doroga-f { color: #FFB877; }
+.vh3-put:active { transform: translateY(1px); }
+@media (hover: hover) and (pointer: fine) { .vh3-put:hover { border-color: var(--orange); transform: translateY(-2px); } }
+.vh3-kto { margin: 6px 0 0; font-size: 14px; color: var(--mute); }
+.vh3-kto a { color: var(--navy); font-weight: 600; }
+.vh3-novyy h1:focus { outline: none; }
+@media (max-width: 900px) { .vh3 { grid-template-columns: minmax(0, 1fr); } .vh3-art { order: -1; } }
+@media (prefers-reduced-motion: reduce) { .vh3-put { transition: none; } }

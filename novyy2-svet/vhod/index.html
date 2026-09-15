@@ -3,21 +3,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preload" href="../assets/fonts/sklad-900.woff2" as="font" type="font/woff2" crossorigin>
 <title>Вход в кабинет, Туча</title>
-<meta name="description" content="Вход по коду из SMS.">
+<meta name="description" content="Вход по телефону или почте, код вместо пароля.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#1E3A5F">
 <meta property="og:title" content="Вход в кабинет, Туча">
-<meta property="og:description" content="Вход по коду из SMS.">
+<meta property="og:description" content="Вход по телефону или почте, код вместо пароля.">
 <meta property="og:image" content="../assets/img/art-magiya.jpg">
 <link rel="icon" type="image/png" href="../assets/img/znachok.png">
 <link rel="preload" href="../assets/fonts/golos.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/site.css?v=202609151320">
-<link rel="stylesheet" href="../assets/ui.css?v=202609151320">
-<link rel="stylesheet" href="../assets/lavka.css?v=202609151320">
-<link rel="stylesheet" href="../assets/magiya.css?v=202609151320">
-<link rel="stylesheet" href="../assets/svetlaya.css?v=202609151320">
-</head><body class="start magiya m-svet">
+<link rel="stylesheet" href="../assets/site.css?v=202609151347">
+<link rel="stylesheet" href="../assets/ui.css?v=202609151347">
+<link rel="stylesheet" href="../assets/lavka.css?v=202609151347">
+<link rel="stylesheet" href="../assets/magiya.css?v=202609151347">
+<link rel="stylesheet" href="../assets/svetlaya.css?v=202609151347">
+</head><body class="start vh3-str magiya m-svet">
 <a class="skryt-f" href="#glav">К содержанию</a>
 <div class="nebo" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="tv-versii"><div class="wrap"><span class="tv-v-z">Версия сайта</span><nav aria-label="Версия сайта"><a href="../../">Обычная</a><a href="../../novyy/">8 бит</a><a href="../../novyy2/" aria-current="page">Современная</a></nav><span class="tv-v-gl">Тема: <a href="../../novyy2/">Тёмная</a> · <a href="../" aria-current="page">Светлая</a></span><a class="tv-v-vse" href="../../tri/">Сравнить три версии</a></div></div>
@@ -34,26 +34,35 @@
 <a class="btn btn-sm m-btn-sm" href="../start/mir/">Играть</a>
 <button class="burger" type="button" data-burger aria-expanded="false" aria-label="Меню"><i></i><i></i><i></i></button>
 </div></div></header>
-<main id="glav"><section class="sek"><div class="wrap"><h1>Вход в кабинет</h1>
-<p class="muted" style="max-width:640px">У каждого формата свой кабинет. Войдите в тот, в котором работаете.</p>
-<div class="vhod-g">
-<div class="kart vhod-k vhod-prosto" id="vhod-prosto"><p class="doroga-f">Без тарифов</p><h2>Кабинет «Всё просто»</h2>
-<p class="vhod-pod">Статус, менеджер, услуги и документы в обычном виде.</p>
-<form novalidate data-vhod="prosto">
-<div class="pole"><label for="login-prosto">Телефон или почта</label><input id="login-prosto" type="text" autocomplete="username">
+<main id="glav"><section class="vh3" data-vh3>
+<div class="vh3-f"><div class="vh3-in vhod2-k">
+<img class="vh3-logo" src="../assets/img/logo.png" alt="ТУЧА, Мировая Лавка" width="132" height="40">
+<h1>Вход</h1>
+<p class="muted vh3-pod">По телефону или почте. Пароль не нужен: пришлём код.</p>
+<form novalidate data-vhod2>
+<div class="pole"><label for="login">Телефон или почта</label><input id="login" type="text" autocomplete="username" placeholder="+7 900 000-00-00">
 <p class="osh-t">Введите телефон или почту</p></div>
-<div class="plashka" data-net hidden><p>Такого аккаунта нет. Зарегистрироваться одной формой?</p><a class="btn btn-sm" href="../start/prosto/">Заполнить форму</a></div>
-<button class="btn" type="submit">Получить код</button></form>
-<p class="demo-str">Посмотреть на примере: <button class="btn-t" type="button" data-demo="prosto">демо-кабинет «Всё просто»</button></p></div>
-<div class="kart vhod-k vhod-mir" id="vhod-mir"><img class="vhod-pers" src="../assets/img/provodnik-palec.webp" alt="" width="781" height="900"><p class="doroga-f">Игровой формат</p><h2>Кабинет «Мир Тучи»</h2>
-<p class="vhod-pod">Ваш мир из блоков, персонаж, уровни и достижения.</p>
-<form novalidate data-vhod="mir">
-<div class="pole"><label for="login-mir">Телефон или почта</label><input id="login-mir" type="text" autocomplete="username">
-<p class="osh-t">Введите телефон или почту</p></div>
-<div class="plashka" data-net hidden><p>Такого аккаунта нет. Собрать свой мир?</p><a class="btn btn-sm" href="../start/mir/">Собрать мир</a></div>
-<button class="btn" type="submit">Получить код</button></form>
-<p class="demo-str">Посмотреть на примере: <button class="btn-t" type="button" data-demo="mir">демо-кабинет «Мир Тучи»</button></p></div>
-</div></div></section></main>
+<button class="btn vh3-btn" type="submit">Войти</button></form>
+<div class="vh3-ili"><span>или посмотрите на примере</span></div>
+<p class="vh3-demo"><button class="btn btn-2 btn-sm" type="button" data-demo="prosto">Кабинет «Всё просто»</button><button class="btn btn-2 btn-sm" type="button" data-demo="mir">Кабинет «Мир Тучи»</button></p>
+<p class="vh3-nov">Новенький здесь? <a href="../start/">Выберите, как начать</a></p>
+</div>
+<div class="vh3-in vh3-novyy" data-novyy hidden>
+<p class="eb">Первый вход</p>
+<h1>Вы у нас впервые</h1>
+<p class="muted vh3-pod"><b data-kto></b> пока без аккаунта. Выберите формат, номер подставим в регистрацию.</p>
+<a class="vh3-put vh3-put-mir" href="../start/mir/" data-goal="vhod_put_mir"><span class="doroga-f">Игровой формат</span><b>Мир Тучи</b><span>Соберёте склад из блоков за пять минут, персонаж и уровни</span></a>
+<a class="vh3-put" href="../start/prosto/" data-goal="vhod_put_prosto"><span class="doroga-f">Без тарифов</span><b>Всё просто</b><span>Короткая форма на две минуты, дальше менеджер</span></a>
+<p class="vh3-kto">Подходит компаниям, ИП и частным лицам. Купить товар можно без регистрации в <a href="../lavka/">Лавке</a>.</p>
+<p class="vh3-nov"><button class="btn-t" type="button" data-drugoy>Ввести другой номер</button></p>
+</div></div>
+<div class="vh3-art" aria-hidden="true">
+<i class="vh3-zv"></i><i class="vh3-tuchka vh3-t1"></i><i class="vh3-tuchka vh3-t2"></i>
+<i class="vh3-korob vh3-k1"></i><i class="vh3-korob vh3-k2"></i><i class="vh3-korob vh3-k3"></i>
+<div class="vh3-geroy"><div class="vh3-pers"><img class="pv pv-telo" src="../assets/img/pv-telo.png" alt="" width="445" height="805"><img class="pv pv-ruka-levaya-vniz" src="../assets/img/pv-ruka-levaya-vniz.png" alt="" width="445" height="805"><img class="pv pv-ruka-pravaya-vniz" src="../assets/img/pv-ruka-pravaya-vniz.png" alt="" width="445" height="805"><img class="pv pv-ruka-pravaya-privet" src="../assets/img/pv-ruka-pravaya-privet.png" alt="" width="445" height="805"><img class="pv pv-ruka-pravaya-palec" src="../assets/img/pv-ruka-pravaya-palec.png" alt="" width="445" height="805"><img class="pv pv-golova" src="../assets/img/pv-golova.png" alt="" width="445" height="805"><img class="pv pv-golova-morgaet" src="../assets/img/pv-golova-morgaet.png" alt="" width="445" height="805"><img class="pv pv-golova-radost" src="../assets/img/pv-golova-radost.png" alt="" width="445" height="805"><img class="pv pv-golova-podmig" src="../assets/img/pv-golova-podmig.png" alt="" width="445" height="805"></div><div class="vh3-palleta"><i></i></div></div><i class="vh3-ten"></i>
+<p class="vh3-podp">Всё под одной тучей<span>склад в Московской области с 2017 года</span></p>
+</div>
+</section></main>
 <footer class="podval"><div class="wrap"><div class="kol">
 <div class="znak-p"><img src="../assets/img/logo-v.png" alt="ТУЧА, Мировая Лавка" width="480" height="277" loading="lazy">
 <p class="sf-p">СпейсФлоу</p><p>Всё под одной тучей</p><a class="tel-bol" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a></div>
@@ -72,7 +81,7 @@
 </div></footer>
 
 <script>window.TUCHA_ROOT = '../';</script>
-<script src="../assets/site.js?v=202609151320"></script>
+<script src="../assets/site.js?v=202609151347"></script>
 <script>(function () {
   /* два входа: кабинет «Всё просто» и кабинет «Мир Тучи»; вход в своём формате задаёт вид кабинета */
   var T = Tucha;
@@ -113,8 +122,58 @@
     b.addEventListener('click', function () {
       var d = JSON.parse(JSON.stringify(DEMO[b.getAttribute('data-demo')]));
       d.sozdan = Date.now(); if (d.mir) d.mir.t = Date.now();
-      T.st.set('tucha.akk', d); T.voyti(); location.href = T.ROOT + 'kabinet/';
+      T.st.set('tucha.akk', d); T.voyti(); T.zagruzka({ zag: d.vid === 'mir' ? 'Загружаем ваш мир' : 'Открываем кабинет', shagi: d.vid === 'mir' ? ['загружаем постройку', 'зовём персонажа Анну', 'открываем ваш мир'] : ['проверяем доступ', 'собираем остатки и заявки', 'открываем кабинет'] }).then(function () { location.href = T.ROOT + (T.v2() ? 'v2/' : '') + 'kabinet/'; });
     });
   });
+})();(function () {
+  /* один вход: аккаунт есть, код и свой кабинет; уже вошли, сразу кабинет; аккаунта нет, выбираем формат, номер подставим в регистрацию */
+  var T = Tucha, f = document.querySelector('form[data-vhod2]'), box = document.querySelector('.vhod2-k'), nov = document.querySelector('[data-novyy]');
+  var art = document.querySelector('[data-vh3]'), kab = T.ROOT + (T.v2() ? 'v2/' : '') + 'kabinet/';
+  if (!f || !nov) return;
+  if (T.sessiya()) { location.replace(kab); return; }
+  function cifry(s) { return String(s || '').replace(/\D/g, ''); }
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var inp = f.querySelector('input'), v = inp.value.trim(), pole = inp.closest('.pole'), a = T.akk();
+    var tel = cifry(v).length >= 10, ok = tel || T.pochtaOk(v);
+    pole.classList.toggle('osh', !ok);
+    if (!ok) { inp.focus(); return; }
+    var kuda = tel ? T.telFormat(v) : v;
+    var est = a && (tel ? cifry(a.tel).slice(-10) === cifry(v).slice(-10) : (a.pochta || '').toLowerCase() === v.toLowerCase());
+    if (!est) {
+      try { sessionStorage.setItem('tucha.vhod', kuda); } catch (er) {}
+      nov.querySelector('[data-kto]').textContent = kuda;
+      box.hidden = true; nov.hidden = false; art.setAttribute('data-sost', 'rad'); T.goal('vhod_novyy');
+      var h = nov.querySelector('h1'); h.setAttribute('tabindex', '-1'); h.focus();
+      return;
+    }
+    var btn = f.querySelector('[type=submit]'); btn.classList.add('idet'); btn.textContent = 'Отправляем код…';
+    setTimeout(function () {
+      T.kodEkran(box, { kuda: kuda, nazad: function () { location.reload(); },
+        onOk: function () {
+          var ak = T.akk() || {};
+          if (!ak.vid) { ak.vid = ak.put === 'mir' ? 'mir' : 'prosto'; T.st.set('tucha.akk', ak); }
+          T.voyti(); T.goal('vhod_ok');
+          T.zagruzka({ zag: ak.vid === 'mir' ? 'Загружаем ваш мир' : 'Открываем кабинет',
+            shagi: ak.vid === 'mir' ? ['проверяем код', 'зовём персонажа', 'открываем ваш мир'] : ['проверяем код', 'собираем остатки и заявки', 'открываем кабинет'] })
+            .then(function () { location.href = kab; });
+        } });
+      T.toast('Код отправлен');
+    }, 600);
+  });
+  nov.querySelector('[data-drugoy]').addEventListener('click', function () {
+    nov.hidden = true; box.hidden = false; art.setAttribute('data-sost', '');
+    var i = f.querySelector('input'); i.value = ''; i.focus();
+  });
+})();(function () {
+  /* Проводник реагирует на форму: смотрит и машет, пока вводите; палец вверх, когда код отправлен */
+  var box = document.querySelector('[data-vh3]'), inp = document.getElementById('login');
+  if (!box || !inp) return;
+  function st(k) { box.setAttribute('data-sost', k); }
+  inp.addEventListener('focus', function () { st('privet'); });
+  inp.addEventListener('blur', function () { if (box.getAttribute('data-sost') === 'privet') st(''); });
+  inp.addEventListener('input', function () { st(inp.value.replace(/\D/g, '').length >= 10 || /@.+\./.test(inp.value) ? 'rad' : 'privet'); });
+  new MutationObserver(function () { if (document.querySelector('.vh3-in .kod')) st('palec'); }).observe(box, { childList: true, subtree: true });
+  box.querySelectorAll('[data-demo]').forEach(function (b) { b.addEventListener('click', function () { st('palec'); }); });
 })();</script>
 </body></html>
