@@ -376,3 +376,13 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
 
 /* верхняя полка без «свободного места»: три короба на всю ширину */
 .m-ryad-verh { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* вход: Проводник с артов вместо пиксельного; палец вверх, когда номер введён или код отправлен */
+.magiya .vh3-pers-art { width: 360px; height: 470px; margin-bottom: 0; }
+.magiya .vh3-pers-art img { position: absolute; left: 50%; bottom: 0; width: auto; height: 100%; translate: -50% 0; transition: opacity .2s ease; }
+.magiya .vh3-pers-art .vh3-p2 { opacity: 0; }
+.magiya [data-sost="rad"] .vh3-pers-art .vh3-p1, .magiya [data-sost="palec"] .vh3-pers-art .vh3-p1 { opacity: 0; }
+.magiya [data-sost="rad"] .vh3-pers-art .vh3-p2, .magiya [data-sost="palec"] .vh3-pers-art .vh3-p2 { opacity: 1; }
+.magiya .vh3-palleta { display: none; }
+.magiya .vh3-korob { box-shadow: none; border-radius: 3px; }
+@media (prefers-reduced-motion: reduce) { .magiya .vh3-pers-art img { transition: none; } }
