@@ -12,11 +12,11 @@
 <link rel="icon" type="image/png" href="../assets/img/znachok.png">
 <link rel="preload" href="../assets/fonts/golos.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/site.css?v=202609151347">
-<link rel="stylesheet" href="../assets/ui.css?v=202609151347">
-<link rel="stylesheet" href="../assets/lavka.css?v=202609151347">
-<link rel="stylesheet" href="../assets/magiya.css?v=202609151347">
-<link rel="stylesheet" href="../assets/svetlaya.css?v=202609151347">
+<link rel="stylesheet" href="../assets/site.css?v=202609151357">
+<link rel="stylesheet" href="../assets/ui.css?v=202609151357">
+<link rel="stylesheet" href="../assets/lavka.css?v=202609151357">
+<link rel="stylesheet" href="../assets/magiya.css?v=202609151357">
+<link rel="stylesheet" href="../assets/svetlaya.css?v=202609151357">
 </head><body class="start vh3-str magiya m-svet">
 <a class="skryt-f" href="#glav">К содержанию</a>
 <div class="nebo" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -38,10 +38,12 @@
 <div class="vh3-f"><div class="vh3-in vhod2-k">
 <img class="vh3-logo" src="../assets/img/logo.png" alt="ТУЧА, Мировая Лавка" width="132" height="40">
 <h1>Вход</h1>
-<p class="muted vh3-pod">По телефону или почте. Пароль не нужен: пришлём код.</p>
+<p class="muted vh3-pod">По телефону, почте или ИНН. Пароль не нужен.</p>
 <form novalidate data-vhod2>
+<div class="vybor vh3-sposob" role="radiogroup" aria-label="Как войти"><label><input type="radio" name="sposob" value="tel" checked><span>Телефон или почта</span></label><label><input type="radio" name="sposob" value="inn"><span>ИНН</span></label></div>
 <div class="pole"><label for="login">Телефон или почта</label><input id="login" type="text" autocomplete="username" placeholder="+7 900 000-00-00">
 <p class="osh-t">Введите телефон или почту</p></div>
+<p class="vh3-podsk" data-inn-podsk hidden>Пока для проверки подойдут любые цифры, код не нужен.</p>
 <button class="btn vh3-btn" type="submit">Войти</button></form>
 <div class="vh3-ili"><span>или посмотрите на примере</span></div>
 <p class="vh3-demo"><button class="btn btn-2 btn-sm" type="button" data-demo="prosto">Кабинет «Всё просто»</button><button class="btn btn-2 btn-sm" type="button" data-demo="mir">Кабинет «Мир Тучи»</button></p>
@@ -81,7 +83,7 @@
 </div></footer>
 
 <script>window.TUCHA_ROOT = '../';</script>
-<script src="../assets/site.js?v=202609151347"></script>
+<script src="../assets/site.js?v=202609151357"></script>
 <script>(function () {
   /* два входа: кабинет «Всё просто» и кабинет «Мир Тучи»; вход в своём формате задаёт вид кабинета */
   var T = Tucha;
@@ -118,6 +120,7 @@
       mir: { v: 1, t: 0, shag: 5, maks: 5, persona: 'hranitel', kanal: 'zvonok', messenger: 'Telegram', kontakt: '',
         zayavki: 'kabinet', bloki: bloki, pomosh: false, bonus: { hochu: null, tekst: '', fayl: '' }, dost: dost, done: true } }
   };
+  window.TUCHA_DEMO = DEMO;
   document.querySelectorAll('[data-demo]').forEach(function (b) {
     b.addEventListener('click', function () {
       var d = JSON.parse(JSON.stringify(DEMO[b.getAttribute('data-demo')]));
@@ -132,9 +135,46 @@
   if (!f || !nov) return;
   if (T.sessiya()) { location.replace(kab); return; }
   function cifry(s) { return String(s || '').replace(/\D/g, ''); }
+  var inp = f.querySelector('#login'), lab = f.querySelector('label[for=login]'), oshT = f.querySelector('.pole .osh-t'), podsk = f.querySelector('[data-inn-podsk]');
+  function poInn() { var r = f.querySelector('[name=sposob]:checked'); return !!r && r.value === 'inn'; }
+  function otkryt(ak) {
+    if (!ak.vid) { ak.vid = ak.put === 'mir' ? 'mir' : 'prosto'; T.st.set('tucha.akk', ak); }
+    T.voyti();
+    T.zagruzka({ zag: ak.vid === 'mir' ? 'Загружаем ваш мир' : 'Открываем кабинет',
+      shagi: ak.vid === 'mir' ? ['проверяем доступ', 'зовём персонажа', 'открываем ваш мир'] : ['проверяем доступ', 'собираем остатки и заявки', 'открываем кабинет'] })
+      .then(function () { location.href = kab; });
+  }
+  f.querySelectorAll('[name=sposob]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      var i = poInn();
+      lab.textContent = i ? 'ИНН' : 'Телефон или почта';
+      oshT.textContent = i ? 'Введите цифры ИНН' : 'Введите телефон или почту';
+      inp.placeholder = i ? '10 или 12 цифр' : '+7 900 000-00-00';
+      inp.setAttribute('inputmode', i ? 'numeric' : 'text');
+      inp.setAttribute('autocomplete', i ? 'off' : 'username');
+      if (i) inp.setAttribute('maxlength', '12'); else inp.removeAttribute('maxlength');
+      podsk.hidden = !i; inp.value = ''; inp.closest('.pole').classList.remove('osh'); inp.focus();
+    });
+  });
+  inp.addEventListener('input', function () { if (poInn()) inp.value = cifry(inp.value); });
   f.addEventListener('submit', function (e) {
     e.preventDefault();
-    var inp = f.querySelector('input'), v = inp.value.trim(), pole = inp.closest('.pole'), a = T.akk();
+    var v = inp.value.trim(), pole = inp.closest('.pole'), a = T.akk();
+    if (poInn()) {
+      /* пока для проверки: любые цифры, без кода */
+      var inn = cifry(v);
+      pole.classList.toggle('osh', !inn);
+      if (!inn) { inp.focus(); return; }
+      var ak = a && a.inn === inn ? a : null;
+      if (!ak) {
+        ak = JSON.parse(JSON.stringify(window.TUCHA_DEMO.prosto));
+        ak.inn = inn; ak.kompaniya = inn.length === 12 ? 'ИП (по ИНН ' + inn + ')' : 'ООО (по ИНН ' + inn + ')';
+        ak.imya = 'Клиент'; ak.tel = ''; ak.sozdan = Date.now();
+        T.st.set('tucha.akk', ak);
+      }
+      T.goal('vhod_inn'); otkryt(ak);
+      return;
+    }
     var tel = cifry(v).length >= 10, ok = tel || T.pochtaOk(v);
     pole.classList.toggle('osh', !ok);
     if (!ok) { inp.focus(); return; }
@@ -150,20 +190,13 @@
     var btn = f.querySelector('[type=submit]'); btn.classList.add('idet'); btn.textContent = 'Отправляем код…';
     setTimeout(function () {
       T.kodEkran(box, { kuda: kuda, nazad: function () { location.reload(); },
-        onOk: function () {
-          var ak = T.akk() || {};
-          if (!ak.vid) { ak.vid = ak.put === 'mir' ? 'mir' : 'prosto'; T.st.set('tucha.akk', ak); }
-          T.voyti(); T.goal('vhod_ok');
-          T.zagruzka({ zag: ak.vid === 'mir' ? 'Загружаем ваш мир' : 'Открываем кабинет',
-            shagi: ak.vid === 'mir' ? ['проверяем код', 'зовём персонажа', 'открываем ваш мир'] : ['проверяем код', 'собираем остатки и заявки', 'открываем кабинет'] })
-            .then(function () { location.href = kab; });
-        } });
+        onOk: function () { T.goal('vhod_ok'); otkryt(T.akk() || {}); } });
       T.toast('Код отправлен');
     }, 600);
   });
   nov.querySelector('[data-drugoy]').addEventListener('click', function () {
     nov.hidden = true; box.hidden = false; art.setAttribute('data-sost', '');
-    var i = f.querySelector('input'); i.value = ''; i.focus();
+    inp.value = ''; inp.focus();
   });
 })();(function () {
   /* Проводник реагирует на форму: смотрит и машет, пока вводите; палец вверх, когда код отправлен */
@@ -172,7 +205,8 @@
   function st(k) { box.setAttribute('data-sost', k); }
   inp.addEventListener('focus', function () { st('privet'); });
   inp.addEventListener('blur', function () { if (box.getAttribute('data-sost') === 'privet') st(''); });
-  inp.addEventListener('input', function () { st(inp.value.replace(/\D/g, '').length >= 10 || /@.+\./.test(inp.value) ? 'rad' : 'privet'); });
+  inp.addEventListener('input', function () { var r = document.querySelector('[name=sposob]:checked'), inn = r && r.value === 'inn';
+    st((inn ? /\d/.test(inp.value) : inp.value.replace(/\D/g, '').length >= 10 || /@.+\./.test(inp.value)) ? 'rad' : 'privet'); });
   new MutationObserver(function () { if (document.querySelector('.vh3-in .kod')) st('palec'); }).observe(box, { childList: true, subtree: true });
   box.querySelectorAll('[data-demo]').forEach(function (b) { b.addEventListener('click', function () { st('palec'); }); });
 })();</script>

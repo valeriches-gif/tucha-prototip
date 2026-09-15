@@ -677,3 +677,9 @@ body.zgr-idet { overflow: hidden; }
 .vh3-novyy h1:focus { outline: none; }
 @media (max-width: 900px) { .vh3 { grid-template-columns: minmax(0, 1fr); } .vh3-art { order: -1; } }
 @media (prefers-reduced-motion: reduce) { .vh3-put { transition: none; } }
+
+/* вход: способ (телефон или ИНН) */
+.vh3-sposob { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; margin: 0 0 16px; }
+.vh3-sposob label { display: block; min-width: 0; }
+.vh3-sposob span { display: flex; justify-content: center; text-align: center; }
+.vh3-podsk { margin: -6px 0 14px; font-size: 14px; color: var(--mute); }
