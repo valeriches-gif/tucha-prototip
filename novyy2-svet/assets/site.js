@@ -192,7 +192,7 @@ window.Tucha = (function () {
       dozor.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:40px;pointer-events:none';
       document.body.prepend(dozor);
       if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { sh.classList.toggle('mini', !e[0].isIntersecting); }).observe(dozor);
-      if (sessiya()) sh.querySelectorAll('[data-vhod]').forEach(function (a) { a.textContent = 'Кабинет'; a.href = ROOT + 'kabinet/'; });
+      if (sessiya()) sh.querySelectorAll('[data-vhod]').forEach(function (a) { a.textContent = 'Кабинет'; a.href = ROOT + (/\/v2\//.test(location.pathname) ? 'v2/' : '') + 'kabinet/'; });
     }
     korzObnovit();
 
