@@ -11,9 +11,9 @@
 <link rel="icon" type="image/png" href="../../assets/img/znachok.png">
 <link rel="preload" href="../../assets/fonts/golos.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/site.css?v=202609151303">
-<link rel="stylesheet" href="../../assets/ui.css?v=202609151303">
-<link rel="stylesheet" href="../../assets/lavka.css?v=202609151303">
+<link rel="stylesheet" href="../../assets/site.css?v=202609151317">
+<link rel="stylesheet" href="../../assets/ui.css?v=202609151317">
+<link rel="stylesheet" href="../../assets/lavka.css?v=202609151317">
 </head><body>
 <a class="skryt-f" href="#glav">К содержанию</a>
 <div class="nebo" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -66,7 +66,7 @@
 
 <section class="sek-t"><div class="wrap"><h2>Как это работает</h2><ol class="doroga-sh"><li><span class="ds-plitka" aria-hidden="true">1</span><h3>Приёмка</h3><p>Пересчитываем и фотографируем</p></li><li><span class="ds-plitka" aria-hidden="true">2</span><h3>Маркировка</h3><p>Печатаем и клеим коды</p></li><li><span class="ds-plitka" aria-hidden="true">3</span><h3>Сборка</h3><p>Комплектуем и упаковываем заказы</p></li><li><span class="ds-plitka" aria-hidden="true">4</span><h3>Отгрузка</h3><p>Везём на маркетплейс или клиенту</p></li></ol></div></section>
 
-<section class="sek-t"><div class="wrap"><h2>Как это выглядит</h2><div class="kadry kadry-video"><figure class="video-sklad"><span class="video-metka">Снято на нашем складе</span><video src="../../assets/img/sklad-video.mp4" poster="../../assets/img/sklad-video.jpg" width="540" height="960" muted loop playsinline preload="none" aria-label="Видео со склада Тучи: приёмка, маркировка, упаковка и стеллажи"></video></figure><figure><img src="../../assets/img/kadr-pogruzchik.jpg" alt="Погрузчик на складе" width="1080" height="608" loading="lazy"><figcaption>Погрузчик на складе</figcaption></figure><figure><img src="../../assets/img/kadr-upakovka.jpg" alt="Упаковка короба" width="1080" height="608" loading="lazy"><figcaption>Упаковка короба</figcaption></figure><figure><img src="../../assets/img/kadr-marka.jpg" alt="Короб с этикеткой" width="1080" height="608" loading="lazy"><figcaption>Короб с этикеткой</figcaption></figure></div></div></section>
+<section class="sek-t"><div class="wrap"><h2>Как это выглядит</h2><div class="kadry"><figure><img src="../../assets/img/kadr-pogruzchik.jpg" alt="Погрузчик на складе" width="1080" height="608" loading="lazy"><figcaption>Погрузчик на складе</figcaption></figure><figure><img src="../../assets/img/kadr-upakovka.jpg" alt="Упаковка короба" width="1080" height="608" loading="lazy"><figcaption>Упаковка короба</figcaption></figure><figure><img src="../../assets/img/kadr-marka.jpg" alt="Короб с этикеткой" width="1080" height="608" loading="lazy"><figcaption>Короб с этикеткой</figcaption></figure></div></div></section>
 
 <section class="sek-t"><div class="wrap"><h2>Что ещё под одной тучей</h2><div class="eshe"><article class="kl kl-mast"><svg class="ik-bol" data-ik="hranenie" aria-hidden="true"></svg><div>
 <p class="kl-ob">Хранение</p><h3>Точка сохранения</h3><p>Стеллажи, пол и мелкие ячейки. От одной паллеты</p>
@@ -110,9 +110,9 @@
 </div></footer>
 
 <script>window.TUCHA_ROOT = '../../';</script>
-<script src="../../assets/site.js?v=202609151303"></script>
-<script src="../../assets/izo.js?v=202609151303"></script>
-<script src="../../assets/scena.js?v=202609151303"></script>
+<script src="../../assets/site.js?v=202609151317"></script>
+<script src="../../assets/izo.js?v=202609151317"></script>
+<script src="../../assets/scena.js?v=202609151317"></script>
 <script>(function (k) {
   var svg = document.getElementById('uslScena');
   var sc = TuchaScena.sozdat(svg, { root: Tucha.ROOT }), bl = {};
@@ -137,14 +137,5 @@
     b.classList.add('dobavlen');
     setTimeout(function () { location.href = Tucha.ROOT + 'start/'; }, tiho ? 200 : 1300);
   }, true);
-})('obrabotka');
-(function () {
-  var v = document.querySelector('.video-sklad video');
-  if (!v) return;
-  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { v.controls = true; return; }
-  if (!('IntersectionObserver' in window)) { v.play().catch(function () {}); return; }
-  new IntersectionObserver(function (z) {
-    if (z[0].isIntersecting) v.play().catch(function () { v.controls = true; }); else v.pause();
-  }, { threshold: 0.25 }).observe(v);
-})();</script>
+})('obrabotka');</script>
 </body></html>
