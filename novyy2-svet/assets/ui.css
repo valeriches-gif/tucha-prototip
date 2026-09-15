@@ -683,3 +683,23 @@ body.zgr-idet { overflow: hidden; }
 .vh3-sposob label { display: block; min-width: 0; }
 .vh3-sposob span { display: flex; justify-content: center; text-align: center; }
 .vh3-podsk { margin: -6px 0 14px; font-size: 14px; color: var(--mute); }
+
+/* вход: фон по времени суток (без атрибута ночь, как было) */
+.vh3-svetilo { position: absolute; right: 14%; top: 11%; width: 56px; height: 56px; image-rendering: pixelated;
+  clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
+  background: #F4EFD8; box-shadow: inset -14px -6px 0 #D9D2B0; }
+.vh3:not([data-vremya="noch"])[data-vremya] .vh3-zv { display: none; }
+[data-vremya="utro"] .vh3-art { background: linear-gradient(180deg, #8FCFF2 0%, #FFD8BC 62%, #FFE9D2 100%); }
+[data-vremya="den"] .vh3-art { background: linear-gradient(180deg, #7CC8F2 0%, #B6E0F7 55%, #E2F3FD 100%); }
+[data-vremya="vecher"] .vh3-art { background: linear-gradient(180deg, #34508C 0%, #B7687A 52%, #F59A62 82%, #FFC082 100%); }
+[data-vremya="utro"] .vh3-svetilo { top: 38%; left: 9%; right: auto; width: 72px; height: 72px; background: #FFD27A; box-shadow: inset -10px -10px 0 #FFB14A; }
+[data-vremya="den"] .vh3-svetilo { width: 80px; height: 80px; background: #FFC247; box-shadow: inset -12px -12px 0 #FFA81F; }
+[data-vremya="vecher"] .vh3-svetilo { top: auto; bottom: 20%; right: 9%; width: 96px; height: 96px; background: #FF9A3C; box-shadow: inset -14px -14px 0 #F07A22; }
+[data-vremya="utro"] .vh3-tuchka, [data-vremya="den"] .vh3-tuchka { opacity: .9; }
+[data-vremya="vecher"] .vh3-tuchka { opacity: .4; }
+[data-vremya="utro"] .vh3-podp, [data-vremya="den"] .vh3-podp, [data-vremya="vecher"] .vh3-podp { color: #16304F; }
+[data-vremya="utro"] .vh3-podp span, [data-vremya="den"] .vh3-podp span { color: #33506F; }
+[data-vremya="vecher"] .vh3-podp span { color: #4A3440; }
+[data-vremya="utro"] .vh3-ten, [data-vremya="den"] .vh3-ten { background: rgba(22, 48, 79, .16); }
+[data-vremya="vecher"] .vh3-ten { background: rgba(60, 30, 20, .22); }
+@media (max-width: 900px) { .vh3-svetilo { transform: scale(.7); transform-origin: top right; } }
