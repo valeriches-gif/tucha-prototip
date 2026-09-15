@@ -130,7 +130,7 @@
     return '<div class="shag-niz">' +
       '<button type="button" class="btn-t" data-nazad>Назад</button>' +
       '<button type="button" class="btn" data-dalee' + (o.off ? ' disabled' : '') + '>' + (vozvrat ? 'Готово' : (o.dalee || 'Дальше')) + '</button>' +
-      (dostroit ? '' : '<a class="btn-t prostoy" href="' + R + 'start/prosto/?iz=mir">Перейти в простой режим</a>') +
+      (dostroit ? '' : '<a class="btn-t prostoy" href="' + R + 'start/prosto/?iz=mir' + (T.v2() ? '&v2=1' : '') + '">Перейти в простой режим</a>') +
       (o.pod || '') + '</div>';
   }
   function zag(n, h, pod) {
@@ -502,6 +502,13 @@
   }
 
   function final(vKabinet) {
+    if (T.v2()) {
+      var imyaP = (T.akk() || {}).manager || 'Анна';
+      T.zagruzka({ zag: vKabinet ? 'Сохраняем мир' : 'Загружаем ваш мир',
+        shagi: vKabinet ? ['сохраняем постройку', 'обновляем кабинет'] : ['сохраняем постройку', 'ставим точку сохранения', 'зовём персонажа ' + imyaP, 'открываем ваш мир'] })
+        .then(function () { location.href = R + '../novyy/v2/kabinet/?novyy=' + (vKabinet ? 'dostroil' : '1'); });
+      return;
+    }
     hud.hidden = true; rech.hidden = true; pop.innerHTML = '';
     document.body.classList.add('mir-final');
     panel.innerHTML = '<div class="final-t" tabindex="-1">' +

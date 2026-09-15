@@ -404,12 +404,38 @@ window.Tucha = (function () {
   };
   var SEZON = { 10: true, 11: true, 12: true };
   function zadanieMesyaca(d) { var m = (d || new Date()).getMonth() + 1; return Object.assign({ sezon: !!SEZON[m] }, ZADANIYA[m]); }
+  /* загрузка как в игре: пиксельные квадраты бегут по кругу, строка шагов. Возвращает Promise */
+  function zagruzka(o) {
+    o = o || {};
+    var shagi = o.shagi || ['сохраняем данные', 'открываем кабинет'];
+    var tiho = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var el = document.createElement('div');
+    el.className = 'zgr' + (o.svet ? ' zgr-svet' : '');
+    el.setAttribute('role', 'status');
+    el.innerHTML = '<div class="zgr-v"><div class="zgr-kv" aria-hidden="true"><i></i><i></i><i></i><i></i></div>' +
+      '<p class="zgr-z">' + (o.zag || 'Загружаем') + '</p><p class="zgr-sh"><span data-zgr-t>' + shagi[0] + '</span><b data-zgr-n>1/' + shagi.length + '</b></p>' +
+      '<div class="zgr-pol" aria-hidden="true"><i data-zgr-p></i></div></div><p class="zgr-niz">Туча · склад в Московской области</p>';
+    document.body.appendChild(el);
+    document.body.classList.add('zgr-idet');
+    var shag = tiho ? 250 : (o.shag || 560), t = el.querySelector('[data-zgr-t]'), nn = el.querySelector('[data-zgr-n]'), p = el.querySelector('[data-zgr-p]');
+    requestAnimationFrame(function () { el.classList.add('vid'); p.style.width = (100 / shagi.length) + '%'; });
+    return new Promise(function (ok) {
+      var i = 0;
+      var tm = setInterval(function () {
+        i++;
+        if (i < shagi.length) { t.textContent = shagi[i]; nn.textContent = (i + 1) + '/' + shagi.length; p.style.width = ((i + 1) / shagi.length * 100) + '%'; return; }
+        clearInterval(tm); ok();
+      }, shag);
+    });
+  }
+  function v2() { return /[?&]v2=1/.test(location.search) || /\/v2\//.test(location.pathname); }
+
   function klubUroven(staj) { var i = 0; KLUB.forEach(function (u, k) { if ((staj || 0) >= u.mes) i = k; }); return i; }
 
   return {
     ROOT: ROOT, NAZV: NAZV, st: st, goal: goal, toast: toast, innOk: innOk, telOk: telOk, pochtaOk: pochtaOk,
     telFormat: telFormat, maska: maska, metki: metki, dobMetku: dobMetku, akk: akk, sessiya: sessiya,
     voyti: voyti, vyyti: vyyti, anketa: anketa, kodEkran: kodEkran, kogdaSvyazhetsya: kogdaSvyazhetsya,
-    kakSvyazhetsya: kakSvyazhetsya, korzObnovit: korzObnovit, KLUB: KLUB, PAKETY: PAKETY, klubUroven: klubUroven, klubUsloviya: klubUsloviya, zadanieMesyaca: zadanieMesyaca
+    kakSvyazhetsya: kakSvyazhetsya, korzObnovit: korzObnovit, KLUB: KLUB, PAKETY: PAKETY, zagruzka: zagruzka, v2: v2, klubUroven: klubUroven, klubUsloviya: klubUsloviya, zadanieMesyaca: zadanieMesyaca
   };
 })();

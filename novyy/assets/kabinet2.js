@@ -288,7 +288,7 @@
           '<td' + (x.dvizh > 20 ? ' class="k2-warn"' : '') + '>' + (x.dvizh > 20 ? x.dvizh + ' дн. без движения' : x.dvizh + ' дн. назад') + '</td>' +
           '<td class="k2-kn"><button type="button" class="btn btn-2 btn-sm" data-otgruzit="' + x.art + '">Отгрузить</button>' + (x.lavka ? '' : '<button type="button" class="btn-t" data-na-vitrinu="' + x.art + '">На Витрину</button>') + '</td></tr>';
       }).join('') + '</tbody></table><p class="muted k2-mel">Выгрузка для Excel и 1С. Акт сверки подписывает ' + imya() + ', его можно отправить контрагенту как есть.</p></div>';
-    if (bez.length) h += '<div class="plashka"><p><b>' + bez.length + ' ' + (bez.length === 1 ? 'позиция' : 'позиции') + ' без движения больше 20 дней.</b> Выставьте их на Витрину: товар продаётся прямо с полки, возить никуда не нужно.</p></div>';
+    if (bez.length) h += '<div class="k2-pers"><p><b>' + bez.length + ' ' + (bez.length === 1 ? 'позиция' : 'позиции') + ' без движения больше 20 дней.</b> Выставьте их на Витрину: товар продаётся прямо с полки, возить никуда не нужно.</p></div>';
     return h + rFoto(3);
   }
   function rVeshchi() {
@@ -420,7 +420,7 @@
         return '<label><input type="radio" name="sposob" value="' + x[0] + '"' + (sposob() === x[0] ? ' checked' : '') + '><span>' + x[1] + '</span></label>'; }).join('') + '</div><p class="muted k2-mel">Выбрали при сборке мира. Можно поменять в любой момент.</p></div>' +
       '<div class="kart"><h2 class="h3">Персонаж</h2><div class="vybor">' + HARAKTER.map(function (x) {
         return '<label><input type="radio" name="harakter" value="' + x[0] + '"' + (a.persona === x[0] ? ' checked' : '') + '><span><b>' + x[1] + '</b>: ' + x[2] + '</span></label>'; }).join('') + '</div>' +
-      '<p class="muted k2-mel">Сменить можно, если не сошлись характерами: постройка и история останутся.</p><p><a class="btn btn-2 btn-sm" href="' + R + 'start/mir/?dostroit=1">Изменить постройку</a></p></div>';
+      '<p class="muted k2-mel">Сменить можно, если не сошлись характерами: постройка и история останутся.</p><p><a class="btn btn-2 btn-sm" href="' + R + 'start/mir/?dostroit=1&v2=1">Изменить постройку</a></p></div>';
     else h += '<div class="kart"><h2 class="h3">Скидка за срок</h2><div class="vybor">' + [[0, 'По факту'], [1, '1 мес · −15 %'], [3, '3 мес · −20 %'], [6, '6 мес · −30 %'], [12, '12 мес · −40 %']].map(function (x) {
         return '<label><input type="radio" name="rezerv" value="' + x[0] + '"' + ((a.rezerv || 0) === x[0] ? ' checked' : '') + '><span>' + x[1] + '</span></label>'; }).join('') + '</div><p class="muted k2-mel">«Займи место под тучей»: места и цена за вами, оплата вперёд.</p></div>';
     h += (fl() ? '<div class="kart"><h2 class="h3">Адреса доставки</h2><p class="muted">' + (a.adres ? esc(a.adres) : 'Пока нет: добавится после первой доставки.') + '</p></div>' :
@@ -430,11 +430,18 @@
   }
 
   /* ---------- обзор: два разных вида ---------- */
+  var novyy = (/[?&]novyy=(\w+)/.exec(location.search) || [])[1];
+  function rPrivet() {
+    if (!novyy) return '';
+    var t = novyy === 'dostroil' ? 'Мир сохранён. Изменения уже видит ваш персонаж.' :
+      mir() ? 'Ваш мир сохранён. ' + imya() + ' ' + T.kakSvyazhetsya(kanal(), mess()) + '.' : 'Готово. ' + imya() + ', ваш менеджер, позвонит в рабочее время, пн-пт с 9:00 до 18:00.';
+    return '<div class="k2-pers"><div><b>' + (novyy === 'dostroil' ? 'Сохранено' : 'Добро пожаловать под тучу') + '</b><p>' + t + '</p></div><button type="button" class="btn-t" data-privet-ok>Понятно</button></div>';
+  }
   function rObzor() {
-    if (!dogovor()) return verh(mir() ? 'Мой мир' : 'Здравствуйте' + (a.imya ? ', ' + esc(a.imya) : ''), 'Кабинет откроется полностью после договора: заявки, остатки и документы.') +
+    if (!dogovor()) return rPrivet() + verh(mir() ? 'Мой мир' : 'Здравствуйте' + (a.imya ? ', ' + esc(a.imya) : ''), 'Кабинет откроется полностью после договора: заявки, остатки и документы.') +
       (mir() ? rHud() : '') + '<div class="kp-g"><div>' + rStatus() + '<div class="kart"><h2 class="h3">Что приготовить к разговору</h2><ul class="spis-ok"><li>Объём и тип товара: паллеты, коробки, вес</li><li>Даты первой поставки</li><li>Нужны ли маркировка, сборка и доставка</li></ul></div></div><div>' + rSvyazKratko() + '</div></div>';
     if (mir()) {
-      return verh('Мой мир', fl() ? 'Ваши вещи под тучей' : 'Нажмите на постройку: откроется нужный раздел') + rHud() +
+      return rPrivet() + verh('Мой мир', fl() ? 'Ваши вещи под тучей' : 'Нажмите на постройку: откроется нужный раздел') + rHud() +
         '<div class="kab-mir"><div class="mir-scena kab-scena"><svg id="kabScena" role="img" aria-label="Ваш мир: постройки открывают разделы кабинета"></svg></div>' +
         '<div class="kab-kol">' + rRech() + rZadanie() + '</div></div>' + rDeystviya() +
         '<div class="kp-g"><div>' + rSobytiya() + rFoto(fl() ? 1 : 3) + '</div><div>' + rUsloviya() + rSchet(true) + '</div></div>';
@@ -442,7 +449,7 @@
     var s = schet();
     var svodka = fl() ? [['Места', '3 места', 'тёплая зона'], ['Заявок в работе', String(zayavki().filter(function (z) { return z.st < ZSTATUS[z.vid].length - 1; }).length), 'статусы в «Заявках»'], ['Счёт за месяц', rub(s.itog), 'до 15 числа'], ['Поддержка', imya(), 'пн-пт 9:00-18:00']] :
       [['Занято', mesta() + ' паллето-мест', 'платите за занятые'], ['Заявок в работе', String(zayavki().filter(function (z) { return z.st < ZSTATUS[z.vid].length - 1; }).length), 'статусы в «Заявках»'], ['Счёт за месяц', a.oplacheno === new Date().getMonth() ? 'оплачен' : rub(s.itog), 'до 15 числа'], ['Менеджер', imya(), 'пн-пт 9:00-18:00']];
-    return verh('Здравствуйте' + (a.imya ? ', ' + esc(a.imya.split(' ')[0]) : '')) +
+    return rPrivet() + verh('Здравствуйте' + (a.imya ? ', ' + esc(a.imya.split(' ')[0]) : '')) +
       '<div class="kp-svodka">' + svodka.map(function (y) { return '<div><span class="kp-z">' + y[0] + '</span><b>' + y[1] + '</b><span class="muted">' + y[2] + '</span></div>'; }).join('') + '</div>' +
       rDeystviya() + '<div class="kp-g"><div>' + rSobytiya() + rFoto(fl() ? 1 : 3) + '</div><div>' + rSchet(false) + rSvyazKratko() + '</div></div>';
   }
@@ -481,7 +488,7 @@
     if (!estRazdel(r)) r = 'obzor';
     if (r !== 'vitrina') novaya = false;
     razdel = r;
-    try { history.replaceState(null, '', location.pathname + '#' + r); } catch (e) {}
+    try { history.replaceState(null, '', location.pathname + (novyy ? location.search : '') + '#' + r); } catch (e) {}
     rMenu();
     var ob = box.closest('.kab');
     if (ob) { ob.classList.add('k2'); ob.classList.toggle('kab-vid-mir', mir()); ob.classList.toggle('kab-vid-prosto', !mir()); }
@@ -554,6 +561,7 @@
     else if ('oplatit' in d) { a.oplacheno = new Date().getMonth(); sohr(); pokaz(razdel); T.toast('Оплачено. Чек пришлём на почту'); }
     else if (d.profil) { if (d.profil !== a.profil) { a.profil = d.profil; a.tip = d.profil; forma = null; sohr(); pokaz(razdel, true); T.toast(fl() ? 'Личный кабинет' : 'Бизнес-аккаунт: ' + a.kompaniya); } }
     else if ('lichnyy' in d) { a.lichnyy = true; a.profil = 'fl'; a.tip = 'fl'; sohr(); pokaz('obzor', true); T.toast('Личный профиль добавлен: покупки и вещи на вас лично'); }
+    else if ('privetOk' in d) { novyy = null; try { history.replaceState(null, '', location.pathname + '#' + razdel); } catch (e2) {} pokaz(razdel); }
     else if ('demoStatus' in d) { a.status = Math.min(4, (a.status || 0) + 1); sohr(); pokaz(razdel); T.toast('Статус обновлён'); }
     else if ('vyyti' in d) { T.vyyti(); location.href = R + 'v2/vhod/'; }
     else if ('steret' in d) { ['tucha.akk', 'tucha.sessiya', 'tucha.mir', 'tucha.metki', 'tucha.zakazy', 'tucha.vitrina', 'tucha.korzina'].forEach(T.st.del); location.href = R + 'v2/'; }
