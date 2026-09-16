@@ -31,21 +31,13 @@ h2 { font-size: clamp(30px, 4.4vw, 56px); font-weight: 300; letter-spacing: .04e
 h2 b { font-weight: 600; color: var(--lazur); }
 .lid { color: var(--mute); max-width: 62ch; margin: 16px 0 0; }
 
-/* звёзды */
+/* небо: звёзды и туманность рисует холст */
 .nebo { position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(1.6px 1.6px at 12% 18%, rgba(255,255,255,.85), transparent 60%),
-    radial-gradient(1.4px 1.4px at 68% 12%, rgba(255,255,255,.7), transparent 60%),
-    radial-gradient(1.8px 1.8px at 84% 42%, rgba(255,255,255,.75), transparent 60%),
-    radial-gradient(1.2px 1.2px at 32% 62%, rgba(255,255,255,.6), transparent 60%),
-    radial-gradient(1.5px 1.5px at 52% 84%, rgba(255,255,255,.65), transparent 60%),
-    radial-gradient(1.3px 1.3px at 22% 38%, rgba(255,255,255,.5), transparent 60%),
-    radial-gradient(1.7px 1.7px at 91% 74%, rgba(255,255,255,.6), transparent 60%),
-    radial-gradient(1.2px 1.2px at 44% 28%, rgba(255,255,255,.45), transparent 60%),
-    radial-gradient(1.4px 1.4px at 8% 82%, rgba(255,255,255,.5), transparent 60%),
-    radial-gradient(1.6px 1.6px at 74% 66%, rgba(255,255,255,.55), transparent 60%);
-  animation: mercanie 7s ease-in-out infinite alternate; }
-@keyframes mercanie { to { opacity: .55; } }
+    radial-gradient(60% 40% at 18% 12%, rgba(51, 108, 170, .28), transparent 70%),
+    radial-gradient(52% 38% at 86% 26%, rgba(96, 62, 160, .2), transparent 72%),
+    radial-gradient(70% 50% at 50% 92%, rgba(28, 86, 142, .3), transparent 70%); }
+.zvezdy { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 body > * { position: relative; z-index: 1; }
 
 /* шапка */
@@ -84,10 +76,21 @@ body > * { position: relative; z-index: 1; }
   width: var(--pw); aspect-ratio: 1; border-radius: 50%; z-index: 1;
   background: radial-gradient(circle at 50% 22%, #3E86C6 0%, #235F96 26%, #143A63 52%, #0B2340 72%, #081A31 100%);
   box-shadow: 0 -40px 120px -30px rgba(79, 179, 234, .5), inset 0 24px 60px -20px rgba(160, 220, 255, .45); }
-.planeta::after { content: ''; position: absolute; inset: 0; border-radius: 50%; opacity: .5;
-  background: radial-gradient(38% 16% at 34% 30%, rgba(120, 200, 255, .35), transparent 70%),
-    radial-gradient(30% 12% at 62% 38%, rgba(120, 200, 255, .28), transparent 70%),
-    radial-gradient(26% 10% at 46% 46%, rgba(140, 210, 255, .22), transparent 70%); }
+.planeta::after { content: ''; position: absolute; inset: 0; border-radius: 50%; opacity: .55; overflow: hidden;
+  background:
+    radial-gradient(34% 13% at 30% 26%, rgba(150, 220, 255, .4), transparent 70%),
+    radial-gradient(26% 10% at 58% 33%, rgba(140, 210, 255, .32), transparent 70%),
+    radial-gradient(20% 8% at 44% 40%, rgba(160, 225, 255, .26), transparent 70%),
+    radial-gradient(30% 11% at 76% 30%, rgba(130, 200, 250, .3), transparent 70%),
+    radial-gradient(22% 9% at 16% 36%, rgba(130, 200, 250, .24), transparent 70%);
+  background-size: 200% 100%; animation: vrashenie 140s linear infinite; }
+@keyframes vrashenie { to { background-position: -200% 0; } }
+/* атмосфера над горизонтом */
+.atmosfera { position: absolute; left: 50%; bottom: calc(var(--cap) - var(--pw)); translate: -50% 0;
+  width: calc(var(--pw) + 90px); aspect-ratio: 1; border-radius: 50%; z-index: 1; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(110, 195, 255, 0) 92%, rgba(110, 195, 255, .5) 97%, rgba(110, 195, 255, 0) 100%);
+  animation: dyhanie 9s ease-in-out infinite; }
+@keyframes dyhanie { 50% { opacity: .65; } }
 .tucha-znak { position: absolute; left: 50%; bottom: calc(var(--cap) - 28px); translate: -50% 0; width: min(20vw, 196px); z-index: 2;
   filter: drop-shadow(0 18px 40px rgba(79, 179, 234, .55)); animation: parit 7s ease-in-out infinite; }
 @keyframes parit { 50% { transform: translateY(-14px); } }
@@ -103,6 +106,9 @@ body > * { position: relative; z-index: 1; }
   80% { opacity: 1; transform: none; }
   92%, 100% { opacity: 0; transform: translateY(16px) scale(.97); }
 }
+
+.okno { fill: #FFCB83; opacity: 0; animation: svet 22s ease-in-out infinite; animation-delay: var(--o, 0ms); }
+@keyframes svet { 0%, 4% { opacity: 0; } 10% { opacity: .9; } 76% { opacity: .9; } 88%, 100% { opacity: 0; } }
 
 /* планеты услуг по краям */
 .sputnik { position: absolute; z-index: 2; display: flex; align-items: center; gap: 14px; color: #fff; text-decoration: none; }
@@ -258,11 +264,14 @@ body > * { position: relative; z-index: 1; }
   html { scroll-behavior: auto; }
   .nebo, .tucha-znak, .vniz { animation: none; }
   .kub { opacity: 1; transform: none; animation: none; }
+  .okno { opacity: .9; animation: none; }
+  .planeta::after, .atmosfera { animation: none; }
   .anim .pok { opacity: 1; transform: none; }
 }
 </style>
 </head><body>
 <div class="nebo" aria-hidden="true"></div>
+<canvas class="zvezdy" aria-hidden="true"></canvas>
 <header class="shapka"><div class="wrap shapka-g">
 <a class="logo" href="../novyy/"><img src="assets/img/logo-v-svetl.png" alt="Туча, Мировая Лавка" width="136" height="34"></a>
 <nav class="menu" aria-label="Услуги"><a href="../novyy/hranenie/">Хранение</a><a href="../novyy/obrabotka/">Обработка</a><a href="../novyy/dostavka/">Доставка</a><a href="../novyy/tamozhnya/">Таможня</a><a href="../novyy/lavka/">Лавка</a><a href="../novyy/vitrina/">Витрина</a></nav>
@@ -280,8 +289,9 @@ body > * { position: relative; z-index: 1; }
 <div class="geroy-fakty"><span><b>+3 000</b> паллето-мест</span><span><b>от 16,42 ₽</b> за паллето-место в сутки, с НДС</span><span><b>20 минут</b> на договор</span><span><b>пн-пт</b> 9:00 до 18:00</span></div>
 </div>
 <a class="sputnik sp-1" href="../novyy/hranenie/"><i style="background:radial-gradient(circle at 34% 28%, #3E86C6, #173C63)"></i><span>Хранение<small>от одной паллеты</small></span></a><a class="sputnik sp-2" href="../novyy/dostavka/"><i style="background:radial-gradient(circle at 34% 28%, #5FB9E8, #1E6E9E)"></i><span>Доставка<small>по России и за рубеж</small></span></a>
+<div class="atmosfera" aria-hidden="true"></div>
 <div class="planeta" aria-hidden="true"></div>
-<svg class="kubiki" viewBox="-360 -150 720 190" aria-hidden="true"><g class="kub" style="--d:0ms"><polygon points="-334,-69.0 -334,-17.0 -300,0 -300,-52" fill="#14375C"/><polygon points="-266,-69.0 -266,-17.0 -300,0 -300,-52" fill="#0F2A47"/><polygon points="-334,-69.0 -300,-86 -266,-69.0 -300,-52" fill="#2A6299"/></g><g class="kub" style="--d:220ms"><polygon points="-264,-95.0 -264,-17.0 -230,0 -230,-78" fill="#14375C"/><polygon points="-196,-95.0 -196,-17.0 -230,0 -230,-78" fill="#0F2A47"/><polygon points="-264,-95.0 -230,-112 -196,-95.0 -230,-78" fill="#2A6299"/></g><g class="kub" style="--d:440ms"><polygon points="-194,-61.0 -194,-17.0 -160,0 -160,-44" fill="#14375C"/><polygon points="-126,-61.0 -126,-17.0 -160,0 -160,-44" fill="#0F2A47"/><polygon points="-194,-61.0 -160,-78 -126,-61.0 -160,-44" fill="#2A6299"/></g><g class="kub" style="--d:660ms"><polygon points="-124,-113.0 -124,-17.0 -90,0 -90,-96" fill="#14375C"/><polygon points="-56,-113.0 -56,-17.0 -90,0 -90,-96" fill="#0F2A47"/><polygon points="-124,-113.0 -90,-130 -56,-113.0 -90,-96" fill="#2A6299"/></g><g class="kub" style="--d:880ms"><polygon points="-54,-79.0 -54,-17.0 -20,0 -20,-62" fill="#14375C"/><polygon points="14,-79.0 14,-17.0 -20,0 -20,-62" fill="#0F2A47"/><polygon points="-54,-79.0 -20,-96 14,-79.0 -20,-62" fill="#2A6299"/></g><g class="kub" style="--d:1100ms"><polygon points="16,-101.0 16,-17.0 50,0 50,-84" fill="#14375C"/><polygon points="84,-101.0 84,-17.0 50,0 50,-84" fill="#0F2A47"/><polygon points="16,-101.0 50,-118 84,-101.0 50,-84" fill="#2A6299"/></g><g class="kub" style="--d:1320ms"><polygon points="86,-65.0 86,-17.0 120,0 120,-48" fill="#14375C"/><polygon points="154,-65.0 154,-17.0 120,0 120,-48" fill="#0F2A47"/><polygon points="86,-65.0 120,-82 154,-65.0 120,-48" fill="#2A6299"/></g><g class="kub" style="--d:1540ms"><polygon points="156,-87.0 156,-17.0 190,0 190,-70" fill="#14375C"/><polygon points="224,-87.0 224,-17.0 190,0 190,-70" fill="#0F2A47"/><polygon points="156,-87.0 190,-104 224,-87.0 190,-70" fill="#2A6299"/></g><g class="kub" style="--d:1760ms"><polygon points="226,-57.0 226,-17.0 260,0 260,-40" fill="#14375C"/><polygon points="294,-57.0 294,-17.0 260,0 260,-40" fill="#0F2A47"/><polygon points="226,-57.0 260,-74 294,-57.0 260,-40" fill="#2A6299"/></g><g class="kub" style="--d:1980ms"><polygon points="-295,-81.0 -295,-41.0 -265,-26 -265,-66" fill="#14375C"/><polygon points="-235,-81.0 -235,-41.0 -265,-26 -265,-66" fill="#0F2A47"/><polygon points="-295,-81.0 -265,-96 -235,-81.0 -265,-66" fill="#2A6299"/></g><g class="kub" style="--d:2200ms"><polygon points="-155,-99.0 -155,-41.0 -125,-26 -125,-84" fill="#14375C"/><polygon points="-95,-99.0 -95,-41.0 -125,-26 -125,-84" fill="#0F2A47"/><polygon points="-155,-99.0 -125,-114 -95,-99.0 -125,-84" fill="#2A6299"/></g><g class="kub" style="--d:2420ms"><polygon points="-15,-77.0 -15,-41.0 15,-26 15,-62" fill="#14375C"/><polygon points="45,-77.0 45,-41.0 15,-26 15,-62" fill="#0F2A47"/><polygon points="-15,-77.0 15,-92 45,-77.0 15,-62" fill="#2A6299"/></g><g class="kub" style="--d:2640ms"><polygon points="125,-93.0 125,-41.0 155,-26 155,-78" fill="#14375C"/><polygon points="185,-93.0 185,-41.0 155,-26 155,-78" fill="#0F2A47"/><polygon points="125,-93.0 155,-108 185,-93.0 155,-78" fill="#2A6299"/></g><g class="kub" style="--d:2860ms"><polygon points="195,-71.0 195,-41.0 225,-26 225,-56" fill="#14375C"/><polygon points="255,-71.0 255,-41.0 225,-26 225,-56" fill="#0F2A47"/><polygon points="195,-71.0 225,-86 255,-71.0 225,-56" fill="#2A6299"/></g></svg>
+<svg class="kubiki" viewBox="-360 -150 720 190" aria-hidden="true"><g class="kub" style="--d:0ms"><polygon points="-334,-69.0 -334,-17.0 -300,0 -300,-52" fill="#14375C"/><polygon points="-266,-69.0 -266,-17.0 -300,0 -300,-52" fill="#0F2A47"/><polygon points="-334,-69.0 -300,-86 -266,-69.0 -300,-52" fill="#2A6299"/><rect class="okno" x="-326" y="-55.0" width="7" height="9" rx="1.5" style="--o:260ms"/><rect class="okno" x="-313" y="-55.0" width="7" height="9" rx="1.5" style="--o:330ms"/><rect class="okno" x="-326" y="-31.0" width="7" height="9" rx="1.5" style="--o:380ms"/><rect class="okno" x="-313" y="-31.0" width="7" height="9" rx="1.5" style="--o:450ms"/></g><g class="kub" style="--d:220ms"><polygon points="-264,-95.0 -264,-17.0 -230,0 -230,-78" fill="#14375C"/><polygon points="-196,-95.0 -196,-17.0 -230,0 -230,-78" fill="#0F2A47"/><polygon points="-264,-95.0 -230,-112 -196,-95.0 -230,-78" fill="#2A6299"/><rect class="okno" x="-256" y="-81.0" width="7" height="9" rx="1.5" style="--o:480ms"/><rect class="okno" x="-243" y="-81.0" width="7" height="9" rx="1.5" style="--o:550ms"/><rect class="okno" x="-256" y="-57.0" width="7" height="9" rx="1.5" style="--o:600ms"/><rect class="okno" x="-243" y="-57.0" width="7" height="9" rx="1.5" style="--o:670ms"/><rect class="okno" x="-256" y="-33.0" width="7" height="9" rx="1.5" style="--o:720ms"/><rect class="okno" x="-243" y="-33.0" width="7" height="9" rx="1.5" style="--o:790ms"/></g><g class="kub" style="--d:440ms"><polygon points="-194,-61.0 -194,-17.0 -160,0 -160,-44" fill="#14375C"/><polygon points="-126,-61.0 -126,-17.0 -160,0 -160,-44" fill="#0F2A47"/><polygon points="-194,-61.0 -160,-78 -126,-61.0 -160,-44" fill="#2A6299"/><rect class="okno" x="-186" y="-47.0" width="7" height="9" rx="1.5" style="--o:700ms"/><rect class="okno" x="-173" y="-47.0" width="7" height="9" rx="1.5" style="--o:770ms"/></g><g class="kub" style="--d:660ms"><polygon points="-124,-113.0 -124,-17.0 -90,0 -90,-96" fill="#14375C"/><polygon points="-56,-113.0 -56,-17.0 -90,0 -90,-96" fill="#0F2A47"/><polygon points="-124,-113.0 -90,-130 -56,-113.0 -90,-96" fill="#2A6299"/><rect class="okno" x="-116" y="-99.0" width="7" height="9" rx="1.5" style="--o:920ms"/><rect class="okno" x="-103" y="-99.0" width="7" height="9" rx="1.5" style="--o:990ms"/><rect class="okno" x="-116" y="-75.0" width="7" height="9" rx="1.5" style="--o:1040ms"/><rect class="okno" x="-103" y="-75.0" width="7" height="9" rx="1.5" style="--o:1110ms"/><rect class="okno" x="-116" y="-51.0" width="7" height="9" rx="1.5" style="--o:1160ms"/><rect class="okno" x="-103" y="-51.0" width="7" height="9" rx="1.5" style="--o:1230ms"/></g><g class="kub" style="--d:880ms"><polygon points="-54,-79.0 -54,-17.0 -20,0 -20,-62" fill="#14375C"/><polygon points="14,-79.0 14,-17.0 -20,0 -20,-62" fill="#0F2A47"/><polygon points="-54,-79.0 -20,-96 14,-79.0 -20,-62" fill="#2A6299"/><rect class="okno" x="-46" y="-65.0" width="7" height="9" rx="1.5" style="--o:1140ms"/><rect class="okno" x="-33" y="-65.0" width="7" height="9" rx="1.5" style="--o:1210ms"/><rect class="okno" x="-46" y="-41.0" width="7" height="9" rx="1.5" style="--o:1260ms"/><rect class="okno" x="-33" y="-41.0" width="7" height="9" rx="1.5" style="--o:1330ms"/></g><g class="kub" style="--d:1100ms"><polygon points="16,-101.0 16,-17.0 50,0 50,-84" fill="#14375C"/><polygon points="84,-101.0 84,-17.0 50,0 50,-84" fill="#0F2A47"/><polygon points="16,-101.0 50,-118 84,-101.0 50,-84" fill="#2A6299"/><rect class="okno" x="24" y="-87.0" width="7" height="9" rx="1.5" style="--o:1360ms"/><rect class="okno" x="37" y="-87.0" width="7" height="9" rx="1.5" style="--o:1430ms"/><rect class="okno" x="24" y="-63.0" width="7" height="9" rx="1.5" style="--o:1480ms"/><rect class="okno" x="37" y="-63.0" width="7" height="9" rx="1.5" style="--o:1550ms"/><rect class="okno" x="24" y="-39.0" width="7" height="9" rx="1.5" style="--o:1600ms"/><rect class="okno" x="37" y="-39.0" width="7" height="9" rx="1.5" style="--o:1670ms"/></g><g class="kub" style="--d:1320ms"><polygon points="86,-65.0 86,-17.0 120,0 120,-48" fill="#14375C"/><polygon points="154,-65.0 154,-17.0 120,0 120,-48" fill="#0F2A47"/><polygon points="86,-65.0 120,-82 154,-65.0 120,-48" fill="#2A6299"/><rect class="okno" x="94" y="-51.0" width="7" height="9" rx="1.5" style="--o:1580ms"/><rect class="okno" x="107" y="-51.0" width="7" height="9" rx="1.5" style="--o:1650ms"/></g><g class="kub" style="--d:1540ms"><polygon points="156,-87.0 156,-17.0 190,0 190,-70" fill="#14375C"/><polygon points="224,-87.0 224,-17.0 190,0 190,-70" fill="#0F2A47"/><polygon points="156,-87.0 190,-104 224,-87.0 190,-70" fill="#2A6299"/><rect class="okno" x="164" y="-73.0" width="7" height="9" rx="1.5" style="--o:1800ms"/><rect class="okno" x="177" y="-73.0" width="7" height="9" rx="1.5" style="--o:1870ms"/><rect class="okno" x="164" y="-49.0" width="7" height="9" rx="1.5" style="--o:1920ms"/><rect class="okno" x="177" y="-49.0" width="7" height="9" rx="1.5" style="--o:1990ms"/></g><g class="kub" style="--d:1760ms"><polygon points="226,-57.0 226,-17.0 260,0 260,-40" fill="#14375C"/><polygon points="294,-57.0 294,-17.0 260,0 260,-40" fill="#0F2A47"/><polygon points="226,-57.0 260,-74 294,-57.0 260,-40" fill="#2A6299"/><rect class="okno" x="234" y="-43.0" width="7" height="9" rx="1.5" style="--o:2020ms"/><rect class="okno" x="247" y="-43.0" width="7" height="9" rx="1.5" style="--o:2090ms"/></g><g class="kub" style="--d:1980ms"><polygon points="-295,-81.0 -295,-41.0 -265,-26 -265,-66" fill="#14375C"/><polygon points="-235,-81.0 -235,-41.0 -265,-26 -265,-66" fill="#0F2A47"/><polygon points="-295,-81.0 -265,-96 -235,-81.0 -265,-66" fill="#2A6299"/><rect class="okno" x="-287" y="-67.0" width="7" height="9" rx="1.5" style="--o:2240ms"/><rect class="okno" x="-274" y="-67.0" width="7" height="9" rx="1.5" style="--o:2310ms"/></g><g class="kub" style="--d:2200ms"><polygon points="-155,-99.0 -155,-41.0 -125,-26 -125,-84" fill="#14375C"/><polygon points="-95,-99.0 -95,-41.0 -125,-26 -125,-84" fill="#0F2A47"/><polygon points="-155,-99.0 -125,-114 -95,-99.0 -125,-84" fill="#2A6299"/><rect class="okno" x="-147" y="-85.0" width="7" height="9" rx="1.5" style="--o:2460ms"/><rect class="okno" x="-134" y="-85.0" width="7" height="9" rx="1.5" style="--o:2530ms"/><rect class="okno" x="-147" y="-61.0" width="7" height="9" rx="1.5" style="--o:2580ms"/><rect class="okno" x="-134" y="-61.0" width="7" height="9" rx="1.5" style="--o:2650ms"/></g><g class="kub" style="--d:2420ms"><polygon points="-15,-77.0 -15,-41.0 15,-26 15,-62" fill="#14375C"/><polygon points="45,-77.0 45,-41.0 15,-26 15,-62" fill="#0F2A47"/><polygon points="-15,-77.0 15,-92 45,-77.0 15,-62" fill="#2A6299"/><rect class="okno" x="-7" y="-63.0" width="7" height="9" rx="1.5" style="--o:2680ms"/><rect class="okno" x="6" y="-63.0" width="7" height="9" rx="1.5" style="--o:2750ms"/></g><g class="kub" style="--d:2640ms"><polygon points="125,-93.0 125,-41.0 155,-26 155,-78" fill="#14375C"/><polygon points="185,-93.0 185,-41.0 155,-26 155,-78" fill="#0F2A47"/><polygon points="125,-93.0 155,-108 185,-93.0 155,-78" fill="#2A6299"/><rect class="okno" x="133" y="-79.0" width="7" height="9" rx="1.5" style="--o:2900ms"/><rect class="okno" x="146" y="-79.0" width="7" height="9" rx="1.5" style="--o:2970ms"/><rect class="okno" x="133" y="-55.0" width="7" height="9" rx="1.5" style="--o:3020ms"/><rect class="okno" x="146" y="-55.0" width="7" height="9" rx="1.5" style="--o:3090ms"/></g><g class="kub" style="--d:2860ms"><polygon points="195,-71.0 195,-41.0 225,-26 225,-56" fill="#14375C"/><polygon points="255,-71.0 255,-41.0 225,-26 225,-56" fill="#0F2A47"/><polygon points="195,-71.0 225,-86 255,-71.0 225,-56" fill="#2A6299"/><rect class="okno" x="203" y="-57.0" width="7" height="9" rx="1.5" style="--o:3120ms"/><rect class="okno" x="216" y="-57.0" width="7" height="9" rx="1.5" style="--o:3190ms"/></g></svg>
 <svg class="tucha-znak" viewBox="0 0 240 150" aria-hidden="true">
 <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
 <stop offset="0" stop-color="#7FD0FF"/><stop offset="1" stop-color="#2E8FD0"/></linearGradient></defs>
@@ -457,6 +467,86 @@ body > * { position: relative; z-index: 1; }
       if (pusto) pusto.style.display = n ? 'none' : '';
       if (kn) kn.textContent = n ? 'Собрать этот склад' : imya0;
     });
+  })();
+
+  /* небо: звёзды с глубиной, мерцание, комета и параллакс */
+  (function () {
+    var c = document.querySelector('.zvezdy');
+    if (!c || !c.getContext) return;
+    var tiho = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var x = c.getContext('2d'), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W = 0, H = 0, zv = [], kom = null, mx = 0, my = 0, t0 = 0;
+
+    function razmer() {
+      W = c.width = Math.round(innerWidth * dpr);
+      H = c.height = Math.round(innerHeight * dpr);
+      c.style.width = innerWidth + 'px';
+      c.style.height = innerHeight + 'px';
+      var n = Math.min(900, Math.round(innerWidth * innerHeight / 2200));
+      zv = [];
+      for (var i = 0; i < n; i++) {
+        var sloy = Math.random();
+        zv.push({ x: Math.random() * W, y: Math.random() * H, r: (0.35 + sloy * 1.25) * dpr,
+                  s: 0.25 + sloy * 0.9, f: Math.random() * 6.283, v: 0.6 + Math.random() * 1.8,
+                  c: Math.random() < 0.12 ? '#BFE0FF' : (Math.random() < 0.08 ? '#FFE3C2' : '#FFFFFF') });
+      }
+    }
+
+    function kometa() {
+      var y0 = Math.random() * H * 0.45;
+      kom = { x: -120 * dpr, y: y0, vx: (7 + Math.random() * 4) * dpr, vy: (2.2 + Math.random() * 1.6) * dpr, t: 0 };
+    }
+
+    function kadr(vr) {
+      if (!t0) t0 = vr;
+      var dt = (vr - t0) / 1000;
+      x.clearRect(0, 0, W, H);
+      var sy = (window.scrollY || 0) * dpr;
+      for (var i = 0; i < zv.length; i++) {
+        var z = zv[i];
+        var px = z.x + mx * z.s * 26 * dpr;
+        var py = z.y - sy * z.s * 0.12 + my * z.s * 18 * dpr;
+        py = ((py % H) + H) % H;
+        var a = tiho ? 0.75 : 0.45 + 0.55 * Math.abs(Math.sin(z.f + dt * z.v));
+        x.globalAlpha = a * (0.35 + z.s * 0.65);
+        x.fillStyle = z.c;
+        x.beginPath();
+        x.arc(px, py, z.r, 0, 6.283);
+        x.fill();
+      }
+      x.globalAlpha = 1;
+      if (!tiho) {
+        if (!kom && Math.random() < 0.0016) kometa();
+        if (kom) {
+          kom.x += kom.vx; kom.y += kom.vy; kom.t += 1;
+          var g = x.createLinearGradient(kom.x, kom.y, kom.x - 150 * dpr, kom.y - 48 * dpr);
+          g.addColorStop(0, 'rgba(255,255,255,.95)');
+          g.addColorStop(1, 'rgba(255,255,255,0)');
+          x.strokeStyle = g;
+          x.lineWidth = 1.8 * dpr;
+          x.beginPath();
+          x.moveTo(kom.x, kom.y);
+          x.lineTo(kom.x - 150 * dpr, kom.y - 48 * dpr);
+          x.stroke();
+          x.fillStyle = '#fff';
+          x.beginPath();
+          x.arc(kom.x, kom.y, 1.8 * dpr, 0, 6.283);
+          x.fill();
+          if (kom.x > W + 200 * dpr || kom.y > H + 200 * dpr) kom = null;
+        }
+      }
+      requestAnimationFrame(kadr);
+    }
+
+    razmer();
+    addEventListener('resize', razmer);
+    if (!tiho && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      addEventListener('mousemove', function (s) {
+        mx = s.clientX / innerWidth - 0.5;
+        my = s.clientY / innerHeight - 0.5;
+      }, { passive: true });
+    }
+    requestAnimationFrame(kadr);
   })();
 })();
 </script>
