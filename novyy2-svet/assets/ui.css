@@ -762,7 +762,8 @@ body.zgr-idet { overflow: hidden; }
 .px-put .px-lvl { position: absolute; left: 14px; top: 0; }
 .px-put b { display: block; font-family: var(--igr); font-size: 18px; color: var(--navy); }
 .px-put span { display: block; margin-top: 4px; font-size: 14px; color: var(--mute); }
-.px-gorod { height: 120px; margin: 40px 0 -80px; position: relative; z-index: 0; pointer-events: none; }
+.px-gorod { height: 120px; margin: 84px 0 -80px; position: relative; z-index: 0; pointer-events: none; }
+body:has(.px-gorod) .podval { padding-top: 80px; }
 .px-gorod svg { display: block; width: 100%; height: 100%; }
 @media (max-width: 900px) {
   .px-put { grid-template-columns: minmax(0, 1fr); }
