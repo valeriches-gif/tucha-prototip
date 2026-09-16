@@ -409,6 +409,9 @@ window.Tucha = (function () {
     12: { tekst: 'Прогноз на январь до 20 декабря', vam: 'отгрузка сразу после праздников' }
   };
   var SEZON = { 10: true, 11: true, 12: true };
+  /* пункты выдачи Тучи (адреса примерные: первые пункты открываем) и транспортные компании */
+  var PVZ = [['sokol', 'у метро «Сокол»'], ['baumanskaya', 'у метро «Бауманская»'], ['oktyabrskaya', 'у метро «Октябрьская»']];
+  var TK = ['СДЭК', 'ПЭК', 'Деловые Линии', 'Байкал Сервис', 'Другая'];
   function zadanieMesyaca(d) { var m = (d || new Date()).getMonth() + 1; return Object.assign({ sezon: !!SEZON[m] }, ZADANIYA[m]); }
   /* загрузка как в игре: пиксельные квадраты бегут по кругу, строка шагов. Возвращает Promise */
   function zagruzka(o) {
@@ -451,6 +454,6 @@ window.Tucha = (function () {
     ROOT: ROOT, NAZV: NAZV, st: st, goal: goal, toast: toast, innOk: innOk, telOk: telOk, pochtaOk: pochtaOk,
     telFormat: telFormat, maska: maska, metki: metki, dobMetku: dobMetku, akk: akk, sessiya: sessiya,
     voyti: voyti, vyyti: vyyti, anketa: anketa, kodEkran: kodEkran, kogdaSvyazhetsya: kogdaSvyazhetsya,
-    kakSvyazhetsya: kakSvyazhetsya, korzObnovit: korzObnovit, KLUB: KLUB, PAKETY: PAKETY, zagruzka: zagruzka, v2: v2, klubUroven: klubUroven, klubUsloviya: klubUsloviya, zadanieMesyaca: zadanieMesyaca
+    kakSvyazhetsya: kakSvyazhetsya, korzObnovit: korzObnovit, KLUB: KLUB, PAKETY: PAKETY, zagruzka: zagruzka, v2: v2, PVZ: PVZ, TK: TK, klubUroven: klubUroven, klubUsloviya: klubUsloviya, zadanieMesyaca: zadanieMesyaca
   };
 })();

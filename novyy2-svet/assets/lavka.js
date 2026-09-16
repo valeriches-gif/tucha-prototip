@@ -438,19 +438,24 @@ window.TuchaLavka = (function () {
     var d = new Date(), den = d.getDay(), h = d.getHours();
     return den >= 1 && den <= 5 && h >= 9 && h < 18 ? 'в течение 15 минут' : T.kogdaSvyazhetsya();
   }
-  var STATUSY = { sam: ['Принят', 'Собираем', 'Готов к выдаче', 'Получен'], dost: ['Принят', 'Собираем', 'В пути', 'Получен'] };
-  var TIPY = { sam: 'Самовывоз', poputka: 'Доставка попуткой', tk: 'Транспортной компанией' };
+  var STATUSY = { sam: ['Принят', 'Собираем', 'Готов к выдаче', 'Получен'], dost: ['Принят', 'Собираем', 'В пути', 'Получен'],
+    pvz: ['Принят', 'Едет в пункт', 'Ждёт в пункте', 'Получен'] };
+  var TIPY = { sam: 'Самовывоз со склада', pvz: 'Пункт выдачи Тучи', mashina: 'Машиной Тучи', poputka: 'Доставка попуткой', tk: 'Транспортной компанией' };
+  function stTip(o) { return STATUSY[o.tip === 'sam' ? 'sam' : o.tip === 'pvz' ? 'pvz' : 'dost']; }
+  function pvzImya(id) { var x = (T.PVZ || []).filter(function (p) { return p[0] === id; })[0]; return x ? 'Пункт выдачи ' + x[1] : 'Пункт выдачи Тучи'; }
   var OPL = { karta: 'Картой', schet: 'По счёту', poluch: 'При получении' };
 
   /* ---------- оформление заказа ---------- */
   function zakaz(box) {
     var a = T.sessiya() ? T.akk() : null, k = korz(), shagN = 1;
     var z = { tip: 'sam', adres: '', den: '', vremya: 'u', imya: a ? a.imya || '' : '', tel: a ? a.tel || '' : '', pochta: a ? a.pochta || '' : '',
-      na: a ? 'komp' : 'sebya', inn: a ? a.inn || '' : '', komp: a ? a.kompaniya || '' : '', oplata: 'karta' };
+      na: a ? 'komp' : 'sebya', inn: a ? a.inn || '' : '', komp: a ? a.kompaniya || '' : '', oplata: 'karta',
+      pvz: (T.PVZ && T.PVZ[0][0]) || '', mash: 'poputka', tkKak: 'terminal', tkNazv: (T.TK && T.TK[0]) || '' };
     if (!k.length) { korzina(box); return; }
     var it = itogi(k), m = mashina(it.mesta), kogda = kogdaZabrat(), dni = rabDni(5);
-    function dostCena() { return z.tip === 'poputka' ? m.dost : 0; }
-    function dostTxt() { return z.tip === 'sam' ? '0 ₽' : z.tip === 'tk' ? 'по тарифу ТК' : m.dost ? rub(m.dost) : 'по расчёту'; }
+    function vPvz() { return it.mesta <= 0.5; }          /* в пункт выдачи едут небольшие заказы: до половины паллеты */
+    function dostCena() { return z.tip === 'mashina' && z.mash === 'poputka' ? m.dost : 0; }
+    function dostTxt() { return z.tip === 'sam' || z.tip === 'pvz' ? '0 ₽' : z.tip === 'tk' ? 'по тарифу ТК' : z.mash === 'poputka' && m.dost ? rub(m.dost) : 'по расчёту'; }
     function vsego() { return it.sum + dostCena(); }
     function svodka() {
       return '<p class="kz-mash-h"><b>Ваш заказ</b><small>' + it.poz + ' ' + plural(it.poz, ['позиция', 'позиции', 'позиций']) + ', одна машина</small></p>' +
@@ -470,25 +475,44 @@ window.TuchaLavka = (function () {
         '<p class="osh-t">' + osh + '</p></div>';
     }
     function shag1() {
-      var h = '<h2>Как получить</h2><p class="muted">Склад отгрузки: Химки, Подолино. Паллеты собираем от 2 часов, сборные заказы до конца дня.</p>' +
-        '<div class="zk-vary">' + var_('tip', 'sam', z.tip, 'Самовывоз ' + kogda, 'Промышленная зона, 2Б · пн-пт с 9:00 до 18:00', '0 ₽') +
-        var_('tip', 'poputka', z.tip, 'Доставка попуткой', 'По Москве и области, ' + m.imya.toLowerCase() + ' едет в вашу сторону', m.dost ? rub(m.dost) : 'по расчёту') +
-        var_('tip', 'tk', z.tip, 'Транспортной компанией', 'Довезём до терминала, дальше по тарифу перевозчика', 'по тарифу') + '</div>';
-      if (z.tip !== 'sam') {
-        h += pole('adres', z.tip === 'tk' ? 'Город и транспортная компания' : 'Адрес доставки', z.adres, 'text',
-          'Укажите адрес: без него не рассчитаем машину', ' autocomplete="street-address"') +
-          '<div class="zk-dva"><div class="pole"><label for="zk-den">Дата</label><select id="zk-den" name="den">' + dni.map(function (d) {
+      if (z.tip === 'pvz' && !vPvz()) z.tip = 'sam';
+      var h = '<h2>Как получить</h2><p class="muted">Склад отгрузки в Московской области. Паллеты собираем от 2 часов, сборные заказы до конца дня.</p>' +
+        '<div class="zk-vary">' + var_('tip', 'sam', z.tip, 'Самовывоз со склада ' + kogda, 'Промышленная зона, 2Б · пн-пт с 9:00 до 18:00', '0 ₽') +
+        (vPvz() ? var_('tip', 'pvz', z.tip, 'В пункт выдачи Тучи', 'Привезём на следующий рабочий день после 12:00, заберёте по коду из SMS', '0 ₽') :
+          '<label class="zk-var zk-var-net"><input type="radio" name="tip" value="pvz" disabled><span><b>В пункт выдачи Тучи</b><small>Заказ больше половины паллеты: в пункт не поместится</small><em>нет</em></span></label>') +
+        var_('tip', 'mashina', z.tip, 'Машиной Тучи до адреса', 'По Москве и области: попуткой или отдельной машиной', m.dost ? 'от ' + rub(m.dost) : 'по расчёту') +
+        var_('tip', 'tk', z.tip, 'Транспортной компанией', 'Довезём до терминала или отдадим вашей ТК на складе', 'по тарифу ТК') + '</div>';
+      function dataVremya(zag) {
+        return '<div class="zk-dva"><div class="pole"><label for="zk-den">' + zag + '</label><select id="zk-den" name="den">' + dni.map(function (d) {
             var v = d.toISOString().slice(0, 10);
             return '<option value="' + v + '"' + (v === z.den ? ' selected' : '') + '>' + ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'][d.getDay()] + ', ' + data(d) + '</option>';
           }).join('') + '</select></div>' +
           '<fieldset class="pole"><legend>Время</legend><div class="vybor vybor-s">' +
           '<label><input type="radio" name="vremya" value="u"' + (z.vremya === 'u' ? ' checked' : '') + '><span>9:00-13:00</span></label>' +
           '<label><input type="radio" name="vremya" value="d"' + (z.vremya === 'd' ? ' checked' : '') + '><span>13:00-18:00</span></label></div></fieldset></div>';
+      }
+      if (z.tip === 'pvz') {
+        h += '<fieldset class="pole"><legend>Пункт выдачи</legend><div class="vybor">' + (T.PVZ || []).map(function (x) {
+            return '<label><input type="radio" name="pvz" value="' + x[0] + '"' + (x[0] === z.pvz ? ' checked' : '') + '><span>' + x[1] + '</span></label>'; }).join('') + '</div></fieldset>' +
+          '<p class="zk-zhdyot"><b>Заказ ждёт в пункте неделю.</b> Код получения придёт в SMS, когда заказ приедет.</p>';
+      } else if (z.tip === 'mashina') {
+        h += '<fieldset class="pole"><legend>Как везём</legend><div class="vybor">' +
+          '<label><input type="radio" name="mash" value="poputka"' + (z.mash === 'poputka' ? ' checked' : '') + '><span>Попуткой: ' + m.imya.toLowerCase() + ' едет в вашу сторону</span></label>' +
+          '<label><input type="radio" name="mash" value="otdelno"' + (z.mash === 'otdelno' ? ' checked' : '') + '><span>Отдельной машиной к вашему времени</span></label></div></fieldset>' +
+          pole('adres', 'Адрес доставки', z.adres, 'text', 'Укажите адрес: без него не рассчитаем машину', ' autocomplete="street-address"') + dataVremya('Дата');
+      } else if (z.tip === 'tk') {
+        h += '<fieldset class="pole"><legend>Как передаём</legend><div class="vybor">' +
+          '<label><input type="radio" name="tkKak" value="terminal"' + (z.tkKak === 'terminal' ? ' checked' : '') + '><span>Довезём до терминала ТК</span></label>' +
+          '<label><input type="radio" name="tkKak" value="zaberet"' + (z.tkKak === 'zaberet' ? ' checked' : '') + '><span>Ваша ТК заберёт со склада</span></label></div></fieldset>' +
+          '<div class="zk-dva"><div class="pole"><label for="zk-tkNazv">Транспортная компания</label><select id="zk-tkNazv" name="tkNazv">' + (T.TK || []).map(function (x) {
+            return '<option' + (x === z.tkNazv ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></div>' +
+          pole('adres', 'Город получения', z.adres, 'text', 'Укажите город, куда отправить', ' autocomplete="address-level2"') + '</div>' +
+          '<p class="muted kz-mel">' + (z.tkKak === 'zaberet' ? 'Подготовим груз и документы, передадим водителю вашей ТК в рабочее время склада.' : 'Довезём до терминала в Москве, дальше по тарифу перевозчика.') + '</p>';
       } else h += '<p class="zk-zhdyot"><b>Товар ждёт вас неделю бесплатно</b>, торопиться не нужно: приезжайте в любой будний день.</p>';
       return h + '<div class="shag-niz"><a class="btn-t" href="' + R + '../novyy/lavka/korzina/">Назад в корзину</a><button type="submit" class="btn">Дальше</button></div>';
     }
     function shag2() {
-      return '<h2>Кто получает</h2><p class="muted">Кладовщик спросит имя при выдаче' + (z.tip === 'poputka' ? ', водитель позвонит перед приездом' : '') + '.</p>' +
+      return '<h2>Кто получает</h2><p class="muted">' + (z.tip === 'pvz' ? 'В пункте выдачи назовёте код из SMS' : 'Кладовщик спросит имя при выдаче' + (z.tip === 'mashina' ? ', водитель позвонит перед приездом' : '')) + '.</p>' +
         pole('imya', 'Имя и фамилия', z.imya, 'text', 'Как к вам обращаться?', ' autocomplete="name"') +
         pole('tel', 'Телефон', z.tel, 'tel', 'Нужно 11 цифр: по нему позвонят со склада', ' autocomplete="tel"') +
         pole('pochta', 'Почта для чека <span class="nb">необязательно</span>', z.pochta, 'email', 'Проверьте адрес: похоже, в нём опечатка', ' autocomplete="email"') +
@@ -529,13 +553,14 @@ window.TuchaLavka = (function () {
         '<p><span class="demo">Демо: подойдёт любой код из четырёх цифр</span></p></div>';
     }
     function gotovo(o) {
-      var st = STATUSY[o.tip === 'sam' ? 'sam' : 'dost'], zhdyot = data(o.t + 7 * 864e5);
+      var st = stTip(o), zhdyot = data(o.t + 7 * 864e5);
       return '<div class="zk-gotovo"><div class="zk-galka" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M13 25l7 7 15-16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
         '<p class="eb">' + (o.oplata === 'karta' ? 'Оплачено' : o.oplata === 'schet' ? 'Счёт выставлен' : 'Товар забронирован') + '</p>' +
         '<h2>Заказ № ' + o.n + ' принят</h2>' +
         '<div class="zk-status">' + st.map(function (x, i) { return '<span class="' + (i === 0 ? 'on' : '') + '">' + x + '</span>'; }).join('') + '</div>' +
-        '<ul class="spis-ok"><li>Собираем ' + kogda + '. Как соберём, пришлём фото' + (o.tip === 'sam' ? ' и позовём за товаром.' : ' загрузки и номер машины.') + '</li>' +
-        '<li>Товар ждёт на складе до ' + zhdyot + ', вывезти можно в любой будний день.</li>' +
+        '<ul class="spis-ok"><li>Собираем ' + kogda + '. ' + (o.tip === 'pvz' ? 'Привезём в ' + pvzImya(o.pvz).replace('Пункт', 'пункт') + ' на следующий рабочий день после 12:00 и пришлём код получения.' :
+          'Как соберём, пришлём фото' + (o.tip === 'sam' ? ' и позовём за товаром.' : o.tip === 'tk' ? ' и номер отправки в ' + esc(o.tkNazv) + '.' : ' загрузки и номер машины.')) + '</li>' +
+        (o.tip === 'pvz' ? '<li>Заказ ждёт в пункте неделю после приезда.</li>' : '<li>Товар ждёт на складе до ' + zhdyot + ', вывезти можно в любой будний день.</li>') +
         '<li>Пётр Ким, выдача заказов, позвонит ' + kogdaZvonok() + ' и подтвердит время.</li></ul>' +
         (o.oplata === 'schet' ? '<dl class="zk-schet"><div><dt>Плательщик</dt><dd>' + esc(o.komp) + ', ИНН ' + esc(o.inn) + '</dd></div>' +
           '<div><dt>Получатель</dt><dd>ООО «Туча - Мировая Лавка»</dd></div><div><dt>Счёт</dt><dd>№ ' + o.n + ' от ' + data(o.t) + '</dd></div>' +
@@ -615,8 +640,9 @@ window.TuchaLavka = (function () {
     }
     f.addEventListener('change', function (e) {
       var t = e.target;
-      if (t.name === 'tip' || t.name === 'na' || t.name === 'oplata') { z[t.name] = t.value; pokaz(shagN); var v = f.querySelector('[name="' + t.name + '"]:checked'); v && v.focus(); }
+      if (t.name === 'tip' || t.name === 'na' || t.name === 'oplata' || t.name === 'mash' || t.name === 'tkKak') { z[t.name] = t.value; pokaz(shagN); var v = f.querySelector('[name="' + t.name + '"]:checked'); v && v.focus(); }
       if (t.name === 'den') z.den = t.value;
+      if (t.name === 'pvz' || t.name === 'tkNazv') z[t.name] = t.value;
       if (t.name === 'vremya') z.vremya = t.value;
     });
     f.addEventListener('input', function (e) { if (e.target.name && e.target.name in z) z[e.target.name] = e.target.value; });
@@ -624,7 +650,11 @@ window.TuchaLavka = (function () {
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       var ok = true, v = function (id, x) { if (!prov(id, x)) { if (ok) { var el = f.querySelector('#zk-' + id + ', [name=' + id + ']'); el && el.focus(); } ok = false; } };
-      if (shagN === 1) { if (z.tip !== 'sam') { v('adres', z.adres.trim().length > 4); z.den = z.den || dni[0].toISOString().slice(0, 10); } if (ok) pokaz(2); }
+      if (shagN === 1) {
+        if (z.tip === 'mashina') { v('adres', z.adres.trim().length > 4); z.den = z.den || dni[0].toISOString().slice(0, 10); }
+        if (z.tip === 'tk') v('adres', z.adres.trim().length > 1);
+        if (ok) pokaz(2);
+      }
       else if (shagN === 2) { v('imya', z.imya.trim().length > 1); v('tel', T.telOk(z.tel)); v('pochta', !z.pochta.trim() || T.pochtaOk(z.pochta)); if (ok) pokaz(3); }
       else if (shagN === 3) {
         if (z.na === 'komp') { v('inn', T.innOk(z.inn)); v('komp', z.komp.trim().length > 1); }
@@ -655,8 +685,8 @@ window.TuchaLavka = (function () {
       }
       var akB = T.sessiya() ? T.akk() : null;
       box.innerHTML = sp.map(function (x) {
-        var o = x.o, j = x.j, st = STATUSY[o.tip === 'sam' ? 'sam' : 'dost'];
-        return '<article class="pk kart"><div class="pk-verh"><div><h2 class="h3">Заказ № ' + o.n + '</h2><p class="muted">от ' + data(o.t) + ' · ' + TIPY[o.tip] + ' · ' + OPL[o.oplata].toLowerCase() + '</p></div>' +
+        var o = x.o, j = x.j, st = stTip(o);
+        return '<article class="pk kart"><div class="pk-verh"><div><h2 class="h3">Заказ № ' + o.n + '</h2><p class="muted">от ' + data(o.t) + ' · ' + (o.tip === 'pvz' ? pvzImya(o.pvz) : TIPY[o.tip]) + ' · ' + OPL[o.oplata].toLowerCase() + '</p></div>' +
           '<span class="pk-st' + (o.status >= 3 ? ' pk-st-ok' : '') + '">' + st[o.status] + '</span></div>' +
           '<div class="zk-status">' + st.map(function (x, i) { return '<span class="' + (i < o.status ? 'done' : i === o.status ? 'on' : '') + '">' + x + '</span>'; }).join('') + '</div>' +
           '<ul class="pk-poz">' + o.poz.map(function (x) {
@@ -675,7 +705,7 @@ window.TuchaLavka = (function () {
       if (!b) return;
       if (b.hasAttribute('data-demo')) {
         var o = sp[+b.getAttribute('data-demo')]; o.status = Math.min(3, o.status + 1); T.st.set(KZ, sp); risovat();
-        T.toast('Статус: ' + STATUSY[o.tip === 'sam' ? 'sam' : 'dost'][o.status] + '. Отправили SMS');
+        T.toast('Статус: ' + stTip(o)[o.status] + '. Отправили SMS');
       } else if (b.hasAttribute('data-povtor')) {
         sp[+b.getAttribute('data-povtor')].poz.forEach(function (x) { if (PO_ID[x.id]) dobavit(x.id, x.u, x.q); });
         T.toast('Положили в корзину тот же набор', { deystvie: 'Открыть корзину', onClick: function () { location.href = R + 'lavka/korzina/'; } });

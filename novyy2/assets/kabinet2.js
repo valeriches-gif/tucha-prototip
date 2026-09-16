@@ -248,12 +248,20 @@
       '<fieldset class="pole"><legend>Куда</legend><div class="vybor">' + ['Wildberries FBS', 'Ozon FBS', 'Самовывоз', 'Транспортная компания'].map(function (x, i) {
         return '<label><input type="radio" name="kuda" value="' + x + '"' + (i ? '' : ' checked') + '><span>' + x + '</span></label>'; }).join('') + '</div></fieldset>';
     if (v === 'dostavka') return (fl() ? pole('z-chto', 'Что везём', '<input id="z-chto" name="chto" type="text" value="Диван и коробки с книгами">') : vyborTovara() + kol(4)) +
-      pole('z-adres', 'Адрес', '<input id="z-adres" name="adres" type="text" placeholder="Город, улица, дом">') + '<div class="zk-dva">' + data() + pole('z-okno', 'Окно', okna()) + '</div>' +
+      '<fieldset class="pole"><legend>Куда</legend><div class="vybor">' + [['adres', 'До адреса'], ['pvz', 'В пункт выдачи Тучи'], ['tk', 'В транспортную компанию']].map(function (x, i) {
+        return '<label><input type="radio" name="kudaD" value="' + x[0] + '"' + (i ? '' : ' checked') + '><span>' + x[1] + '</span></label>'; }).join('') + '</div></fieldset>' +
+      '<div data-kudad="adres">' + pole('z-adres', 'Адрес', '<input id="z-adres" name="adres" type="text" placeholder="Город, улица, дом">') + '<div class="zk-dva">' + data() + pole('z-okno', 'Окно', okna()) + '</div>' +
       '<fieldset class="pole"><legend>Как везём</legend><div class="vybor"><label><input type="radio" name="mashina" value="своя" checked><span>Отдельной машиной</span></label>' +
       '<label><input type="radio" name="mashina" value="попутка"><span>Попуткой, платите долю рейса</span></label></div></fieldset>' +
       '<div class="k2-poputki" data-poputki hidden>' + MASHINY.map(function (m, i) {
         return '<label class="k2-pop"><input type="radio" name="reys" value="' + m[0] + '"' + (i ? '' : ' checked') + '><span><b>' + m[0] + '</b> ' + m[1] + '<small>заполнена на ' + m[2] + ' %, осталось ' + m[3] + ' ' + (m[3] === 1 ? 'место' : 'места') + '</small></span></label>';
-      }).join('') + '</div><p class="muted k2-mel">Стоимость пришлём до выезда: считаем по объёму и адресу.</p>';
+      }).join('') + '</div><p class="muted k2-mel">Стоимость пришлём до выезда: считаем по объёму и адресу.</p></div>' +
+      '<div data-kudad="pvz" hidden>' + pole('z-pvz', 'Пункт выдачи', '<select id="z-pvz" name="pvz">' + (T.PVZ || []).map(function (x) { return '<option value="' + x[0] + '">' + x[1] + '</option>'; }).join('') + '</select>') +
+        '<p class="muted k2-mel">Для небольших отправок: до половины паллеты. Привезём на следующий рабочий день после 12:00, получатель заберёт по коду из SMS.</p></div>' +
+      '<div data-kudad="tk" hidden><div class="zk-dva">' + pole('z-tk', 'Транспортная компания', '<select id="z-tk" name="tk">' + (T.TK || []).map(function (x) { return '<option>' + x + '</option>'; }).join('') + '</select>') +
+        pole('z-gorod', 'Город получения', '<input id="z-gorod" name="gorod" type="text" placeholder="Например: Казань">') + '</div>' +
+        '<fieldset class="pole"><legend>Как передаём</legend><div class="vybor"><label><input type="radio" name="tkKak" value="terminal" checked><span>Довезём до терминала</span></label>' +
+        '<label><input type="radio" name="tkKak" value="zaberet"><span>Ваша ТК заберёт со склада</span></label></div></fieldset></div>';
     if (v === 'vozvrat') return pole('z-otkuda', 'Откуда возврат', '<select id="z-otkuda" name="otkuda"><option>Wildberries</option><option>Ozon</option><option>Покупатель Лавки</option><option>Другое</option></select>') +
       '<div class="zk-dva">' + kol(12) + data('Когда приедет') + '</div><p class="muted k2-mel">Проверим каждую единицу: целое вернём в оборот, брак отложим и сфотографируем.</p>';
     if (v === 'privezti') return '<div class="zk-dva">' + data('Когда привезёте') + pole('z-okno', 'Время', okna()) + '</div>' +
@@ -291,12 +299,16 @@
     } else {
       var k = +fd.get('kol') || 0, t = tovary().filter(function (x) { return x.art === fd.get('tovar'); })[0];
       if (fd.has('kol') && k < 1) { T.toast('Укажите количество'); f.querySelector('[name=kol]').focus(); return; }
-      if (v === 'dostavka' && !String(fd.get('adres') || '').trim()) { T.toast('Укажите адрес'); f.querySelector('[name=adres]').focus(); return; }
+      var kudaD = fd.get('kudaD') || 'adres';
+      if (v === 'dostavka' && kudaD === 'adres' && !String(fd.get('adres') || '').trim()) { T.toast('Укажите адрес'); f.querySelector('[name=adres]').focus(); return; }
+      if (v === 'dostavka' && kudaD === 'tk' && !String(fd.get('gorod') || '').trim()) { T.toast('Укажите город получения'); f.querySelector('[name=gorod]').focus(); return; }
       if (v === 'privezti' && !String(fd.get('chto') || '').trim()) { T.toast('Напишите, что привезёте'); f.querySelector('[name=chto]').focus(); return; }
       var d = datTxt(fd.get('data'));
       opis = v === 'postavka' ? k + ' ' + fd.get('chto') + ', ' + d + ', ' + fd.get('okno') :
         v === 'otgruzka' ? t.name + ', ' + k + ' ' + t.ed + ' → ' + fd.get('kuda') + ', ' + d :
-        v === 'dostavka' ? (t ? t.name + ', ' + k + ' ' + t.ed : fd.get('chto')) + ' → ' + fd.get('adres') + ', ' + d + ', ' + (fd.get('mashina') === 'попутка' ? 'попуткой из ' + fd.get('reys') : 'отдельной машиной') :
+        v === 'dostavka' ? (t ? t.name + ', ' + k + ' ' + t.ed : fd.get('chto')) + ' → ' + (kudaD === 'pvz' ? 'пункт выдачи ' + (T.PVZ.filter(function (x) { return x[0] === fd.get('pvz'); })[0] || ['', ''])[1] :
+          kudaD === 'tk' ? fd.get('tk') + ', ' + fd.get('gorod') + (fd.get('tkKak') === 'zaberet' ? ', ТК заберёт со склада' : ', до терминала') :
+          fd.get('adres') + ', ' + d + ', ' + (fd.get('mashina') === 'попутка' ? 'попуткой из ' + fd.get('reys') : 'отдельной машиной')) :
         v === 'vozvrat' ? k + ' ед. от ' + fd.get('otkuda') + ', ' + d : fd.get('chto') + ', ' + d + ', ' + fd.get('okno');
     }
     var n = 4180 + vseZayavki().length + 1;
@@ -632,6 +644,7 @@
       risovatPr(); return;
     }
     if (t.name === 'mashina') { var pp = box.querySelector('[data-poputki]'); if (pp) pp.hidden = t.value !== 'попутка'; }
+    else if (t.name === 'kudaD') box.querySelectorAll('[data-kudad]').forEach(function (el) { el.hidden = el.getAttribute('data-kudad') !== t.value; });
     else if (/^my-/.test(t.name)) {          /* мои данные: сохраняем сразу */
       if (t.name === 'my-tel' && !T.telOk(t.value)) { T.toast('Телефон: нужно 11 цифр'); t.value = a.tel || ''; return; }
       if (t.name === 'my-pochta' && t.value.trim() && !T.pochtaOk(t.value)) { T.toast('Проверьте почту'); t.value = a.pochta || ''; return; }
