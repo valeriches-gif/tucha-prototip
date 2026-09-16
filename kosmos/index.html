@@ -13,9 +13,10 @@
 @font-face { font-family: 'Rubik'; src: url(assets/fonts/rubik.woff2) format('woff2'); font-weight: 300 900; font-display: swap; }
 @font-face { font-family: 'Golos Text'; src: url(assets/fonts/golos.woff2) format('woff2'); font-weight: 400 900; font-display: swap; }
 :root {
-  --noch: #070D1A; --glub: #0C1729; --karta: #111E33; --lin: rgba(255, 255, 255, .1);
-  --tekst: #C4D2E4; --mute: #7E93AD; --lazur: #4FB3EA; --oran: #FF8A1F; --bel: #FFFFFF;
-  --zag: 'Rubik', 'Segoe UI', sans-serif;
+  --noch: #F1F8FE; --glub: #FFFFFF; --karta: #FFFFFF; --lin: rgba(22, 48, 79, .13);
+  --tekst: #2A3D55; --mute: #5E7590; --lazur: #1E7FC0; --oran: #FF8A1F; --bel: #FFFFFF;
+  --navy: #16304F; --zag: 'Rubik', 'Segoe UI', sans-serif;
+  --teni: 0 22px 44px -28px rgba(22, 48, 79, .5);
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -25,55 +26,59 @@ img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
 .wrap { width: min(1200px, 100% - 40px); margin-inline: auto; }
 h1, h2, h3 { font-family: var(--zag); margin: 0; text-wrap: balance; }
-.eb { font: 600 12px/1 'Golos Text', sans-serif; letter-spacing: .34em; text-transform: uppercase; color: var(--lazur); margin: 0; }
+.eb { font: 700 12px/1 'Golos Text', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--lazur); margin: 0; }
 .sek { padding: clamp(70px, 9vw, 130px) 0; position: relative; }
-h2 { font-size: clamp(30px, 4.4vw, 56px); font-weight: 300; letter-spacing: .04em; text-transform: uppercase; color: #fff; line-height: 1.05; }
-h2 b { font-weight: 600; color: var(--lazur); }
+h2 { font-size: clamp(30px, 4.4vw, 54px); font-weight: 800; letter-spacing: -.02em; text-transform: uppercase; color: var(--navy); line-height: 1.02; }
+h2 b { font-weight: 800; color: var(--oran); }
 .lid { color: var(--mute); max-width: 62ch; margin: 16px 0 0; }
 
-/* небо мира: рассвет над складом, без космоса */
+/* небо над складом: ясный день */
 .nebo { position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    linear-gradient(180deg, #0B1E38 0%, #123255 38%, #1B4A78 70%, #2A6BA8 100%),
-    none; }
+  background: linear-gradient(180deg, #F7FBFF 0%, #E2F1FC 38%, #C6E3F7 68%, #ABD6F1 100%); }
 body > * { position: relative; z-index: 1; }
 
 /* шапка */
 .shapka { position: sticky; top: 0; z-index: 30; backdrop-filter: blur(12px);
-  background: rgba(7, 13, 26, .72); border-bottom: 1px solid var(--lin); }
+  background: rgba(247, 251, 255, .84); border-bottom: 1px solid var(--lin); }
 .shapka-g { display: flex; align-items: center; gap: 28px; padding: 16px 0; }
 .logo img { height: 34px; width: auto; }
 .menu { display: flex; gap: 26px; margin-left: auto; font-size: 14px; letter-spacing: .04em; }
 .menu a { text-decoration: none; color: var(--tekst); opacity: .78; padding-bottom: 4px; border-bottom: 1px solid transparent; }
-.menu a:hover { opacity: 1; color: #fff; border-bottom-color: var(--lazur); }
+.menu a:hover { opacity: 1; color: var(--navy); border-bottom-color: var(--lazur); }
 .pill { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; border: 0; cursor: pointer;
-  background: #fff; color: #0B1526; border-radius: 999px; padding: 13px 26px;
-  font: 700 12px/1 var(--zag); letter-spacing: .14em; text-transform: uppercase;
+  background: var(--navy); color: #fff; border-radius: 999px; padding: 15px 30px;
+  font: 800 12px/1 var(--zag); letter-spacing: .1em; text-transform: uppercase;
   transition: transform .2s cubic-bezier(.23, 1, .32, 1), box-shadow .2s ease; }
-.pill:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -14px rgba(255, 255, 255, .5); }
-.pill-2 { background: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35); }
-.pill-2:hover { box-shadow: inset 0 0 0 1px var(--lazur); }
+.pill:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -16px rgba(22, 48, 79, .9); }
+.pill-2 { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1.5px rgba(22, 48, 79, .16); }
+.pill-2:hover { box-shadow: inset 0 0 0 1.5px var(--lazur); }
 .pill-or { background: var(--oran); color: #fff; }
 
 /* герой */
 .geroy { position: relative; overflow: hidden; min-height: min(94vh, 940px); display: grid; align-content: start;
   padding: clamp(46px, 7vw, 92px) 0 0; text-align: center; --pw: 152vw; --cap: 215px; }
 .geroy .wrap { position: relative; z-index: 3; }
-.geroy h1 { font-size: clamp(58px, 12vw, 164px); font-weight: 300; letter-spacing: .18em; text-transform: uppercase; color: #fff; line-height: .9;
-  margin: 14px 0 0; text-indent: .16em; }
-.slogan { font: 500 clamp(15px, 1.7vw, 21px)/1 var(--zag); letter-spacing: .26em; text-transform: uppercase;
-  color: var(--lazur); margin: 22px 0 0; }
-.cherta { width: 72px; height: 1px; background: rgba(255, 255, 255, .35); margin: 24px auto 0; }
+.geroy h1 { font-size: clamp(42px, 7.4vw, 104px); font-weight: 900; letter-spacing: -.035em; text-transform: uppercase;
+  color: var(--navy); line-height: .94; margin: 16px 0 0; }
+.geroy h1 span { color: var(--oran); }
+.slogan { font: 700 clamp(15px, 1.7vw, 20px)/1.3 'Golos Text', sans-serif; letter-spacing: .02em;
+  color: var(--lazur); margin: 16px 0 0; }
+.cherta { width: 60px; height: 3px; border-radius: 3px; background: var(--oran); margin: 22px auto 0; }
 .geroy .lid { margin: 26px auto 0; max-width: 54ch; text-align: center; }
 .geroy-kn { display: flex; justify-content: center; gap: 14px; margin-top: 34px; flex-wrap: wrap; }
-.geroy-fakty { display: flex; justify-content: center; gap: 34px; flex-wrap: wrap; margin-top: 30px; color: var(--mute); font-size: 14px; }
-.geroy-fakty b { color: #fff; font-family: var(--zag); font-weight: 500; }
+.geroy-fakty { display: inline-flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 32px; color: var(--mute);
+  font-size: 14px; background: rgba(255, 255, 255, .78); backdrop-filter: blur(6px); border-radius: 999px;
+  padding: 14px 28px; box-shadow: 0 14px 30px -22px rgba(22, 48, 79, .8); }
+.geroy-fakty b { color: var(--navy); font-family: var(--zag); font-weight: 800; }
 
 /* мир Тучи: площадка со складом, короба встают один за другим */
-.kubiki { position: absolute; left: 50%; bottom: -22%; translate: -50% 0;
-  width: min(72vw, 840px); z-index: 2; pointer-events: none;
-  filter: drop-shadow(0 26px 50px rgba(4, 12, 24, .55)); }
-.tucha-znak { position: absolute; left: 50%; bottom: 23%; translate: -50% 0; width: min(12vw, 126px);
+.kubiki { position: absolute; left: 50%; bottom: -6%; translate: -50% 0; width: 102%; z-index: 2;
+  pointer-events: none; }
+.kran { transform-origin: center bottom; animation: kachaet 14s ease-in-out infinite; }
+@keyframes kachaet { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(2.2deg); } }
+.kub-fura { animation: kub-rost .42s cubic-bezier(.34, 1.36, .64, 1) both, edet 26s linear infinite; }
+@keyframes edet { 0% { transform: translate(-60px, -30px); } 100% { transform: translate(120px, 60px); } }
+.tucha-znak { position: absolute; left: 50%; bottom: 34%; translate: -50% 0; width: min(10vw, 112px);
   z-index: 3; padding: 0; border: 0; background: none; cursor: pointer; line-height: 0;
   filter: drop-shadow(0 16px 34px rgba(79, 179, 234, .45)); animation: parit 7s ease-in-out infinite; }
 .tucha-znak:hover { filter: drop-shadow(0 16px 40px rgba(120, 200, 255, .75)); }
@@ -96,7 +101,7 @@ body > * { position: relative; z-index: 1; }
 @keyframes svet { 0%, 4% { opacity: 0; } 10% { opacity: .9; } 76% { opacity: .9; } 88%, 100% { opacity: 0; } }
 
 /* планеты услуг по краям */
-.sputnik { position: absolute; z-index: 2; display: flex; align-items: center; gap: 14px; color: #fff; text-decoration: none; }
+.sputnik { position: absolute; z-index: 2; display: flex; align-items: center; gap: 14px; color: var(--navy); text-decoration: none; }
 .sputnik i { width: 62px; height: 62px; border-radius: 12px; flex: none; display: block; rotate: 45deg; scale: 1 .58;
   box-shadow: inset -10px -8px 20px rgba(0, 0, 0, .5), 0 14px 26px -14px rgba(4, 12, 24, .9); }
 .sputnik span { font: 600 12px/1 'Golos Text', sans-serif; letter-spacing: .26em; text-transform: uppercase; }
@@ -105,18 +110,18 @@ body > * { position: relative; z-index: 1; }
 .sp-1 { left: 14px; bottom: 25%; }
 .sp-2 { right: 14px; bottom: 31%; flex-direction: row-reverse; text-align: right; }
 .vniz { position: absolute; left: 50%; bottom: 26px; translate: -50% 0; z-index: 4; width: 46px; height: 46px; border-radius: 50%;
-  display: grid; place-items: center; color: #fff; text-decoration: none; background: rgba(255, 255, 255, .08);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25); animation: pryg 2.4s ease-in-out infinite; }
+  display: grid; place-items: center; color: var(--navy); text-decoration: none; background: rgba(255, 255, 255, .9);
+  box-shadow: 0 10px 22px -12px rgba(22, 48, 79, .8); animation: pryg 2.4s ease-in-out infinite; }
 @keyframes pryg { 50% { transform: translateY(7px); } }
 
 /* орбита услуг */
 .orbita { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; margin-top: 52px; }
-.usl-k { background: linear-gradient(180deg, rgba(23, 38, 62, .9), rgba(12, 23, 41, .9)); border: 1px solid var(--lin);
+.usl-k { background: #fff; border: 1px solid var(--lin); box-shadow: var(--teni);
   border-radius: 20px; padding: 26px 24px 28px; text-decoration: none; display: flex; flex-direction: column; gap: 10px;
   transition: transform .25s cubic-bezier(.23, 1, .32, 1), border-color .25s ease; }
 .usl-k:hover { transform: translateY(-6px); border-color: rgba(79, 179, 234, .5); }
 .usl-k i { width: 54px; height: 54px; border-radius: 50%; box-shadow: inset -8px -7px 18px rgba(0, 0, 0, .55); }
-.usl-k h3 { font-size: 20px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: #fff; }
+.usl-k h3 { font-size: 20px; font-weight: 800; letter-spacing: -.01em; text-transform: uppercase; color: var(--navy); }
 .usl-k p { margin: 0; font-size: 14px; color: var(--mute); flex: 1; }
 .usl-k em { font-style: normal; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--lazur); }
 
@@ -124,13 +129,13 @@ body > * { position: relative; z-index: 1; }
 .cifry { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 46px;
   border-top: 1px solid var(--lin); border-bottom: 1px solid var(--lin); padding: 34px 0; }
 .cifry div { text-align: center; }
-.cifry b { display: block; font: 300 clamp(34px, 4.6vw, 58px)/1 var(--zag); color: #fff; letter-spacing: .04em; }
+.cifry b { display: block; font: 800 clamp(34px, 4.6vw, 56px)/1 var(--zag); color: var(--navy); letter-spacing: -.02em; }
 .cifry span { font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
 
 /* кадры */
 .kadry { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 46px; }
 .kadry figure { margin: 0; border-radius: 18px; overflow: hidden; border: 1px solid var(--lin); position: relative; }
-.kadry img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; filter: saturate(.85) brightness(.82); transition: filter .4s ease, transform .6s cubic-bezier(.23, 1, .32, 1); }
+.kadry img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; filter: none; transition: filter .4s ease, transform .6s cubic-bezier(.23, 1, .32, 1); }
 .kadry figure:hover img { filter: none; transform: scale(1.04); }
 .kadry figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 16px; font-size: 13px; color: #fff;
   background: linear-gradient(transparent, rgba(7, 13, 26, .85)); }
@@ -138,16 +143,17 @@ body > * { position: relative; z-index: 1; }
 /* два пути */
 .dva { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 46px; }
 .put { border: 1px solid var(--lin); border-radius: 22px; padding: 30px 28px 32px; display: flex; flex-direction: column; gap: 12px;
-  background: linear-gradient(180deg, rgba(20, 34, 56, .8), rgba(11, 21, 38, .8)); }
-.put-igra { background: linear-gradient(180deg, rgba(31, 60, 99, .85), rgba(13, 28, 50, .9)); border-color: rgba(79, 179, 234, .28); }
-.put h3 { font-size: 24px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: #fff; }
+  background: #fff; box-shadow: var(--teni); }
+.put-igra { background: linear-gradient(170deg, #1E3A5F, #16304F); border-color: transparent; }
+.put h3 { font-size: 24px; font-weight: 800; letter-spacing: -.01em; text-transform: uppercase; color: var(--navy); }
+.put-igra h3, .put-igra p { color: #fff; }
 .put p { margin: 0; font-size: 15px; color: var(--mute); }
 .put .pill { align-self: flex-start; margin-top: 8px; }
 .mok { display: grid; gap: 9px; margin-top: 6px; }
 .mok span { display: flex; align-items: center; height: 42px; padding: 0 14px; border-radius: 10px;
-  background: rgba(255, 255, 255, .05); box-shadow: inset 0 0 0 1px var(--lin); font-size: 14px; color: #7E93AD; }
-.mok b { display: grid; place-items: center; height: 42px; width: 58%; border-radius: 999px; background: #fff;
-  color: #0B1526; font: 700 12px/1 var(--zag); letter-spacing: .12em; text-transform: uppercase; }
+  background: #EEF4FA; box-shadow: inset 0 0 0 1px rgba(22, 48, 79, .1); font-size: 14px; color: #8296AE; }
+.mok b { display: grid; place-items: center; height: 42px; width: 58%; border-radius: 999px; background: var(--oran);
+  color: #fff; font: 700 12px/1 var(--zag); letter-spacing: .12em; text-transform: uppercase; }
 .bloki { display: grid; gap: 8px; margin-top: 6px; }
 .bloki span, .bloki button { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px;
   font-size: 14px; background: rgba(255, 255, 255, .05); box-shadow: inset 0 0 0 1px var(--lin); color: #fff; }
@@ -161,19 +167,19 @@ body > * { position: relative; z-index: 1; }
 /* цены */
 .ceny { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-top: 44px; }
 .cena-k { border: 1px solid var(--lin); border-radius: 20px; padding: 24px 22px 26px; display: flex; flex-direction: column; gap: 9px;
-  background: linear-gradient(180deg, rgba(23, 38, 62, .85), rgba(12, 23, 41, .85)); }
+  background: #fff; box-shadow: var(--teni); }
 .cena-k em { font-style: normal; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--lazur); }
-.cena-k b { font: 300 25px/1.2 var(--zag); color: #fff; letter-spacing: .02em; }
+.cena-k b { font: 800 25px/1.2 var(--zag); color: var(--navy); letter-spacing: -.02em; }
 .cena-k p { margin: 0; font-size: 14px; color: var(--mute); flex: 1; }
-.cena-k a { font-size: 14px; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, .3); align-self: flex-start; }
+.cena-k a { font-size: 14px; color: var(--navy); text-decoration: none; border-bottom: 1px solid rgba(22, 48, 79, .3); align-self: flex-start; }
 .cena-niz { margin-top: 20px; color: var(--mute); font-size: 15px; }
 
 /* лавка и витрина */
 .dvoe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 44px; }
 .dvoe article { border: 1px solid var(--lin); border-radius: 22px; padding: 30px 28px 32px; display: flex; flex-direction: column; gap: 12px;
-  background: linear-gradient(180deg, rgba(20, 34, 56, .85), rgba(11, 21, 38, .85)); }
+  background: #fff; box-shadow: var(--teni); }
 .dvoe .d-lavka { border-color: rgba(255, 138, 31, .35); }
-.dvoe h3 { font-size: 23px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: #fff; }
+.dvoe h3 { font-size: 23px; font-weight: 800; letter-spacing: -.01em; text-transform: uppercase; color: var(--navy); }
 .dvoe p { margin: 0; font-size: 15px; color: var(--mute); }
 .dvoe ul { margin: 4px 0 0; padding-left: 20px; font-size: 14px; color: var(--mute); }
 .dvoe li { margin-bottom: 5px; }
@@ -181,9 +187,8 @@ body > * { position: relative; z-index: 1; }
 
 /* вопросы */
 .voprosy { margin-top: 38px; display: grid; gap: 12px; }
-.voprosy details { border: 1px solid var(--lin); border-radius: 16px; padding: 18px 22px;
-  background: rgba(255, 255, 255, .03); }
-.voprosy summary { cursor: pointer; font: 500 17px/1.35 var(--zag); color: #fff; list-style: none; display: flex; gap: 14px; }
+.voprosy details { border: 1px solid var(--lin); border-radius: 16px; padding: 18px 22px; background: #fff; box-shadow: var(--teni); }
+.voprosy summary { cursor: pointer; font: 700 17px/1.35 var(--zag); color: var(--navy); list-style: none; display: flex; gap: 14px; }
 .voprosy summary::-webkit-details-marker { display: none; }
 .voprosy summary::before { content: '+'; color: var(--lazur); font-size: 20px; line-height: 1.1; }
 .voprosy details[open] summary::before { content: '2'; }
@@ -211,18 +216,18 @@ body > * { position: relative; z-index: 1; }
 .shag { padding: 26px 22px; border-left: 1px solid var(--lin); }
 .shag:first-child { border-left: 0; padding-left: 0; }
 .shag b { display: block; font: 600 12px/1 'Golos Text', sans-serif; letter-spacing: .22em; text-transform: uppercase; color: var(--lazur); }
-.shag h3 { font-size: 19px; font-weight: 500; color: #fff; margin: 12px 0 6px; letter-spacing: .03em; }
+.shag h3 { font-size: 19px; font-weight: 800; color: var(--navy); margin: 12px 0 6px; letter-spacing: -.01em; }
 .shag p { margin: 0; font-size: 14px; color: var(--mute); }
 
 /* финал */
 .final { text-align: center; border: 1px solid var(--lin); border-radius: 28px; padding: clamp(36px, 6vw, 74px) 24px;
-  background: radial-gradient(70% 120% at 50% 0%, rgba(46, 143, 208, .28), transparent 70%); }
+  background: #fff; box-shadow: var(--teni); }
 .final .geroy-kn { margin-top: 28px; }
 
 /* подвал */
 .podval { border-top: 1px solid var(--lin); padding: 48px 0 40px; color: var(--mute); font-size: 14px; }
 .podval-g { display: flex; flex-wrap: wrap; gap: 28px; justify-content: space-between; }
-.podval a { color: #fff; text-decoration: none; }
+.podval a { color: var(--navy); text-decoration: none; }
 .podval a:hover { color: var(--lazur); }
 .versii { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; }
 
@@ -237,9 +242,9 @@ body > * { position: relative; z-index: 1; }
   .orbita, .kadry, .dva, .cifry, .ceny, .dvoe { grid-template-columns: minmax(0, 1fr); }
   .bloki span, .bloki button { flex-wrap: wrap; }
   .bloki span em, .bloki button em { margin-left: 20px; }
-  .geroy { min-height: auto; padding-bottom: 66vw; }
-  .kubiki { width: 150vw; bottom: -14%; }
-  .tucha-znak { bottom: 30%; width: 22vw; }
+  .geroy { min-height: auto; padding-bottom: 54vw; }
+  .kubiki { width: 190%; }
+  .tucha-znak { bottom: 46%; width: 20vw; }
 }
 /* движение включается скриптом */
 .anim .pok { opacity: 0; transform: translateY(26px); }
@@ -266,15 +271,15 @@ body > * { position: relative; z-index: 1; }
 <section class="geroy">
 <div class="wrap">
 <p class="eb">Склад в Московской области</p>
-<h1>Туча</h1>
-<p class="slogan">Всё под одной тучей</p>
+<h1>Туча <span>строит</span> бизнес</h1>
+<p class="slogan">Склад, обработка, доставка и таможня по одному договору. Всё под одной тучей.</p>
 <div class="cherta"></div>
-<p class="lid">Хранение от одной паллеты, обработка, маркировка, доставка и таможня по одному договору. Десять минут от МКАД и Шереметьева.</p>
+<p class="lid">Берём от одной паллеты, без минимального объёма. Склад в Московской области, десять минут от МКАД и Шереметьева.</p>
 <div class="geroy-kn"><a class="pill" href="../novyy/start/">Получить расчёт</a><a class="pill pill-2" href="../novyy/start/mir/">Собрать склад как в игре</a></div>
 <div class="geroy-fakty"><span><b>+3 000</b> паллето-мест</span><span><b>от 16,42 ₽</b> за паллето-место в сутки, с НДС</span><span><b>20 минут</b> на договор</span><span><b>пн-пт</b> 9:00 до 18:00</span></div>
 </div>
 <a class="sputnik sp-1" href="../novyy/hranenie/"><i style="background:radial-gradient(circle at 34% 28%, #3E86C6, #173C63)"></i><span>Хранение<small>от одной паллеты</small></span></a><a class="sputnik sp-2" href="../novyy/dostavka/"><i style="background:radial-gradient(circle at 34% 28%, #5FB9E8, #1E6E9E)"></i><span>Доставка<small>по России и за рубеж</small></span></a>
-<svg class="kubiki" viewBox="-520 -230 1040 640" aria-hidden="true"><polygon points="-470,90 0,-145 470,90 0,325" fill="#1B4E82"/><polygon points="-470,90 0,325 0,367 -470,132" fill="#123A63"/><polygon points="470,90 0,325 0,367 470,132" fill="#0D2C4D"/><polygon points="-470,90 0,-145 470,90 0,325" fill="none" stroke="#3E86C6" stroke-width="2" opacity=".5"/><g class="kub" style="--d:0ms"><polygon points="-282,-102.0 -282,-16.0 -250,0 -250,-86" fill="#17406B"/><polygon points="-218,-102.0 -218,-16.0 -250,0 -250,-86" fill="#102E4F"/><polygon points="-282,-102.0 -250,-118 -218,-102.0 -250,-86" fill="#2F6CA6"/><rect class="okno" x="-273" y="-86" width="7" height="9" rx="1.5" style="--o:300ms"/><rect class="okno" x="-259" y="-86" width="7" height="9" rx="1.5" style="--o:370ms"/><rect class="okno" x="-273" y="-58" width="7" height="9" rx="1.5" style="--o:430ms"/><rect class="okno" x="-259" y="-58" width="7" height="9" rx="1.5" style="--o:500ms"/></g><g class="kub" style="--d:210ms"><polygon points="-192,-74.0 -192,-16.0 -160,0 -160,-58" fill="#17406B"/><polygon points="-128,-74.0 -128,-16.0 -160,0 -160,-58" fill="#102E4F"/><polygon points="-192,-74.0 -160,-90 -128,-74.0 -160,-58" fill="#2F6CA6"/><rect class="okno" x="-183" y="-58" width="7" height="9" rx="1.5" style="--o:510ms"/><rect class="okno" x="-169" y="-58" width="7" height="9" rx="1.5" style="--o:580ms"/></g><g class="kub" style="--d:420ms"><polygon points="-102,-120.0 -102,-16.0 -70,0 -70,-104" fill="#17406B"/><polygon points="-38,-120.0 -38,-16.0 -70,0 -70,-104" fill="#102E4F"/><polygon points="-102,-120.0 -70,-136 -38,-120.0 -70,-104" fill="#2F6CA6"/><rect class="okno" x="-93" y="-104" width="7" height="9" rx="1.5" style="--o:720ms"/><rect class="okno" x="-79" y="-104" width="7" height="9" rx="1.5" style="--o:790ms"/><rect class="okno" x="-93" y="-76" width="7" height="9" rx="1.5" style="--o:850ms"/><rect class="okno" x="-79" y="-76" width="7" height="9" rx="1.5" style="--o:920ms"/><rect class="okno" x="-93" y="-48" width="7" height="9" rx="1.5" style="--o:980ms"/><rect class="okno" x="-79" y="-48" width="7" height="9" rx="1.5" style="--o:1050ms"/></g><g class="kub" style="--d:630ms"><polygon points="-12,-82.0 -12,-16.0 20,0 20,-66" fill="#17406B"/><polygon points="52,-82.0 52,-16.0 20,0 20,-66" fill="#102E4F"/><polygon points="-12,-82.0 20,-98 52,-82.0 20,-66" fill="#2F6CA6"/><rect class="okno" x="-3" y="-66" width="7" height="9" rx="1.5" style="--o:930ms"/><rect class="okno" x="11" y="-66" width="7" height="9" rx="1.5" style="--o:1000ms"/><rect class="okno" x="-3" y="-38" width="7" height="9" rx="1.5" style="--o:1060ms"/><rect class="okno" x="11" y="-38" width="7" height="9" rx="1.5" style="--o:1130ms"/></g><g class="kub" style="--d:840ms"><polygon points="78,-108.0 78,-16.0 110,0 110,-92" fill="#17406B"/><polygon points="142,-108.0 142,-16.0 110,0 110,-92" fill="#102E4F"/><polygon points="78,-108.0 110,-124 142,-108.0 110,-92" fill="#2F6CA6"/><rect class="okno" x="87" y="-92" width="7" height="9" rx="1.5" style="--o:1140ms"/><rect class="okno" x="101" y="-92" width="7" height="9" rx="1.5" style="--o:1210ms"/><rect class="okno" x="87" y="-64" width="7" height="9" rx="1.5" style="--o:1270ms"/><rect class="okno" x="101" y="-64" width="7" height="9" rx="1.5" style="--o:1340ms"/><rect class="okno" x="87" y="-36" width="7" height="9" rx="1.5" style="--o:1400ms"/><rect class="okno" x="101" y="-36" width="7" height="9" rx="1.5" style="--o:1470ms"/></g><g class="kub" style="--d:1050ms"><polygon points="168,-70.0 168,-16.0 200,0 200,-54" fill="#17406B"/><polygon points="232,-70.0 232,-16.0 200,0 200,-54" fill="#102E4F"/><polygon points="168,-70.0 200,-86 232,-70.0 200,-54" fill="#2F6CA6"/><rect class="okno" x="177" y="-54" width="7" height="9" rx="1.5" style="--o:1350ms"/><rect class="okno" x="191" y="-54" width="7" height="9" rx="1.5" style="--o:1420ms"/></g><g class="kub" style="--d:1260ms"><polygon points="-334,61.0 -334,123.0 -300,140 -300,78" fill="#17406B"/><polygon points="-266,61.0 -266,123.0 -300,140 -300,78" fill="#102E4F"/><polygon points="-334,61.0 -300,44 -266,61.0 -300,78" fill="#2F6CA6"/><rect class="okno" x="-325" y="77" width="7" height="9" rx="1.5" style="--o:1560ms"/><rect class="okno" x="-311" y="77" width="7" height="9" rx="1.5" style="--o:1630ms"/><rect class="okno" x="-325" y="105" width="7" height="9" rx="1.5" style="--o:1690ms"/><rect class="okno" x="-311" y="105" width="7" height="9" rx="1.5" style="--o:1760ms"/></g><g class="kub" style="--d:1470ms"><polygon points="-234,27.0 -234,123.0 -200,140 -200,44" fill="#17406B"/><polygon points="-166,27.0 -166,123.0 -200,140 -200,44" fill="#102E4F"/><polygon points="-234,27.0 -200,10 -166,27.0 -200,44" fill="#2F6CA6"/><rect class="okno" x="-225" y="43" width="7" height="9" rx="1.5" style="--o:1770ms"/><rect class="okno" x="-211" y="43" width="7" height="9" rx="1.5" style="--o:1840ms"/><rect class="okno" x="-225" y="71" width="7" height="9" rx="1.5" style="--o:1900ms"/><rect class="okno" x="-211" y="71" width="7" height="9" rx="1.5" style="--o:1970ms"/><rect class="okno" x="-225" y="99" width="7" height="9" rx="1.5" style="--o:2030ms"/><rect class="okno" x="-211" y="99" width="7" height="9" rx="1.5" style="--o:2100ms"/></g><g class="kub" style="--d:1680ms"><polygon points="-134,75.0 -134,123.0 -100,140 -100,92" fill="#17406B"/><polygon points="-66,75.0 -66,123.0 -100,140 -100,92" fill="#102E4F"/><polygon points="-134,75.0 -100,58 -66,75.0 -100,92" fill="#2F6CA6"/><rect class="okno" x="-125" y="91" width="7" height="9" rx="1.5" style="--o:1980ms"/><rect class="okno" x="-111" y="91" width="7" height="9" rx="1.5" style="--o:2050ms"/></g><g class="kub" style="--d:1890ms"><polygon points="-34,45.0 -34,123.0 0,140 0,62" fill="#17406B"/><polygon points="34,45.0 34,123.0 0,140 0,62" fill="#102E4F"/><polygon points="-34,45.0 0,28 34,45.0 0,62" fill="#2F6CA6"/><rect class="okno" x="-25" y="61" width="7" height="9" rx="1.5" style="--o:2190ms"/><rect class="okno" x="-11" y="61" width="7" height="9" rx="1.5" style="--o:2260ms"/><rect class="okno" x="-25" y="89" width="7" height="9" rx="1.5" style="--o:2320ms"/><rect class="okno" x="-11" y="89" width="7" height="9" rx="1.5" style="--o:2390ms"/></g><g class="kub" style="--d:2100ms"><polygon points="66,67.0 66,123.0 100,140 100,84" fill="#17406B"/><polygon points="134,67.0 134,123.0 100,140 100,84" fill="#102E4F"/><polygon points="66,67.0 100,50 134,67.0 100,84" fill="#2F6CA6"/><rect class="okno" x="75" y="83" width="7" height="9" rx="1.5" style="--o:2400ms"/><rect class="okno" x="89" y="83" width="7" height="9" rx="1.5" style="--o:2470ms"/></g><g class="kub" style="--d:2310ms"><polygon points="166,35.0 166,123.0 200,140 200,52" fill="#17406B"/><polygon points="234,35.0 234,123.0 200,140 200,52" fill="#102E4F"/><polygon points="166,35.0 200,18 234,35.0 200,52" fill="#2F6CA6"/><rect class="okno" x="175" y="51" width="7" height="9" rx="1.5" style="--o:2610ms"/><rect class="okno" x="189" y="51" width="7" height="9" rx="1.5" style="--o:2680ms"/><rect class="okno" x="175" y="79" width="7" height="9" rx="1.5" style="--o:2740ms"/><rect class="okno" x="189" y="79" width="7" height="9" rx="1.5" style="--o:2810ms"/></g><g class="kub" style="--d:2520ms"><polygon points="266,79.0 266,123.0 300,140 300,96" fill="#17406B"/><polygon points="334,79.0 334,123.0 300,140 300,96" fill="#102E4F"/><polygon points="266,79.0 300,62 334,79.0 300,96" fill="#2F6CA6"/><rect class="okno" x="275" y="95" width="7" height="9" rx="1.5" style="--o:2820ms"/><rect class="okno" x="289" y="95" width="7" height="9" rx="1.5" style="--o:2890ms"/></g><g class="kub" style="--d:2730ms"><polygon points="-390,50 -370,40 -350,50 -370,60" fill="#8A6A3E"/><polygon points="-384,36 -384,48 -370,55 -370,43" fill="#C79B5E"/><polygon points="-356,36 -356,48 -370,55 -370,43" fill="#A67C46"/><polygon points="-384,36 -370,29 -356,36 -370,43" fill="#D9B27E"/></g><g class="kub" style="--d:2910ms"><polygon points="340,60 360,50 380,60 360,70" fill="#8A6A3E"/><polygon points="346,46 346,58 360,65 360,53" fill="#C79B5E"/><polygon points="374,46 374,58 360,65 360,53" fill="#A67C46"/><polygon points="346,46 360,39 374,46 360,53" fill="#D9B27E"/></g><g class="kub" style="--d:3060ms"><polygon points="-80,240 -60,230 -40,240 -60,250" fill="#8A6A3E"/><polygon points="-74,226 -74,238 -60,245 -60,233" fill="#C79B5E"/><polygon points="-46,226 -46,238 -60,245 -60,233" fill="#A67C46"/><polygon points="-74,226 -60,219 -46,226 -60,233" fill="#D9B27E"/></g><g class="kub" style="--d:3190ms"><polygon points="40,248 60,238 80,248 60,258" fill="#8A6A3E"/><polygon points="46,234 46,246 60,253 60,241" fill="#C79B5E"/><polygon points="74,234 74,246 60,253 60,241" fill="#A67C46"/><polygon points="46,234 60,227 74,234 60,241" fill="#D9B27E"/></g></svg>
+<svg class="kubiki" viewBox="-900 -170 1800 610" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><polygon points="-1500.0,150.0 0.0,-600.0 1500.0,150.0 0.0,900.0" fill="#CFE6F6"/><polygon points="-1500.0,150.0 0.0,-600.0 1500.0,150.0 0.0,900.0" fill="none" stroke="#B4D3E8" stroke-width="3"/><line x1="-1350" y1="225" x2="150" y2="-525" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="-1200" y1="300" x2="300" y2="-450" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="-1050" y1="375" x2="450" y2="-375" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="-900" y1="450" x2="600" y2="-300" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="-750" y1="525" x2="750" y2="-225" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="-600" y1="600" x2="900" y2="-150" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="-450" y1="675" x2="1050" y2="-75" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="-300" y1="750" x2="1200" y2="0" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="-150" y1="825" x2="1350" y2="75" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="0" y1="900" x2="1500" y2="150" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="150" y1="975" x2="1650" y2="225" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="300" y1="1050" x2="1800" y2="300" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="450" y1="1125" x2="1950" y2="375" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="600" y1="1200" x2="2100" y2="450" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="750" y1="1275" x2="2250" y2="525" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="900" y1="1350" x2="2400" y2="600" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="1050" y1="1425" x2="2550" y2="675" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="1200" y1="1500" x2="2700" y2="750" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><line x1="1350" y1="1575" x2="2850" y2="825" stroke="#BFDCEF" stroke-width="1.5" opacity=".55"/><g class="kub" style="--d:0ms"><polygon points="-604.0,-112.0 -454.0,-37.0 -544.0,8.0 -694.0,-67.0" fill="#16304F" opacity=".1"/><polygon points="-710.0,-75.0 -560.0,0.0 -560.0,-92.0 -710.0,-167.0" fill="#C0D8EA"/><polygon points="-470.0,-45.0 -560.0,0.0 -560.0,-92.0 -470.0,-137.0" fill="#9BBBD6"/><polygon points="-620.0,-212.0 -470.0,-137.0 -560.0,-92.0 -710.0,-167.0" fill="#E4EFF8"/><line x1="-590.0" y1="-197.0" x2="-680.0" y2="-152.0" stroke="#B9D3E6" stroke-width="3"/><line x1="-560.0" y1="-182.0" x2="-650.0" y2="-137.0" stroke="#B9D3E6" stroke-width="3"/><line x1="-530.0" y1="-167.0" x2="-620.0" y2="-122.0" stroke="#B9D3E6" stroke-width="3"/><line x1="-500.0" y1="-152.0" x2="-590.0" y2="-107.0" stroke="#B9D3E6" stroke-width="3"/><polygon points="-602.0,-183.0 -580.0,-172.0 -580.0,-139.0 -602.0,-150.0" fill="#8FC8EE" opacity=".9"/><polygon points="-575.0,-169.5 -553.0,-158.5 -553.0,-125.5 -575.0,-136.5" fill="#8FC8EE" opacity=".9"/><polygon points="-548.0,-156.0 -526.0,-145.0 -526.0,-112.0 -548.0,-123.0" fill="#8FC8EE" opacity=".9"/></g><g class="kub" style="--d:190ms"><polygon points="-364.0,-112.0 -234.0,-47.0 -314.0,-7.0 -444.0,-72.0" fill="#16304F" opacity=".1"/><polygon points="-460.0,-80.0 -330.0,-15.0 -330.0,-85.0 -460.0,-150.0" fill="#C0D8EA"/><polygon points="-250.0,-55.0 -330.0,-15.0 -330.0,-85.0 -250.0,-125.0" fill="#9BBBD6"/><polygon points="-380.0,-190.0 -250.0,-125.0 -330.0,-85.0 -460.0,-150.0" fill="#E4EFF8"/><line x1="-354.0" y1="-177.0" x2="-434.0" y2="-137.0" stroke="#B9D3E6" stroke-width="3"/><line x1="-328.0" y1="-164.0" x2="-408.0" y2="-124.0" stroke="#B9D3E6" stroke-width="3"/><line x1="-302.0" y1="-151.0" x2="-382.0" y2="-111.0" stroke="#B9D3E6" stroke-width="3"/><line x1="-276.0" y1="-138.0" x2="-356.0" y2="-98.0" stroke="#B9D3E6" stroke-width="3"/><polygon points="-364.4,-162.2 -342.4,-151.2 -342.4,-118.2 -364.4,-129.2" fill="#8FC8EE" opacity=".9"/><polygon points="-341.0,-150.5 -319.0,-139.5 -319.0,-106.5 -341.0,-117.5" fill="#8FC8EE" opacity=".9"/><polygon points="-317.6,-138.8 -295.6,-127.8 -295.6,-94.8 -317.6,-105.8" fill="#8FC8EE" opacity=".9"/></g><g class="kub" style="--d:380ms"><polygon points="536.0,-112.0 676.0,-42.0 590.0,1.0 450.0,-69.0" fill="#16304F" opacity=".1"/><polygon points="434.0,-77.0 574.0,-7.0 574.0,-91.0 434.0,-161.0" fill="#C0D8EA"/><polygon points="660.0,-50.0 574.0,-7.0 574.0,-91.0 660.0,-134.0" fill="#9BBBD6"/><polygon points="520.0,-204.0 660.0,-134.0 574.0,-91.0 434.0,-161.0" fill="#E4EFF8"/><line x1="548.0" y1="-190.0" x2="462.0" y2="-147.0" stroke="#B9D3E6" stroke-width="3"/><line x1="576.0" y1="-176.0" x2="490.0" y2="-133.0" stroke="#B9D3E6" stroke-width="3"/><line x1="604.0" y1="-162.0" x2="518.0" y2="-119.0" stroke="#B9D3E6" stroke-width="3"/><line x1="632.0" y1="-148.0" x2="546.0" y2="-105.0" stroke="#B9D3E6" stroke-width="3"/><polygon points="536.8,-175.6 558.8,-164.6 558.8,-131.6 536.8,-142.6" fill="#8FC8EE" opacity=".9"/><polygon points="562.0,-163.0 584.0,-152.0 584.0,-119.0 562.0,-130.0" fill="#8FC8EE" opacity=".9"/><polygon points="587.2,-150.4 609.2,-139.4 609.2,-106.4 587.2,-117.4" fill="#8FC8EE" opacity=".9"/></g><g class="kub" style="--d:570ms"><polygon points="776.0,-112.0 896.0,-52.0 820.0,-14.0 700.0,-74.0" fill="#16304F" opacity=".1"/><polygon points="684.0,-82.0 804.0,-22.0 804.0,-86.0 684.0,-146.0" fill="#C0D8EA"/><polygon points="880.0,-60.0 804.0,-22.0 804.0,-86.0 880.0,-124.0" fill="#9BBBD6"/><polygon points="760.0,-184.0 880.0,-124.0 804.0,-86.0 684.0,-146.0" fill="#E4EFF8"/><line x1="784.0" y1="-172.0" x2="708.0" y2="-134.0" stroke="#B9D3E6" stroke-width="3"/><line x1="808.0" y1="-160.0" x2="732.0" y2="-122.0" stroke="#B9D3E6" stroke-width="3"/><line x1="832.0" y1="-148.0" x2="756.0" y2="-110.0" stroke="#B9D3E6" stroke-width="3"/><line x1="856.0" y1="-136.0" x2="780.0" y2="-98.0" stroke="#B9D3E6" stroke-width="3"/><polygon points="774.4,-156.8 796.4,-145.8 796.4,-112.8 774.4,-123.8" fill="#8FC8EE" opacity=".9"/><polygon points="796.0,-146.0 818.0,-135.0 818.0,-102.0 796.0,-113.0" fill="#8FC8EE" opacity=".9"/><polygon points="817.6,-135.2 839.6,-124.2 839.6,-91.2 817.6,-102.2" fill="#8FC8EE" opacity=".9"/></g><polygon points="-900.0,40.0 1000.0,990.0 930.0,1025.0 -970.0,75.0" fill="#BCD3E4" opacity=".75"/><polygon points="-900.0,40.0 1000.0,990.0 930.0,1025.0 -970.0,75.0" fill="none" stroke="#A8C4DA" stroke-width="2"/><g class="kub" style="--d:760ms"><polygon points="-284.0,38.0 146.0,253.0 -64.0,358.0 -494.0,143.0" fill="#16304F" opacity=".1"/><polygon points="-510.0,135.0 -80.0,350.0 -80.0,220.0 -510.0,5.0" fill="#CBE0EF"/><polygon points="130.0,245.0 -80.0,350.0 -80.0,220.0 130.0,115.0" fill="#A4C4DC"/><polygon points="-300.0,-100.0 130.0,115.0 -80.0,220.0 -510.0,5.0" fill="#EFF7FD"/><line x1="-252.2" y1="-76.1" x2="-462.2" y2="28.9" stroke="#B9D3E6" stroke-width="3"/><line x1="-204.4" y1="-52.2" x2="-414.4" y2="52.8" stroke="#B9D3E6" stroke-width="3"/><line x1="-156.7" y1="-28.3" x2="-366.7" y2="76.7" stroke="#B9D3E6" stroke-width="3"/><line x1="-108.9" y1="-4.4" x2="-318.9" y2="100.6" stroke="#B9D3E6" stroke-width="3"/><line x1="-61.1" y1="19.4" x2="-271.1" y2="124.4" stroke="#B9D3E6" stroke-width="3"/><line x1="-13.3" y1="43.3" x2="-223.3" y2="148.3" stroke="#B9D3E6" stroke-width="3"/><line x1="34.4" y1="67.2" x2="-175.6" y2="172.2" stroke="#B9D3E6" stroke-width="3"/><line x1="82.2" y1="91.1" x2="-127.8" y2="196.1" stroke="#B9D3E6" stroke-width="3"/><polygon points="-333.6,40.8 -359.6,53.8 -359.6,13.8 -333.6,0.8" fill="#FF8A1F" opacity=".95"/><polygon points="-369.3,58.7 -395.3,71.7 -395.3,31.7 -369.3,18.7" fill="#FF8A1F" opacity=".95"/><polygon points="-405.0,76.5 -431.0,89.5 -431.0,49.5 -405.0,36.5" fill="#FF8A1F" opacity=".95"/><polygon points="-440.7,94.4 -466.7,107.4 -466.7,67.4 -440.7,54.4" fill="#FF8A1F" opacity=".95"/><polygon points="-476.4,112.2 -502.4,125.2 -502.4,85.2 -476.4,72.2" fill="#FF8A1F" opacity=".95"/><polygon points="-248.4,-54.2 -226.4,-43.2 -226.4,-10.2 -248.4,-21.2" fill="#8FC8EE" opacity=".9"/><polygon points="-171.0,-15.5 -149.0,-4.5 -149.0,28.5 -171.0,17.5" fill="#8FC8EE" opacity=".9"/><polygon points="-93.6,23.2 -71.6,34.2 -71.6,67.2 -93.6,56.2" fill="#8FC8EE" opacity=".9"/><polygon points="-16.2,61.9 5.8,72.9 5.8,105.9 -16.2,94.9" fill="#8FC8EE" opacity=".9"/><polygon points="61.2,100.6 83.2,111.6 83.2,144.6 61.2,133.6" fill="#8FC8EE" opacity=".9"/></g><g class="kub" style="--d:980ms"><polygon points="266.0,18.0 386.0,78.0 276.0,133.0 156.0,73.0" fill="#16304F" opacity=".1"/><polygon points="140.0,65.0 260.0,125.0 260.0,-51.0 140.0,-111.0" fill="#CEE2F1"/><polygon points="370.0,70.0 260.0,125.0 260.0,-51.0 370.0,-106.0" fill="#A7C7DE"/><polygon points="250.0,-166.0 370.0,-106.0 260.0,-51.0 140.0,-111.0" fill="#F2F9FF"/><polygon points="264.4,-138.8 286.4,-127.8 286.4,-94.8 264.4,-105.8" fill="#8FC8EE" opacity=".9"/><polygon points="286.0,-128.0 308.0,-117.0 308.0,-84.0 286.0,-95.0" fill="#8FC8EE" opacity=".9"/><polygon points="307.6,-117.2 329.6,-106.2 329.6,-73.2 307.6,-84.2" fill="#8FC8EE" opacity=".9"/><polygon points="329.2,-106.4 351.2,-95.4 351.2,-62.4 329.2,-73.4" fill="#8FC8EE" opacity=".9"/><polygon points="350.8,-95.6 372.8,-84.6 372.8,-51.6 350.8,-62.6" fill="#8FC8EE" opacity=".9"/></g><g class="kub" style="--d:1180ms"><polygon points="446.0,128.0 656.0,233.0 526.0,298.0 316.0,193.0" fill="#16304F" opacity=".1"/><polygon points="300.0,185.0 510.0,290.0 510.0,194.0 300.0,89.0" fill="#C4DBEC"/><polygon points="640.0,225.0 510.0,290.0 510.0,194.0 640.0,129.0" fill="#9DBED8"/><polygon points="430.0,24.0 640.0,129.0 510.0,194.0 300.0,89.0" fill="#E9F3FB"/><line x1="465.0" y1="41.5" x2="335.0" y2="106.5" stroke="#B9D3E6" stroke-width="3"/><line x1="500.0" y1="59.0" x2="370.0" y2="124.0" stroke="#B9D3E6" stroke-width="3"/><line x1="535.0" y1="76.5" x2="405.0" y2="141.5" stroke="#B9D3E6" stroke-width="3"/><line x1="570.0" y1="94.0" x2="440.0" y2="159.0" stroke="#B9D3E6" stroke-width="3"/><line x1="605.0" y1="111.5" x2="475.0" y2="176.5" stroke="#B9D3E6" stroke-width="3"/><polygon points="409.2,124.4 383.2,137.4 383.2,97.4 409.2,84.4" fill="#FF8A1F" opacity=".95"/><polygon points="387.1,135.4 361.1,148.4 361.1,108.4 387.1,95.4" fill="#FF8A1F" opacity=".95"/><polygon points="365.0,146.5 339.0,159.5 339.0,119.5 365.0,106.5" fill="#FF8A1F" opacity=".95"/></g><g class="kub kran" style="--d:1380ms"><rect x="-45" y="-116" width="10" height="186" fill="#C9DCEA"/><polygon points="-180.0,-116.0 26.0,-116.0 26.0,-106.0 -180.0,-106.0" fill="#FF8A1F"/><line x1="-144" y1="-106" x2="-144" y2="-34" stroke="#9FBFD8" stroke-width="3"/><rect x="-160" y="-34" width="32" height="24" rx="3" fill="#D9B27E"/></g><g class="kub kub-fura" style="--d:1560ms"><g class="kub" style="--d:0ms"><polygon points="-544.0,258.0 -458.0,301.0 -492.0,318.0 -578.0,275.0" fill="#16304F" opacity=".1"/><polygon points="-594.0,267.0 -508.0,310.0 -508.0,270.0 -594.0,227.0" fill="#D3E3F0"/><polygon points="-474.0,293.0 -508.0,310.0 -508.0,270.0 -474.0,253.0" fill="#AFC8DC"/><polygon points="-560.0,210.0 -474.0,253.0 -508.0,270.0 -594.0,227.0" fill="#F4F8FC"/></g><g class="kub" style="--d:0ms"><polygon points="-448.0,282.0 -414.0,299.0 -448.0,316.0 -482.0,299.0" fill="#16304F" opacity=".1"/><polygon points="-498.0,291.0 -464.0,308.0 -464.0,262.0 -498.0,245.0" fill="#F08A26"/><polygon points="-430.0,291.0 -464.0,308.0 -464.0,262.0 -430.0,245.0" fill="#D4741A"/><polygon points="-464.0,228.0 -430.0,245.0 -464.0,262.0 -498.0,245.0" fill="#FFB36B"/></g></g><g class="kub kub-fura" style="--d:1710ms"><g class="kub" style="--d:0ms"><polygon points="436.0,338.0 350.0,295.0 316.0,312.0 402.0,355.0" fill="#16304F" opacity=".1"/><polygon points="386.0,347.0 300.0,304.0 300.0,264.0 386.0,307.0" fill="#D3E3F0"/><polygon points="334.0,287.0 300.0,304.0 300.0,264.0 334.0,247.0" fill="#AFC8DC"/><polygon points="420.0,290.0 334.0,247.0 300.0,264.0 386.0,307.0" fill="#F4F8FC"/></g><g class="kub" style="--d:0ms"><polygon points="340.0,314.0 306.0,297.0 272.0,314.0 306.0,331.0" fill="#16304F" opacity=".1"/><polygon points="290.0,323.0 256.0,306.0 256.0,260.0 290.0,277.0" fill="#F08A26"/><polygon points="290.0,289.0 256.0,306.0 256.0,260.0 290.0,243.0" fill="#D4741A"/><polygon points="324.0,260.0 290.0,243.0 256.0,260.0 290.0,277.0" fill="#FFB36B"/></g></g><g class="kub" style="--d:1860ms"><polygon points="-782.0,289.0 -760.0,278.0 -738.0,289.0 -760.0,300.0" fill="#8A6A3E"/><polygon points="-776.0,273.0 -776.0,286.0 -760.0,294.0 -760.0,281.0" fill="#D9B27E"/><polygon points="-744.0,273.0 -744.0,286.0 -760.0,294.0 -760.0,281.0" fill="#A67C46"/><polygon points="-776.0,273.0 -760.0,265.0 -744.0,273.0 -760.0,281.0" fill="#EBCB9C"/></g><g class="kub" style="--d:1950ms"><polygon points="-712.0,329.0 -690.0,318.0 -668.0,329.0 -690.0,340.0" fill="#8A6A3E"/><polygon points="-706.0,313.0 -706.0,326.0 -690.0,334.0 -690.0,321.0" fill="#EBCB9C"/><polygon points="-674.0,313.0 -674.0,326.0 -690.0,334.0 -690.0,321.0" fill="#A67C46"/><polygon points="-706.0,313.0 -690.0,305.0 -674.0,313.0 -690.0,321.0" fill="#EBCB9C"/></g><g class="kub" style="--d:2040ms"><polygon points="118.0,389.0 140.0,378.0 162.0,389.0 140.0,400.0" fill="#8A6A3E"/><polygon points="124.0,373.0 124.0,386.0 140.0,394.0 140.0,381.0" fill="#D9B27E"/><polygon points="156.0,373.0 156.0,386.0 140.0,394.0 140.0,381.0" fill="#A67C46"/><polygon points="124.0,373.0 140.0,365.0 156.0,373.0 140.0,381.0" fill="#EBCB9C"/></g><g class="kub" style="--d:2130ms"><polygon points="198.0,419.0 220.0,408.0 242.0,419.0 220.0,430.0" fill="#8A6A3E"/><polygon points="204.0,403.0 204.0,416.0 220.0,424.0 220.0,411.0" fill="#EBCB9C"/><polygon points="236.0,403.0 236.0,416.0 220.0,424.0 220.0,411.0" fill="#A67C46"/><polygon points="204.0,403.0 220.0,395.0 236.0,403.0 220.0,411.0" fill="#EBCB9C"/></g><g class="kub" style="--d:2220ms"><polygon points="678.0,289.0 700.0,278.0 722.0,289.0 700.0,300.0" fill="#8A6A3E"/><polygon points="684.0,273.0 684.0,286.0 700.0,294.0 700.0,281.0" fill="#D9B27E"/><polygon points="716.0,273.0 716.0,286.0 700.0,294.0 700.0,281.0" fill="#A67C46"/><polygon points="684.0,273.0 700.0,265.0 716.0,273.0 700.0,281.0" fill="#EBCB9C"/></g><g class="kub" style="--d:2310ms"><polygon points="748.0,329.0 770.0,318.0 792.0,329.0 770.0,340.0" fill="#8A6A3E"/><polygon points="754.0,313.0 754.0,326.0 770.0,334.0 770.0,321.0" fill="#EBCB9C"/><polygon points="786.0,313.0 786.0,326.0 770.0,334.0 770.0,321.0" fill="#A67C46"/><polygon points="754.0,313.0 770.0,305.0 786.0,313.0 770.0,321.0" fill="#EBCB9C"/></g></svg>
 <button class="tucha-znak" type="button" data-tucha aria-label="Уронить короб из тучи"><img src="assets/img/tucha-znak.png" alt="" width="386" height="300"></button>
 <a class="vniz" href="#uslugi" aria-label="Вниз, к услугам">↓</a>
 </section>
