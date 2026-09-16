@@ -414,6 +414,33 @@ window.Tucha = (function () {
   var TK = ['СДЭК', 'ПЭК', 'Деловые Линии', 'Байкал Сервис', 'Другая'];
   function zadanieMesyaca(d) { var m = (d || new Date()).getMonth() + 1; return Object.assign({ sezon: !!SEZON[m] }, ZADANIYA[m]); }
   /* загрузка как в игре: пиксельные квадраты бегут по кругу, строка шагов. Возвращает Promise */
+  /* реплики Проводника печатаются, как в диалоге игры */
+  function pechatRechi() {
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var oko = new IntersectionObserver(function (zapisi) {
+      zapisi.forEach(function (z) {
+        if (!z.isIntersecting) return;
+        var e = z.target;
+        oko.unobserve(e);
+        if (e.children.length) return;
+        var s = e.textContent, i = 0;
+        if (!s || s.length > 220) return;
+        e.style.minHeight = e.offsetHeight + 'px';
+        e.textContent = '';
+        e.classList.add('rech-pech');
+        var tm = setInterval(function () {
+          i++;
+          e.textContent = s.slice(0, i);
+          if (i >= s.length) { clearInterval(tm); e.classList.remove('rech-pech'); e.style.minHeight = ''; }
+        }, 22);
+      });
+    }, { threshold: 0.45 });
+    [].forEach.call(document.querySelectorAll('.rech'), function (e) { oko.observe(e); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pechatRechi);
+  else pechatRechi();
+
   function zagruzka(o) {
     o = o || {};
     var shagi = o.shagi || ['сохраняем данные', 'открываем кабинет'];
