@@ -31,13 +31,11 @@ h2 { font-size: clamp(30px, 4.4vw, 56px); font-weight: 300; letter-spacing: .04e
 h2 b { font-weight: 600; color: var(--lazur); }
 .lid { color: var(--mute); max-width: 62ch; margin: 16px 0 0; }
 
-/* небо: звёзды и туманность рисует холст */
+/* небо мира: рассвет над складом, без космоса */
 .nebo { position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(60% 40% at 18% 12%, rgba(51, 108, 170, .28), transparent 70%),
-    radial-gradient(52% 38% at 86% 26%, rgba(96, 62, 160, .2), transparent 72%),
-    radial-gradient(70% 50% at 50% 92%, rgba(28, 86, 142, .3), transparent 70%); }
-.zvezdy { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    linear-gradient(180deg, #0B1E38 0%, #123255 38%, #1B4A78 70%, #2A6BA8 100%),
+    none; }
 body > * { position: relative; z-index: 1; }
 
 /* шапка */
@@ -71,41 +69,21 @@ body > * { position: relative; z-index: 1; }
 .geroy-fakty { display: flex; justify-content: center; gap: 34px; flex-wrap: wrap; margin-top: 30px; color: var(--mute); font-size: 14px; }
 .geroy-fakty b { color: #fff; font-family: var(--zag); font-weight: 500; }
 
-/* планета снизу */
-.planeta { position: absolute; left: 50%; bottom: calc(var(--cap) - var(--pw)); translate: -50% 0;
-  width: var(--pw); aspect-ratio: 1; border-radius: 50%; z-index: 1;
-  background: radial-gradient(circle at 50% 22%, #3E86C6 0%, #235F96 26%, #143A63 52%, #0B2340 72%, #081A31 100%);
-  box-shadow: 0 -40px 120px -30px rgba(79, 179, 234, .5), inset 0 24px 60px -20px rgba(160, 220, 255, .45); }
-.planeta::after { content: ''; position: absolute; inset: 0; border-radius: 50%; opacity: .55; overflow: hidden;
-  background:
-    radial-gradient(34% 13% at 30% 26%, rgba(150, 220, 255, .4), transparent 70%),
-    radial-gradient(26% 10% at 58% 33%, rgba(140, 210, 255, .32), transparent 70%),
-    radial-gradient(20% 8% at 44% 40%, rgba(160, 225, 255, .26), transparent 70%),
-    radial-gradient(30% 11% at 76% 30%, rgba(130, 200, 250, .3), transparent 70%),
-    radial-gradient(22% 9% at 16% 36%, rgba(130, 200, 250, .24), transparent 70%);
-  background-size: 200% 100%; animation: vrashenie 140s linear infinite; }
-@keyframes vrashenie { to { background-position: -200% 0; } }
-/* атмосфера над горизонтом */
-.atmosfera { position: absolute; left: 50%; bottom: calc(var(--cap) - var(--pw)); translate: -50% 0;
-  width: calc(var(--pw) + 90px); aspect-ratio: 1; border-radius: 50%; z-index: 1; pointer-events: none;
-  background: radial-gradient(closest-side, rgba(110, 195, 255, 0) 92%, rgba(110, 195, 255, .5) 97%, rgba(110, 195, 255, 0) 100%);
-  animation: dyhanie 9s ease-in-out infinite; }
-@keyframes dyhanie { 50% { opacity: .65; } }
-.tucha-znak { position: absolute; left: 50%; bottom: calc(var(--cap) - 86px); translate: -50% 0; width: min(16vw, 152px);
+/* мир Тучи: площадка со складом, короба встают один за другим */
+.kubiki { position: absolute; left: 50%; bottom: -22%; translate: -50% 0;
+  width: min(72vw, 840px); z-index: 2; pointer-events: none;
+  filter: drop-shadow(0 26px 50px rgba(4, 12, 24, .55)); }
+.tucha-znak { position: absolute; left: 50%; bottom: 23%; translate: -50% 0; width: min(12vw, 126px);
   z-index: 3; padding: 0; border: 0; background: none; cursor: pointer; line-height: 0;
-  filter: drop-shadow(0 18px 40px rgba(79, 179, 234, .55)); animation: parit 7s ease-in-out infinite; }
-.tucha-znak:hover { filter: drop-shadow(0 18px 46px rgba(120, 200, 255, .8)); }
+  filter: drop-shadow(0 16px 34px rgba(79, 179, 234, .45)); animation: parit 7s ease-in-out infinite; }
+.tucha-znak:hover { filter: drop-shadow(0 16px 40px rgba(120, 200, 255, .75)); }
 .tucha-znak:active { transform: scale(.97); }
 @keyframes parit { 50% { transform: translateY(-14px); } }
-.korob-padaet { position: absolute; z-index: 2; width: 26px; height: 26px; border-radius: 4px; background: #D9B27E;
-  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, .18); pointer-events: none; animation: padenie 1.5s cubic-bezier(.45, .05, .55, .95) forwards; }
-.korob-padaet::after { content: ''; position: absolute; left: 5px; right: 5px; top: 9px; height: 7px; border-radius: 2px; background: #fff; opacity: .9; }
-@keyframes padenie { to { transform: translateY(150px) rotate(var(--pov, 40deg)); opacity: 0; } }
-
-/* стройка на горизонте: короба встают один за другим */
-.kubiki { position: absolute; left: 50%; bottom: calc(var(--cap) - 118px); translate: -50% 0;
-  width: min(76vw, 860px); z-index: 2; pointer-events: none; opacity: .92;
-  filter: drop-shadow(0 12px 26px rgba(4, 12, 24, .6)); }
+.korob-padaet { position: absolute; z-index: 2; width: 24px; height: 24px; border-radius: 4px; background: #D9B27E;
+  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, .18); pointer-events: none;
+  animation: padenie 1.5s cubic-bezier(.45, .05, .55, .95) forwards; }
+.korob-padaet::after { content: ''; position: absolute; left: 5px; right: 5px; top: 8px; height: 6px; border-radius: 2px; background: #fff; opacity: .9; }
+@keyframes padenie { to { transform: translateY(140px) rotate(var(--pov, 40deg)); opacity: 0; } }
 .kub { opacity: 0; transform: translateY(30px); animation: rost 22s ease-in-out infinite; animation-delay: var(--d, 0ms); }
 @keyframes rost {
   0% { opacity: 0; transform: translateY(30px) scale(.94); }
@@ -119,13 +97,13 @@ body > * { position: relative; z-index: 1; }
 
 /* планеты услуг по краям */
 .sputnik { position: absolute; z-index: 2; display: flex; align-items: center; gap: 14px; color: #fff; text-decoration: none; }
-.sputnik i { width: 84px; height: 84px; border-radius: 50%; flex: none; display: block;
-  box-shadow: inset -12px -10px 26px rgba(0, 0, 0, .55), 0 0 40px -10px rgba(79, 179, 234, .5); }
+.sputnik i { width: 62px; height: 62px; border-radius: 12px; flex: none; display: block; rotate: 45deg; scale: 1 .58;
+  box-shadow: inset -10px -8px 20px rgba(0, 0, 0, .5), 0 14px 26px -14px rgba(4, 12, 24, .9); }
 .sputnik span { font: 600 12px/1 'Golos Text', sans-serif; letter-spacing: .26em; text-transform: uppercase; }
 .sputnik small { display: block; color: var(--mute); letter-spacing: .04em; font-size: 12px; margin-top: 6px; text-transform: none; }
-.sputnik:hover i { box-shadow: inset -12px -10px 26px rgba(0, 0, 0, .55), 0 0 60px -6px rgba(79, 179, 234, .8); }
-.sp-1 { left: -30px; top: 50%; }
-.sp-2 { right: -30px; top: 42%; flex-direction: row-reverse; text-align: right; }
+.sputnik:hover i { box-shadow: inset -10px -8px 20px rgba(0, 0, 0, .5), 0 0 40px -6px rgba(79, 179, 234, .75); }
+.sp-1 { left: 14px; bottom: 25%; }
+.sp-2 { right: 14px; bottom: 31%; flex-direction: row-reverse; text-align: right; }
 .vniz { position: absolute; left: 50%; bottom: 26px; translate: -50% 0; z-index: 4; width: 46px; height: 46px; border-radius: 50%;
   display: grid; place-items: center; color: #fff; text-decoration: none; background: rgba(255, 255, 255, .08);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25); animation: pryg 2.4s ease-in-out infinite; }
@@ -259,7 +237,9 @@ body > * { position: relative; z-index: 1; }
   .orbita, .kadry, .dva, .cifry, .ceny, .dvoe { grid-template-columns: minmax(0, 1fr); }
   .bloki span, .bloki button { flex-wrap: wrap; }
   .bloki span em, .bloki button em { margin-left: 20px; }
-  .geroy { min-height: auto; padding-bottom: 46vw; --pw: 190vw; --cap: 140px; }
+  .geroy { min-height: auto; padding-bottom: 66vw; }
+  .kubiki { width: 150vw; bottom: -14%; }
+  .tucha-znak { bottom: 30%; width: 22vw; }
 }
 /* движение включается скриптом */
 .anim .pok { opacity: 0; transform: translateY(26px); }
@@ -269,16 +249,14 @@ body > * { position: relative; z-index: 1; }
 .anim .uroven.idet i span { width: 14%; transition: width 1s cubic-bezier(.23, 1, .32, 1) .4s; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .nebo, .tucha-znak, .vniz { animation: none; }
+  .tucha-znak, .vniz { animation: none; }
   .kub { opacity: 1; transform: none; animation: none; }
   .okno { opacity: .9; animation: none; }
-  .planeta::after, .atmosfera { animation: none; }
   .anim .pok { opacity: 1; transform: none; }
 }
 </style>
 </head><body>
 <div class="nebo" aria-hidden="true"></div>
-<canvas class="zvezdy" aria-hidden="true"></canvas>
 <header class="shapka"><div class="wrap shapka-g">
 <a class="logo" href="../novyy/"><img src="assets/img/logo-v-svetl.png" alt="Туча, Мировая Лавка" width="136" height="34"></a>
 <nav class="menu" aria-label="Услуги"><a href="../novyy/hranenie/">Хранение</a><a href="../novyy/obrabotka/">Обработка</a><a href="../novyy/dostavka/">Доставка</a><a href="../novyy/tamozhnya/">Таможня</a><a href="../novyy/lavka/">Лавка</a><a href="../novyy/vitrina/">Витрина</a></nav>
@@ -296,9 +274,7 @@ body > * { position: relative; z-index: 1; }
 <div class="geroy-fakty"><span><b>+3 000</b> паллето-мест</span><span><b>от 16,42 ₽</b> за паллето-место в сутки, с НДС</span><span><b>20 минут</b> на договор</span><span><b>пн-пт</b> 9:00 до 18:00</span></div>
 </div>
 <a class="sputnik sp-1" href="../novyy/hranenie/"><i style="background:radial-gradient(circle at 34% 28%, #3E86C6, #173C63)"></i><span>Хранение<small>от одной паллеты</small></span></a><a class="sputnik sp-2" href="../novyy/dostavka/"><i style="background:radial-gradient(circle at 34% 28%, #5FB9E8, #1E6E9E)"></i><span>Доставка<small>по России и за рубеж</small></span></a>
-<div class="atmosfera" aria-hidden="true"></div>
-<div class="planeta" aria-hidden="true"></div>
-<svg class="kubiki" viewBox="-360 -150 720 190" aria-hidden="true"><g class="kub" style="--d:0ms"><polygon points="-334,-69.0 -334,-17.0 -300,0 -300,-52" fill="#14375C"/><polygon points="-266,-69.0 -266,-17.0 -300,0 -300,-52" fill="#0F2A47"/><polygon points="-334,-69.0 -300,-86 -266,-69.0 -300,-52" fill="#2A6299"/><rect class="okno" x="-326" y="-55.0" width="7" height="9" rx="1.5" style="--o:260ms"/><rect class="okno" x="-313" y="-55.0" width="7" height="9" rx="1.5" style="--o:330ms"/><rect class="okno" x="-326" y="-31.0" width="7" height="9" rx="1.5" style="--o:380ms"/><rect class="okno" x="-313" y="-31.0" width="7" height="9" rx="1.5" style="--o:450ms"/></g><g class="kub" style="--d:220ms"><polygon points="-264,-95.0 -264,-17.0 -230,0 -230,-78" fill="#14375C"/><polygon points="-196,-95.0 -196,-17.0 -230,0 -230,-78" fill="#0F2A47"/><polygon points="-264,-95.0 -230,-112 -196,-95.0 -230,-78" fill="#2A6299"/><rect class="okno" x="-256" y="-81.0" width="7" height="9" rx="1.5" style="--o:480ms"/><rect class="okno" x="-243" y="-81.0" width="7" height="9" rx="1.5" style="--o:550ms"/><rect class="okno" x="-256" y="-57.0" width="7" height="9" rx="1.5" style="--o:600ms"/><rect class="okno" x="-243" y="-57.0" width="7" height="9" rx="1.5" style="--o:670ms"/><rect class="okno" x="-256" y="-33.0" width="7" height="9" rx="1.5" style="--o:720ms"/><rect class="okno" x="-243" y="-33.0" width="7" height="9" rx="1.5" style="--o:790ms"/></g><g class="kub" style="--d:440ms"><polygon points="-194,-61.0 -194,-17.0 -160,0 -160,-44" fill="#14375C"/><polygon points="-126,-61.0 -126,-17.0 -160,0 -160,-44" fill="#0F2A47"/><polygon points="-194,-61.0 -160,-78 -126,-61.0 -160,-44" fill="#2A6299"/><rect class="okno" x="-186" y="-47.0" width="7" height="9" rx="1.5" style="--o:700ms"/><rect class="okno" x="-173" y="-47.0" width="7" height="9" rx="1.5" style="--o:770ms"/></g><g class="kub" style="--d:660ms"><polygon points="-124,-113.0 -124,-17.0 -90,0 -90,-96" fill="#14375C"/><polygon points="-56,-113.0 -56,-17.0 -90,0 -90,-96" fill="#0F2A47"/><polygon points="-124,-113.0 -90,-130 -56,-113.0 -90,-96" fill="#2A6299"/><rect class="okno" x="-116" y="-99.0" width="7" height="9" rx="1.5" style="--o:920ms"/><rect class="okno" x="-103" y="-99.0" width="7" height="9" rx="1.5" style="--o:990ms"/><rect class="okno" x="-116" y="-75.0" width="7" height="9" rx="1.5" style="--o:1040ms"/><rect class="okno" x="-103" y="-75.0" width="7" height="9" rx="1.5" style="--o:1110ms"/><rect class="okno" x="-116" y="-51.0" width="7" height="9" rx="1.5" style="--o:1160ms"/><rect class="okno" x="-103" y="-51.0" width="7" height="9" rx="1.5" style="--o:1230ms"/></g><g class="kub" style="--d:880ms"><polygon points="-54,-79.0 -54,-17.0 -20,0 -20,-62" fill="#14375C"/><polygon points="14,-79.0 14,-17.0 -20,0 -20,-62" fill="#0F2A47"/><polygon points="-54,-79.0 -20,-96 14,-79.0 -20,-62" fill="#2A6299"/><rect class="okno" x="-46" y="-65.0" width="7" height="9" rx="1.5" style="--o:1140ms"/><rect class="okno" x="-33" y="-65.0" width="7" height="9" rx="1.5" style="--o:1210ms"/><rect class="okno" x="-46" y="-41.0" width="7" height="9" rx="1.5" style="--o:1260ms"/><rect class="okno" x="-33" y="-41.0" width="7" height="9" rx="1.5" style="--o:1330ms"/></g><g class="kub" style="--d:1100ms"><polygon points="16,-101.0 16,-17.0 50,0 50,-84" fill="#14375C"/><polygon points="84,-101.0 84,-17.0 50,0 50,-84" fill="#0F2A47"/><polygon points="16,-101.0 50,-118 84,-101.0 50,-84" fill="#2A6299"/><rect class="okno" x="24" y="-87.0" width="7" height="9" rx="1.5" style="--o:1360ms"/><rect class="okno" x="37" y="-87.0" width="7" height="9" rx="1.5" style="--o:1430ms"/><rect class="okno" x="24" y="-63.0" width="7" height="9" rx="1.5" style="--o:1480ms"/><rect class="okno" x="37" y="-63.0" width="7" height="9" rx="1.5" style="--o:1550ms"/><rect class="okno" x="24" y="-39.0" width="7" height="9" rx="1.5" style="--o:1600ms"/><rect class="okno" x="37" y="-39.0" width="7" height="9" rx="1.5" style="--o:1670ms"/></g><g class="kub" style="--d:1320ms"><polygon points="86,-65.0 86,-17.0 120,0 120,-48" fill="#14375C"/><polygon points="154,-65.0 154,-17.0 120,0 120,-48" fill="#0F2A47"/><polygon points="86,-65.0 120,-82 154,-65.0 120,-48" fill="#2A6299"/><rect class="okno" x="94" y="-51.0" width="7" height="9" rx="1.5" style="--o:1580ms"/><rect class="okno" x="107" y="-51.0" width="7" height="9" rx="1.5" style="--o:1650ms"/></g><g class="kub" style="--d:1540ms"><polygon points="156,-87.0 156,-17.0 190,0 190,-70" fill="#14375C"/><polygon points="224,-87.0 224,-17.0 190,0 190,-70" fill="#0F2A47"/><polygon points="156,-87.0 190,-104 224,-87.0 190,-70" fill="#2A6299"/><rect class="okno" x="164" y="-73.0" width="7" height="9" rx="1.5" style="--o:1800ms"/><rect class="okno" x="177" y="-73.0" width="7" height="9" rx="1.5" style="--o:1870ms"/><rect class="okno" x="164" y="-49.0" width="7" height="9" rx="1.5" style="--o:1920ms"/><rect class="okno" x="177" y="-49.0" width="7" height="9" rx="1.5" style="--o:1990ms"/></g><g class="kub" style="--d:1760ms"><polygon points="226,-57.0 226,-17.0 260,0 260,-40" fill="#14375C"/><polygon points="294,-57.0 294,-17.0 260,0 260,-40" fill="#0F2A47"/><polygon points="226,-57.0 260,-74 294,-57.0 260,-40" fill="#2A6299"/><rect class="okno" x="234" y="-43.0" width="7" height="9" rx="1.5" style="--o:2020ms"/><rect class="okno" x="247" y="-43.0" width="7" height="9" rx="1.5" style="--o:2090ms"/></g><g class="kub" style="--d:1980ms"><polygon points="-295,-81.0 -295,-41.0 -265,-26 -265,-66" fill="#14375C"/><polygon points="-235,-81.0 -235,-41.0 -265,-26 -265,-66" fill="#0F2A47"/><polygon points="-295,-81.0 -265,-96 -235,-81.0 -265,-66" fill="#2A6299"/><rect class="okno" x="-287" y="-67.0" width="7" height="9" rx="1.5" style="--o:2240ms"/><rect class="okno" x="-274" y="-67.0" width="7" height="9" rx="1.5" style="--o:2310ms"/></g><g class="kub" style="--d:2200ms"><polygon points="-155,-99.0 -155,-41.0 -125,-26 -125,-84" fill="#14375C"/><polygon points="-95,-99.0 -95,-41.0 -125,-26 -125,-84" fill="#0F2A47"/><polygon points="-155,-99.0 -125,-114 -95,-99.0 -125,-84" fill="#2A6299"/><rect class="okno" x="-147" y="-85.0" width="7" height="9" rx="1.5" style="--o:2460ms"/><rect class="okno" x="-134" y="-85.0" width="7" height="9" rx="1.5" style="--o:2530ms"/><rect class="okno" x="-147" y="-61.0" width="7" height="9" rx="1.5" style="--o:2580ms"/><rect class="okno" x="-134" y="-61.0" width="7" height="9" rx="1.5" style="--o:2650ms"/></g><g class="kub" style="--d:2420ms"><polygon points="-15,-77.0 -15,-41.0 15,-26 15,-62" fill="#14375C"/><polygon points="45,-77.0 45,-41.0 15,-26 15,-62" fill="#0F2A47"/><polygon points="-15,-77.0 15,-92 45,-77.0 15,-62" fill="#2A6299"/><rect class="okno" x="-7" y="-63.0" width="7" height="9" rx="1.5" style="--o:2680ms"/><rect class="okno" x="6" y="-63.0" width="7" height="9" rx="1.5" style="--o:2750ms"/></g><g class="kub" style="--d:2640ms"><polygon points="125,-93.0 125,-41.0 155,-26 155,-78" fill="#14375C"/><polygon points="185,-93.0 185,-41.0 155,-26 155,-78" fill="#0F2A47"/><polygon points="125,-93.0 155,-108 185,-93.0 155,-78" fill="#2A6299"/><rect class="okno" x="133" y="-79.0" width="7" height="9" rx="1.5" style="--o:2900ms"/><rect class="okno" x="146" y="-79.0" width="7" height="9" rx="1.5" style="--o:2970ms"/><rect class="okno" x="133" y="-55.0" width="7" height="9" rx="1.5" style="--o:3020ms"/><rect class="okno" x="146" y="-55.0" width="7" height="9" rx="1.5" style="--o:3090ms"/></g><g class="kub" style="--d:2860ms"><polygon points="195,-71.0 195,-41.0 225,-26 225,-56" fill="#14375C"/><polygon points="255,-71.0 255,-41.0 225,-26 225,-56" fill="#0F2A47"/><polygon points="195,-71.0 225,-86 255,-71.0 225,-56" fill="#2A6299"/><rect class="okno" x="203" y="-57.0" width="7" height="9" rx="1.5" style="--o:3120ms"/><rect class="okno" x="216" y="-57.0" width="7" height="9" rx="1.5" style="--o:3190ms"/></g></svg>
+<svg class="kubiki" viewBox="-520 -230 1040 640" aria-hidden="true"><polygon points="-470,90 0,-145 470,90 0,325" fill="#1B4E82"/><polygon points="-470,90 0,325 0,367 -470,132" fill="#123A63"/><polygon points="470,90 0,325 0,367 470,132" fill="#0D2C4D"/><polygon points="-470,90 0,-145 470,90 0,325" fill="none" stroke="#3E86C6" stroke-width="2" opacity=".5"/><g class="kub" style="--d:0ms"><polygon points="-282,-102.0 -282,-16.0 -250,0 -250,-86" fill="#17406B"/><polygon points="-218,-102.0 -218,-16.0 -250,0 -250,-86" fill="#102E4F"/><polygon points="-282,-102.0 -250,-118 -218,-102.0 -250,-86" fill="#2F6CA6"/><rect class="okno" x="-273" y="-86" width="7" height="9" rx="1.5" style="--o:300ms"/><rect class="okno" x="-259" y="-86" width="7" height="9" rx="1.5" style="--o:370ms"/><rect class="okno" x="-273" y="-58" width="7" height="9" rx="1.5" style="--o:430ms"/><rect class="okno" x="-259" y="-58" width="7" height="9" rx="1.5" style="--o:500ms"/></g><g class="kub" style="--d:210ms"><polygon points="-192,-74.0 -192,-16.0 -160,0 -160,-58" fill="#17406B"/><polygon points="-128,-74.0 -128,-16.0 -160,0 -160,-58" fill="#102E4F"/><polygon points="-192,-74.0 -160,-90 -128,-74.0 -160,-58" fill="#2F6CA6"/><rect class="okno" x="-183" y="-58" width="7" height="9" rx="1.5" style="--o:510ms"/><rect class="okno" x="-169" y="-58" width="7" height="9" rx="1.5" style="--o:580ms"/></g><g class="kub" style="--d:420ms"><polygon points="-102,-120.0 -102,-16.0 -70,0 -70,-104" fill="#17406B"/><polygon points="-38,-120.0 -38,-16.0 -70,0 -70,-104" fill="#102E4F"/><polygon points="-102,-120.0 -70,-136 -38,-120.0 -70,-104" fill="#2F6CA6"/><rect class="okno" x="-93" y="-104" width="7" height="9" rx="1.5" style="--o:720ms"/><rect class="okno" x="-79" y="-104" width="7" height="9" rx="1.5" style="--o:790ms"/><rect class="okno" x="-93" y="-76" width="7" height="9" rx="1.5" style="--o:850ms"/><rect class="okno" x="-79" y="-76" width="7" height="9" rx="1.5" style="--o:920ms"/><rect class="okno" x="-93" y="-48" width="7" height="9" rx="1.5" style="--o:980ms"/><rect class="okno" x="-79" y="-48" width="7" height="9" rx="1.5" style="--o:1050ms"/></g><g class="kub" style="--d:630ms"><polygon points="-12,-82.0 -12,-16.0 20,0 20,-66" fill="#17406B"/><polygon points="52,-82.0 52,-16.0 20,0 20,-66" fill="#102E4F"/><polygon points="-12,-82.0 20,-98 52,-82.0 20,-66" fill="#2F6CA6"/><rect class="okno" x="-3" y="-66" width="7" height="9" rx="1.5" style="--o:930ms"/><rect class="okno" x="11" y="-66" width="7" height="9" rx="1.5" style="--o:1000ms"/><rect class="okno" x="-3" y="-38" width="7" height="9" rx="1.5" style="--o:1060ms"/><rect class="okno" x="11" y="-38" width="7" height="9" rx="1.5" style="--o:1130ms"/></g><g class="kub" style="--d:840ms"><polygon points="78,-108.0 78,-16.0 110,0 110,-92" fill="#17406B"/><polygon points="142,-108.0 142,-16.0 110,0 110,-92" fill="#102E4F"/><polygon points="78,-108.0 110,-124 142,-108.0 110,-92" fill="#2F6CA6"/><rect class="okno" x="87" y="-92" width="7" height="9" rx="1.5" style="--o:1140ms"/><rect class="okno" x="101" y="-92" width="7" height="9" rx="1.5" style="--o:1210ms"/><rect class="okno" x="87" y="-64" width="7" height="9" rx="1.5" style="--o:1270ms"/><rect class="okno" x="101" y="-64" width="7" height="9" rx="1.5" style="--o:1340ms"/><rect class="okno" x="87" y="-36" width="7" height="9" rx="1.5" style="--o:1400ms"/><rect class="okno" x="101" y="-36" width="7" height="9" rx="1.5" style="--o:1470ms"/></g><g class="kub" style="--d:1050ms"><polygon points="168,-70.0 168,-16.0 200,0 200,-54" fill="#17406B"/><polygon points="232,-70.0 232,-16.0 200,0 200,-54" fill="#102E4F"/><polygon points="168,-70.0 200,-86 232,-70.0 200,-54" fill="#2F6CA6"/><rect class="okno" x="177" y="-54" width="7" height="9" rx="1.5" style="--o:1350ms"/><rect class="okno" x="191" y="-54" width="7" height="9" rx="1.5" style="--o:1420ms"/></g><g class="kub" style="--d:1260ms"><polygon points="-334,61.0 -334,123.0 -300,140 -300,78" fill="#17406B"/><polygon points="-266,61.0 -266,123.0 -300,140 -300,78" fill="#102E4F"/><polygon points="-334,61.0 -300,44 -266,61.0 -300,78" fill="#2F6CA6"/><rect class="okno" x="-325" y="77" width="7" height="9" rx="1.5" style="--o:1560ms"/><rect class="okno" x="-311" y="77" width="7" height="9" rx="1.5" style="--o:1630ms"/><rect class="okno" x="-325" y="105" width="7" height="9" rx="1.5" style="--o:1690ms"/><rect class="okno" x="-311" y="105" width="7" height="9" rx="1.5" style="--o:1760ms"/></g><g class="kub" style="--d:1470ms"><polygon points="-234,27.0 -234,123.0 -200,140 -200,44" fill="#17406B"/><polygon points="-166,27.0 -166,123.0 -200,140 -200,44" fill="#102E4F"/><polygon points="-234,27.0 -200,10 -166,27.0 -200,44" fill="#2F6CA6"/><rect class="okno" x="-225" y="43" width="7" height="9" rx="1.5" style="--o:1770ms"/><rect class="okno" x="-211" y="43" width="7" height="9" rx="1.5" style="--o:1840ms"/><rect class="okno" x="-225" y="71" width="7" height="9" rx="1.5" style="--o:1900ms"/><rect class="okno" x="-211" y="71" width="7" height="9" rx="1.5" style="--o:1970ms"/><rect class="okno" x="-225" y="99" width="7" height="9" rx="1.5" style="--o:2030ms"/><rect class="okno" x="-211" y="99" width="7" height="9" rx="1.5" style="--o:2100ms"/></g><g class="kub" style="--d:1680ms"><polygon points="-134,75.0 -134,123.0 -100,140 -100,92" fill="#17406B"/><polygon points="-66,75.0 -66,123.0 -100,140 -100,92" fill="#102E4F"/><polygon points="-134,75.0 -100,58 -66,75.0 -100,92" fill="#2F6CA6"/><rect class="okno" x="-125" y="91" width="7" height="9" rx="1.5" style="--o:1980ms"/><rect class="okno" x="-111" y="91" width="7" height="9" rx="1.5" style="--o:2050ms"/></g><g class="kub" style="--d:1890ms"><polygon points="-34,45.0 -34,123.0 0,140 0,62" fill="#17406B"/><polygon points="34,45.0 34,123.0 0,140 0,62" fill="#102E4F"/><polygon points="-34,45.0 0,28 34,45.0 0,62" fill="#2F6CA6"/><rect class="okno" x="-25" y="61" width="7" height="9" rx="1.5" style="--o:2190ms"/><rect class="okno" x="-11" y="61" width="7" height="9" rx="1.5" style="--o:2260ms"/><rect class="okno" x="-25" y="89" width="7" height="9" rx="1.5" style="--o:2320ms"/><rect class="okno" x="-11" y="89" width="7" height="9" rx="1.5" style="--o:2390ms"/></g><g class="kub" style="--d:2100ms"><polygon points="66,67.0 66,123.0 100,140 100,84" fill="#17406B"/><polygon points="134,67.0 134,123.0 100,140 100,84" fill="#102E4F"/><polygon points="66,67.0 100,50 134,67.0 100,84" fill="#2F6CA6"/><rect class="okno" x="75" y="83" width="7" height="9" rx="1.5" style="--o:2400ms"/><rect class="okno" x="89" y="83" width="7" height="9" rx="1.5" style="--o:2470ms"/></g><g class="kub" style="--d:2310ms"><polygon points="166,35.0 166,123.0 200,140 200,52" fill="#17406B"/><polygon points="234,35.0 234,123.0 200,140 200,52" fill="#102E4F"/><polygon points="166,35.0 200,18 234,35.0 200,52" fill="#2F6CA6"/><rect class="okno" x="175" y="51" width="7" height="9" rx="1.5" style="--o:2610ms"/><rect class="okno" x="189" y="51" width="7" height="9" rx="1.5" style="--o:2680ms"/><rect class="okno" x="175" y="79" width="7" height="9" rx="1.5" style="--o:2740ms"/><rect class="okno" x="189" y="79" width="7" height="9" rx="1.5" style="--o:2810ms"/></g><g class="kub" style="--d:2520ms"><polygon points="266,79.0 266,123.0 300,140 300,96" fill="#17406B"/><polygon points="334,79.0 334,123.0 300,140 300,96" fill="#102E4F"/><polygon points="266,79.0 300,62 334,79.0 300,96" fill="#2F6CA6"/><rect class="okno" x="275" y="95" width="7" height="9" rx="1.5" style="--o:2820ms"/><rect class="okno" x="289" y="95" width="7" height="9" rx="1.5" style="--o:2890ms"/></g><g class="kub" style="--d:2730ms"><polygon points="-390,50 -370,40 -350,50 -370,60" fill="#8A6A3E"/><polygon points="-384,36 -384,48 -370,55 -370,43" fill="#C79B5E"/><polygon points="-356,36 -356,48 -370,55 -370,43" fill="#A67C46"/><polygon points="-384,36 -370,29 -356,36 -370,43" fill="#D9B27E"/></g><g class="kub" style="--d:2910ms"><polygon points="340,60 360,50 380,60 360,70" fill="#8A6A3E"/><polygon points="346,46 346,58 360,65 360,53" fill="#C79B5E"/><polygon points="374,46 374,58 360,65 360,53" fill="#A67C46"/><polygon points="346,46 360,39 374,46 360,53" fill="#D9B27E"/></g><g class="kub" style="--d:3060ms"><polygon points="-80,240 -60,230 -40,240 -60,250" fill="#8A6A3E"/><polygon points="-74,226 -74,238 -60,245 -60,233" fill="#C79B5E"/><polygon points="-46,226 -46,238 -60,245 -60,233" fill="#A67C46"/><polygon points="-74,226 -60,219 -46,226 -60,233" fill="#D9B27E"/></g><g class="kub" style="--d:3190ms"><polygon points="40,248 60,238 80,248 60,258" fill="#8A6A3E"/><polygon points="46,234 46,246 60,253 60,241" fill="#C79B5E"/><polygon points="74,234 74,246 60,253 60,241" fill="#A67C46"/><polygon points="46,234 60,227 74,234 60,241" fill="#D9B27E"/></g></svg>
 <button class="tucha-znak" type="button" data-tucha aria-label="Уронить короб из тучи"><img src="assets/img/tucha-znak.png" alt="" width="386" height="300"></button>
 <a class="vniz" href="#uslugi" aria-label="Вниз, к услугам">↓</a>
 </section>
@@ -468,86 +444,6 @@ body > * { position: relative; z-index: 1; }
       if (pusto) pusto.style.display = n ? 'none' : '';
       if (kn) kn.textContent = n ? 'Собрать этот склад' : imya0;
     });
-  })();
-
-  /* небо: звёзды с глубиной, мерцание, комета и параллакс */
-  (function () {
-    var c = document.querySelector('.zvezdy');
-    if (!c || !c.getContext) return;
-    var tiho = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var x = c.getContext('2d'), dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var W = 0, H = 0, zv = [], kom = null, mx = 0, my = 0, t0 = 0;
-
-    function razmer() {
-      W = c.width = Math.round(innerWidth * dpr);
-      H = c.height = Math.round(innerHeight * dpr);
-      c.style.width = innerWidth + 'px';
-      c.style.height = innerHeight + 'px';
-      var n = Math.min(900, Math.round(innerWidth * innerHeight / 2200));
-      zv = [];
-      for (var i = 0; i < n; i++) {
-        var sloy = Math.random();
-        zv.push({ x: Math.random() * W, y: Math.random() * H, r: (0.35 + sloy * 1.25) * dpr,
-                  s: 0.25 + sloy * 0.9, f: Math.random() * 6.283, v: 0.6 + Math.random() * 1.8,
-                  c: Math.random() < 0.12 ? '#BFE0FF' : (Math.random() < 0.08 ? '#FFE3C2' : '#FFFFFF') });
-      }
-    }
-
-    function kometa() {
-      var y0 = Math.random() * H * 0.45;
-      kom = { x: -120 * dpr, y: y0, vx: (7 + Math.random() * 4) * dpr, vy: (2.2 + Math.random() * 1.6) * dpr, t: 0 };
-    }
-
-    function kadr(vr) {
-      if (!t0) t0 = vr;
-      var dt = (vr - t0) / 1000;
-      x.clearRect(0, 0, W, H);
-      var sy = (window.scrollY || 0) * dpr;
-      for (var i = 0; i < zv.length; i++) {
-        var z = zv[i];
-        var px = z.x + mx * z.s * 26 * dpr;
-        var py = z.y - sy * z.s * 0.12 + my * z.s * 18 * dpr;
-        py = ((py % H) + H) % H;
-        var a = tiho ? 0.75 : 0.45 + 0.55 * Math.abs(Math.sin(z.f + dt * z.v));
-        x.globalAlpha = a * (0.35 + z.s * 0.65);
-        x.fillStyle = z.c;
-        x.beginPath();
-        x.arc(px, py, z.r, 0, 6.283);
-        x.fill();
-      }
-      x.globalAlpha = 1;
-      if (!tiho) {
-        if (!kom && Math.random() < 0.0016) kometa();
-        if (kom) {
-          kom.x += kom.vx; kom.y += kom.vy; kom.t += 1;
-          var g = x.createLinearGradient(kom.x, kom.y, kom.x - 150 * dpr, kom.y - 48 * dpr);
-          g.addColorStop(0, 'rgba(255,255,255,.95)');
-          g.addColorStop(1, 'rgba(255,255,255,0)');
-          x.strokeStyle = g;
-          x.lineWidth = 1.8 * dpr;
-          x.beginPath();
-          x.moveTo(kom.x, kom.y);
-          x.lineTo(kom.x - 150 * dpr, kom.y - 48 * dpr);
-          x.stroke();
-          x.fillStyle = '#fff';
-          x.beginPath();
-          x.arc(kom.x, kom.y, 1.8 * dpr, 0, 6.283);
-          x.fill();
-          if (kom.x > W + 200 * dpr || kom.y > H + 200 * dpr) kom = null;
-        }
-      }
-      requestAnimationFrame(kadr);
-    }
-
-    razmer();
-    addEventListener('resize', razmer);
-    if (!tiho && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      addEventListener('mousemove', function (s) {
-        mx = s.clientX / innerWidth - 0.5;
-        my = s.clientY / innerHeight - 0.5;
-      }, { passive: true });
-    }
-    requestAnimationFrame(kadr);
   })();
 
   /* туча роняет короб, если по ней нажать */
