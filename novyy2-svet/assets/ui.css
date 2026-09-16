@@ -749,3 +749,24 @@ body.zgr-idet { overflow: hidden; }
   .o-nas-foto { min-height: 280px; }
   .o-nas-v2 .stel-usl ul { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* второй вариант: пиксельные элементы из референсов */
+.px-levelup { position: absolute; right: 12px; top: 12px; z-index: 2; display: flex; align-items: flex-end; gap: 6px;
+  animation: px-bob 1.6s steps(2, end) infinite; image-rendering: pixelated; }
+.px-levelup svg { display: block; }
+@keyframes px-bob { 50% { transform: translateY(-4px); } }
+.px-put { list-style: none; margin: 26px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; position: relative; }
+.px-put::before { content: ''; position: absolute; left: 6%; right: 6%; top: 15px; height: 4px;
+  background: repeating-linear-gradient(90deg, #FF8A1F 0 8px, transparent 8px 16px); }
+.px-put li { position: relative; background: #fff; border-radius: 16px; padding: 44px 16px 18px; box-shadow: 0 16px 30px -24px rgba(22, 48, 79, .7); }
+.px-put .px-lvl { position: absolute; left: 14px; top: 0; }
+.px-put b { display: block; font-family: var(--igr); font-size: 18px; color: var(--navy); }
+.px-put span { display: block; margin-top: 4px; font-size: 14px; color: var(--mute); }
+.px-gorod { height: 120px; margin: 40px 0 -80px; position: relative; z-index: 0; pointer-events: none; }
+.px-gorod svg { display: block; width: 100%; height: 100%; }
+@media (max-width: 900px) {
+  .px-put { grid-template-columns: minmax(0, 1fr); }
+  .px-put::before { display: none; }
+  .px-gorod { height: 80px; }
+}
+@media (prefers-reduced-motion: reduce) { .px-levelup { animation: none; } }
