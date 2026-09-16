@@ -64,7 +64,8 @@ header, section, footer { position: relative; z-index: 1; }
 .menu { display: flex; gap: 22px; margin-left: 8px; font-weight: 600; font-size: 15px; }
 .menu a { text-decoration: none; color: var(--navy); opacity: .82; }
 .menu a:hover { opacity: 1; color: var(--sky); }
-.shapka .kn { margin-left: auto; padding: 13px 22px; font-size: 13px; }
+.shapka .kn { padding: 13px 22px; font-size: 13px; }
+.shapka .kn-2 { margin-left: auto; }
 .shapka-tel { margin-left: auto; font: 800 17px/1 var(--zag); color: var(--navy); text-decoration: none; }
 
 /* герой */
@@ -128,12 +129,29 @@ header, section, footer { position: relative; z-index: 1; }
   box-shadow: inset 0 0 0 1px #E1EAF4; font-size: 14px; color: #93A5BC; }
 .mok b { display: grid; place-items: center; height: 46px; width: 62%; border-radius: 999px; background: var(--oran);
   color: #fff; font: 800 13px/1 var(--zag); letter-spacing: .08em; text-transform: uppercase; }
+/* постройка: блоки встают друг на друга */
+.stroyka { position: relative; min-height: 132px; display: flex; flex-direction: column-reverse; align-items: center;
+  justify-content: flex-start; gap: 7px; padding: 14px 0 16px; margin-top: 4px;
+  border-radius: 16px; background: rgba(255, 255, 255, .05); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); }
+.stroyka i { width: 74%; height: 26px; border-radius: 7px; display: grid; place-items: center; font-style: normal;
+  font: 700 11px/1 var(--zag); letter-spacing: .1em; text-transform: uppercase; color: #fff;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, .3), inset 0 0 0 1px rgba(255, 255, 255, .22);
+  animation: stavim .42s cubic-bezier(.34, 1.36, .64, 1); }
+@keyframes stavim { from { opacity: 0; transform: translateY(-22px) scale(.92); } }
+.stroyka .pod-pl { position: absolute; left: 50%; top: 50%; translate: -50% -50%; color: #8FA9C4; font-size: 13px; text-align: center; }
+.stroyka-schet { margin: 12px 0 0; font-size: 14px; color: #B4CBE3; }
+.stroyka-schet b { color: #fff; font-family: var(--zag); }
 .postroyka { display: grid; gap: 8px; margin-top: 8px; }
-.postroyka span { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, .07);
-  border-radius: 12px; padding: 11px 14px; font-size: 14px; }
-.postroyka span i { width: 12px; height: 12px; border-radius: 3px; flex: none; }
-.postroyka span b { font-weight: 600; color: #fff; }
-.postroyka span em { font-style: normal; color: #91AECB; margin-left: auto; font-size: 13px; }
+.postroyka button { width: 100%; text-align: left; border: 0; cursor: pointer; font: inherit;
+  transition: background-color .18s ease, transform .18s cubic-bezier(.23, 1, .32, 1); }
+.postroyka button:hover { transform: translateX(3px); }
+.postroyka button[aria-pressed="true"] { background: rgba(255, 255, 255, .16); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28); }
+.postroyka button[aria-pressed="true"] em { color: #FFB877; }
+.postroyka span, .postroyka button { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, .07);
+  border-radius: 12px; padding: 11px 14px; font-size: 14px; color: #DCE9F6; }
+.postroyka span i, .postroyka button i { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.postroyka span b, .postroyka button b { font-weight: 600; color: #fff; }
+.postroyka span em, .postroyka button em { font-style: normal; color: #91AECB; margin-left: auto; font-size: 13px; }
 .uroven-p { margin-top: 14px; }
 .uroven-p b { font: 800 13px/1 var(--zag); text-transform: uppercase; letter-spacing: .07em; color: #FFB877; }
 .uroven-p i { display: block; height: 8px; border-radius: 999px; background: rgba(255, 255, 255, .14); margin-top: 9px; }
@@ -250,8 +268,8 @@ header, section, footer { position: relative; z-index: 1; }
   .stop-art { max-width: 260px; }
 }
 @media (max-width: 760px) {
-  .postroyka span { flex-wrap: wrap; }
-  .postroyka span em { margin-left: 22px; }
+  .postroyka span, .postroyka button { flex-wrap: wrap; }
+  .postroyka span em, .postroyka button em { margin-left: 22px; }
   .menu, .shapka-tel { display: none; }
   .shapka .kn { margin-left: auto; }
   .karty, .shagi, .ceny, .dvoe { grid-template-columns: minmax(0, 1fr); }
@@ -286,6 +304,7 @@ header, section, footer { position: relative; z-index: 1; }
 <a class="logo" href="../novyy/"><img src="assets/img/logo.png" alt="Туча, Мировая Лавка" width="168" height="42"></a>
 <nav class="menu" aria-label="Услуги"><a href="../novyy/hranenie/">Хранение</a><a href="../novyy/obrabotka/">Обработка</a><a href="../novyy/dostavka/">Доставка</a><a href="../novyy/tamozhnya/">Таможня</a><a href="../novyy/lavka/">Лавка</a><a href="../novyy/vitrina/">Витрина</a></nav>
 <a class="shapka-tel" href="tel:+74956658242">+7 (495) 665-82-42</a>
+<a class="kn kn-2" href="../novyy/start/mir/">Играть</a>
 <a class="kn" href="../novyy/start/">Получить расчёт</a>
 </div></header>
 
@@ -359,7 +378,9 @@ header, section, footer { position: relative; z-index: 1; }
 <span class="yarl yarl-igra">игровой формат</span>
 <h3>Мир Тучи</h3>
 <p>Склад собирается из блоков: каждый блок это услуга. Видно, из чего складывается ваш склад и что к нему можно добавить.</p>
-<div class="postroyka" data-sbor><span style="--z:0ms"><i style="background:#1E3A5F"></i><b>Точка сохранения</b><em>хранение</em></span><span style="--z:90ms"><i style="background:#1E90D2"></i><b>Мастерская</b><em>обработка</em></span><span style="--z:180ms"><i style="background:#5AAEE0"></i><b>Телепорт</b><em>доставка</em></span><span style="--z:270ms"><i style="background:#2C5486"></i><b>Портал</b><em>таможня</em></span><span style="--z:360ms"><i style="background:#EF7F1A"></i><b>Лавка</b><em>маркетплейс</em></span></div>
+<div class="stroyka" data-stroyka aria-hidden="true"><span class="pod-pl">Нажмите на блок, и он встанет в постройку</span></div>
+<div class="postroyka" data-sbor><button type="button" data-blok="hranenie" data-cvet="#1E3A5F" data-imya="Точка сохранения" aria-pressed="false"><i style="background:#1E3A5F"></i><b>Точка сохранения</b><em>хранение</em></button><button type="button" data-blok="obrabotka" data-cvet="#1E90D2" data-imya="Мастерская" aria-pressed="false"><i style="background:#1E90D2"></i><b>Мастерская</b><em>обработка</em></button><button type="button" data-blok="dostavka" data-cvet="#5AAEE0" data-imya="Телепорт" aria-pressed="false"><i style="background:#5AAEE0"></i><b>Телепорт</b><em>доставка</em></button><button type="button" data-blok="tamozhnya" data-cvet="#2C5486" data-imya="Портал" aria-pressed="false"><i style="background:#2C5486"></i><b>Портал</b><em>таможня</em></button><button type="button" data-blok="lavka" data-cvet="#EF7F1A" data-imya="Лавка" aria-pressed="false"><i style="background:#EF7F1A"></i><b>Лавка</b><em>маркетплейс</em></button></div>
+<p class="stroyka-schet">В постройке: <b data-schet-blok>0</b> из 5</p>
 <a class="kn" href="../novyy/start/mir/">Играть</a>
 </article>
 </div>
@@ -493,6 +514,35 @@ header, section, footer { position: relative; z-index: 1; }
       [].forEach.call(plitki, function (e) { e.style.transform = ''; });
     });
   }
+
+  /* конструктор: блоки встают в постройку */
+  (function () {
+    var sbor = document.querySelector('[data-sbor]'), stroyka = document.querySelector('[data-stroyka]');
+    if (!sbor || !stroyka) return;
+    var schet = document.querySelector('[data-schet-blok]'), pusto = stroyka.querySelector('.pod-pl');
+    var kn = document.querySelector('.put-igra .kn');
+    var imya0 = kn ? kn.textContent : '';
+    sbor.addEventListener('click', function (s) {
+      var b = s.target.closest('button[data-blok]');
+      if (!b) return;
+      var bylo = b.getAttribute('aria-pressed') === 'true';
+      b.setAttribute('aria-pressed', bylo ? 'false' : 'true');
+      if (bylo) {
+        var e = stroyka.querySelector('[data-plita="' + b.dataset.blok + '"]');
+        if (e) e.remove();
+      } else {
+        var i = document.createElement('i');
+        i.dataset.plita = b.dataset.blok;
+        i.style.background = b.dataset.cvet;
+        i.textContent = b.dataset.imya;
+        stroyka.appendChild(i);
+      }
+      var n = stroyka.querySelectorAll('[data-plita]').length;
+      if (schet) schet.textContent = n;
+      if (pusto) pusto.style.display = n ? 'none' : '';
+      if (kn) kn.textContent = n ? 'Собрать этот склад' : imya0;
+    });
+  })();
 })();
 </script>
 </body></html>
