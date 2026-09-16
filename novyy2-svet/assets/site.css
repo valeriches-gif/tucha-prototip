@@ -1109,3 +1109,12 @@ body.mir-final .mir-scena { box-shadow: 0 0 0 4px rgba(239, 127, 26, .25); }
 .uroven { margin: 0 0 4px; }
 .uroven b { font-size: 28px; color: var(--navy); letter-spacing: -.02em; }
 .kab-kol .uroven-k { margin-top: 14px; }
+
+/* Проводник из слоёв: дыхание на всей фигуре, слои лежат друг на друге */
+.hero-malchik .pv-anim { position: relative; display: block; height: 190px; aspect-ratio: 272 / 504;
+  animation: m-dyh 4.2s ease-in-out infinite; }
+.hero-malchik .pv-anim img { position: absolute; inset: 0; width: 100%; height: 100%; animation: none; image-rendering: pixelated; }
+.hero-malchik .pv-anim.pv-pryg { animation: pv-pryg .55s cubic-bezier(.34, 1.56, .64, 1) 2; }
+@keyframes pv-pryg { 50% { transform: translateY(-16px); } }
+@media (max-width: 760px) { .hero-malchik .pv-anim { height: 120px; } }
+@media (prefers-reduced-motion: reduce) { .hero-malchik .pv-anim, .hero-malchik .pv-anim.pv-pryg { animation: none; } }
