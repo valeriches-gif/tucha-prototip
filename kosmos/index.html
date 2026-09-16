@@ -287,11 +287,12 @@ body > * { position: relative; z-index: 1; }
   if (!('IntersectionObserver' in window)) return;
   document.documentElement.classList.add('anim');
   function shag(spisok, k) {
-    var po = {};
+    var po = new Map();                       // ключ это узел: считаем порядок внутри каждого родителя
     [].forEach.call(spisok, function (e) {
       e.classList.add('pok');
-      var p = e.parentNode, i = po[p] = (po[p] === undefined ? 0 : po[p] + 1);
-      e.style.setProperty('--z', (i * (k || 80)) + 'ms');
+      var p = e.parentNode, i = po.has(p) ? po.get(p) + 1 : 0;
+      po.set(p, i);
+      e.style.setProperty('--z', Math.min(i, 5) * (k || 80) + 'ms');
     });
   }
   var geroy = document.querySelectorAll('.geroy .eb, .geroy h1, .geroy .slogan, .geroy .cherta, .geroy .lid, .geroy-kn, .geroy-fakty, .sputnik');

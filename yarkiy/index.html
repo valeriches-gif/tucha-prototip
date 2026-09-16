@@ -66,8 +66,11 @@ h2 em { font-style: normal; color: var(--oran); }
 .geroy h1 em { font-style: normal; color: var(--oran); }
 .geroy .lid { font-size: 19px; color: #46586E; max-width: 46ch; margin: 20px 0 0; }
 .knopki { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
-.geroy-niz { display: flex; flex-wrap: wrap; gap: 26px; margin-top: 34px; color: var(--mute); font-size: 15px; }
-.geroy-niz b { color: var(--navy); font-family: var(--zag); font-weight: 800; }
+.geroy-niz { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 36px; }
+.geroy-niz div { padding-left: 18px; border-left: 1px solid #DCE6F2; }
+.geroy-niz div:first-child { padding-left: 0; border-left: 0; }
+.geroy-niz b { display: block; font: 800 22px/1.1 var(--zag); color: var(--navy); letter-spacing: -.01em; }
+.geroy-niz span { display: block; margin-top: 4px; font-size: 13px; color: var(--mute); }
 .geroy-art { position: relative; justify-self: center; width: min(430px, 82vw); }
 .geroy-art::before { content: ''; position: absolute; left: 50%; bottom: 2%; translate: -50% 0; width: 104%; aspect-ratio: 1;
   border-radius: 50%; background: linear-gradient(160deg, #CFE7F8, #EAF4FD); }
@@ -144,6 +147,37 @@ h2 em { font-style: normal; color: var(--oran); }
 .karta p { margin: 0; font-size: 15px; color: rgba(255, 255, 255, .92); flex: 1; }
 .karta .kn { align-self: flex-start; padding: 13px 22px; font-size: 12px; }
 
+/* цены */
+.ceny { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-top: 40px; }
+.cena-k { background: #fff; border-radius: 22px; padding: 24px 22px 26px; box-shadow: var(--teni);
+  display: flex; flex-direction: column; gap: 8px; }
+.cena-k .eb-m { font: 700 12px/1 var(--zag); letter-spacing: .1em; text-transform: uppercase; color: var(--sky); }
+.cena-k b { font: 800 26px/1.15 var(--zag); color: var(--navy); letter-spacing: -.02em; }
+.cena-k p { margin: 0; font-size: 14px; color: var(--mute); flex: 1; }
+.cena-k a { font-weight: 600; font-size: 14px; color: var(--navy); }
+.cena-niz { margin-top: 18px; color: var(--mute); font-size: 15px; }
+
+/* лавка и витрина */
+.dvoe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 40px; }
+.dvoe article { border-radius: 26px; padding: 30px 28px 32px; display: flex; flex-direction: column; gap: 12px;
+  box-shadow: var(--teni); color: #fff; }
+.dvoe .d-lavka { background: linear-gradient(160deg, #FF9F45, #E8710F); }
+.dvoe .d-vitrina { background: linear-gradient(160deg, #2C5486, #16304F); }
+.dvoe h3 { font-size: 26px; font-weight: 900; text-transform: uppercase; }
+.dvoe p { margin: 0; font-size: 16px; color: rgba(255, 255, 255, .92); }
+.dvoe ul { margin: 6px 0 0; padding-left: 20px; font-size: 15px; color: rgba(255, 255, 255, .9); }
+.dvoe li { margin-bottom: 5px; }
+.dvoe .kn { align-self: flex-start; margin-top: 6px; }
+
+/* вопросы */
+.voprosy { margin-top: 36px; display: grid; gap: 12px; }
+.voprosy details { background: #fff; border-radius: 18px; padding: 18px 22px; box-shadow: 0 14px 30px -26px rgba(22, 48, 79, .9); }
+.voprosy summary { cursor: pointer; font: 700 18px/1.35 var(--zag); color: var(--navy); list-style: none; display: flex; gap: 14px; align-items: flex-start; }
+.voprosy summary::-webkit-details-marker { display: none; }
+.voprosy summary::before { content: '+'; color: var(--oran); font-size: 22px; line-height: 1; margin-top: 1px; }
+.voprosy details[open] summary::before { content: '2'; }
+.voprosy p { margin: 10px 0 0 28px; color: var(--mute); font-size: 15px; }
+
 /* лента постеров */
 .lenta { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(230px, 1fr); gap: 20px; margin-top: 44px;
   overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; margin-inline: -20px; padding-inline: 20px; }
@@ -182,7 +216,9 @@ h2 em { font-style: normal; color: var(--oran); }
 .versii { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; margin-top: 18px; }
 
 @media (max-width: 1040px) {
-  .karty, .shagi { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .karty, .shagi, .ceny { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .geroy-niz { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 0; }
+  .geroy-niz div:nth-child(3) { padding-left: 0; border-left: 0; }
   .geroy-g, .sklad-g, .stop { grid-template-columns: minmax(0, 1fr); }
   .sklad-foto { min-height: 240px; }
   .stop-t { padding: 0 24px 34px; }
@@ -193,7 +229,7 @@ h2 em { font-style: normal; color: var(--oran); }
   .postroyka span em { margin-left: 22px; }
   .menu, .shapka-tel { display: none; }
   .shapka .kn { margin-left: auto; }
-  .karty, .shagi { grid-template-columns: minmax(0, 1fr); }
+  .karty, .shagi, .ceny, .dvoe { grid-template-columns: minmax(0, 1fr); }
   .plitka-1, .plitka-3 { left: 0; }
   .plitka-2 { right: 0; }
   .plitka { padding: 9px 12px; }
@@ -235,12 +271,12 @@ h2 em { font-style: normal; color: var(--oran); }
 <a class="kn" href="../novyy/start/">Хочу расчёт</a>
 <a class="kn kn-2" href="../novyy/start/mir/">Собрать склад как в игре</a>
 </div>
-<div class="geroy-niz"><span><b>от 16,42 ₽</b> за паллето-место в сутки, с НДС</span><span><b>20 минут</b> на договор</span><span><b>пн-пт</b> 9:00 до 18:00</span></div>
+<div class="geroy-niz"><div><b>3 000</b><span>паллето-мест</span></div><div><b>от 16,42 ₽</b><span>за паллето-место в сутки, с НДС</span></div><div><b>20 минут</b><span>на договор</span></div><div><b>пн-пт</b><span>с 9:00 до 18:00</span></div></div>
 </div>
 <div class="geroy-art">
 <img src="assets/img/provodnik-energiya.webp" alt="Проводник Тучи" width="668" height="900">
-<div class="plitka plitka-1"><b data-schet="3000">0</b><span>паллето-мест</span></div>
-<div class="plitka plitka-2"><b>4,6</b><span>на Яндекс Картах</span></div>
+<div class="plitka plitka-1"><b>4,6</b><span>на Яндекс Картах</span></div>
+<div class="plitka plitka-2"><b>FBS</b><span>на Wildberries и Ozon</span></div>
 <div class="plitka plitka-3"><b>с 2017</b><span>года на своём складе</span></div>
 </div>
 </div></div></section>
@@ -276,6 +312,13 @@ h2 em { font-style: normal; color: var(--oran); }
 <a class="kn kn-bel" href="../novyy/tamozhnya/">Подробнее</a></article></div>
 </div></section>
 
+<section class="sek" id="ceny"><div class="wrap">
+<h2>Сколько <em>это стоит</em></h2>
+<p class="pod-zag">Хранение считается по паллето-местам, остальное по вашему объёму. Расчёт присылаем в тот же день, предоплата не нужна.</p>
+<div class="ceny"><article class="cena-k"><span class="eb-m">Хранение</span><b>от 16,42 ₽</b><p>за паллето-место в сутки, с НДС. На цену влияют тип хранения, срок резервации и операции с товаром.</p><a href="../novyy/hranenie/">Подробнее о цене</a></article><article class="cena-k"><span class="eb-m">Обработка</span><b>По прайсу операций</b><p>Считаем по количеству единиц и сложности операций, пришлём расчёт.</p><a href="../novyy/obrabotka/">Подробнее о цене</a></article><article class="cena-k"><span class="eb-m">Доставка</span><b>По расчёту</b><p>Зависит от объёма, веса и направления, пришлём расчёт и срок.</p><a href="../novyy/dostavka/">Подробнее о цене</a></article><article class="cena-k"><span class="eb-m">Таможня</span><b>По расчёту</b><p>Зависит от груза, страны и объёма работ, назовём условия.</p><a href="../novyy/tamozhnya/">Подробнее о цене</a></article></div>
+<p class="cena-niz">Можно забронировать места вперёд: «Займи место под Тучей» держит их за вами и фиксирует ставку. <a href="../novyy/hranenie/">Как это работает</a></p>
+</div></section>
+
 <section class="sek" id="format"><div class="wrap">
 <h2>Склад можно <em>собрать как в игре</em></h2>
 <p class="pod-zag">Два пути к одному складу. Договор, цены и услуги одинаковые, отличается только то, как вы с нами общаетесь. Формат выбираете при регистрации и меняете в кабинете, в настройках.</p>
@@ -308,9 +351,34 @@ h2 em { font-style: normal; color: var(--oran); }
 </div>
 </div></div></section>
 
+<section class="sek" id="lavka"><div class="wrap">
+<h2>Лавка <em>и Витрина</em></h2>
+<p class="pod-zag">На складе не только хранят. Отсюда же продают: покупателю и оптовику.</p>
+<div class="dvoe">
+<article class="d-lavka">
+<h3>Лавка</h3>
+<p>Магазин при складе: товар едет к покупателю прямо с полки, без лишнего звена.</p>
+<ul><li>Берут от штуки, коробом и паллетой</li><li>Сборка заказа от 2 часов</li><li>Самовывоз в день заказа или доставка попуткой</li></ul>
+<a class="kn kn-bel" href="../novyy/lavka/">Открыть Лавку</a>
+</article>
+<article class="d-vitrina">
+<h3>Витрина</h3>
+<p>Для компаний и ИП: ваш товар со склада попадает в Лавку и продаётся, пока лежит у нас.</p>
+<ul><li>Карточка собирается из того, что уже есть на складе</li><li>Заказы, остатки и выплаты видно в кабинете</li><li>Частному лицу Витрина недоступна</li></ul>
+<a class="kn" href="../novyy/vitrina/">Посмотреть Витрину</a>
+</article>
+</div>
+</div></section>
+
 <section class="sek"><div class="wrap">
 <h2>Как проходит <em>первая поставка</em></h2>
 <div class="shagi"><div class="shag"><i>1</i><b>Заявка</b><p>На сайте или по телефону, как удобнее</p></div><div class="shag"><i>2</i><b>Расчёт</b><p>Приходит в тот же день, по вашим габаритам</p></div><div class="shag"><i>3</i><b>Договор</b><p>Около 20 минут, предоплата не нужна</p></div><div class="shag"><i>4</i><b>Первая поставка</b><p>Принимаем, считаем и фотографируем</p></div></div>
+</div></section>
+
+<section class="sek" id="voprosy"><div class="wrap">
+<h2>Частые <em>вопросы</em></h2>
+<p class="pod-zag">Коротко о том, что спрашивают до звонка. <a href="../novyy/voprosy/">Все вопросы</a></p>
+<div class="voprosy"><details><summary>Есть ли минимальный объём?</summary><p>Нет. Храним от одной паллеты.</p></details><details><summary>Можно приехать и посмотреть склад?</summary><p>Да. Позвоните, и договоримся о времени: пн-пт с 9:00 до 18:00. Склад в Подолино, в 10 минутах от МКАД и Шереметьева.</p></details><details><summary>Какие документы вы даёте?</summary><p>Договор ответственного хранения, счета и закрывающие документы, УПД и акты.</p></details><details><summary>Что такое «Займи место под Тучей»?</summary><p>Резервация мест: вы бронируете места вперёд, они держатся за вами, ставка не меняется до конца срока. Скидка: −15 % за месяц, −20 % за 3, −30 % за 6, −40 % за 12 месяцев. Оплата вперёд за все зарезервированные места.</p></details></div>
 </div></section>
 
 <section class="sek"><div class="wrap">
@@ -333,18 +401,18 @@ h2 em { font-style: normal; color: var(--oran); }
   koren.classList.add('anim');
 
   function shag(spisok, k) {
-    var po = {};
+    var po = new Map();                       // ключ это узел: считаем порядок внутри каждого родителя
     [].forEach.call(spisok, function (e) {
       e.classList.add('pok');
-      var p = e.parentNode;
-      var i = po[p] = (po[p] === undefined ? 0 : po[p] + 1);
-      e.style.setProperty('--z', (i * (k || 70)) + 'ms');
+      var p = e.parentNode, i = po.has(p) ? po.get(p) + 1 : 0;
+      po.set(p, i);
+      e.style.setProperty('--z', Math.min(i, 5) * (k || 70) + 'ms');
     });
   }
 
   var geroy = document.querySelectorAll('.geroy .eyebrow, .geroy h1, .geroy .lid, .geroy .knopki, .geroy-niz, .geroy-art');
   shag(geroy, 90);
-  var nizhe = document.querySelectorAll('.sek h2, .sek .pod-zag, .karta, .poster, .shag, .put, .sklad-g, .stop');
+  var nizhe = document.querySelectorAll('.sek h2, .sek .pod-zag, .karta, .poster, .shag, .put, .sklad-g, .stop, .cena-k, .dvoe article, .voprosy details');
   shag(nizhe, 70);
 
   function chislo(e) {
