@@ -295,7 +295,7 @@ window.TuchaLavka = (function () {
   function tovar(box) {
     var id = +(new URLSearchParams(location.search).get('id')) || 5, t = PO_ID[id] || D.tovary[0], u = 'box';
     var kogda = kogdaZabrat(), otz = t.otzyvy;
-    document.title = t.name + ': купить со склада в Химках | Лавка Тучи';
+    document.title = t.name + ': купить со склада в Московской области | Лавка Тучи';
     var ur = ['one', 'box', 'pal'].map(function (x) {
       var pod = x === 'one' ? 'от 1 шт' : x === 'box' ? t.boxN + ' шт в ' + PRED[t.boxName] : t.palN.toLocaleString('ru-RU') + ' шт на паллете';
       return '<label class="tv-u"><input type="radio" name="tv-u" value="' + x + '"' + (x === u ? ' checked' : '') + '><span>' +
@@ -307,7 +307,7 @@ window.TuchaLavka = (function () {
       '<a href="' + R + 'lavka/?kat=' + encodeURIComponent(t.cat) + '">' + esc(t.cat) + '</a><span aria-hidden="true">/</span><span>' + esc(t.name.split(',')[0]) + '</span></nav>' +
       '<div class="tv-g"><div class="tv-foto" style="background:' + tint(t) + '">' +
       (t.badge ? '<span class="lv-badge">' + esc(t.badge) + '</span>' : '') + upak(t, 'upak upak-bol') +
-      '<span class="lv-mesto">' + PIN + 'Химки, ' + esc(t.mesto) + '</span></div>' +
+      '<span class="lv-mesto">' + PIN + 'МО, ' + esc(t.mesto) + '</span></div>' +
       '<div class="tv-info"><p class="lv-sel">Продавец: <b>' + esc(t.sel) + '</b> <span class="lv-r">' + ZV + reyt(t.reyting) + '</span> · ' + otz + ' ' + plural(otz, ['отзыв', 'отзыва', 'отзывов']) + '</p>' +
       '<h1>' + esc(t.name) + '</h1><p class="pod">' + OPIS[t.id] + '</p>' +
       '<fieldset class="tv-ury"><legend>Как берёте</legend><div class="tv-ury-g">' + ur + '</div></fieldset>' +
@@ -315,16 +315,16 @@ window.TuchaLavka = (function () {
       '<div class="tv-itog"><span>Итого</span><b data-sum></b><small data-za></small></div>' +
       '<div class="cta-pol"><button class="btn btn-bol" type="button" data-v>В корзину</button>' +
       '<button class="btn btn-2 btn-bol" type="button" data-kupit>Купить сейчас</button></div>' +
-      '<ul class="tv-fakty"><li><b>Остаток</b>' + esc(t.stock) + '</li><li><b>Склад отгрузки</b>Химки, ' + esc(t.mesto) + '</li>' +
+      '<ul class="tv-fakty"><li><b>Остаток</b>' + esc(t.stock) + '</li><li><b>Склад отгрузки</b>МО, ' + esc(t.mesto) + '</li>' +
       '<li><b>Комплектация</b>от 2 часов, забрать можно ' + kogda + '</li></ul></div></div>' +
       '<section class="tv-sek"><h2>Как получить</h2><div class="tv-dost">' +
-      '<div><b>Самовывоз ' + kogda + '</b><span>Химки, Подолино, пн-пт с 9:00 до 18:00</span><em>0 ₽</em></div>' +
+      '<div><b>Самовывоз ' + kogda + '</b><span>Московская обл., Химки, Подолино, пн-пт с 9:00 до 18:00</span><em>0 ₽</em></div>' +
       '<div><b>Доставка попуткой</b><span>по Москве и области, когда машина едет в вашу сторону</span><em>от 1 400 ₽</em></div>' +
       '<div><b>Транспортной компанией</b><span>до терминала довезём сами, дальше по тарифу перевозчика</span><em>по тарифу</em></div></div>' +
       '<p class="muted">Товар ждёт на своём месте 7 дней после оплаты, вывозите в любой день. Нужно дольше: оформим хранение по прайсу склада.</p></section>' +
       '<section class="tv-sek tv-dva"><div><h2>Характеристики</h2><dl class="tv-har">' +
       [['Категория', t.cat], ['Продаётся', UR.box.toLowerCase() + ' по ' + t.boxN + ' шт, паллетами по ' + t.palN.toLocaleString('ru-RU') + ' шт'],
-        ['Остаток', t.stock], ['Где лежит', 'Химки, ' + t.mesto], ['Продавец', t.sel]].map(function (x) {
+        ['Остаток', t.stock], ['Где лежит', 'МО, ' + t.mesto], ['Продавец', t.sel]].map(function (x) {
         return '<div><dt>' + x[0] + '</dt><dd>' + esc(x[1]) + '</dd></div>';
       }).join('') + '</dl></div>' +
       '<div><h2>Отзывы покупателей</h2><p class="muted">Пишут только те, кто действительно забрал товар</p>' +
@@ -391,7 +391,7 @@ window.TuchaLavka = (function () {
       }
       var it = itogi(k), m = mashina(it.mesta);
       box.innerHTML = '<div class="kz-g"><div class="kz-sp">' + k.map(stroka).join('') +
-        '<p class="muted kz-p">Всё лежит на одном складе в Химках: уедет одной машиной.</p></div>' +
+        '<p class="muted kz-p">Всё лежит на одном складе в Московской области: уедет одной машиной.</p></div>' +
         '<aside class="kz-itog">' + blokMashina(m) +
         '<dl class="kz-dl"><div><dt>Товары, ' + it.poz + ' ' + plural(it.poz, ['позиция', 'позиции', 'позиций']) + '</dt><dd>' + rub(it.sum) + '</dd></div>' +
         '<div><dt>Доставка</dt><dd>выберете дальше</dd></div><div><dt>Неделя хранения</dt><dd>0 ₽</dd></div></dl>' +
