@@ -722,8 +722,3 @@ body.zgr-idet { overflow: hidden; }
 /* получение заказа: недоступный способ */
 .zk-var-net { opacity: .55; cursor: not-allowed; }
 
-/* реплика печатается: мигающий курсор, как в диалоге игры */
-.rech-pech::after { content: ''; display: inline-block; width: .5em; height: 1em; margin-left: 2px; vertical-align: -2px;
-  background: currentColor; animation: rech-kursor .8s steps(1, end) infinite; }
-@keyframes rech-kursor { 50% { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .rech-pech::after { animation: none; } }
