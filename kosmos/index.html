@@ -92,6 +92,18 @@ body > * { position: relative; z-index: 1; }
   filter: drop-shadow(0 18px 40px rgba(79, 179, 234, .55)); animation: parit 7s ease-in-out infinite; }
 @keyframes parit { 50% { transform: translateY(-14px); } }
 
+/* стройка на горизонте: короба встают один за другим */
+.kubiki { position: absolute; left: 50%; bottom: calc(var(--cap) - 118px); translate: -50% 0;
+  width: min(76vw, 860px); z-index: 2; pointer-events: none; opacity: .92;
+  filter: drop-shadow(0 12px 26px rgba(4, 12, 24, .6)); }
+.kub { opacity: 0; transform: translateY(30px); animation: rost 22s ease-in-out infinite; animation-delay: var(--d, 0ms); }
+@keyframes rost {
+  0% { opacity: 0; transform: translateY(30px) scale(.94); }
+  6% { opacity: 1; transform: none; }
+  80% { opacity: 1; transform: none; }
+  92%, 100% { opacity: 0; transform: translateY(16px) scale(.97); }
+}
+
 /* планеты услуг по краям */
 .sputnik { position: absolute; z-index: 2; display: flex; align-items: center; gap: 14px; color: #fff; text-decoration: none; }
 .sputnik i { width: 84px; height: 84px; border-radius: 50%; flex: none; display: block;
@@ -146,14 +158,62 @@ body > * { position: relative; z-index: 1; }
 .mok b { display: grid; place-items: center; height: 42px; width: 58%; border-radius: 999px; background: #fff;
   color: #0B1526; font: 700 12px/1 var(--zag); letter-spacing: .12em; text-transform: uppercase; }
 .bloki { display: grid; gap: 8px; margin-top: 6px; }
-.bloki span { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; font-size: 14px;
-  background: rgba(255, 255, 255, .05); box-shadow: inset 0 0 0 1px var(--lin); color: #fff; }
-.bloki span i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
-.bloki span em { font-style: normal; margin-left: auto; color: var(--mute); font-size: 13px; }
+.bloki span, .bloki button { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px;
+  font-size: 14px; background: rgba(255, 255, 255, .05); box-shadow: inset 0 0 0 1px var(--lin); color: #fff; }
+.bloki span i, .bloki button i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.bloki span em, .bloki button em { font-style: normal; margin-left: auto; color: var(--mute); font-size: 13px; }
 .uroven { margin-top: 12px; }
 .uroven b { font: 600 12px/1 'Golos Text', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--lazur); }
 .uroven i { display: block; height: 6px; border-radius: 999px; background: rgba(255, 255, 255, .12); margin-top: 9px; }
 .uroven i span { display: block; height: 100%; width: 14%; border-radius: 999px; background: var(--lazur); }
+
+/* цены */
+.ceny { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-top: 44px; }
+.cena-k { border: 1px solid var(--lin); border-radius: 20px; padding: 24px 22px 26px; display: flex; flex-direction: column; gap: 9px;
+  background: linear-gradient(180deg, rgba(23, 38, 62, .85), rgba(12, 23, 41, .85)); }
+.cena-k em { font-style: normal; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--lazur); }
+.cena-k b { font: 300 25px/1.2 var(--zag); color: #fff; letter-spacing: .02em; }
+.cena-k p { margin: 0; font-size: 14px; color: var(--mute); flex: 1; }
+.cena-k a { font-size: 14px; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, .3); align-self: flex-start; }
+.cena-niz { margin-top: 20px; color: var(--mute); font-size: 15px; }
+
+/* лавка и витрина */
+.dvoe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 44px; }
+.dvoe article { border: 1px solid var(--lin); border-radius: 22px; padding: 30px 28px 32px; display: flex; flex-direction: column; gap: 12px;
+  background: linear-gradient(180deg, rgba(20, 34, 56, .85), rgba(11, 21, 38, .85)); }
+.dvoe .d-lavka { border-color: rgba(255, 138, 31, .35); }
+.dvoe h3 { font-size: 23px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: #fff; }
+.dvoe p { margin: 0; font-size: 15px; color: var(--mute); }
+.dvoe ul { margin: 4px 0 0; padding-left: 20px; font-size: 14px; color: var(--mute); }
+.dvoe li { margin-bottom: 5px; }
+.dvoe .pill { align-self: flex-start; margin-top: 6px; }
+
+/* вопросы */
+.voprosy { margin-top: 38px; display: grid; gap: 12px; }
+.voprosy details { border: 1px solid var(--lin); border-radius: 16px; padding: 18px 22px;
+  background: rgba(255, 255, 255, .03); }
+.voprosy summary { cursor: pointer; font: 500 17px/1.35 var(--zag); color: #fff; list-style: none; display: flex; gap: 14px; }
+.voprosy summary::-webkit-details-marker { display: none; }
+.voprosy summary::before { content: '+'; color: var(--lazur); font-size: 20px; line-height: 1.1; }
+.voprosy details[open] summary::before { content: '2'; }
+.voprosy p { margin: 10px 0 0 28px; color: var(--mute); font-size: 15px; }
+
+/* конструктор в карточке «Мир Тучи» */
+.stroyka { position: relative; min-height: 124px; display: flex; flex-direction: column-reverse; align-items: center;
+  justify-content: flex-start; gap: 7px; padding: 14px 0 16px; border-radius: 14px;
+  background: rgba(255, 255, 255, .04); box-shadow: inset 0 0 0 1px var(--lin); }
+.stroyka i { width: 74%; height: 25px; border-radius: 6px; display: grid; place-items: center; font-style: normal;
+  font: 700 11px/1 var(--zag); letter-spacing: .1em; text-transform: uppercase; color: #fff;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, .35), inset 0 0 0 1px rgba(255, 255, 255, .22);
+  animation: stavim .42s cubic-bezier(.34, 1.36, .64, 1); }
+@keyframes stavim { from { opacity: 0; transform: translateY(-22px) scale(.92); } }
+.stroyka .pod-pl { position: absolute; left: 50%; top: 50%; translate: -50% -50%; color: var(--mute); font-size: 13px; text-align: center; }
+.stroyka-schet { margin: 12px 0 0; font-size: 14px; color: var(--mute); }
+.stroyka-schet b { color: #fff; font-family: var(--zag); }
+.bloki button { width: 100%; text-align: left; border: 0; cursor: pointer; font: inherit;
+  transition: background-color .18s ease, transform .18s cubic-bezier(.23, 1, .32, 1); }
+.bloki button:hover { transform: translateX(3px); }
+.bloki button[aria-pressed="true"] { background: rgba(79, 179, 234, .18); box-shadow: inset 0 0 0 1px rgba(79, 179, 234, .5); }
 
 /* шаги */
 .shagi { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: 46px; }
@@ -177,13 +237,15 @@ body > * { position: relative; z-index: 1; }
 
 @media (max-width: 1100px) {
   .sp-1, .sp-2 { display: none; }
-  .orbita, .kadry, .shagi { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .orbita, .kadry, .shagi, .ceny { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .shag { border-left: 0; padding: 22px 0; border-top: 1px solid var(--lin); }
   .shag:first-child { border-top: 0; }
 }
 @media (max-width: 720px) {
   .menu { display: none; }
-  .orbita, .kadry, .dva, .cifry { grid-template-columns: minmax(0, 1fr); }
+  .orbita, .kadry, .dva, .cifry, .ceny, .dvoe { grid-template-columns: minmax(0, 1fr); }
+  .bloki span, .bloki button { flex-wrap: wrap; }
+  .bloki span em, .bloki button em { margin-left: 20px; }
   .geroy { min-height: auto; padding-bottom: 46vw; --pw: 190vw; --cap: 140px; }
 }
 /* движение включается скриптом */
@@ -195,6 +257,7 @@ body > * { position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .nebo, .tucha-znak, .vniz { animation: none; }
+  .kub { opacity: 1; transform: none; animation: none; }
   .anim .pok { opacity: 1; transform: none; }
 }
 </style>
@@ -218,6 +281,7 @@ body > * { position: relative; z-index: 1; }
 </div>
 <a class="sputnik sp-1" href="../novyy/hranenie/"><i style="background:radial-gradient(circle at 34% 28%, #3E86C6, #173C63)"></i><span>Хранение<small>от одной паллеты</small></span></a><a class="sputnik sp-2" href="../novyy/dostavka/"><i style="background:radial-gradient(circle at 34% 28%, #5FB9E8, #1E6E9E)"></i><span>Доставка<small>по России и за рубеж</small></span></a>
 <div class="planeta" aria-hidden="true"></div>
+<svg class="kubiki" viewBox="-360 -150 720 190" aria-hidden="true"><g class="kub" style="--d:0ms"><polygon points="-334,-69.0 -334,-17.0 -300,0 -300,-52" fill="#14375C"/><polygon points="-266,-69.0 -266,-17.0 -300,0 -300,-52" fill="#0F2A47"/><polygon points="-334,-69.0 -300,-86 -266,-69.0 -300,-52" fill="#2A6299"/></g><g class="kub" style="--d:220ms"><polygon points="-264,-95.0 -264,-17.0 -230,0 -230,-78" fill="#14375C"/><polygon points="-196,-95.0 -196,-17.0 -230,0 -230,-78" fill="#0F2A47"/><polygon points="-264,-95.0 -230,-112 -196,-95.0 -230,-78" fill="#2A6299"/></g><g class="kub" style="--d:440ms"><polygon points="-194,-61.0 -194,-17.0 -160,0 -160,-44" fill="#14375C"/><polygon points="-126,-61.0 -126,-17.0 -160,0 -160,-44" fill="#0F2A47"/><polygon points="-194,-61.0 -160,-78 -126,-61.0 -160,-44" fill="#2A6299"/></g><g class="kub" style="--d:660ms"><polygon points="-124,-113.0 -124,-17.0 -90,0 -90,-96" fill="#14375C"/><polygon points="-56,-113.0 -56,-17.0 -90,0 -90,-96" fill="#0F2A47"/><polygon points="-124,-113.0 -90,-130 -56,-113.0 -90,-96" fill="#2A6299"/></g><g class="kub" style="--d:880ms"><polygon points="-54,-79.0 -54,-17.0 -20,0 -20,-62" fill="#14375C"/><polygon points="14,-79.0 14,-17.0 -20,0 -20,-62" fill="#0F2A47"/><polygon points="-54,-79.0 -20,-96 14,-79.0 -20,-62" fill="#2A6299"/></g><g class="kub" style="--d:1100ms"><polygon points="16,-101.0 16,-17.0 50,0 50,-84" fill="#14375C"/><polygon points="84,-101.0 84,-17.0 50,0 50,-84" fill="#0F2A47"/><polygon points="16,-101.0 50,-118 84,-101.0 50,-84" fill="#2A6299"/></g><g class="kub" style="--d:1320ms"><polygon points="86,-65.0 86,-17.0 120,0 120,-48" fill="#14375C"/><polygon points="154,-65.0 154,-17.0 120,0 120,-48" fill="#0F2A47"/><polygon points="86,-65.0 120,-82 154,-65.0 120,-48" fill="#2A6299"/></g><g class="kub" style="--d:1540ms"><polygon points="156,-87.0 156,-17.0 190,0 190,-70" fill="#14375C"/><polygon points="224,-87.0 224,-17.0 190,0 190,-70" fill="#0F2A47"/><polygon points="156,-87.0 190,-104 224,-87.0 190,-70" fill="#2A6299"/></g><g class="kub" style="--d:1760ms"><polygon points="226,-57.0 226,-17.0 260,0 260,-40" fill="#14375C"/><polygon points="294,-57.0 294,-17.0 260,0 260,-40" fill="#0F2A47"/><polygon points="226,-57.0 260,-74 294,-57.0 260,-40" fill="#2A6299"/></g><g class="kub" style="--d:1980ms"><polygon points="-295,-81.0 -295,-41.0 -265,-26 -265,-66" fill="#14375C"/><polygon points="-235,-81.0 -235,-41.0 -265,-26 -265,-66" fill="#0F2A47"/><polygon points="-295,-81.0 -265,-96 -235,-81.0 -265,-66" fill="#2A6299"/></g><g class="kub" style="--d:2200ms"><polygon points="-155,-99.0 -155,-41.0 -125,-26 -125,-84" fill="#14375C"/><polygon points="-95,-99.0 -95,-41.0 -125,-26 -125,-84" fill="#0F2A47"/><polygon points="-155,-99.0 -125,-114 -95,-99.0 -125,-84" fill="#2A6299"/></g><g class="kub" style="--d:2420ms"><polygon points="-15,-77.0 -15,-41.0 15,-26 15,-62" fill="#14375C"/><polygon points="45,-77.0 45,-41.0 15,-26 15,-62" fill="#0F2A47"/><polygon points="-15,-77.0 15,-92 45,-77.0 15,-62" fill="#2A6299"/></g><g class="kub" style="--d:2640ms"><polygon points="125,-93.0 125,-41.0 155,-26 155,-78" fill="#14375C"/><polygon points="185,-93.0 185,-41.0 155,-26 155,-78" fill="#0F2A47"/><polygon points="125,-93.0 155,-108 185,-93.0 155,-78" fill="#2A6299"/></g><g class="kub" style="--d:2860ms"><polygon points="195,-71.0 195,-41.0 225,-26 225,-56" fill="#14375C"/><polygon points="255,-71.0 255,-41.0 225,-26 225,-56" fill="#0F2A47"/><polygon points="195,-71.0 225,-86 255,-71.0 225,-56" fill="#2A6299"/></g></svg>
 <svg class="tucha-znak" viewBox="0 0 240 150" aria-hidden="true">
 <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
 <stop offset="0" stop-color="#7FD0FF"/><stop offset="1" stop-color="#2E8FD0"/></linearGradient></defs>
@@ -233,6 +297,14 @@ body > * { position: relative; z-index: 1; }
 <h2>Четыре услуги <b>по одному договору</b></h2>
 <p class="lid">Можно взять одну, можно все сразу. В «Мире Тучи» у каждой услуги своё название, рядом с обычным.</p>
 <div class="orbita"><a class="usl-k" href="../novyy/hranenie/"><i style="background:radial-gradient(circle at 34% 28%, #3E7FB8, #1B3E63)"></i><em>Точка сохранения</em><h3>Хранение</h3><p>Стеллажи, пол и мелкие ячейки. От одной паллеты</p></a><a class="usl-k" href="../novyy/obrabotka/"><i style="background:radial-gradient(circle at 34% 28%, #2E9BD6, #12557E)"></i><em>Мастерская</em><h3>Обработка</h3><p>Приёмка, маркировка «Честный знак», сборка и отгрузка на маркетплейсы</p></a><a class="usl-k" href="../novyy/dostavka/"><i style="background:radial-gradient(circle at 34% 28%, #5FB9E8, #1E6E9E)"></i><em>Телепорт</em><h3>Доставка</h3><p>По Москве, России и за рубеж, передача в транспортные компании</p></a><a class="usl-k" href="../novyy/tamozhnya/"><i style="background:radial-gradient(circle at 34% 28%, #8FA7C4, #3B5273)"></i><em>Портал</em><h3>Таможня</h3><p>Оформление и сопровождение грузов для участников внешнеэкономической деятельности (ВЭД)</p></a></div>
+</div></section>
+
+<section class="sek" id="ceny"><div class="wrap">
+<p class="eb">Цены</p>
+<h2>Сколько <b>это стоит</b></h2>
+<p class="lid">Хранение считается по паллето-местам, остальное по вашему объёму. Расчёт присылаем в тот же день, предоплата не нужна.</p>
+<div class="ceny"><article class="cena-k"><em>Хранение</em><b>от 16,42 ₽</b><p>за паллето-место в сутки, с НДС. На цену влияют тип хранения, срок резервации и операции с товаром.</p><a href="../novyy/hranenie/">Подробнее о цене</a></article><article class="cena-k"><em>Обработка</em><b>По прайсу операций</b><p>Считаем по количеству единиц и сложности операций, пришлём расчёт.</p><a href="../novyy/obrabotka/">Подробнее о цене</a></article><article class="cena-k"><em>Доставка</em><b>По расчёту</b><p>Зависит от объёма, веса и направления, пришлём расчёт и срок.</p><a href="../novyy/dostavka/">Подробнее о цене</a></article><article class="cena-k"><em>Таможня</em><b>По расчёту</b><p>Зависит от груза, страны и объёма работ, назовём условия.</p><a href="../novyy/tamozhnya/">Подробнее о цене</a></article></div>
+<p class="cena-niz">Места можно забронировать вперёд: «Займи место под Тучей» держит их за вами и фиксирует ставку. <a href="../novyy/hranenie/">Как это работает</a></p>
 </div></section>
 
 <section class="sek"><div class="wrap">
@@ -257,8 +329,30 @@ body > * { position: relative; z-index: 1; }
 <article class="put put-igra">
 <h3>Мир Тучи</h3>
 <p>Склад собирается из блоков: каждый блок это услуга. Видно, из чего складывается ваш склад и что к нему можно добавить.</p>
-<div class="bloki"><span><i style="background:#1E3A5F"></i>Точка сохранения<em>хранение</em></span><span><i style="background:#1E90D2"></i>Мастерская<em>обработка</em></span><span><i style="background:#5AAEE0"></i>Телепорт<em>доставка</em></span><span><i style="background:#2C5486"></i>Портал<em>таможня</em></span></div>
+<div class="stroyka" data-stroyka aria-hidden="true"><span class="pod-pl">Нажмите на блок, и он встанет в постройку</span></div>
+<div class="bloki" data-sbor><button type="button" data-blok="hranenie" data-cvet="#1E3A5F" data-imya="Точка сохранения" aria-pressed="false"><i style="background:#1E3A5F"></i>Точка сохранения<em>хранение</em></button><button type="button" data-blok="obrabotka" data-cvet="#1E90D2" data-imya="Мастерская" aria-pressed="false"><i style="background:#1E90D2"></i>Мастерская<em>обработка</em></button><button type="button" data-blok="dostavka" data-cvet="#5AAEE0" data-imya="Телепорт" aria-pressed="false"><i style="background:#5AAEE0"></i>Телепорт<em>доставка</em></button><button type="button" data-blok="tamozhnya" data-cvet="#2C5486" data-imya="Портал" aria-pressed="false"><i style="background:#2C5486"></i>Портал<em>таможня</em></button></div>
+<p class="stroyka-schet">В постройке: <b data-schet-blok>0</b> из 4</p>
 <a class="pill pill-or" href="../novyy/start/mir/">Играть</a>
+</article>
+</div>
+</div></section>
+
+<section class="sek" id="lavka"><div class="wrap">
+<p class="eb">Продажи со склада</p>
+<h2>Лавка <b>и Витрина</b></h2>
+<p class="lid">На складе не только хранят. Отсюда же продают: покупателю и оптовику.</p>
+<div class="dvoe">
+<article class="d-lavka">
+<h3>Лавка</h3>
+<p>Магазин при складе: товар едет к покупателю прямо с полки, без лишнего звена.</p>
+<ul><li>Берут от штуки, коробом и паллетой</li><li>Сборка заказа от 2 часов</li><li>Самовывоз в день заказа или доставка попуткой</li></ul>
+<a class="pill pill-or" href="../novyy/lavka/">Открыть Лавку</a>
+</article>
+<article class="d-vitrina">
+<h3>Витрина</h3>
+<p>Для компаний и индивидуальных предпринимателей: ваш товар со склада попадает в Лавку и продаётся, пока лежит у нас.</p>
+<ul><li>Карточка собирается из того, что уже есть на складе</li><li>Заказы, остатки и выплаты видно в кабинете</li><li>Частному лицу Витрина недоступна</li></ul>
+<a class="pill pill-2" href="../novyy/vitrina/">Посмотреть Витрину</a>
 </article>
 </div>
 </div></section>
@@ -268,6 +362,13 @@ body > * { position: relative; z-index: 1; }
 <h2>От заявки <b>до первой поставки</b></h2>
 <p class="lid">Расчёт приходит в тот же день, договор занимает около 20 минут, предоплата не нужна.</p>
 <div class="shagi"><div class="shag"><b>Шаг 1</b><h3>Заявка</h3><p>На сайте или по телефону</p></div><div class="shag"><b>Шаг 2</b><h3>Расчёт</h3><p>В тот же день, по вашим габаритам</p></div><div class="shag"><b>Шаг 3</b><h3>Договор</h3><p>Около 20 минут, предоплата не нужна</p></div><div class="shag"><b>Шаг 4</b><h3>Поставка</h3><p>Принимаем, считаем, фотографируем</p></div></div>
+</div></section>
+
+<section class="sek" id="voprosy"><div class="wrap">
+<p class="eb">Вопросы</p>
+<h2>Коротко <b>о главном</b></h2>
+<p class="lid">То, что спрашивают до звонка. <a href="../novyy/voprosy/">Все вопросы</a></p>
+<div class="voprosy"><details><summary>Есть ли минимальный объём?</summary><p>Нет. Храним от одной паллеты.</p></details><details><summary>Можно приехать и посмотреть склад?</summary><p>Да. Позвоните, и договоримся о времени: пн-пт с 9:00 до 18:00. Склад в Подолино, в 10 минутах от МКАД и Шереметьева.</p></details><details><summary>Какие документы вы даёте?</summary><p>Договор ответственного хранения, счета и закрывающие документы, УПД и акты.</p></details><details><summary>Что такое «Займи место под Тучей»?</summary><p>Резервация мест: вы бронируете места вперёд, они держатся за вами, ставка не меняется до конца срока. Скидка: −15 % за месяц, −20 % за 3, −30 % за 6, −40 % за 12 месяцев. Оплата вперёд за все зарезервированные места.</p></details></div>
 </div></section>
 
 <section class="sek"><div class="wrap"><div class="final">
@@ -299,7 +400,7 @@ body > * { position: relative; z-index: 1; }
   }
   var geroy = document.querySelectorAll('.geroy .eb, .geroy h1, .geroy .slogan, .geroy .cherta, .geroy .lid, .geroy-kn, .geroy-fakty, .sputnik');
   shag(geroy, 110);
-  shag(document.querySelectorAll('.sek .eb, .sek h2, .sek .lid, .usl-k, .kadry figure, .put, .shag, .cifry div, .final'), 80);
+  shag(document.querySelectorAll('.sek .eb, .sek h2, .sek .lid, .usl-k, .kadry figure, .put, .shag, .cifry div, .final, .cena-k, .dvoe article, .voprosy details'), 80);
   function schet(e) {
     var cel = parseFloat(e.dataset.schet), t0 = 0, drob = e.dataset.schet.indexOf('.') > 0;
     requestAnimationFrame(function kadr(t) {
@@ -329,6 +430,34 @@ body > * { position: relative; z-index: 1; }
     if (pl) pl.style.transform = 'translate(-50%,' + (y * 0.12) + 'px)';
     if (tz) tz.style.marginBottom = (-y * 0.06) + 'px';
   }, { passive: true });
+
+  /* конструктор: блоки встают в постройку */
+  (function () {
+    var sbor = document.querySelector('[data-sbor]'), stroyka = document.querySelector('[data-stroyka]');
+    if (!sbor || !stroyka) return;
+    var schet = document.querySelector('[data-schet-blok]'), pusto = stroyka.querySelector('.pod-pl');
+    var kn = document.querySelector('.put-igra .pill'), imya0 = kn ? kn.textContent : '';
+    sbor.addEventListener('click', function (s) {
+      var b = s.target.closest('button[data-blok]');
+      if (!b) return;
+      var bylo = b.getAttribute('aria-pressed') === 'true';
+      b.setAttribute('aria-pressed', bylo ? 'false' : 'true');
+      if (bylo) {
+        var e = stroyka.querySelector('[data-plita="' + b.dataset.blok + '"]');
+        if (e) e.remove();
+      } else {
+        var i = document.createElement('i');
+        i.dataset.plita = b.dataset.blok;
+        i.style.background = b.dataset.cvet;
+        i.textContent = b.dataset.imya;
+        stroyka.appendChild(i);
+      }
+      var n = stroyka.querySelectorAll('[data-plita]').length;
+      if (schet) schet.textContent = n;
+      if (pusto) pusto.style.display = n ? 'none' : '';
+      if (kn) kn.textContent = n ? 'Собрать этот склад' : imya0;
+    });
+  })();
 })();
 </script>
 </body></html>
