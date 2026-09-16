@@ -411,6 +411,13 @@ window.Tucha = (function () {
   var SEZON = { 10: true, 11: true, 12: true };
   /* пункты выдачи Тучи (адреса примерные: первые пункты открываем) и транспортные компании */
   var PVZ = [['sokol', 'у метро «Сокол»'], ['baumanskaya', 'у метро «Бауманская»'], ['oktyabrskaya', 'у метро «Октябрьская»']];
+  /* название пункта выдачи: в «Мире Тучи» это Станция Тучи, в «Всё просто» и у гостей обычный пункт выдачи */
+  function pvzSlova() {
+    var a = akk();
+    return a && a.vid === 'mir'
+      ? { im: 'Станция Тучи', v: 'на Станцию Тучи', p: 'на Станции Тучи', kratko: 'Станция', edet: 'Едет на станцию', zhdet: 'Ждёт на станции' }
+      : { im: 'Пункт выдачи Тучи', v: 'в пункт выдачи Тучи', p: 'в пункте выдачи', kratko: 'Пункт выдачи', edet: 'Едет в пункт', zhdet: 'Ждёт в пункте' };
+  }
   var TK = ['СДЭК', 'ПЭК', 'Деловые Линии', 'Байкал Сервис', 'Другая'];
   function zadanieMesyaca(d) { var m = (d || new Date()).getMonth() + 1; return Object.assign({ sezon: !!SEZON[m] }, ZADANIYA[m]); }
   /* загрузка как в игре: пиксельные квадраты бегут по кругу, строка шагов. Возвращает Promise */
@@ -559,6 +566,6 @@ window.Tucha = (function () {
     ROOT: ROOT, NAZV: NAZV, st: st, goal: goal, toast: toast, innOk: innOk, telOk: telOk, pochtaOk: pochtaOk,
     telFormat: telFormat, maska: maska, metki: metki, dobMetku: dobMetku, akk: akk, sessiya: sessiya,
     voyti: voyti, vyyti: vyyti, anketa: anketa, kodEkran: kodEkran, kogdaSvyazhetsya: kogdaSvyazhetsya,
-    kakSvyazhetsya: kakSvyazhetsya, korzObnovit: korzObnovit, KLUB: KLUB, PAKETY: PAKETY, zagruzka: zagruzka, v2: v2, PVZ: PVZ, TK: TK, klubUroven: klubUroven, klubUsloviya: klubUsloviya, zadanieMesyaca: zadanieMesyaca
+    kakSvyazhetsya: kakSvyazhetsya, korzObnovit: korzObnovit, KLUB: KLUB, PAKETY: PAKETY, zagruzka: zagruzka, v2: v2, PVZ: PVZ, pvzSlova: pvzSlova, TK: TK, klubUroven: klubUroven, klubUsloviya: klubUsloviya, zadanieMesyaca: zadanieMesyaca
   };
 })();

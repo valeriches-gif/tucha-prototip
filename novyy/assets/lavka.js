@@ -438,11 +438,13 @@ window.TuchaLavka = (function () {
     var d = new Date(), den = d.getDay(), h = d.getHours();
     return den >= 1 && den <= 5 && h >= 9 && h < 18 ? 'в течение 15 минут' : T.kogdaSvyazhetsya();
   }
+  var PS = T.pvzSlova ? T.pvzSlova() : { im: 'Пункт выдачи Тучи', v: 'в пункт выдачи Тучи', p: 'в пункте выдачи', kratko: 'Пункт выдачи', edet: 'Едет в пункт', zhdet: 'Ждёт в пункте' };
+  var PS_V = PS.v.charAt(0).toUpperCase() + PS.v.slice(1);
   var STATUSY = { sam: ['Принят', 'Собираем', 'Готов к выдаче', 'Получен'], dost: ['Принят', 'Собираем', 'В пути', 'Получен'],
-    pvz: ['Принят', 'Едет в пункт', 'Ждёт в пункте', 'Получен'] };
-  var TIPY = { sam: 'Самовывоз со склада', pvz: 'Пункт выдачи Тучи', mashina: 'Машиной Тучи', poputka: 'Доставка попуткой', tk: 'Транспортной компанией' };
+    pvz: ['Принят', PS.edet, PS.zhdet, 'Получен'] };
+  var TIPY = { sam: 'Самовывоз со склада', pvz: PS.im, mashina: 'Машиной Тучи', poputka: 'Доставка попуткой', tk: 'Транспортной компанией' };
   function stTip(o) { return STATUSY[o.tip === 'sam' ? 'sam' : o.tip === 'pvz' ? 'pvz' : 'dost']; }
-  function pvzImya(id) { var x = (T.PVZ || []).filter(function (p) { return p[0] === id; })[0]; return x ? 'Пункт выдачи ' + x[1] : 'Пункт выдачи Тучи'; }
+  function pvzImya(id) { var x = (T.PVZ || []).filter(function (p) { return p[0] === id; })[0]; return x ? PS.kratko + ' ' + x[1] : PS.im; }
   var OPL = { karta: 'Картой', schet: 'По счёту', poluch: 'При получении' };
 
   /* ---------- оформление заказа ---------- */
@@ -478,8 +480,8 @@ window.TuchaLavka = (function () {
       if (z.tip === 'pvz' && !vPvz()) z.tip = 'sam';
       var h = '<h2>Как получить</h2><p class="muted">Склад отгрузки в Московской области. Паллеты собираем от 2 часов, сборные заказы до конца дня.</p>' +
         '<div class="zk-vary">' + var_('tip', 'sam', z.tip, 'Самовывоз со склада ' + kogda, 'Промышленная зона, 2Б · пн-пт с 9:00 до 18:00', '0 ₽') +
-        (vPvz() ? var_('tip', 'pvz', z.tip, 'В пункт выдачи Тучи', 'Привезём на следующий рабочий день после 12:00, заберёте по коду из SMS', '0 ₽') :
-          '<label class="zk-var zk-var-net"><input type="radio" name="tip" value="pvz" disabled><span><b>В пункт выдачи Тучи</b><small>Заказ больше половины паллеты: в пункт не поместится</small><em>нет</em></span></label>') +
+        (vPvz() ? var_('tip', 'pvz', z.tip, PS_V, 'Привезём на следующий рабочий день после 12:00, заберёте по коду из SMS', '0 ₽') :
+          '<label class="zk-var zk-var-net"><input type="radio" name="tip" value="pvz" disabled><span><b>' + PS_V + '</b><small>Заказ больше половины паллеты: сюда не поместится</small><em>нет</em></span></label>') +
         var_('tip', 'mashina', z.tip, 'Машиной Тучи до адреса', 'По Москве и области: попуткой или отдельной машиной', m.dost ? 'от ' + rub(m.dost) : 'по расчёту') +
         var_('tip', 'tk', z.tip, 'Транспортной компанией', 'Довезём до терминала или отдадим вашей ТК на складе', 'по тарифу ТК') + '</div>';
       function dataVremya(zag) {
@@ -492,7 +494,7 @@ window.TuchaLavka = (function () {
           '<label><input type="radio" name="vremya" value="d"' + (z.vremya === 'd' ? ' checked' : '') + '><span>13:00-18:00</span></label></div></fieldset></div>';
       }
       if (z.tip === 'pvz') {
-        h += '<fieldset class="pole"><legend>Пункт выдачи</legend><div class="vybor">' + (T.PVZ || []).map(function (x) {
+        h += '<fieldset class="pole"><legend>' + PS.kratko + '</legend><div class="vybor">' + (T.PVZ || []).map(function (x) {
             return '<label><input type="radio" name="pvz" value="' + x[0] + '"' + (x[0] === z.pvz ? ' checked' : '') + '><span>' + x[1] + '</span></label>'; }).join('') + '</div></fieldset>' +
           '<p class="zk-zhdyot"><b>Заказ ждёт в пункте неделю.</b> Код получения придёт в SMS, когда заказ приедет.</p>';
       } else if (z.tip === 'mashina') {
@@ -512,7 +514,7 @@ window.TuchaLavka = (function () {
       return h + '<div class="shag-niz"><a class="btn-t" href="' + R + 'lavka/korzina/">Назад в корзину</a><button type="submit" class="btn">Дальше</button></div>';
     }
     function shag2() {
-      return '<h2>Кто получает</h2><p class="muted">' + (z.tip === 'pvz' ? 'В пункте выдачи назовёте код из SMS' : 'Кладовщик спросит имя при выдаче' + (z.tip === 'mashina' ? ', водитель позвонит перед приездом' : '')) + '.</p>' +
+      return '<h2>Кто получает</h2><p class="muted">' + (z.tip === 'pvz' ? PS.p.charAt(0).toUpperCase() + PS.p.slice(1) + ' назовёте код из SMS' : 'Кладовщик спросит имя при выдаче' + (z.tip === 'mashina' ? ', водитель позвонит перед приездом' : '')) + '.</p>' +
         pole('imya', 'Имя и фамилия', z.imya, 'text', 'Как к вам обращаться?', ' autocomplete="name"') +
         pole('tel', 'Телефон', z.tel, 'tel', 'Нужно 11 цифр: по нему позвонят со склада', ' autocomplete="tel"') +
         pole('pochta', 'Почта для чека <span class="nb">необязательно</span>', z.pochta, 'email', 'Проверьте адрес: похоже, в нём опечатка', ' autocomplete="email"') +
