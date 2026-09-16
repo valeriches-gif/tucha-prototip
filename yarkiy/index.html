@@ -124,8 +124,10 @@ header, section, footer { position: relative; z-index: 1; }
 .put-golova { position: absolute; right: 18px; top: 18px; width: 74px; height: 74px; border-radius: 50%;
   background: rgba(255, 255, 255, .1); object-fit: cover; }
 .mok { display: grid; gap: 10px; margin-top: 8px; }
-.mok i { height: 44px; border-radius: 12px; background: #EDF3FA; box-shadow: inset 0 0 0 1px #E1EAF4; }
-.mok i.mok-kn { height: 46px; width: 62%; border-radius: 999px; background: var(--oran); box-shadow: none; }
+.mok span { display: flex; align-items: center; height: 46px; padding: 0 16px; border-radius: 12px; background: #EDF3FA;
+  box-shadow: inset 0 0 0 1px #E1EAF4; font-size: 14px; color: #93A5BC; }
+.mok b { display: grid; place-items: center; height: 46px; width: 62%; border-radius: 999px; background: var(--oran);
+  color: #fff; font: 800 13px/1 var(--zag); letter-spacing: .08em; text-transform: uppercase; }
 .postroyka { display: grid; gap: 8px; margin-top: 8px; }
 .postroyka span { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, .07);
   border-radius: 12px; padding: 11px 14px; font-size: 14px; }
@@ -301,7 +303,7 @@ header, section, footer { position: relative; z-index: 1; }
 <div class="geroy-art">
 <img src="assets/img/provodnik-energiya.webp" alt="Проводник Тучи" width="668" height="900">
 <div class="plitka plitka-1"><b>4,6</b><span>на Яндекс Картах</span></div>
-<div class="plitka plitka-2"><b>FBS</b><span>на Wildberries и Ozon</span></div>
+<div class="plitka plitka-2"><b>FBS</b><span>отгрузка со своего склада на Wildberries и Ozon</span></div>
 <div class="plitka plitka-3"><b>с 2017</b><span>года на своём складе</span></div>
 </div>
 </div></div></section>
@@ -337,7 +339,7 @@ header, section, footer { position: relative; z-index: 1; }
 <div class="karta-foto"><img src="assets/img/kadr-stellazhi.jpg" alt="" width="360" height="360" loading="lazy"></div>
 <span class="igr">Портал</span>
 <h3>Таможня</h3>
-<p>Оформление и сопровождение грузов для участников ВЭД</p>
+<p>Оформление и сопровождение грузов для участников внешнеэкономической деятельности (ВЭД)</p>
 <a class="kn kn-bel" href="../novyy/tamozhnya/">Подробнее</a></article></div>
 </div></section>
 
@@ -349,7 +351,7 @@ header, section, footer { position: relative; z-index: 1; }
 <span class="yarl">обычный формат</span>
 <h3>Всё просто</h3>
 <p>Одна форма и менеджер на связи. В кабинете заявки, остатки, документы и счёт за месяц.</p>
-<div class="mok" aria-hidden="true"><i></i><i></i><i></i><i class="mok-kn"></i></div>
+<div class="mok" aria-hidden="true"><span>Телефон или почта</span><span>Компания или ИНН</span><span>Что нужно хранить и сколько</span><b>Отправить</b></div>
 <a class="kn kn-2" href="../novyy/start/prosto/">Оставить заявку</a>
 </article>
 <article class="put put-igra">
@@ -382,7 +384,7 @@ header, section, footer { position: relative; z-index: 1; }
 </article>
 <article class="d-vitrina">
 <h3>Витрина</h3>
-<p>Для компаний и ИП: ваш товар со склада попадает в Лавку и продаётся, пока лежит у нас.</p>
+<p>Для компаний и индивидуальных предпринимателей: ваш товар со склада попадает в Лавку и продаётся, пока лежит у нас.</p>
 <ul><li>Карточка собирается из того, что уже есть на складе</li><li>Заказы, остатки и выплаты видно в кабинете</li><li>Частному лицу Витрина недоступна</li></ul>
 <a class="kn" href="../novyy/vitrina/">Посмотреть Витрину</a>
 </article>
@@ -391,6 +393,7 @@ header, section, footer { position: relative; z-index: 1; }
 
 <section class="sek"><div class="wrap">
 <h2>Как проходит <em>первая поставка</em></h2>
+<p class="pod-zag">Расчёт приходит в тот же день, договор занимает около 20 минут, предоплата не нужна. Дальше остаётся привезти товар.</p>
 <div class="shagi"><div class="shag"><span class="shag-iz">Этап 1 из 4</span><i>1</i><b>Заявка</b><p>На сайте или по телефону, как удобнее</p></div><div class="shag"><span class="shag-iz">Этап 2 из 4</span><i>2</i><b>Расчёт</b><p>Приходит в тот же день, по вашим габаритам</p></div><div class="shag"><span class="shag-iz">Этап 3 из 4</span><i>3</i><b>Договор</b><p>Около 20 минут, предоплата не нужна</p></div><div class="shag"><span class="shag-iz">Этап 4 из 4</span><i>4</i><b>Первая поставка</b><p>Принимаем, считаем и фотографируем</p></div></div>
 </div></section>
 
@@ -402,6 +405,7 @@ header, section, footer { position: relative; z-index: 1; }
 
 <section class="sek"><div class="wrap">
 <h2>Склад <em>изнутри</em></h2>
+<p class="pod-zag">Стеллажи и мелкие ячейки, зона упаковки, проходы, по которым ходит техника. Приехать и посмотреть можно в любой рабочий день.</p>
 <div class="lenta"><article class="poster"><img src="assets/img/foto-m1.jpg" alt="Стеллажное хранение" width="600" height="800" loading="lazy"><div><b>Стеллажное хранение</b><span>паллеты на стеллажах</span></div></article><article class="poster"><img src="assets/img/foto-m3.jpg" alt="Мелкие ячейки" width="600" height="800" loading="lazy"><div><b>Мелкие ячейки</b><span>для штучного товара и остатков</span></div></article><article class="poster"><img src="assets/img/foto-m7.jpg" alt="Паллеты и упаковка" width="600" height="800" loading="lazy"><div><b>Паллеты и упаковка</b><span>стретч, короба, поддоны</span></div></article><article class="poster"><img src="assets/img/foto-m6.jpg" alt="Приёмка и учёт" width="600" height="800" loading="lazy"><div><b>Приёмка и учёт</b><span>пересчёт и фото каждой паллеты</span></div></article><article class="poster"><img src="assets/img/foto-m2.jpg" alt="Ряды и проходы" width="600" height="800" loading="lazy"><div><b>Ряды и проходы</b><span>техника проходит между стеллажами</span></div></article></div>
 </div></section>
 

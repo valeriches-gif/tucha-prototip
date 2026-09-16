@@ -141,8 +141,10 @@ body > * { position: relative; z-index: 1; }
 .put p { margin: 0; font-size: 15px; color: var(--mute); }
 .put .pill { align-self: flex-start; margin-top: 8px; }
 .mok { display: grid; gap: 9px; margin-top: 6px; }
-.mok i { height: 40px; border-radius: 10px; background: rgba(255, 255, 255, .05); box-shadow: inset 0 0 0 1px var(--lin); }
-.mok i.mok-kn { height: 42px; width: 58%; border-radius: 999px; background: rgba(255, 255, 255, .9); box-shadow: none; }
+.mok span { display: flex; align-items: center; height: 42px; padding: 0 14px; border-radius: 10px;
+  background: rgba(255, 255, 255, .05); box-shadow: inset 0 0 0 1px var(--lin); font-size: 14px; color: #7E93AD; }
+.mok b { display: grid; place-items: center; height: 42px; width: 58%; border-radius: 999px; background: #fff;
+  color: #0B1526; font: 700 12px/1 var(--zag); letter-spacing: .12em; text-transform: uppercase; }
 .bloki { display: grid; gap: 8px; margin-top: 6px; }
 .bloki span { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; font-size: 14px;
   background: rgba(255, 255, 255, .05); box-shadow: inset 0 0 0 1px var(--lin); color: #fff; }
@@ -230,7 +232,7 @@ body > * { position: relative; z-index: 1; }
 <p class="eb">Услуги</p>
 <h2>Четыре услуги <b>по одному договору</b></h2>
 <p class="lid">Можно взять одну, можно все сразу. В «Мире Тучи» у каждой услуги своё название, рядом с обычным.</p>
-<div class="orbita"><a class="usl-k" href="../novyy/hranenie/"><i style="background:radial-gradient(circle at 34% 28%, #3E7FB8, #1B3E63)"></i><em>Точка сохранения</em><h3>Хранение</h3><p>Стеллажи, пол и мелкие ячейки. От одной паллеты</p></a><a class="usl-k" href="../novyy/obrabotka/"><i style="background:radial-gradient(circle at 34% 28%, #2E9BD6, #12557E)"></i><em>Мастерская</em><h3>Обработка</h3><p>Приёмка, маркировка «Честный знак», сборка и отгрузка на маркетплейсы</p></a><a class="usl-k" href="../novyy/dostavka/"><i style="background:radial-gradient(circle at 34% 28%, #5FB9E8, #1E6E9E)"></i><em>Телепорт</em><h3>Доставка</h3><p>По Москве, России и за рубеж, передача в транспортные компании</p></a><a class="usl-k" href="../novyy/tamozhnya/"><i style="background:radial-gradient(circle at 34% 28%, #8FA7C4, #3B5273)"></i><em>Портал</em><h3>Таможня</h3><p>Оформление и сопровождение грузов для участников ВЭД</p></a></div>
+<div class="orbita"><a class="usl-k" href="../novyy/hranenie/"><i style="background:radial-gradient(circle at 34% 28%, #3E7FB8, #1B3E63)"></i><em>Точка сохранения</em><h3>Хранение</h3><p>Стеллажи, пол и мелкие ячейки. От одной паллеты</p></a><a class="usl-k" href="../novyy/obrabotka/"><i style="background:radial-gradient(circle at 34% 28%, #2E9BD6, #12557E)"></i><em>Мастерская</em><h3>Обработка</h3><p>Приёмка, маркировка «Честный знак», сборка и отгрузка на маркетплейсы</p></a><a class="usl-k" href="../novyy/dostavka/"><i style="background:radial-gradient(circle at 34% 28%, #5FB9E8, #1E6E9E)"></i><em>Телепорт</em><h3>Доставка</h3><p>По Москве, России и за рубеж, передача в транспортные компании</p></a><a class="usl-k" href="../novyy/tamozhnya/"><i style="background:radial-gradient(circle at 34% 28%, #8FA7C4, #3B5273)"></i><em>Портал</em><h3>Таможня</h3><p>Оформление и сопровождение грузов для участников внешнеэкономической деятельности (ВЭД)</p></a></div>
 </div></section>
 
 <section class="sek"><div class="wrap">
@@ -249,7 +251,7 @@ body > * { position: relative; z-index: 1; }
 <article class="put">
 <h3>Всё просто</h3>
 <p>Одна форма и менеджер на связи. В кабинете заявки, остатки, документы и счёт за месяц.</p>
-<div class="mok" aria-hidden="true"><i></i><i></i><i></i><i class="mok-kn"></i></div>
+<div class="mok" aria-hidden="true"><span>Телефон или почта</span><span>Компания или ИНН</span><span>Что нужно хранить и сколько</span><b>Отправить</b></div>
 <a class="pill pill-2" href="../novyy/start/prosto/">Оставить заявку</a>
 </article>
 <article class="put put-igra">
@@ -264,6 +266,7 @@ body > * { position: relative; z-index: 1; }
 <section class="sek"><div class="wrap">
 <p class="eb">Как начать</p>
 <h2>От заявки <b>до первой поставки</b></h2>
+<p class="lid">Расчёт приходит в тот же день, договор занимает около 20 минут, предоплата не нужна.</p>
 <div class="shagi"><div class="shag"><b>Шаг 1</b><h3>Заявка</h3><p>На сайте или по телефону</p></div><div class="shag"><b>Шаг 2</b><h3>Расчёт</h3><p>В тот же день, по вашим габаритам</p></div><div class="shag"><b>Шаг 3</b><h3>Договор</h3><p>Около 20 минут, предоплата не нужна</p></div><div class="shag"><b>Шаг 4</b><h3>Поставка</h3><p>Принимаем, считаем, фотографируем</p></div></div>
 </div></section>
 
