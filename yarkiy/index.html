@@ -147,6 +147,29 @@ h2 em { font-style: normal; color: var(--oran); }
 .karta p { margin: 0; font-size: 15px; color: rgba(255, 255, 255, .92); flex: 1; }
 .karta .kn { align-self: flex-start; padding: 13px 22px; font-size: 12px; }
 
+/* игровое имя над обычным */
+.karta .igr { font: 700 11px/1 var(--zag); letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .78); display: block; }
+
+/* лестница уровней */
+.lestnica { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; margin-top: 42px; position: relative; }
+.lestnica::before { content: ''; position: absolute; left: 4%; right: 4%; top: 26px; height: 3px; border-radius: 3px;
+  background: linear-gradient(90deg, var(--oran), #FFD1A1 55%, #E3EAF2); }
+.ur { position: relative; text-align: center; }
+.ur i { position: relative; display: grid; place-items: center; width: 54px; height: 54px; margin: 0 auto 12px;
+  border-radius: 50%; background: #fff; box-shadow: 0 10px 24px -14px rgba(22, 48, 79, .9), inset 0 0 0 3px #E3EAF2;
+  font: 800 19px/1 var(--zag); color: var(--navy); font-style: normal; }
+.ur-tek i { background: var(--oran); color: #fff; box-shadow: 0 12px 26px -12px rgba(255, 138, 31, .95), inset 0 0 0 3px #FFD1A1; }
+.ur b { display: block; font: 800 15px/1.2 var(--zag); color: var(--navy); }
+.ur span { display: block; font-size: 12px; color: var(--sky); margin-top: 3px; }
+.ur p { margin: 8px 0 0; font-size: 13px; color: var(--mute); line-height: 1.4; }
+.ur-tek b { color: var(--orange2, #DE7212); }
+.lest-niz { margin-top: 26px; color: var(--mute); font-size: 15px; }
+
+/* этапы с номерами */
+.shag i { position: relative; }
+.shag-iz { display: block; font: 700 11px/1 var(--zag); letter-spacing: .12em; text-transform: uppercase; color: var(--sky); margin-bottom: 8px; }
+
 /* цены */
 .ceny { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-top: 40px; }
 .cena-k { background: #fff; border-radius: 22px; padding: 24px 22px 26px; box-shadow: var(--teni);
@@ -217,6 +240,10 @@ h2 em { font-style: normal; color: var(--oran); }
 
 @media (max-width: 1040px) {
   .karty, .shagi, .ceny { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lestnica { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 46%; overflow-x: auto;
+    scroll-snap-type: x mandatory; padding-bottom: 14px; margin-inline: -16px; padding-inline: 16px; }
+  .lestnica::before { display: none; }
+  .ur { scroll-snap-align: start; }
   .geroy-niz { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 0; }
   .geroy-niz div:nth-child(3) { padding-left: 0; border-left: 0; }
   .geroy-g, .sklad-g, .stop { grid-template-columns: minmax(0, 1fr); }
@@ -295,18 +322,22 @@ h2 em { font-style: normal; color: var(--oran); }
 <p class="pod-zag">Четыре услуги по одному договору. Можно взять одну, можно все сразу.</p>
 <div class="karty"><article class="karta sin">
 <div class="karta-foto"><img src="assets/img/foto-m1.jpg" alt="" width="360" height="360" loading="lazy"></div>
+<span class="igr">Точка сохранения</span>
 <h3>Хранение</h3>
 <p>Стеллажи, пол и мелкие ячейки. От одной паллеты</p>
 <a class="kn kn-bel" href="../novyy/hranenie/">Подробнее</a></article><article class="karta oran">
 <div class="karta-foto"><img src="assets/img/kadr-upakovka.jpg" alt="" width="360" height="360" loading="lazy"></div>
+<span class="igr">Мастерская</span>
 <h3>Обработка</h3>
 <p>Приёмка, маркировка «Честный знак», сборка и отгрузка на маркетплейсы</p>
 <a class="kn kn-bel" href="../novyy/obrabotka/">Подробнее</a></article><article class="karta oran">
 <div class="karta-foto"><img src="assets/img/kadr-pogruzchik.jpg" alt="" width="360" height="360" loading="lazy"></div>
+<span class="igr">Телепорт</span>
 <h3>Доставка</h3>
 <p>По Москве, России и за рубеж, передача в транспортные компании</p>
 <a class="kn kn-bel" href="../novyy/dostavka/">Подробнее</a></article><article class="karta sin">
 <div class="karta-foto"><img src="assets/img/kadr-stellazhi.jpg" alt="" width="360" height="360" loading="lazy"></div>
+<span class="igr">Портал</span>
 <h3>Таможня</h3>
 <p>Оформление и сопровождение грузов для участников ВЭД</p>
 <a class="kn kn-bel" href="../novyy/tamozhnya/">Подробнее</a></article></div>
@@ -342,6 +373,13 @@ h2 em { font-style: normal; color: var(--oran); }
 </div>
 </div></section>
 
+<section class="sek" id="urovni"><div class="wrap">
+<h2>Расти <em>с Тучей</em></h2>
+<p class="pod-zag">Семь уровней. Растут не за объём, а за срок и порядок: сколько месяцев подряд вы под тучей и как выполняете условие месяца. На верхних ступенях это уже скидка на хранение.</p>
+<div class="lestnica"><div class="ur ur-tek"><i>1</i><b>Под тучей</b><span>бесплатный период</span><p>мир в кабинете, фото каждой приёмки</p></div><div class="ur"><i>2</i><b>Тучка</b><span>первый платный месяц</span><p>одна бесплатная приёмка</p></div><div class="ur"><i>3</i><b>Туча</b><span>3 месяца подряд</span><p>три приёмки, приоритет отгрузки, резерв мест</p></div><div class="ur"><i>4</i><b>Большая Туча</b><span>6 месяцев подряд</span><p>отсрочка 7 дней, цена на полгода</p></div><div class="ur"><i>5</i><b>Туча Про</b><span>9 месяцев подряд</span><p>скидка 5 %, доставка попуткой</p></div><div class="ur"><i>6</i><b>Туча Макс</b><span>12 месяцев подряд</span><p>скидка 10 %, отсрочка 14 дней</p></div><div class="ur"><i>7</i><b>Мировая Туча</b><span>24 месяца подряд</span><p>скидка 15 %, свой регламент</p></div></div>
+<p class="lest-niz">Уровень виден в кабинете вместе с условием текущего месяца. В формате «Всё просто» он тоже работает, просто называется скидкой за срок. <a href="../novyy/start/mir/">Посмотреть в игре</a></p>
+</div></section>
+
 <section class="sek" id="lavka"><div class="wrap">
 <h2>Лавка <em>и Витрина</em></h2>
 <p class="pod-zag">На складе не только хранят. Отсюда же продают: покупателю и оптовику.</p>
@@ -363,7 +401,7 @@ h2 em { font-style: normal; color: var(--oran); }
 
 <section class="sek"><div class="wrap">
 <h2>Как проходит <em>первая поставка</em></h2>
-<div class="shagi"><div class="shag"><i>1</i><b>Заявка</b><p>На сайте или по телефону, как удобнее</p></div><div class="shag"><i>2</i><b>Расчёт</b><p>Приходит в тот же день, по вашим габаритам</p></div><div class="shag"><i>3</i><b>Договор</b><p>Около 20 минут, предоплата не нужна</p></div><div class="shag"><i>4</i><b>Первая поставка</b><p>Принимаем, считаем и фотографируем</p></div></div>
+<div class="shagi"><div class="shag"><span class="shag-iz">Этап 1 из 4</span><i>1</i><b>Заявка</b><p>На сайте или по телефону, как удобнее</p></div><div class="shag"><span class="shag-iz">Этап 2 из 4</span><i>2</i><b>Расчёт</b><p>Приходит в тот же день, по вашим габаритам</p></div><div class="shag"><span class="shag-iz">Этап 3 из 4</span><i>3</i><b>Договор</b><p>Около 20 минут, предоплата не нужна</p></div><div class="shag"><span class="shag-iz">Этап 4 из 4</span><i>4</i><b>Первая поставка</b><p>Принимаем, считаем и фотографируем</p></div></div>
 </div></section>
 
 <section class="sek" id="voprosy"><div class="wrap">
@@ -412,7 +450,7 @@ h2 em { font-style: normal; color: var(--oran); }
 
   var geroy = document.querySelectorAll('.geroy .eyebrow, .geroy h1, .geroy .lid, .geroy .knopki, .geroy-niz, .geroy-art');
   shag(geroy, 90);
-  var nizhe = document.querySelectorAll('.sek h2, .sek .pod-zag, .karta, .poster, .shag, .put, .sklad-g, .stop, .cena-k, .dvoe article, .voprosy details');
+  var nizhe = document.querySelectorAll('.sek h2, .sek .pod-zag, .karta, .poster, .shag, .put, .sklad-g, .stop, .cena-k, .dvoe article, .voprosy details, .ur');
   shag(nizhe, 70);
 
   function chislo(e) {
