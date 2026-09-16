@@ -11,7 +11,6 @@
 <link rel="preload" href="assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face { font-family: 'Rubik'; src: url(assets/fonts/rubik.woff2) format('woff2'); font-weight: 400 900; font-display: swap; }
-@font-face { font-family: 'Sklad'; src: url(assets/fonts/sklad-700.woff2) format('woff2'); font-weight: 700; font-display: swap; }
 @font-face { font-family: 'Golos Text'; src: url(assets/fonts/golos.woff2) format('woff2'); font-weight: 400 900; font-display: swap; }
 :root {
   --navy: #16304F; --navy2: #0E2440; --sky: #2E8FD0; --sky-t: #E8F4FD;
@@ -82,18 +81,18 @@ h2 em { font-style: normal; color: var(--oran); }
 .plitka-2 { right: -12%; top: 46%; }
 .plitka-3 { left: -8%; bottom: 4%; }
 
-/* о складе: полоса светлее тёмно-синей, чтобы не давила */
-.temno { background: linear-gradient(140deg, #3E86C6 0%, #2E8FD0 55%, #2478B4 100%); color: #EAF4FD; border-radius: 36px; }
+/* о складе */
+.temno { background: linear-gradient(150deg, #1E3A5F, #16304F); color: #D8E5F3; border-radius: 36px; }
 .sklad-g { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 0; align-items: stretch; overflow: hidden; border-radius: 36px; }
 .sklad-foto { position: relative; min-height: 340px; }
 .sklad-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .sklad-t { padding: clamp(30px, 4vw, 54px); }
 .sklad-t h2 { color: #fff; }
-.sklad-t h2 em { color: #FFD9A8; }
-.sklad-t p { color: #E4F1FB; }
+.sklad-t h2 em { color: var(--oran); }
+.sklad-t p { color: #B8CBDF; }
 .cifry { display: flex; flex-wrap: wrap; gap: 30px; margin-top: 30px; }
-.cifry div b { display: block; font: 900 clamp(30px, 3.4vw, 42px)/1 var(--zag); color: #fff; }
-.cifry div span { font-size: 14px; color: #D3E8F7; }
+.cifry div b { display: block; font: 900 clamp(30px, 3.4vw, 42px)/1 var(--zag); color: var(--oran); }
+.cifry div span { font-size: 14px; color: #9FB6CE; }
 
 /* формат: просто или как в игре */
 .dva { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 44px; }
@@ -103,11 +102,26 @@ h2 em { font-style: normal; color: var(--oran); }
 .put-igra h3 { color: #fff; }
 .put p { margin: 0; font-size: 16px; color: var(--mute); }
 .put-igra p { color: #B4CBE3; }
-.put img { border-radius: 18px; box-shadow: 0 18px 34px -24px rgba(22, 48, 79, .8); margin-top: 6px; }
+.put-igra { position: relative; overflow: hidden; }
+.put-golova { position: absolute; right: 18px; top: 18px; width: 74px; height: 74px; border-radius: 50%;
+  background: rgba(255, 255, 255, .1); object-fit: cover; }
+.mok { display: grid; gap: 10px; margin-top: 8px; }
+.mok i { height: 44px; border-radius: 12px; background: #EDF3FA; box-shadow: inset 0 0 0 1px #E1EAF4; }
+.mok i.mok-kn { height: 46px; width: 62%; border-radius: 999px; background: var(--oran); box-shadow: none; }
+.postroyka { display: grid; gap: 8px; margin-top: 8px; }
+.postroyka span { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, .07);
+  border-radius: 12px; padding: 11px 14px; font-size: 14px; }
+.postroyka span i { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.postroyka span b { font-weight: 600; color: #fff; }
+.postroyka span em { font-style: normal; color: #91AECB; margin-left: auto; font-size: 13px; }
+.uroven-p { margin-top: 14px; }
+.uroven-p b { font: 800 13px/1 var(--zag); text-transform: uppercase; letter-spacing: .07em; color: #FFB877; }
+.uroven-p i { display: block; height: 8px; border-radius: 999px; background: rgba(255, 255, 255, .14); margin-top: 9px; }
+.uroven-p i span { display: block; height: 100%; width: 14%; background: var(--oran); border-radius: 999px; }
 .put .kn { align-self: flex-start; margin-top: 4px; }
 .yarl { align-self: flex-start; border-radius: 999px; padding: 7px 14px; font: 700 12px/1 var(--zag);
   letter-spacing: .08em; text-transform: uppercase; background: var(--sky-t); color: var(--sky); }
-.yarl-igra { background: var(--oran); color: #fff; font-family: 'Sklad', var(--zag); letter-spacing: .04em; }
+.yarl-igra { background: var(--oran); color: #fff; }
 .bloki { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
 .blok { display: inline-flex; align-items: center; gap: 8px; background: #fff; border-radius: 999px; padding: 9px 16px;
   font-size: 14px; font-weight: 600; box-shadow: 0 10px 22px -18px rgba(22, 48, 79, .9); }
@@ -175,6 +189,8 @@ h2 em { font-style: normal; color: var(--oran); }
   .stop-art { max-width: 260px; }
 }
 @media (max-width: 760px) {
+  .postroyka span { flex-wrap: wrap; }
+  .postroyka span em { margin-left: 22px; }
   .menu, .shapka-tel { display: none; }
   .shapka .kn { margin-left: auto; }
   .karty, .shagi { grid-template-columns: minmax(0, 1fr); }
@@ -183,6 +199,19 @@ h2 em { font-style: normal; color: var(--oran); }
   .plitka { padding: 9px 12px; }
   .plitka b { font-size: 18px; }
 }
+/* движение: включается скриптом, без него всё видно сразу */
+.anim .pok { opacity: 0; transform: translateY(24px); }
+.anim .pok.vid { opacity: 1; transform: none;
+  transition: opacity .5s ease var(--z, 0ms), transform .65s cubic-bezier(.23, 1, .32, 1) var(--z, 0ms); }
+.anim .postroyka span { opacity: 0; transform: translateX(-16px); }
+.anim .postroyka.sobrano span { opacity: 1; transform: none;
+  transition: opacity .3s ease var(--z, 0ms), transform .45s cubic-bezier(.23, 1, .32, 1) var(--z, 0ms); }
+.anim .uroven-p i span { width: 0; }
+.anim .uroven-p.idet i span { width: 14%; transition: width 1s cubic-bezier(.23, 1, .32, 1) .45s; }
+.anim .plitka { transition: transform .6s cubic-bezier(.23, 1, .32, 1); }
+.anim .duga path { stroke-dashoffset: 420; transition: stroke-dashoffset 2.2s ease .3s; }
+.anim .duga.vid path { stroke-dashoffset: 0; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .geroy-art img { animation: none; }
@@ -210,7 +239,7 @@ h2 em { font-style: normal; color: var(--oran); }
 </div>
 <div class="geroy-art">
 <img src="assets/img/provodnik-energiya.webp" alt="Проводник Тучи" width="668" height="900">
-<div class="plitka plitka-1"><b>3 000</b><span>паллето-мест</span></div>
+<div class="plitka plitka-1"><b data-schet="3000">0</b><span>паллето-мест</span></div>
 <div class="plitka plitka-2"><b>4,6</b><span>на Яндекс Картах</span></div>
 <div class="plitka plitka-3"><b>с 2017</b><span>года на своём складе</span></div>
 </div>
@@ -221,7 +250,7 @@ h2 em { font-style: normal; color: var(--oran); }
 <div class="sklad-t">
 <h2>О <em>складе</em></h2>
 <p class="pod-zag">«ТУЧА, Мировая Лавка»: склад ответственного хранения в Московской области, работаем с 2017 года. Классы A, B и C, тёплая и холодная зоны, площадка для негабарита. Берём от одной паллеты, без минимального объёма.</p>
-<div class="cifry"><div><b>3 000</b><span>паллето-мест</span></div><div><b>с 2017</b><span>года на своём складе</span></div><div><b>4,6</b><span>на Яндекс Картах</span></div></div>
+<div class="cifry"><div><b data-schet="3000">0</b><span>паллето-мест</span></div><div><b>с 2017</b><span>года на своём складе</span></div><div><b>4,6</b><span>на Яндекс Картах</span></div></div>
 </div>
 </div></div></section>
 
@@ -252,23 +281,22 @@ h2 em { font-style: normal; color: var(--oran); }
 <p class="pod-zag">Два пути к одному складу. Договор, цены и услуги одинаковые, отличается только то, как вы с нами общаетесь. Формат выбираете при регистрации и меняете в кабинете, в настройках.</p>
 <div class="dva">
 <article class="put">
-<span class="yarl">обычный</span>
+<span class="yarl">обычный формат</span>
 <h3>Всё просто</h3>
 <p>Одна форма и менеджер на связи. В кабинете заявки, остатки, документы и счёт за месяц.</p>
-<img src="assets/img/igra-prosto.jpg" alt="Кабинет «Всё просто»: остатки, заявки и документы" width="1200" height="720" loading="lazy">
+<div class="mok" aria-hidden="true"><i></i><i></i><i></i><i class="mok-kn"></i></div>
 <a class="kn kn-2" href="../novyy/start/prosto/">Оставить заявку</a>
 </article>
 <article class="put put-igra">
-<span class="yarl yarl-igra">8 бит</span>
+<img class="put-golova" src="assets/img/provodnik-golova.webp" alt="" width="320" height="320" loading="lazy">
+<span class="yarl yarl-igra">игровой формат</span>
 <h3>Мир Тучи</h3>
-<p>Склад собирается из блоков, как постройка. Семь уровней, задание месяца и условия, которые дают скидку. Всё то же хранение, только видно, что из чего складывается.</p>
-<img src="assets/img/igra-mir.jpg" alt="Конструктор «Мир Тучи»: постройка склада из блоков" width="1200" height="676" loading="lazy">
+<p>Склад собирается из блоков: каждый блок это услуга. Чем дольше вы под тучей и чем аккуратнее выполняете условия месяца, тем выше уровень и больше скидка.</p>
+<div class="postroyka" data-sbor><span style="--z:0ms"><i style="background:#1E3A5F"></i><b>Точка сохранения</b><em>хранение</em></span><span style="--z:90ms"><i style="background:#1E90D2"></i><b>Мастерская</b><em>обработка</em></span><span style="--z:180ms"><i style="background:#5AAEE0"></i><b>Телепорт</b><em>доставка</em></span><span style="--z:270ms"><i style="background:#2C5486"></i><b>Портал</b><em>таможня</em></span><span style="--z:360ms"><i style="background:#EF7F1A"></i><b>Лавка</b><em>маркетплейс</em></span></div>
+<div class="uroven-p"><b>Уровень 1 из 7 · Под тучей</b><i><span></span></i></div>
 <a class="kn" href="../novyy/start/mir/">Играть</a>
 </article>
 </div>
-<div class="bloki"><span class="blok"><i style="background:#1E3A5F"></i>Точка сохранения<span>хранение</span></span><span class="blok"><i style="background:#1E90D2"></i>Мастерская<span>обработка</span></span><span class="blok"><i style="background:#5AAEE0"></i>Телепорт<span>доставка</span></span><span class="blok"><i style="background:#2C5486"></i>Портал<span>таможня</span></span><span class="blok"><i style="background:#EF7F1A"></i>Лавка<span>маркетплейс</span></span><span class="blok"><i style="background:#F7B267"></i>Витрина<span>продвижение</span></span></div>
-<figure class="kab-kadr"><img src="assets/img/igra-kabinet.jpg" alt="Кабинет «Мир Тучи»: уровень, условия месяца и разделы по постройкам" width="1200" height="720" loading="lazy">
-<figcaption>Кабинет в игровом формате: уровень, задание месяца и разделы, названные по постройкам. Услуги и документы те же самые.</figcaption></figure>
 </div></section>
 
 <section class="sek"><div class="wrap">
@@ -298,4 +326,74 @@ h2 em { font-style: normal; color: var(--oran); }
 <div class="versii"><a href="../">Обычная</a><a href="../novyy/">8 бит</a><a href="../novyy2/">Современная</a><a href="../tri/">Сравнить</a></div>
 <div class="versii"><a href="../novyy/lavka/">Лавка</a><a href="../novyy/vitrina/">Витрина</a><a href="../novyy/kontakty/">Контакты</a><a href="../novyy/dokumenty/">Документы</a></div></div>
 </div></footer>
+<script>
+(function () {
+  var tiho = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (tiho || !('IntersectionObserver' in window)) return;
+  var koren = document.documentElement;
+  koren.classList.add('anim');
+
+  function shag(spisok, k) {
+    var po = {};
+    [].forEach.call(spisok, function (e) {
+      e.classList.add('pok');
+      var p = e.parentNode;
+      var i = po[p] = (po[p] === undefined ? 0 : po[p] + 1);
+      e.style.setProperty('--z', (i * (k || 70)) + 'ms');
+    });
+  }
+
+  var geroy = document.querySelectorAll('.geroy .eyebrow, .geroy h1, .geroy .lid, .geroy .knopki, .geroy-niz, .geroy-art');
+  shag(geroy, 90);
+  var nizhe = document.querySelectorAll('.sek h2, .sek .pod-zag, .karta, .poster, .shag, .put, .sklad-g, .stop');
+  shag(nizhe, 70);
+
+  function chislo(e) {
+    var cel = parseFloat(e.dataset.schet), t0 = 0, drob = (e.dataset.schet.indexOf('.') > 0);
+    function kadr(t) {
+      if (!t0) t0 = t;
+      var d = Math.min((t - t0) / 900, 1), v = cel * (1 - Math.pow(1 - d, 3));
+      e.textContent = drob ? v.toFixed(1).replace('.', ',') : Math.round(v).toLocaleString('ru-RU').replace(',', ' ');
+      if (d < 1) requestAnimationFrame(kadr);
+    }
+    requestAnimationFrame(kadr);
+  }
+
+  var oko = new IntersectionObserver(function (zapisi) {
+    zapisi.forEach(function (z) {
+      if (!z.isIntersecting) return;
+      var e = z.target;
+      e.classList.add(e.classList.contains('postroyka') ? 'sobrano' : 'vid');
+      if (e.dataset && e.dataset.schet) chislo(e);
+      if (e.classList.contains('put-igra')) {
+        var u = e.querySelector('.uroven-p');
+        if (u) u.classList.add('idet');
+      }
+      oko.unobserve(e);
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.15 });
+
+  [].forEach.call(document.querySelectorAll('.pok, [data-sbor], [data-schet], .duga'), function (e) { oko.observe(e); });
+  requestAnimationFrame(function () {
+    [].forEach.call(geroy, function (e) { e.classList.add('vid'); });
+    var d = document.querySelector('.duga');
+    if (d) d.classList.add('vid');
+  });
+
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    var g = document.querySelector('.geroy'), plitki = document.querySelectorAll('.plitka');
+    g.addEventListener('mousemove', function (s) {
+      var r = g.getBoundingClientRect();
+      var x = (s.clientX - r.left) / r.width - .5, y = (s.clientY - r.top) / r.height - .5;
+      [].forEach.call(plitki, function (e, i) {
+        var k = (i % 2 ? -1 : 1) * 12;
+        e.style.transform = 'translate3d(' + (-x * k) + 'px,' + (-y * k) + 'px,0)';
+      });
+    });
+    g.addEventListener('mouseleave', function () {
+      [].forEach.call(plitki, function (e) { e.style.transform = ''; });
+    });
+  }
+})();
+</script>
 </body></html>
