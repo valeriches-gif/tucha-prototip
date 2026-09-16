@@ -12,10 +12,10 @@
 <link rel="icon" type="image/png" href="../assets/img/znachok.png">
 <link rel="preload" href="../assets/fonts/golos.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/site.css?v=202609152136">
-<link rel="stylesheet" href="../assets/ui.css?v=202609152136">
-<link rel="stylesheet" href="../assets/lavka.css?v=202609152136">
-<link rel="stylesheet" href="../assets/magiya.css?v=202609152136">
+<link rel="stylesheet" href="../assets/site.css?v=202609161032">
+<link rel="stylesheet" href="../assets/ui.css?v=202609161032">
+<link rel="stylesheet" href="../assets/lavka.css?v=202609161032">
+<link rel="stylesheet" href="../assets/magiya.css?v=202609161032">
 </head><body class="magiya">
 <a class="skryt-f" href="#glav">К содержанию</a>
 <div class="nebo" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -33,32 +33,57 @@
 <a class="btn btn-sm m-btn-sm" href="../start/mir/">Играть</a>
 <button class="burger" type="button" data-burger aria-expanded="false" aria-label="Меню"><i></i><i></i><i></i></button>
 </div></div></header>
-<main id="glav"><section class="usl-hero"><div class="wrap usl-hero-g">
-<div><p class="igr-imya"><i style="background:#5AAEE0"></i>Телепорт · доставка</p>
+<main id="glav"><section class="hero-mir hero-usl"><div class="wrap hero-mir-g">
+<div class="hero-mir-t">
+<p class="igr-imya"><i style="background:#5AAEE0"></i>Телепорт · доставка</p>
 <h1>Доставка грузов</h1>
-<p class="pod">Отвезём товар со склада туда, куда нужно: по Москве, России и за рубеж.</p>
-<div class="cta-pol"><button class="btn" type="button" data-dobavit="dostavka">Добавить в мой мир</button>
-<a class="btn btn-2" href="tel:+74956658242" data-goal="call_click">Позвонить</a></div></div>
-<div class="usl-scena"><svg id="uslScena" role="img" aria-label="Телепорт в постройке под тучей"></svg>
+<p class="lead">Отвезём товар со склада туда, куда нужно: по Москве, России и за рубеж.</p>
+<div class="knopki"><button class="btn" type="button" data-dobavit="dostavka" data-dost="Телепорт настроен">Получить расчёт</button>
+<a class="btn btn-2" href="tel:+74956658242" data-goal="call_click">Позвонить</a></div>
+</div>
+<div class="hero-mir-scena">
+<svg id="uslScena" role="img" aria-label="Телепорт в постройке под тучей"></svg>
+<a class="hero-malchik" href="../start/mir/?blok=dostavka"><img src="../assets/img/provodnik-palec.webp" alt="" width="781" height="900"><span class="rech">Телепорт на месте, товар поедет куда нужно. Соберём ваш склад?</span></a>
 </div>
 </div></section>
-<section class="sek"><div class="wrap usl-setka">
-<div class="usl-vhodit"><h2>Что входит</h2><ul class="spis-ok"><li>Доставка по Москве и области</li><li>Отправка по России</li><li>Передача в транспортные компании</li><li>Кросс-докинг: перегрузка без хранения</li><li>Международная доставка</li></ul></div>
-<div class="cena-k"><p class="eb">Цена</p><b>По расчёту</b><p style="margin:0">Зависит от объёма, веса и направления, пришлём расчёт и срок.</p>
-<div class="cena-kn"><button class="btn btn-sm" type="button" data-dobavit="dostavka">Получить расчёт</button><a class="cena-tel" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a></div></div>
+
+<section class="fakty-sek"><div class="wrap"><div class="fakty-p"><div><b>Москва</b><span>и область, Россия и за рубеж</span></div><div><b>10 минут</b><span>от МКАД и Шереметьева</span></div><div><b>20 минут</b><span>договор в день обращения</span></div><div><b>4,6</b><span>на Яндекс Картах, 36 оценок</span></div></div></div></section>
+
+<section class="sek"><div class="wrap usl-kl">
+<article class="kl kl-hran usl-cena"><svg class="ik-bol" data-ik="dostavka" aria-hidden="true"></svg><div>
+<p class="kl-ob">Цена</p><h3>По расчёту</h3><p>Зависит от объёма, веса и направления, пришлём расчёт и срок.</p><div class="skaner" aria-hidden="true"><i class="skaner-kod"></i><i class="skaner-luch"></i><span class="skaner-t">расчёт в тот же день</span></div>
+<div class="cta-pol"><button class="btn btn-bel" type="button" data-dobavit="dostavka" data-dost="Телепорт настроен">Получить расчёт</button><a class="kl-ssylka" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a></div></div></article>
+<div class="usl-vhodit"><h2>Что входит</h2><div class="stel-usl"><i class="stel-stoyka stel-l" aria-hidden="true"></i><i class="stel-stoyka stel-r" aria-hidden="true"></i><ul><li style="--i:0"><span class="korob-u"><span class="nakleyka">Доставка по Москве и области</span></span></li><li style="--i:1"><span class="korob-u"><span class="nakleyka">Отправка по России</span></span></li><li style="--i:2"><span class="korob-u"><span class="nakleyka">Передача в транспортные компании</span></span></li><li style="--i:3"><span class="korob-u"><span class="nakleyka">Кросс-докинг: перегрузка без хранения</span></span></li><li style="--i:4"><span class="korob-u"><span class="nakleyka">Международная доставка</span></span></li></ul></div></div>
 </div></section>
 
-<section class="sek-t"><div class="wrap"><h2>Как это выглядит</h2><div class="foto-setka"><figure><img src="../assets/img/foto-m4.jpg" alt="Отгрузка" loading="lazy"><figcaption>Отгрузка</figcaption></figure><figure><img src="../assets/img/foto-m6.jpg" alt="Въезд на складской комплекс" loading="lazy"><figcaption>Въезд на складской комплекс</figcaption></figure><figure><img src="../assets/img/foto-m7.jpg" alt="Погрузчик и паллеты" loading="lazy"><figcaption>Погрузчик и паллеты</figcaption></figure><figure><img src="../assets/img/foto-m5.jpg" alt="Стеллажи склада" loading="lazy"><figcaption>Стеллажи склада</figcaption></figure></div></div></section>
-<section class="sek"><div class="wrap"><h2>Как это работает</h2><div class="shagi"><div><b>Заявка</b><p class="muted" style="margin:4px 0 0">Что и куда везём</p></div><div><b>Расчёт</b><p class="muted" style="margin:4px 0 0">Стоимость и срок</p></div><div><b>Погрузка</b><p class="muted" style="margin:4px 0 0">Со склада, с фото</p></div><div><b>Доставка</b><p class="muted" style="margin:4px 0 0">До двери или до терминала</p></div></div></div></section>
+<section class="sek-t"><div class="wrap"><h2>Как это работает</h2><ol class="doroga-sh"><li><span class="ds-plitka" aria-hidden="true">1</span><h3>Заявка</h3><p>Что и куда везём</p></li><li><span class="ds-plitka" aria-hidden="true">2</span><h3>Расчёт</h3><p>Стоимость и срок</p></li><li><span class="ds-plitka" aria-hidden="true">3</span><h3>Погрузка</h3><p>Со склада, с фото</p></li><li><span class="ds-plitka" aria-hidden="true">4</span><h3>Доставка</h3><p>До двери или до терминала</p></li></ol></div></section>
+
+<section class="sek-t"><div class="wrap"><h2>Как это выглядит</h2><div class="kadry"><figure><img src="../assets/img/kadr-pogruzchik.jpg" alt="Погрузчик на складе" width="1080" height="608" loading="lazy"><figcaption>Погрузчик на складе</figcaption></figure><figure><img src="../assets/img/kadr-priemka.jpg" alt="Этикетки с QR-кодом" width="1080" height="608" loading="lazy"><figcaption>Этикетки с QR-кодом</figcaption></figure><figure><img src="../assets/img/kadr-prohod.jpg" alt="Проход между стеллажами" width="1080" height="608" loading="lazy"><figcaption>Проход между стеллажами</figcaption></figure></div></div></section>
+
+<section class="sek-t"><div class="wrap"><h2>Что ещё под одной тучей</h2><div class="eshe"><article class="kl kl-mast"><svg class="ik-bol" data-ik="hranenie" aria-hidden="true"></svg><div>
+<p class="kl-ob">Хранение</p><h3>Точка сохранения</h3><p>Стеллажи, пол и мелкие ячейки. От одной паллеты</p>
+<a class="kl-ssylka" href="../hranenie/">Подробнее</a></div></article><article class="kl kl-mast"><svg class="ik-bol" data-ik="obrabotka" aria-hidden="true"></svg><div>
+<p class="kl-ob">Обработка</p><h3>Мастерская</h3><p>Приёмка, маркировка «Честный знак», сборка и отгрузка на маркетплейсы</p>
+<a class="kl-ssylka" href="../../novyy/v2/obrabotka/">Подробнее</a></div></article><article class="kl kl-mast"><svg class="ik-bol" data-ik="tamozhnya" aria-hidden="true"></svg><div>
+<p class="kl-ob">Таможня</p><h3>Портал</h3><p>Оформление и сопровождение грузов для участников ВЭД</p>
+<a class="kl-ssylka" href="../../novyy/v2/tamozhnya/">Подробнее</a></div></article><article class="kl kl-mast"><svg class="ik-bol" data-ik="vitrina" aria-hidden="true"></svg><div>
+<p class="kl-ob">Продвижение</p><h3>Витрина</h3><p>Для компаний: продавайте свой товар со склада в Лавке</p>
+<a class="kl-ssylka" href="../vitrina/">Подробнее</a></div></article></div></div></section>
+
 <section class="sek-t"><div class="wrap vopr-dva"><div><h2>Частые вопросы</h2>
 <p class="muted">Не нашли ответ? <a href="../voprosy/">Все вопросы</a></p></div><div class="voprosy"><details><summary>Возите без хранения?</summary><p>Кросс-докинг есть: товар приходит и сразу уезжает дальше. Про разовые перевозки без склада спросите нас по телефону.</p></details><details><summary>Куда возите?</summary><p>По Москве и области, по России и за рубеж, сами или через транспортные компании.</p></details><details><summary>Как считается цена?</summary><p>По объёму, весу и направлению. Пришлём расчёт до отправки.</p></details></div></div></section>
-<section class="sek-t"><div class="wrap"><div class="cta-niz"><div><h2>Добавить Телепорт в свой мир?</h2>
-<p class="muted">Блок сразу встанет в конструктор, а в простой форме услуга будет отмечена.</p></div>
-<div class="cta-pol" style="margin:0"><button class="btn" type="button" data-dobavit="dostavka">Добавить в мой мир</button>
-<a class="btn btn-2" href="tel:+74956658242" data-goal="call_click">Позвонить</a></div></div></div></section>
+
+<section class="sek-t"><div class="wrap"><div class="final-b">
+<img class="final-foto" src="../assets/img/foto-stellazh.jpg" alt="Стеллажи склада Тучи" width="1400" height="349" loading="lazy">
+<div class="final-t"><h2>Посчитаем под ваш товар и покажем склад</h2>
+<p>Пришлите габариты и объём: расчёт придёт в тот же день. Договор за 20 минут, предоплата не нужна.</p>
+<a class="final-tel" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a>
+<div class="cta-pol"><button class="btn" type="button" data-dobavit="dostavka" data-dost="Телепорт настроен">Получить расчёт</button><a class="btn btn-bel" href="../kontakty/">Приехать посмотреть</a></div>
+<p class="final-mel">Любите игры? <a href="../start/mir/?blok=dostavka">Соберите склад в «Мире Тучи»</a>: Телепорт уже будет в постройке</p></div>
+</div></div></section>
 <div class="mob-cta" data-mob-cta aria-label="Быстрые действия">
 <a class="btn btn-2 btn-sm" href="tel:+74956658242" data-goal="call_click">Позвонить</a>
-<button class="btn btn-sm" type="button" data-dobavit="dostavka">Получить расчёт</button></div></main>
+<button class="btn btn-sm" type="button" data-dobavit="dostavka" data-dost="Телепорт настроен">Получить расчёт</button></div></main>
 <footer class="podval"><div class="wrap"><div class="kol">
 <div class="znak-p"><img src="../assets/img/logo-v-svetl.png" alt="ТУЧА, Мировая Лавка" width="480" height="277" loading="lazy">
 <p class="sf-p">СпейсФлоу</p><p>Всё под одной тучей</p><a class="tel-bol" href="tel:+74956658242" data-goal="call_click">+7 (495) 665-82-42</a></div>
@@ -89,16 +114,33 @@
 <a href="../kontakty/#perezvon">Перезвоните мне</a></div></div>
 </div>
 <script>window.TUCHA_ROOT = '../';</script>
-<script src="../assets/site.js?v=202609152136"></script>
-<script src="../assets/chat.js?v=202609152136"></script>
-<script src="../assets/izo.js?v=202609152136"></script>
-<script src="../assets/scena.js?v=202609152136"></script>
+<script src="../assets/site.js?v=202609161032"></script>
+<script src="../assets/chat.js?v=202609161032"></script>
+<script src="../assets/izo.js?v=202609161032"></script>
+<script src="../assets/scena.js?v=202609161032"></script>
 <script>(function (k) {
   var svg = document.getElementById('uslScena');
   var sc = TuchaScena.sozdat(svg, { root: Tucha.ROOT }), bl = {};
-  /* вся постройка: блок этой страницы и то, на чём он стоит, яркие, остальное приглушено */
-  TuchaScena.PORYADOK.forEach(function (x) { bl[x] = 1; });
-  svg.closest('.usl-scena').setAttribute('data-tek', k);
-  setTimeout(function () { sc.obnovit(bl, true); }, 350);
+  /* вся постройка падает из тучи, блок этой страницы и то, на чём он стоит, яркие */
+  svg.parentNode.setAttribute('data-tek', k);
+  var por = TuchaScena.PORYADOK.slice(), i = 0, tiho = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (tiho) { por.forEach(function (x) { bl[x] = 1; }); sc.obnovit(bl, false); }
+  else setTimeout(function sled() { if (i >= por.length) return; bl[por[i++]] = 1; sc.obnovit(bl, true).then(function () { setTimeout(sled, 60); }); }, 350);
+  document.querySelectorAll('[data-ik]').forEach(function (s) { TuchaScena.ikonka(s, s.getAttribute('data-ik')); });
+
+  /* как в игре: блок добавлен, всплывает достижение, потом переход к выбору формата */
+  var pop = document.createElement('div'); pop.className = 'dost-pop dost-pop-str'; pop.setAttribute('aria-live', 'polite'); document.body.appendChild(pop);
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-dobavit]');
+    if (!b) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    var kk = b.getAttribute('data-dobavit');
+    Tucha.dobMetku(kk); Tucha.goal('dobavit_' + kk);
+    var d = document.createElement('div'); d.className = 'dost';
+    d.innerHTML = '<i aria-hidden="true"></i><span><small>Достижение</small>' + b.getAttribute('data-dost') + '</span>';
+    pop.appendChild(d);
+    b.classList.add('dobavlen');
+    setTimeout(function () { location.href = Tucha.ROOT + 'start/'; }, tiho ? 200 : 1300);
+  }, true);
 })('dostavka');</script>
 </body></html>

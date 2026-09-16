@@ -386,3 +386,9 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
 .magiya .vh3-palleta { display: none; }
 .magiya .vh3-korob { box-shadow: none; border-radius: 3px; }
 @media (prefers-reduced-motion: reduce) { .magiya .vh3-pers-art img { transition: none; } }
+
+/* страницы услуг: Проводник с артов выше и шире пиксельного, отводим его от постройки */
+.magiya .hero-malchik { left: -8%; }
+.magiya .hero-malchik img { height: 220px; }
+.magiya .hero-malchik .rech { max-width: 215px; margin: 0 0 6px 10px; }
+@media (max-width: 760px) { .magiya .hero-malchik img { height: 140px; } }
