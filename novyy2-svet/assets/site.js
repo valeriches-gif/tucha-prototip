@@ -466,6 +466,32 @@ window.Tucha = (function () {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ozhivitProvodnika);
   else ozhivitProvodnika();
 
+  /* Проводник на страницах услуг: две позы сменяют друг друга с подскоком */
+  (function () {
+    var img = document.querySelector('.hero-malchik img[src*="provodnik-palec"]');
+    if (!img || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    var baza = img.getAttribute('src').replace('provodnik-palec.webp', '');
+    var obertka = document.createElement('span');
+    obertka.className = 'art-pozy';
+    img.parentNode.insertBefore(obertka, img);
+    obertka.appendChild(img);
+    var vtoraya = new Image();
+    vtoraya.src = baza + 'provodnik-energiya.webp';
+    vtoraya.alt = '';
+    vtoraya.width = 668; vtoraya.height = 900;
+    vtoraya.className = 'art-poza2';
+    obertka.appendChild(vtoraya);
+    function smena() {
+      obertka.classList.toggle('art-drugaya');
+      obertka.classList.remove('art-pryg');
+      void obertka.offsetWidth;
+      obertka.classList.add('art-pryg');
+    }
+    setInterval(smena, 4200);
+    var ssylka = obertka.closest('.hero-malchik');
+    if (ssylka) ssylka.addEventListener('mouseenter', smena);
+  })();
+
   /* реплики Проводника печатаются, как в диалоге игры */
   function pechatRechi() {
     if (!('IntersectionObserver' in window)) return;

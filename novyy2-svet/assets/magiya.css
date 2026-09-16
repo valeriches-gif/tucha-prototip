@@ -392,3 +392,14 @@ body.magiya::after { content: ''; position: fixed; inset: 0; pointer-events: non
 .magiya .hero-malchik img { height: 220px; }
 .magiya .hero-malchik .rech { max-width: 215px; margin: 0 0 6px 10px; }
 @media (max-width: 760px) { .magiya .hero-malchik img { height: 140px; } }
+
+/* две позы Проводника лежат друг на друге и плавно сменяются */
+.magiya .hero-malchik .art-pozy { position: relative; display: block; height: 220px; aspect-ratio: 781 / 900; }
+.magiya .hero-malchik .art-pozy img { position: absolute; left: 50%; bottom: 0; height: 100%; width: auto;
+  translate: -50% 0; transition: opacity .4s ease; animation: none; }
+.magiya .hero-malchik .art-poza2 { opacity: 0; }
+.magiya .hero-malchik .art-drugaya img:first-child { opacity: 0; }
+.magiya .hero-malchik .art-drugaya .art-poza2 { opacity: 1; }
+.magiya .hero-malchik .art-pryg { animation: art-pryg .6s cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes art-pryg { 40% { transform: translateY(-12px) scale(1.02); } }
+@media (max-width: 760px) { .magiya .hero-malchik .art-pozy { height: 140px; } }

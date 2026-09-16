@@ -29,3 +29,4 @@
   var h1 = document.querySelector('.m-h1');
   if (h1 && !tiho) (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () { h1.classList.add('namotka'); });
 })();
+
