@@ -11,6 +11,7 @@
 <link rel="preload" href="assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face { font-family: 'Rubik'; src: url(assets/fonts/rubik.woff2) format('woff2'); font-weight: 400 900; font-display: swap; }
+@font-face { font-family: 'Sklad'; src: url(assets/fonts/sklad-700.woff2) format('woff2'); font-weight: 700; font-display: swap; }
 @font-face { font-family: 'Golos Text'; src: url(assets/fonts/golos.woff2) format('woff2'); font-weight: 400 900; font-display: swap; }
 :root {
   --navy: #16304F; --navy2: #0E2440; --sky: #2E8FD0; --sky-t: #E8F4FD;
@@ -81,17 +82,40 @@ h2 em { font-style: normal; color: var(--oran); }
 .plitka-2 { right: -12%; top: 46%; }
 .plitka-3 { left: -8%; bottom: 4%; }
 
-/* о складе */
-.temno { background: var(--navy); color: #D8E5F3; border-radius: 36px; }
+/* о складе: полоса светлее тёмно-синей, чтобы не давила */
+.temno { background: linear-gradient(140deg, #3E86C6 0%, #2E8FD0 55%, #2478B4 100%); color: #EAF4FD; border-radius: 36px; }
 .sklad-g { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 0; align-items: stretch; overflow: hidden; border-radius: 36px; }
 .sklad-foto { position: relative; min-height: 340px; }
 .sklad-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .sklad-t { padding: clamp(30px, 4vw, 54px); }
 .sklad-t h2 { color: #fff; }
-.sklad-t p { color: #B8CBDF; }
+.sklad-t h2 em { color: #FFD9A8; }
+.sklad-t p { color: #E4F1FB; }
 .cifry { display: flex; flex-wrap: wrap; gap: 30px; margin-top: 30px; }
-.cifry div b { display: block; font: 900 clamp(30px, 3.4vw, 42px)/1 var(--zag); color: var(--oran); }
-.cifry div span { font-size: 14px; color: #9FB6CE; }
+.cifry div b { display: block; font: 900 clamp(30px, 3.4vw, 42px)/1 var(--zag); color: #fff; }
+.cifry div span { font-size: 14px; color: #D3E8F7; }
+
+/* формат: просто или как в игре */
+.dva { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 44px; }
+.put { background: #fff; border-radius: 28px; padding: 28px 28px 30px; box-shadow: var(--teni); display: flex; flex-direction: column; gap: 12px; }
+.put-igra { background: linear-gradient(165deg, #1E3A5F, #16304F); color: #DCE9F6; }
+.put h3 { font-size: 26px; font-weight: 900; text-transform: uppercase; }
+.put-igra h3 { color: #fff; }
+.put p { margin: 0; font-size: 16px; color: var(--mute); }
+.put-igra p { color: #B4CBE3; }
+.put img { border-radius: 18px; box-shadow: 0 18px 34px -24px rgba(22, 48, 79, .8); margin-top: 6px; }
+.put .kn { align-self: flex-start; margin-top: 4px; }
+.yarl { align-self: flex-start; border-radius: 999px; padding: 7px 14px; font: 700 12px/1 var(--zag);
+  letter-spacing: .08em; text-transform: uppercase; background: var(--sky-t); color: var(--sky); }
+.yarl-igra { background: var(--oran); color: #fff; font-family: 'Sklad', var(--zag); letter-spacing: .04em; }
+.bloki { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.blok { display: inline-flex; align-items: center; gap: 8px; background: #fff; border-radius: 999px; padding: 9px 16px;
+  font-size: 14px; font-weight: 600; box-shadow: 0 10px 22px -18px rgba(22, 48, 79, .9); }
+.blok i { width: 10px; height: 10px; border-radius: 3px; }
+.blok span { color: var(--mute); font-weight: 400; }
+.kab-kadr { margin: 30px 0 0; }
+.kab-kadr img { border-radius: 24px; box-shadow: var(--teni); }
+.kab-kadr figcaption { margin-top: 12px; color: var(--mute); font-size: 15px; }
 
 /* карточки услуг */
 .karty { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; margin-top: 44px; }
@@ -168,7 +192,7 @@ h2 em { font-style: normal; color: var(--oran); }
 </head><body>
 <header class="shapka"><div class="wrap shapka-g">
 <a class="logo" href="../novyy/"><img src="assets/img/logo.png" alt="Туча, Мировая Лавка" width="168" height="42"></a>
-<nav class="menu" aria-label="Услуги"><a href="../novyy/hranenie/">Хранение</a><a href="../novyy/obrabotka/">Обработка</a><a href="../novyy/dostavka/">Доставка</a><a href="../novyy/tamozhnya/">Таможня</a><a href="../novyy/lavka/">Маркетплейс</a></nav>
+<nav class="menu" aria-label="Услуги"><a href="../novyy/hranenie/">Хранение</a><a href="../novyy/obrabotka/">Обработка</a><a href="../novyy/dostavka/">Доставка</a><a href="../novyy/tamozhnya/">Таможня</a><a href="../novyy/lavka/">Лавка</a><a href="../novyy/vitrina/">Витрина</a></nav>
 <a class="shapka-tel" href="tel:+74956658242">+7 (495) 665-82-42</a>
 <a class="kn" href="../novyy/start/">Получить расчёт</a>
 </div></header>
@@ -182,7 +206,7 @@ h2 em { font-style: normal; color: var(--oran); }
 <a class="kn" href="../novyy/start/">Хочу расчёт</a>
 <a class="kn kn-2" href="../novyy/start/mir/">Собрать склад как в игре</a>
 </div>
-<div class="geroy-niz"><span><b>от 16,42 ₽</b> за паллето-место в сутки</span><span><b>20 минут</b> на договор</span><span><b>пн-пт</b> 9:00 до 18:00</span></div>
+<div class="geroy-niz"><span><b>от 16,42 ₽</b> за паллето-место в сутки, с НДС</span><span><b>20 минут</b> на договор</span><span><b>пн-пт</b> 9:00 до 18:00</span></div>
 </div>
 <div class="geroy-art">
 <img src="assets/img/provodnik-energiya.webp" alt="Проводник Тучи" width="668" height="900">
@@ -223,10 +247,34 @@ h2 em { font-style: normal; color: var(--oran); }
 <a class="kn kn-bel" href="../novyy/tamozhnya/">Подробнее</a></article></div>
 </div></section>
 
+<section class="sek" id="format"><div class="wrap">
+<h2>Склад можно <em>собрать как в игре</em></h2>
+<p class="pod-zag">Два пути к одному складу. Договор, цены и услуги одинаковые, отличается только то, как вы с нами общаетесь. Формат выбираете при регистрации и меняете в кабинете, в настройках.</p>
+<div class="dva">
+<article class="put">
+<span class="yarl">обычный</span>
+<h3>Всё просто</h3>
+<p>Одна форма и менеджер на связи. В кабинете заявки, остатки, документы и счёт за месяц.</p>
+<img src="assets/img/igra-prosto.jpg" alt="Кабинет «Всё просто»: остатки, заявки и документы" width="1200" height="720" loading="lazy">
+<a class="kn kn-2" href="../novyy/start/prosto/">Оставить заявку</a>
+</article>
+<article class="put put-igra">
+<span class="yarl yarl-igra">8 бит</span>
+<h3>Мир Тучи</h3>
+<p>Склад собирается из блоков, как постройка. Семь уровней, задание месяца и условия, которые дают скидку. Всё то же хранение, только видно, что из чего складывается.</p>
+<img src="assets/img/igra-mir.jpg" alt="Конструктор «Мир Тучи»: постройка склада из блоков" width="1200" height="676" loading="lazy">
+<a class="kn" href="../novyy/start/mir/">Играть</a>
+</article>
+</div>
+<div class="bloki"><span class="blok"><i style="background:#1E3A5F"></i>Точка сохранения<span>хранение</span></span><span class="blok"><i style="background:#1E90D2"></i>Мастерская<span>обработка</span></span><span class="blok"><i style="background:#5AAEE0"></i>Телепорт<span>доставка</span></span><span class="blok"><i style="background:#2C5486"></i>Портал<span>таможня</span></span><span class="blok"><i style="background:#EF7F1A"></i>Лавка<span>маркетплейс</span></span><span class="blok"><i style="background:#F7B267"></i>Витрина<span>продвижение</span></span></div>
+<figure class="kab-kadr"><img src="assets/img/igra-kabinet.jpg" alt="Кабинет «Мир Тучи»: уровень, условия месяца и разделы по постройкам" width="1200" height="720" loading="lazy">
+<figcaption>Кабинет в игровом формате: уровень, задание месяца и разделы, названные по постройкам. Услуги и документы те же самые.</figcaption></figure>
+</div></section>
+
 <section class="sek"><div class="wrap">
 <h2>Что лежит <em>под тучей</em></h2>
-<p class="pod-zag">Снимали на своём складе, без стоковых картинок.</p>
-<div class="lenta"><article class="poster"><img src="assets/img/foto-m1.jpg" alt="Стеллажное хранение" width="600" height="800" loading="lazy"><div><b>Стеллажное хранение</b><span>паллеты в ячейках, классы A, B и C</span></div></article><article class="poster"><img src="assets/img/foto-m3.jpg" alt="Мелкие ячейки" width="600" height="800" loading="lazy"><div><b>Мелкие ячейки</b><span>для штучного товара и остатков</span></div></article><article class="poster"><img src="assets/img/foto-m7.jpg" alt="Упаковка и паллеты" width="600" height="800" loading="lazy"><div><b>Упаковка и паллеты</b><span>стретч, короба, поддоны</span></div></article><article class="poster"><img src="assets/img/foto-m6.jpg" alt="Приёмка и учёт" width="600" height="800" loading="lazy"><div><b>Приёмка и учёт</b><span>пересчёт, фото каждой паллеты</span></div></article><article class="poster"><img src="assets/img/foto-m2.jpg" alt="Напольная зона" width="600" height="800" loading="lazy"><div><b>Напольная зона</b><span>негабарит и крупные партии</span></div></article></div>
+<p class="pod-zag">Как склад устроен внутри.</p>
+<div class="lenta"><article class="poster"><img src="assets/img/foto-m1.jpg" alt="Стеллажное хранение" width="600" height="800" loading="lazy"><div><b>Стеллажное хранение</b><span>паллеты на стеллажах</span></div></article><article class="poster"><img src="assets/img/foto-m3.jpg" alt="Мелкие ячейки" width="600" height="800" loading="lazy"><div><b>Мелкие ячейки</b><span>для штучного товара и остатков</span></div></article><article class="poster"><img src="assets/img/foto-m7.jpg" alt="Паллеты и упаковка" width="600" height="800" loading="lazy"><div><b>Паллеты и упаковка</b><span>стретч, короба, поддоны</span></div></article><article class="poster"><img src="assets/img/foto-m6.jpg" alt="Приёмка и учёт" width="600" height="800" loading="lazy"><div><b>Приёмка и учёт</b><span>пересчёт и фото каждой паллеты</span></div></article><article class="poster"><img src="assets/img/foto-m2.jpg" alt="Ряды и проходы" width="600" height="800" loading="lazy"><div><b>Ряды и проходы</b><span>техника проходит между стеллажами</span></div></article></div>
 </div></section>
 
 <section class="sek"><div class="wrap"><div class="stop">
