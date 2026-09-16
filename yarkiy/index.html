@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Туча: склад в Московской области, всё под одной тучей</title>
+<meta name="description" content="Яркий вариант главной: хранение от одной паллеты, обработка, доставка и таможня по одному договору. Склад Туча в Московской области.">
+<meta property="og:title" content="Туча: склад в Московской области">
+<meta property="og:description" content="Хранение от одной паллеты, обработка, доставка и таможня по одному договору.">
+<meta property="og:image" content="assets/img/kadr-pogruzchik.jpg">
+<link rel="icon" type="image/png" href="assets/img/znachok.png">
+<link rel="preload" href="assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family: 'Rubik'; src: url(assets/fonts/rubik.woff2) format('woff2'); font-weight: 400 900; font-display: swap; }
+@font-face { font-family: 'Golos Text'; src: url(assets/fonts/golos.woff2) format('woff2'); font-weight: 400 900; font-display: swap; }
+:root {
+  --navy: #16304F; --navy2: #0E2440; --sky: #2E8FD0; --sky-t: #E8F4FD;
+  --oran: #FF8A1F; --oran-t: #FFF1E2; --ink: #1E2A3A; --mute: #64758B;
+  --fon: #F7FAFF; --bel: #FFFFFF; --zag: 'Rubik', 'Segoe UI', sans-serif;
+  --teni: 0 26px 50px -30px rgba(22, 48, 79, .55);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--fon); color: var(--ink);
+  font: 400 17px/1.6 'Golos Text', 'Segoe UI', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+.wrap { width: min(1240px, 100% - 40px); margin-inline: auto; }
+h1, h2, h3 { font-family: var(--zag); letter-spacing: -.02em; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(30px, 4vw, 52px); font-weight: 900; text-transform: uppercase; line-height: 1.02; }
+h2 em { font-style: normal; color: var(--oran); }
+.sek { padding: clamp(56px, 7vw, 104px) 0; }
+.pod-zag { color: var(--mute); max-width: 60ch; margin: 14px 0 0; font-size: 18px; }
+
+/* кнопки */
+.kn { display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer; text-decoration: none;
+  font: 800 15px/1 var(--zag); letter-spacing: .04em; text-transform: uppercase; padding: 17px 30px; border-radius: 999px;
+  background: var(--oran); color: #fff; box-shadow: 0 12px 24px -12px rgba(255, 138, 31, .9);
+  transition: transform .18s cubic-bezier(.23, 1, .32, 1), box-shadow .18s ease; }
+.kn:hover { transform: translateY(-2px); box-shadow: 0 18px 30px -14px rgba(255, 138, 31, .95); }
+.kn:active { transform: translateY(0); }
+.kn-2 { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 2px #DCE6F2; }
+.kn-2:hover { box-shadow: inset 0 0 0 2px var(--sky); }
+.kn-bel { background: #fff; color: var(--navy); box-shadow: 0 10px 20px -12px rgba(22, 48, 79, .6); }
+
+/* шапка */
+.shapka { position: sticky; top: 0; z-index: 20; padding: 14px 0; background: rgba(247, 250, 255, .86); backdrop-filter: blur(10px); }
+.shapka-g { display: flex; align-items: center; gap: 26px; }
+.logo img { height: 42px; width: auto; }
+.menu { display: flex; gap: 22px; margin-left: 8px; font-weight: 600; font-size: 15px; }
+.menu a { text-decoration: none; color: var(--navy); opacity: .82; }
+.menu a:hover { opacity: 1; color: var(--sky); }
+.shapka .kn { margin-left: auto; padding: 13px 22px; font-size: 13px; }
+.shapka-tel { margin-left: auto; font: 800 17px/1 var(--zag); color: var(--navy); text-decoration: none; }
+
+/* герой */
+.geroy { position: relative; overflow: hidden; padding: clamp(30px, 4vw, 54px) 0 clamp(50px, 6vw, 86px); }
+.geroy::before { content: ''; position: absolute; inset: -40% -10% auto; height: 150%;
+  background: radial-gradient(60% 55% at 70% 30%, #DCEEFB 0%, rgba(247, 250, 255, 0) 70%); }
+.duga { position: absolute; right: -6%; top: 4%; width: 620px; max-width: 70%; opacity: .5; pointer-events: none; }
+.geroy-g { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 30px; align-items: center; }
+.eyebrow { display: inline-flex; align-items: center; gap: 9px; background: #fff; border-radius: 999px; padding: 9px 18px;
+  font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--navy);
+  box-shadow: 0 8px 18px -12px rgba(22, 48, 79, .6); }
+.eyebrow i { width: 9px; height: 9px; border-radius: 50%; background: var(--oran); }
+.geroy h1 { font-size: clamp(42px, 6.4vw, 86px); font-weight: 900; text-transform: uppercase; line-height: .96; margin: 20px 0 0; }
+.geroy h1 em { font-style: normal; color: var(--oran); }
+.geroy .lid { font-size: 19px; color: #46586E; max-width: 46ch; margin: 20px 0 0; }
+.knopki { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+.geroy-niz { display: flex; flex-wrap: wrap; gap: 26px; margin-top: 34px; color: var(--mute); font-size: 15px; }
+.geroy-niz b { color: var(--navy); font-family: var(--zag); font-weight: 800; }
+.geroy-art { position: relative; justify-self: center; width: min(430px, 82vw); }
+.geroy-art::before { content: ''; position: absolute; left: 50%; bottom: 2%; translate: -50% 0; width: 104%; aspect-ratio: 1;
+  border-radius: 50%; background: linear-gradient(160deg, #CFE7F8, #EAF4FD); }
+.geroy-art img { position: relative; width: 100%;
+  filter: drop-shadow(0 30px 40px rgba(22, 48, 79, .3)); animation: plyv 6s ease-in-out infinite; }
+@keyframes plyv { 50% { transform: translateY(-12px); } }
+.plitka { position: absolute; background: #fff; border-radius: 18px; padding: 12px 16px; box-shadow: var(--teni); }
+.plitka b { display: block; font: 900 22px/1 var(--zag); color: var(--navy); }
+.plitka span { font-size: 13px; color: var(--mute); }
+.plitka-1 { left: -14%; top: 10%; }
+.plitka-2 { right: -12%; top: 46%; }
+.plitka-3 { left: -8%; bottom: 4%; }
+
+/* о складе */
+.temno { background: var(--navy); color: #D8E5F3; border-radius: 36px; }
+.sklad-g { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 0; align-items: stretch; overflow: hidden; border-radius: 36px; }
+.sklad-foto { position: relative; min-height: 340px; }
+.sklad-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.sklad-t { padding: clamp(30px, 4vw, 54px); }
+.sklad-t h2 { color: #fff; }
+.sklad-t p { color: #B8CBDF; }
+.cifry { display: flex; flex-wrap: wrap; gap: 30px; margin-top: 30px; }
+.cifry div b { display: block; font: 900 clamp(30px, 3.4vw, 42px)/1 var(--zag); color: var(--oran); }
+.cifry div span { font-size: 14px; color: #9FB6CE; }
+
+/* карточки услуг */
+.karty { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; margin-top: 44px; }
+.karta { border-radius: 26px; padding: 26px 24px 28px; color: #fff; display: flex; flex-direction: column; gap: 10px;
+  box-shadow: var(--teni); transition: transform .2s cubic-bezier(.23, 1, .32, 1); }
+.karta:hover { transform: translateY(-6px); }
+.karta.sin { background: linear-gradient(165deg, #3FA3DE, #2277B4); }
+.karta.oran { background: linear-gradient(165deg, #FF9F45, #EF7414); }
+.karta-foto { width: 112px; height: 112px; border-radius: 50%; overflow: hidden; border: 4px solid rgba(255, 255, 255, .55); }
+.karta-foto img { width: 100%; height: 100%; object-fit: cover; }
+.karta h3 { font-size: 23px; font-weight: 800; text-transform: uppercase; margin-top: 6px; }
+.karta p { margin: 0; font-size: 15px; color: rgba(255, 255, 255, .92); flex: 1; }
+.karta .kn { align-self: flex-start; padding: 13px 22px; font-size: 12px; }
+
+/* лента постеров */
+.lenta { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(230px, 1fr); gap: 20px; margin-top: 44px;
+  overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; margin-inline: -20px; padding-inline: 20px; }
+.poster { scroll-snap-align: start; border-radius: 24px; overflow: hidden; background: var(--navy); color: #fff;
+  box-shadow: var(--teni); display: flex; flex-direction: column; }
+.poster img { aspect-ratio: 4 / 5; object-fit: cover; width: 100%; }
+.poster div { padding: 16px 18px 20px; }
+.poster b { display: block; font: 800 17px/1.2 var(--zag); }
+.poster span { font-size: 14px; color: #A9C0D8; }
+
+/* полоса-призыв */
+.stop { position: relative; background: linear-gradient(120deg, var(--sky-t), #FFF6EC); border-radius: 36px;
+  display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 20px; align-items: end; overflow: hidden; }
+.stop-art { align-self: end; }
+.stop-art img { width: 100%; max-width: 320px; }
+.stop-t { padding: clamp(28px, 4vw, 52px) clamp(24px, 4vw, 52px) clamp(28px, 4vw, 52px) 0; }
+.stop-t h2 { font-size: clamp(28px, 3.6vw, 46px); }
+.stop-t p { color: #46586E; max-width: 46ch; }
+
+/* шаги */
+.shagi { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-top: 44px; counter-reset: sh; }
+.shag { background: #fff; border-radius: 24px; padding: 26px 24px 28px; box-shadow: 0 20px 40px -32px rgba(22, 48, 79, .7); }
+.shag i { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 14px; font: 900 20px/1 var(--zag);
+  color: #fff; background: var(--navy); font-style: normal; margin-bottom: 14px; }
+.shag:nth-child(2) i { background: var(--sky); }
+.shag:nth-child(3) i { background: var(--oran); }
+.shag:nth-child(4) i { background: #2F8A5B; }
+.shag b { display: block; font: 800 20px/1.2 var(--zag); }
+.shag p { margin: 8px 0 0; font-size: 15px; color: var(--mute); }
+
+/* подвал */
+.podval { background: var(--navy2); color: #A9C0D8; padding: 54px 0 40px; margin-top: clamp(50px, 6vw, 90px); }
+.podval-g { display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-between; }
+.podval a { color: #fff; }
+.podval b { color: #fff; font-family: var(--zag); font-size: 20px; }
+.versii { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; margin-top: 18px; }
+
+@media (max-width: 1040px) {
+  .karty, .shagi { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .geroy-g, .sklad-g, .stop { grid-template-columns: minmax(0, 1fr); }
+  .sklad-foto { min-height: 240px; }
+  .stop-t { padding: 0 24px 34px; }
+  .stop-art { max-width: 260px; }
+}
+@media (max-width: 760px) {
+  .menu, .shapka-tel { display: none; }
+  .shapka .kn { margin-left: auto; }
+  .karty, .shagi { grid-template-columns: minmax(0, 1fr); }
+  .plitka-1, .plitka-3 { left: 0; }
+  .plitka-2 { right: 0; }
+  .plitka { padding: 9px 12px; }
+  .plitka b { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .geroy-art img { animation: none; }
+  .kn, .karta { transition: none; }
+}
+</style>
+</head><body>
+<header class="shapka"><div class="wrap shapka-g">
+<a class="logo" href="../novyy/"><img src="assets/img/logo.png" alt="Туча, Мировая Лавка" width="168" height="42"></a>
+<nav class="menu" aria-label="Услуги"><a href="../novyy/hranenie/">Хранение</a><a href="../novyy/obrabotka/">Обработка</a><a href="../novyy/dostavka/">Доставка</a><a href="../novyy/tamozhnya/">Таможня</a><a href="../novyy/lavka/">Маркетплейс</a></nav>
+<a class="shapka-tel" href="tel:+74956658242">+7 (495) 665-82-42</a>
+<a class="kn" href="../novyy/start/">Получить расчёт</a>
+</div></header>
+
+<section class="geroy"><div class="wrap"><svg class="duga" viewBox="0 0 600 420" fill="none" aria-hidden="true"><path d="M8 412C8 190 186 12 408 12c76 0 146 21 184 44" stroke="#9EC6E6" stroke-width="2" stroke-dasharray="8 12" stroke-linecap="round"/><path d="M92 412C92 235 235 92 412 92c58 0 112 17 158 46" stroke="#F3B67A" stroke-width="2" stroke-dasharray="8 12" stroke-linecap="round"/></svg><div class="geroy-g">
+<div>
+<p class="eyebrow"><i></i>СпейсФлоу · склад в Московской области</p>
+<h1>Всё под одной <em>тучей</em></h1>
+<p class="lid">Хранение от одной паллеты, обработка, доставка и таможня по одному договору. Десять минут от МКАД и Шереметьева.</p>
+<div class="knopki">
+<a class="kn" href="../novyy/start/">Хочу расчёт</a>
+<a class="kn kn-2" href="../novyy/start/mir/">Собрать склад как в игре</a>
+</div>
+<div class="geroy-niz"><span><b>от 16,42 ₽</b> за паллето-место в сутки</span><span><b>20 минут</b> на договор</span><span><b>пн-пт</b> 9:00 до 18:00</span></div>
+</div>
+<div class="geroy-art">
+<img src="assets/img/provodnik-energiya.webp" alt="Проводник Тучи" width="668" height="900">
+<div class="plitka plitka-1"><b>3 000</b><span>паллето-мест</span></div>
+<div class="plitka plitka-2"><b>4,6</b><span>на Яндекс Картах</span></div>
+<div class="plitka plitka-3"><b>с 2017</b><span>года на своём складе</span></div>
+</div>
+</div></div></section>
+
+<section class="sek"><div class="wrap"><div class="sklad-g temno">
+<div class="sklad-foto"><img src="assets/img/kadr-pogruzchik.jpg" alt="Погрузчик на складе Тучи" width="1080" height="608" loading="lazy"></div>
+<div class="sklad-t">
+<h2>О <em>складе</em></h2>
+<p class="pod-zag">«ТУЧА, Мировая Лавка»: склад ответственного хранения в Московской области, работаем с 2017 года. Классы A, B и C, тёплая и холодная зоны, площадка для негабарита. Берём от одной паллеты, без минимального объёма.</p>
+<div class="cifry"><div><b>3 000</b><span>паллето-мест</span></div><div><b>с 2017</b><span>года на своём складе</span></div><div><b>4,6</b><span>на Яндекс Картах</span></div></div>
+</div>
+</div></div></section>
+
+<section class="sek" id="uslugi"><div class="wrap">
+<h2>Что мы делаем <em>для вас</em></h2>
+<p class="pod-zag">Четыре услуги по одному договору. Можно взять одну, можно все сразу.</p>
+<div class="karty"><article class="karta sin">
+<div class="karta-foto"><img src="assets/img/foto-m1.jpg" alt="" width="360" height="360" loading="lazy"></div>
+<h3>Хранение</h3>
+<p>Стеллажи, пол и мелкие ячейки. От одной паллеты</p>
+<a class="kn kn-bel" href="../novyy/hranenie/">Подробнее</a></article><article class="karta oran">
+<div class="karta-foto"><img src="assets/img/kadr-upakovka.jpg" alt="" width="360" height="360" loading="lazy"></div>
+<h3>Обработка</h3>
+<p>Приёмка, маркировка «Честный знак», сборка и отгрузка на маркетплейсы</p>
+<a class="kn kn-bel" href="../novyy/obrabotka/">Подробнее</a></article><article class="karta oran">
+<div class="karta-foto"><img src="assets/img/kadr-pogruzchik.jpg" alt="" width="360" height="360" loading="lazy"></div>
+<h3>Доставка</h3>
+<p>По Москве, России и за рубеж, передача в транспортные компании</p>
+<a class="kn kn-bel" href="../novyy/dostavka/">Подробнее</a></article><article class="karta sin">
+<div class="karta-foto"><img src="assets/img/kadr-stellazhi.jpg" alt="" width="360" height="360" loading="lazy"></div>
+<h3>Таможня</h3>
+<p>Оформление и сопровождение грузов для участников ВЭД</p>
+<a class="kn kn-bel" href="../novyy/tamozhnya/">Подробнее</a></article></div>
+</div></section>
+
+<section class="sek"><div class="wrap">
+<h2>Что лежит <em>под тучей</em></h2>
+<p class="pod-zag">Снимали на своём складе, без стоковых картинок.</p>
+<div class="lenta"><article class="poster"><img src="assets/img/foto-m1.jpg" alt="Стеллажное хранение" width="600" height="800" loading="lazy"><div><b>Стеллажное хранение</b><span>паллеты в ячейках, классы A, B и C</span></div></article><article class="poster"><img src="assets/img/foto-m3.jpg" alt="Мелкие ячейки" width="600" height="800" loading="lazy"><div><b>Мелкие ячейки</b><span>для штучного товара и остатков</span></div></article><article class="poster"><img src="assets/img/foto-m7.jpg" alt="Упаковка и паллеты" width="600" height="800" loading="lazy"><div><b>Упаковка и паллеты</b><span>стретч, короба, поддоны</span></div></article><article class="poster"><img src="assets/img/foto-m6.jpg" alt="Приёмка и учёт" width="600" height="800" loading="lazy"><div><b>Приёмка и учёт</b><span>пересчёт, фото каждой паллеты</span></div></article><article class="poster"><img src="assets/img/foto-m2.jpg" alt="Напольная зона" width="600" height="800" loading="lazy"><div><b>Напольная зона</b><span>негабарит и крупные партии</span></div></article></div>
+</div></section>
+
+<section class="sek"><div class="wrap"><div class="stop">
+<div class="stop-art"><img src="assets/img/provodnik-palec.webp" alt="" width="781" height="900" loading="lazy"></div>
+<div class="stop-t">
+<h2>Подождите, <em>не уходите</em></h2>
+<p>Пришлите габариты и объём: расчёт придёт в тот же день. Договор за 20 минут, предоплата не нужна.</p>
+<div class="knopki"><a class="kn" href="../novyy/start/">Оставить заявку</a><a class="kn kn-2" href="tel:+74956658242">Позвонить</a></div>
+</div>
+</div></div></section>
+
+<section class="sek"><div class="wrap">
+<h2>Как проходит <em>первая поставка</em></h2>
+<div class="shagi"><div class="shag"><i>1</i><b>Заявка</b><p>На сайте или по телефону, как удобнее</p></div><div class="shag"><i>2</i><b>Расчёт</b><p>Приходит в тот же день, по вашим габаритам</p></div><div class="shag"><i>3</i><b>Договор</b><p>Около 20 минут, предоплата не нужна</p></div><div class="shag"><i>4</i><b>Первая поставка</b><p>Принимаем, считаем и фотографируем</p></div></div>
+</div></section>
+
+<footer class="podval"><div class="wrap podval-g">
+<div><b>ТУЧА, Мировая Лавка</b><p>Московская обл., г. о. Химки, д. Подолино, Промышленная зона, 2Б</p>
+<p><a href="tel:+74956658242">+7 (495) 665-82-42</a>, пн-пт с 9:00 до 18:00</p></div>
+<div><b>Версии сайта</b>
+<div class="versii"><a href="../">Обычная</a><a href="../novyy/">8 бит</a><a href="../novyy2/">Современная</a><a href="../tri/">Сравнить</a></div>
+<div class="versii"><a href="../novyy/lavka/">Лавка</a><a href="../novyy/vitrina/">Витрина</a><a href="../novyy/kontakty/">Контакты</a><a href="../novyy/dokumenty/">Документы</a></div></div>
+</div></footer>
+</body></html>
