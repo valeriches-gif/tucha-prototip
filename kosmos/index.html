@@ -91,9 +91,18 @@ body > * { position: relative; z-index: 1; }
   background: radial-gradient(closest-side, rgba(110, 195, 255, 0) 92%, rgba(110, 195, 255, .5) 97%, rgba(110, 195, 255, 0) 100%);
   animation: dyhanie 9s ease-in-out infinite; }
 @keyframes dyhanie { 50% { opacity: .65; } }
-.tucha-znak { position: absolute; left: 50%; bottom: calc(var(--cap) - 28px); translate: -50% 0; width: min(20vw, 196px); z-index: 2;
+.tucha-znak { position: absolute; left: 50%; bottom: calc(var(--cap) - 28px); translate: -50% 0; width: min(20vw, 196px);
+  z-index: 3; padding: 0; border: 0; background: none; cursor: pointer; line-height: 0;
   filter: drop-shadow(0 18px 40px rgba(79, 179, 234, .55)); animation: parit 7s ease-in-out infinite; }
+.tucha-znak:hover { filter: drop-shadow(0 18px 46px rgba(120, 200, 255, .8)); }
+.tucha-znak:active { transform: scale(.97); }
 @keyframes parit { 50% { transform: translateY(-14px); } }
+.glaza { transform-origin: 116px 58px; animation: morgaet 6.5s ease-in-out infinite; }
+@keyframes morgaet { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+.korob-padaet { position: absolute; z-index: 2; width: 26px; height: 26px; border-radius: 4px; background: #D9B27E;
+  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, .18); pointer-events: none; animation: padenie 1.5s cubic-bezier(.45, .05, .55, .95) forwards; }
+.korob-padaet::after { content: ''; position: absolute; left: 5px; right: 5px; top: 9px; height: 7px; border-radius: 2px; background: #fff; opacity: .9; }
+@keyframes padenie { to { transform: translateY(150px) rotate(var(--pov, 40deg)); opacity: 0; } }
 
 /* стройка на горизонте: короба встают один за другим */
 .kubiki { position: absolute; left: 50%; bottom: calc(var(--cap) - 118px); translate: -50% 0;
@@ -262,7 +271,7 @@ body > * { position: relative; z-index: 1; }
 .anim .uroven.idet i span { width: 14%; transition: width 1s cubic-bezier(.23, 1, .32, 1) .4s; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .nebo, .tucha-znak, .vniz { animation: none; }
+  .nebo, .tucha-znak, .vniz, .glaza { animation: none; }
   .kub { opacity: 1; transform: none; animation: none; }
   .okno { opacity: .9; animation: none; }
   .planeta::after, .atmosfera { animation: none; }
@@ -292,13 +301,20 @@ body > * { position: relative; z-index: 1; }
 <div class="atmosfera" aria-hidden="true"></div>
 <div class="planeta" aria-hidden="true"></div>
 <svg class="kubiki" viewBox="-360 -150 720 190" aria-hidden="true"><g class="kub" style="--d:0ms"><polygon points="-334,-69.0 -334,-17.0 -300,0 -300,-52" fill="#14375C"/><polygon points="-266,-69.0 -266,-17.0 -300,0 -300,-52" fill="#0F2A47"/><polygon points="-334,-69.0 -300,-86 -266,-69.0 -300,-52" fill="#2A6299"/><rect class="okno" x="-326" y="-55.0" width="7" height="9" rx="1.5" style="--o:260ms"/><rect class="okno" x="-313" y="-55.0" width="7" height="9" rx="1.5" style="--o:330ms"/><rect class="okno" x="-326" y="-31.0" width="7" height="9" rx="1.5" style="--o:380ms"/><rect class="okno" x="-313" y="-31.0" width="7" height="9" rx="1.5" style="--o:450ms"/></g><g class="kub" style="--d:220ms"><polygon points="-264,-95.0 -264,-17.0 -230,0 -230,-78" fill="#14375C"/><polygon points="-196,-95.0 -196,-17.0 -230,0 -230,-78" fill="#0F2A47"/><polygon points="-264,-95.0 -230,-112 -196,-95.0 -230,-78" fill="#2A6299"/><rect class="okno" x="-256" y="-81.0" width="7" height="9" rx="1.5" style="--o:480ms"/><rect class="okno" x="-243" y="-81.0" width="7" height="9" rx="1.5" style="--o:550ms"/><rect class="okno" x="-256" y="-57.0" width="7" height="9" rx="1.5" style="--o:600ms"/><rect class="okno" x="-243" y="-57.0" width="7" height="9" rx="1.5" style="--o:670ms"/><rect class="okno" x="-256" y="-33.0" width="7" height="9" rx="1.5" style="--o:720ms"/><rect class="okno" x="-243" y="-33.0" width="7" height="9" rx="1.5" style="--o:790ms"/></g><g class="kub" style="--d:440ms"><polygon points="-194,-61.0 -194,-17.0 -160,0 -160,-44" fill="#14375C"/><polygon points="-126,-61.0 -126,-17.0 -160,0 -160,-44" fill="#0F2A47"/><polygon points="-194,-61.0 -160,-78 -126,-61.0 -160,-44" fill="#2A6299"/><rect class="okno" x="-186" y="-47.0" width="7" height="9" rx="1.5" style="--o:700ms"/><rect class="okno" x="-173" y="-47.0" width="7" height="9" rx="1.5" style="--o:770ms"/></g><g class="kub" style="--d:660ms"><polygon points="-124,-113.0 -124,-17.0 -90,0 -90,-96" fill="#14375C"/><polygon points="-56,-113.0 -56,-17.0 -90,0 -90,-96" fill="#0F2A47"/><polygon points="-124,-113.0 -90,-130 -56,-113.0 -90,-96" fill="#2A6299"/><rect class="okno" x="-116" y="-99.0" width="7" height="9" rx="1.5" style="--o:920ms"/><rect class="okno" x="-103" y="-99.0" width="7" height="9" rx="1.5" style="--o:990ms"/><rect class="okno" x="-116" y="-75.0" width="7" height="9" rx="1.5" style="--o:1040ms"/><rect class="okno" x="-103" y="-75.0" width="7" height="9" rx="1.5" style="--o:1110ms"/><rect class="okno" x="-116" y="-51.0" width="7" height="9" rx="1.5" style="--o:1160ms"/><rect class="okno" x="-103" y="-51.0" width="7" height="9" rx="1.5" style="--o:1230ms"/></g><g class="kub" style="--d:880ms"><polygon points="-54,-79.0 -54,-17.0 -20,0 -20,-62" fill="#14375C"/><polygon points="14,-79.0 14,-17.0 -20,0 -20,-62" fill="#0F2A47"/><polygon points="-54,-79.0 -20,-96 14,-79.0 -20,-62" fill="#2A6299"/><rect class="okno" x="-46" y="-65.0" width="7" height="9" rx="1.5" style="--o:1140ms"/><rect class="okno" x="-33" y="-65.0" width="7" height="9" rx="1.5" style="--o:1210ms"/><rect class="okno" x="-46" y="-41.0" width="7" height="9" rx="1.5" style="--o:1260ms"/><rect class="okno" x="-33" y="-41.0" width="7" height="9" rx="1.5" style="--o:1330ms"/></g><g class="kub" style="--d:1100ms"><polygon points="16,-101.0 16,-17.0 50,0 50,-84" fill="#14375C"/><polygon points="84,-101.0 84,-17.0 50,0 50,-84" fill="#0F2A47"/><polygon points="16,-101.0 50,-118 84,-101.0 50,-84" fill="#2A6299"/><rect class="okno" x="24" y="-87.0" width="7" height="9" rx="1.5" style="--o:1360ms"/><rect class="okno" x="37" y="-87.0" width="7" height="9" rx="1.5" style="--o:1430ms"/><rect class="okno" x="24" y="-63.0" width="7" height="9" rx="1.5" style="--o:1480ms"/><rect class="okno" x="37" y="-63.0" width="7" height="9" rx="1.5" style="--o:1550ms"/><rect class="okno" x="24" y="-39.0" width="7" height="9" rx="1.5" style="--o:1600ms"/><rect class="okno" x="37" y="-39.0" width="7" height="9" rx="1.5" style="--o:1670ms"/></g><g class="kub" style="--d:1320ms"><polygon points="86,-65.0 86,-17.0 120,0 120,-48" fill="#14375C"/><polygon points="154,-65.0 154,-17.0 120,0 120,-48" fill="#0F2A47"/><polygon points="86,-65.0 120,-82 154,-65.0 120,-48" fill="#2A6299"/><rect class="okno" x="94" y="-51.0" width="7" height="9" rx="1.5" style="--o:1580ms"/><rect class="okno" x="107" y="-51.0" width="7" height="9" rx="1.5" style="--o:1650ms"/></g><g class="kub" style="--d:1540ms"><polygon points="156,-87.0 156,-17.0 190,0 190,-70" fill="#14375C"/><polygon points="224,-87.0 224,-17.0 190,0 190,-70" fill="#0F2A47"/><polygon points="156,-87.0 190,-104 224,-87.0 190,-70" fill="#2A6299"/><rect class="okno" x="164" y="-73.0" width="7" height="9" rx="1.5" style="--o:1800ms"/><rect class="okno" x="177" y="-73.0" width="7" height="9" rx="1.5" style="--o:1870ms"/><rect class="okno" x="164" y="-49.0" width="7" height="9" rx="1.5" style="--o:1920ms"/><rect class="okno" x="177" y="-49.0" width="7" height="9" rx="1.5" style="--o:1990ms"/></g><g class="kub" style="--d:1760ms"><polygon points="226,-57.0 226,-17.0 260,0 260,-40" fill="#14375C"/><polygon points="294,-57.0 294,-17.0 260,0 260,-40" fill="#0F2A47"/><polygon points="226,-57.0 260,-74 294,-57.0 260,-40" fill="#2A6299"/><rect class="okno" x="234" y="-43.0" width="7" height="9" rx="1.5" style="--o:2020ms"/><rect class="okno" x="247" y="-43.0" width="7" height="9" rx="1.5" style="--o:2090ms"/></g><g class="kub" style="--d:1980ms"><polygon points="-295,-81.0 -295,-41.0 -265,-26 -265,-66" fill="#14375C"/><polygon points="-235,-81.0 -235,-41.0 -265,-26 -265,-66" fill="#0F2A47"/><polygon points="-295,-81.0 -265,-96 -235,-81.0 -265,-66" fill="#2A6299"/><rect class="okno" x="-287" y="-67.0" width="7" height="9" rx="1.5" style="--o:2240ms"/><rect class="okno" x="-274" y="-67.0" width="7" height="9" rx="1.5" style="--o:2310ms"/></g><g class="kub" style="--d:2200ms"><polygon points="-155,-99.0 -155,-41.0 -125,-26 -125,-84" fill="#14375C"/><polygon points="-95,-99.0 -95,-41.0 -125,-26 -125,-84" fill="#0F2A47"/><polygon points="-155,-99.0 -125,-114 -95,-99.0 -125,-84" fill="#2A6299"/><rect class="okno" x="-147" y="-85.0" width="7" height="9" rx="1.5" style="--o:2460ms"/><rect class="okno" x="-134" y="-85.0" width="7" height="9" rx="1.5" style="--o:2530ms"/><rect class="okno" x="-147" y="-61.0" width="7" height="9" rx="1.5" style="--o:2580ms"/><rect class="okno" x="-134" y="-61.0" width="7" height="9" rx="1.5" style="--o:2650ms"/></g><g class="kub" style="--d:2420ms"><polygon points="-15,-77.0 -15,-41.0 15,-26 15,-62" fill="#14375C"/><polygon points="45,-77.0 45,-41.0 15,-26 15,-62" fill="#0F2A47"/><polygon points="-15,-77.0 15,-92 45,-77.0 15,-62" fill="#2A6299"/><rect class="okno" x="-7" y="-63.0" width="7" height="9" rx="1.5" style="--o:2680ms"/><rect class="okno" x="6" y="-63.0" width="7" height="9" rx="1.5" style="--o:2750ms"/></g><g class="kub" style="--d:2640ms"><polygon points="125,-93.0 125,-41.0 155,-26 155,-78" fill="#14375C"/><polygon points="185,-93.0 185,-41.0 155,-26 155,-78" fill="#0F2A47"/><polygon points="125,-93.0 155,-108 185,-93.0 155,-78" fill="#2A6299"/><rect class="okno" x="133" y="-79.0" width="7" height="9" rx="1.5" style="--o:2900ms"/><rect class="okno" x="146" y="-79.0" width="7" height="9" rx="1.5" style="--o:2970ms"/><rect class="okno" x="133" y="-55.0" width="7" height="9" rx="1.5" style="--o:3020ms"/><rect class="okno" x="146" y="-55.0" width="7" height="9" rx="1.5" style="--o:3090ms"/></g><g class="kub" style="--d:2860ms"><polygon points="195,-71.0 195,-41.0 225,-26 225,-56" fill="#14375C"/><polygon points="255,-71.0 255,-41.0 225,-26 225,-56" fill="#0F2A47"/><polygon points="195,-71.0 225,-86 255,-71.0 225,-56" fill="#2A6299"/><rect class="okno" x="203" y="-57.0" width="7" height="9" rx="1.5" style="--o:3120ms"/><rect class="okno" x="216" y="-57.0" width="7" height="9" rx="1.5" style="--o:3190ms"/></g></svg>
-<svg class="tucha-znak" viewBox="0 0 240 150" aria-hidden="true">
+<button class="tucha-znak" type="button" data-tucha aria-label="Уронить короб из тучи">
+<svg viewBox="0 0 240 172" aria-hidden="true">
 <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0" stop-color="#7FD0FF"/><stop offset="1" stop-color="#2E8FD0"/></linearGradient></defs>
+<stop offset="0" stop-color="#BFE4F8"/><stop offset=".45" stop-color="#7FD0FF"/><stop offset="1" stop-color="#2E8FD0"/></linearGradient></defs>
 <path fill="url(#tg)" d="M62 96c-19 0-34-15-34-33s15-33 34-33c4 0 8 1 12 2 8-17 25-28 45-28 26 0 47 20 49 45 16 3 28 17 28 33 0 19-16 34-35 34H62z"/>
+<path d="M30 56c7-18 25-30 46-30 4 0 8 0 12 1" stroke="#EAF7FF" stroke-width="5" stroke-linecap="round" fill="none" opacity=".7"/>
+<g class="glaza">
+<ellipse cx="96" cy="58" rx="8" ry="10" fill="#12283F"/><circle cx="99" cy="54" r="3" fill="#fff"/>
+<ellipse cx="136" cy="58" rx="8" ry="10" fill="#12283F"/><circle cx="139" cy="54" r="3" fill="#fff"/>
+</g>
+<path d="M110 76c4 5 12 5 16 0" stroke="#12283F" stroke-width="4.5" fill="none" stroke-linecap="round"/>
 <g fill="#7FD0FF" opacity=".9"><rect x="70" y="104" width="9" height="30" rx="4.5"/>
 <rect x="104" y="104" width="9" height="42" rx="4.5"/><rect x="138" y="104" width="9" height="26" rx="4.5"/>
-<rect x="172" y="104" width="9" height="36" rx="4.5"/></g></svg>
+<rect x="172" y="104" width="9" height="36" rx="4.5"/></g></svg></button>
 <a class="vniz" href="#uslugi" aria-label="Вниз, к услугам">↓</a>
 </section>
 
@@ -547,6 +563,26 @@ body > * { position: relative; z-index: 1; }
       }, { passive: true });
     }
     requestAnimationFrame(kadr);
+  })();
+
+  /* туча роняет короб, если по ней нажать */
+  (function () {
+    var tz = document.querySelector('[data-tucha]');
+    if (!tz) return;
+    tz.addEventListener('click', function () {
+      var r = tz.getBoundingClientRect(), g = tz.offsetParent || document.body;
+      var gr = g.getBoundingClientRect();
+      for (var i = 0; i < 3; i++) {
+        var k = document.createElement('span');
+        k.className = 'korob-padaet';
+        k.style.left = (r.left - gr.left + 30 + i * 46 + Math.random() * 12) + 'px';
+        k.style.top = (r.top - gr.top + r.height - 18) + 'px';
+        k.style.setProperty('--pov', (Math.random() * 90 - 45) + 'deg');
+        k.style.animationDelay = (i * 120) + 'ms';
+        g.appendChild(k);
+        setTimeout(function (e) { return function () { e.remove(); }; }(k), 2000 + i * 120);
+      }
+    });
   })();
 })();
 </script>
