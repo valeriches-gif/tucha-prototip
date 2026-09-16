@@ -727,3 +727,25 @@ body.zgr-idet { overflow: hidden; }
   background: currentColor; animation: rech-kursor .8s steps(1, end) infinite; }
 @keyframes rech-kursor { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .rech-pech::after { animation: none; } }
+
+/* второй вариант главной: блок о складе — фото и стеллаж одной высоты, цифры плашками на фото */
+.o-nas-v2 .o-nas-zag { max-width: 860px; }
+.o-nas-v2 .o-nas-zag .eb { margin: 0 0 10px; }
+.o-nas-v2 .o-nas-zag p:last-child { margin: 14px 0 0; }
+.o-nas-ryad { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: stretch; margin-top: 30px; }
+.o-nas-foto { position: relative; margin: 0; min-height: 440px; border-radius: 22px; overflow: hidden;
+  box-shadow: 0 30px 60px -30px rgba(30, 58, 95, .45); }
+.o-nas-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.o-nas-metki { position: absolute; left: 16px; right: 16px; bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+.o-nas-metki span { background: rgba(255, 255, 255, .94); border-radius: 10px; padding: 7px 11px; font-size: 13px; color: #33465E;
+  box-shadow: 0 8px 18px -12px rgba(22, 48, 79, .9); }
+.o-nas-metki b { color: #16304F; }
+.o-nas-prav { display: flex; flex-direction: column; justify-content: center; }
+.o-nas-v2 .stel-usl { margin: 0 0 20px; }
+.o-nas-v2 .stel-usl ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.o-nas-v2 .nakleyka { font-weight: 500; font-size: 14px; color: #33465E; }
+@media (max-width: 900px) {
+  .o-nas-ryad { grid-template-columns: minmax(0, 1fr); }
+  .o-nas-foto { min-height: 280px; }
+  .o-nas-v2 .stel-usl ul { grid-template-columns: minmax(0, 1fr); }
+}
