@@ -306,7 +306,7 @@
       var d = datTxt(fd.get('data'));
       opis = v === 'postavka' ? k + ' ' + fd.get('chto') + ', ' + d + ', ' + fd.get('okno') :
         v === 'otgruzka' ? t.name + ', ' + k + ' ' + t.ed + ' → ' + fd.get('kuda') + ', ' + d :
-        v === 'dostavka' ? (t ? t.name + ', ' + k + ' ' + t.ed : fd.get('chto')) + ' → ' + (kudaD === 'pvz' ? T.pvzSlova().kratko.toLowerCase() + ' ' + (T.PVZ.filter(function (x) { return x[0] === fd.get('pvz'); })[0] || ['', ''])[1] :
+        v === 'dostavka' ? (t ? t.name + ', ' + k + ' ' + t.ed : fd.get('chto')) + ' → ' + (kudaD === 'pvz' ? T.pvzSlova().kratko + ' ' + (T.PVZ.filter(function (x) { return x[0] === fd.get('pvz'); })[0] || ['', ''])[1] :
           kudaD === 'tk' ? fd.get('tk') + ', ' + fd.get('gorod') + (fd.get('tkKak') === 'zaberet' ? ', ТК заберёт со склада' : ', до терминала') :
           fd.get('adres') + ', ' + d + ', ' + (fd.get('mashina') === 'попутка' ? 'попуткой из ' + fd.get('reys') : 'отдельной машиной')) :
         v === 'vozvrat' ? k + ' ед. от ' + fd.get('otkuda') + ', ' + d : fd.get('chto') + ', ' + d + ', ' + fd.get('okno');

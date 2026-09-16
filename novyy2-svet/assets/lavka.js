@@ -438,7 +438,7 @@ window.TuchaLavka = (function () {
     var d = new Date(), den = d.getDay(), h = d.getHours();
     return den >= 1 && den <= 5 && h >= 9 && h < 18 ? 'в течение 15 минут' : T.kogdaSvyazhetsya();
   }
-  var PS = T.pvzSlova ? T.pvzSlova() : { im: 'Пункт выдачи Тучи', v: 'в пункт выдачи Тучи', p: 'в пункте выдачи', kratko: 'Пункт выдачи', edet: 'Едет в пункт', zhdet: 'Ждёт в пункте' };
+  var PS = T.pvzSlova ? T.pvzSlova() : { im: 'Станция Тучи, пункт выдачи', v: 'на Станцию Тучи', p: 'на Станции Тучи', kratko: 'Станция Тучи', edet: 'Едет на Станцию', zhdet: 'Ждёт на Станции', poyasn: 'Наш пункт выдачи у метро. ' };
   var PS_V = PS.v.charAt(0).toUpperCase() + PS.v.slice(1);
   var STATUSY = { sam: ['Принят', 'Собираем', 'Готов к выдаче', 'Получен'], dost: ['Принят', 'Собираем', 'В пути', 'Получен'],
     pvz: ['Принят', PS.edet, PS.zhdet, 'Получен'] };
@@ -480,7 +480,7 @@ window.TuchaLavka = (function () {
       if (z.tip === 'pvz' && !vPvz()) z.tip = 'sam';
       var h = '<h2>Как получить</h2><p class="muted">Склад отгрузки в Московской области. Паллеты собираем от 2 часов, сборные заказы до конца дня.</p>' +
         '<div class="zk-vary">' + var_('tip', 'sam', z.tip, 'Самовывоз со склада ' + kogda, 'Промышленная зона, 2Б · пн-пт с 9:00 до 18:00', '0 ₽') +
-        (vPvz() ? var_('tip', 'pvz', z.tip, PS_V, 'Привезём на следующий рабочий день после 12:00, заберёте по коду из SMS', '0 ₽') :
+        (vPvz() ? var_('tip', 'pvz', z.tip, PS_V, PS.poyasn + 'Привезём на следующий рабочий день после 12:00, заберёте по коду из SMS', '0 ₽') :
           '<label class="zk-var zk-var-net"><input type="radio" name="tip" value="pvz" disabled><span><b>' + PS_V + '</b><small>Заказ больше половины паллеты: сюда не поместится</small><em>нет</em></span></label>') +
         var_('tip', 'mashina', z.tip, 'Машиной Тучи до адреса', 'По Москве и области: попуткой или отдельной машиной', m.dost ? 'от ' + rub(m.dost) : 'по расчёту') +
         var_('tip', 'tk', z.tip, 'Транспортной компанией', 'Довезём до терминала или отдадим вашей ТК на складе', 'по тарифу ТК') + '</div>';
