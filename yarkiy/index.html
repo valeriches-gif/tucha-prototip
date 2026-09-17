@@ -99,12 +99,11 @@ header, section, footer { position: relative; z-index: 1; }
 .geroy-art img { position: relative; width: 100%; transition: opacity .45s ease;
   filter: drop-shadow(0 30px 40px rgba(22, 48, 79, .3)); animation: plyv 6s ease-in-out infinite; }
 @keyframes plyv { 50% { transform: translateY(-12px); } }
-.plitka { position: absolute; background: #fff; border-radius: 18px; padding: 12px 16px; box-shadow: var(--teni); }
+/* плашки под карточкой, ничего не закрывают */
+.plitki { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 18px; }
+.plitka { background: #fff; border-radius: 18px; padding: 12px 16px; box-shadow: var(--teni); }
 .plitka b { display: block; font: 900 22px/1 var(--zag); color: var(--navy); }
 .plitka span { font-size: 13px; color: var(--mute); }
-.plitka-1 { left: -18%; top: 6%; }
-.plitka-2 { right: -24%; top: 40%; }
-.plitka-3 { left: -20%; bottom: 8%; }
 
 /* новые персонажи: ролик в мягкой карточке */
 .maskot { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 36px;
@@ -270,7 +269,7 @@ header, section, footer { position: relative; z-index: 1; }
 
 /* полоса-призыв */
 .stop { position: relative; background: linear-gradient(120deg, var(--sky-t), #FFF6EC); border-radius: 36px;
-  display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 20px; align-items: end; overflow: hidden; }
+  display: grid; grid-template-columns: minmax(0, 330px) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); align-items: end; overflow: hidden; }
 .stop-art { align-self: end; }
 .stop-art img { width: 100%; max-width: 320px; }
 .stop-t { padding: clamp(28px, 4vw, 52px) clamp(24px, 4vw, 52px) clamp(28px, 4vw, 52px) 0; }
@@ -290,6 +289,8 @@ header, section, footer { position: relative; z-index: 1; }
 
 /* подвал */
 .podval { background: var(--navy2); color: #A9C0D8; padding: 54px 0 40px; margin-top: clamp(50px, 6vw, 90px); }
+/* облака плывут только за содержимым */
+.sek, .podval { position: relative; z-index: 1; }
 .podval-g { display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-between; }
 .podval a { color: #fff; }
 .podval b { color: #fff; font-family: var(--zag); font-size: 20px; }
@@ -310,8 +311,6 @@ header, section, footer { position: relative; z-index: 1; }
   .menu, .shapka-tel { display: none; }
   .shapka .kn { margin-left: auto; }
   .karty, .shagi, .ceny, .dvoe { grid-template-columns: minmax(0, 1fr); }
-  .plitka-1, .plitka-3 { left: 0; }
-  .plitka-2 { right: 0; }
   .plitka { padding: 9px 12px; }
   .plitka b { font-size: 18px; }
 }
@@ -324,7 +323,6 @@ header, section, footer { position: relative; z-index: 1; }
   transition: opacity .3s ease var(--z, 0ms), transform .45s cubic-bezier(.23, 1, .32, 1) var(--z, 0ms); }
 .anim .uroven-p i span { width: 0; }
 .anim .uroven-p.idet i span { width: 14%; transition: width 1s cubic-bezier(.23, 1, .32, 1) .45s; }
-.anim .plitka { transition: transform .6s cubic-bezier(.23, 1, .32, 1); }
 .anim .duga path { stroke-dashoffset: 420; transition: stroke-dashoffset 2.2s ease .3s; }
 .anim .duga.vid path { stroke-dashoffset: 0; }
 
@@ -359,9 +357,11 @@ header, section, footer { position: relative; z-index: 1; }
 </div>
 <div class="geroy-art">
 <video class="maskot" src="assets/video/malchik.mp4" poster="assets/img/malchik-poster.jpg" width="640" height="640" autoplay muted loop playsinline aria-label="Помощник Тучи машет рукой"></video>
-<div class="plitka plitka-1"><b>4,6</b><span>на Яндекс Картах</span></div>
-<div class="plitka plitka-2"><b>FBS</b><span>отгрузка со своего склада на Wildberries и Ozon</span></div>
-<div class="plitka plitka-3"><b>с 2017</b><span>года на своём складе</span></div>
+<div class="plitki">
+<div class="plitka"><b>4,6</b><span>на Яндекс Картах</span></div>
+<div class="plitka"><b>с 2017</b><span>года на своём складе</span></div>
+<div class="plitka"><b>FBS</b><span>отгрузка со своего склада на Wildberries и Ozon</span></div>
+</div>
 </div>
 </div></div></section>
 
@@ -560,21 +560,6 @@ header, section, footer { position: relative; z-index: 1; }
     var d = document.querySelector('.duga');
     if (d) d.classList.add('vid');
   });
-
-  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    var g = document.querySelector('.geroy'), plitki = document.querySelectorAll('.plitka');
-    g.addEventListener('mousemove', function (s) {
-      var r = g.getBoundingClientRect();
-      var x = (s.clientX - r.left) / r.width - .5, y = (s.clientY - r.top) / r.height - .5;
-      [].forEach.call(plitki, function (e, i) {
-        var k = (i % 2 ? -1 : 1) * 12;
-        e.style.transform = 'translate3d(' + (-x * k) + 'px,' + (-y * k) + 'px,0)';
-      });
-    });
-    g.addEventListener('mouseleave', function () {
-      [].forEach.call(plitki, function (e) { e.style.transform = ''; });
-    });
-  }
 
   /* конструктор: блоки встают в постройку */
   (function () {
