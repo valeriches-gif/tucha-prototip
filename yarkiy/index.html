@@ -100,8 +100,16 @@ header, section, footer { position: relative; z-index: 1; }
   filter: drop-shadow(0 30px 40px rgba(22, 48, 79, .3)); animation: plyv 6s ease-in-out infinite; }
 @keyframes plyv { 50% { transform: translateY(-12px); } }
 /* плашки под карточкой, ничего не закрывают */
-.plitki { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 18px; }
-.plitka { background: #fff; border-radius: 18px; padding: 12px 16px; box-shadow: var(--teni); }
+/* плашки вразброс по краям карточки, в пустых местах: персонажа не закрывают */
+.plitki { position: absolute; inset: 0; pointer-events: none; }
+.plitka { position: absolute; pointer-events: auto; max-width: 190px; background: #fff; border-radius: 18px; padding: 12px 16px; box-shadow: var(--teni); }
+.plitka-1 { left: -17%; top: 7%; }
+.plitka-2 { left: -19%; bottom: 8%; }
+.plitka-3 { right: -18%; top: 62%; max-width: 218px; }
+@media (max-width: 760px) {
+  .plitki { position: relative; inset: auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 18px; }
+  .plitka { position: static; max-width: none; }
+}
 .plitka b { display: block; font: 900 22px/1 var(--zag); color: var(--navy); }
 .plitka span { font-size: 13px; color: var(--mute); }
 
@@ -316,6 +324,7 @@ header, section, footer { position: relative; z-index: 1; }
 }
 /* движение: включается скриптом, без него всё видно сразу */
 .anim .pok { opacity: 0; transform: translateY(24px); }
+.anim .plitka { transition: transform .6s cubic-bezier(.23, 1, .32, 1); }
 .anim .pok.vid { opacity: 1; transform: none;
   transition: opacity .5s ease var(--z, 0ms), transform .65s cubic-bezier(.23, 1, .32, 1) var(--z, 0ms); }
 .anim .postroyka span { opacity: 0; transform: translateX(-16px); }
@@ -358,9 +367,9 @@ header, section, footer { position: relative; z-index: 1; }
 <div class="geroy-art">
 <video class="maskot" src="assets/video/malchik.mp4" poster="assets/img/malchik-poster.jpg" width="640" height="640" autoplay muted loop playsinline aria-label="Рыжий помощник Тучи машет рукой"></video>
 <div class="plitki">
-<div class="plitka"><b>4,6</b><span>на Яндекс Картах</span></div>
-<div class="plitka"><b>с 2017</b><span>года на своём складе</span></div>
-<div class="plitka"><b>FBS</b><span>отгрузка со своего склада на Wildberries и Ozon</span></div>
+<div class="plitka plitka-1"><b>4,6</b><span>на Яндекс Картах</span></div>
+<div class="plitka plitka-2"><b>с 2017</b><span>года на своём складе</span></div>
+<div class="plitka plitka-3"><b>FBS</b><span>отгрузка со своего склада на Wildberries и Ozon</span></div>
 </div>
 </div>
 </div></div></section>
@@ -560,6 +569,21 @@ header, section, footer { position: relative; z-index: 1; }
     var d = document.querySelector('.duga');
     if (d) d.classList.add('vid');
   });
+
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches && matchMedia('(min-width: 761px)').matches) {
+    var g = document.querySelector('.geroy'), plitki = document.querySelectorAll('.plitka');
+    g.addEventListener('mousemove', function (s) {
+      var r = g.getBoundingClientRect();
+      var x = (s.clientX - r.left) / r.width - .5, y = (s.clientY - r.top) / r.height - .5;
+      [].forEach.call(plitki, function (e, i) {
+        var k = (i % 2 ? -1 : 1) * 8;
+        e.style.transform = 'translate3d(' + (-x * k) + 'px,' + (-y * k) + 'px,0)';
+      });
+    });
+    g.addEventListener('mouseleave', function () {
+      [].forEach.call(plitki, function (e) { e.style.transform = ''; });
+    });
+  }
 
   /* конструктор: блоки встают в постройку */
   (function () {
