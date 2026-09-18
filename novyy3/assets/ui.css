@@ -771,3 +771,50 @@ body:has(.px-gorod) .podval { padding-top: 80px; }
   .px-gorod { height: 80px; }
 }
 @media (prefers-reduced-motion: reduce) { .px-levelup { animation: none; } }
+
+/* ===== версия с героем: вход и загрузка без пикселей (дописано в конец ui.css, поэтому перекрывает) ===== */
+/* вход: мальчик машет (видео подменяет картинку), звёзды круглые и мерцают плавно, тучки объёмные */
+.vh3-pers .pv.geroy-v { left: -48px; top: auto; bottom: -6px; width: 342px; height: 520px; object-fit: contain; object-position: 50% 100%; }
+.vh3-zv { background:
+  radial-gradient(circle, #FFE9C7 0 2.4px, rgba(255, 217, 160, .35) 3.6px, transparent 7px) 10% 14% / 16px 16px no-repeat,
+  radial-gradient(circle, #fff 0 1.6px, rgba(255, 255, 255, .3) 2.6px, transparent 5px) 22% 8% / 12px 12px no-repeat,
+  radial-gradient(circle, #fff 0 1.6px, rgba(255, 255, 255, .3) 2.6px, transparent 5px) 47% 18% / 12px 12px no-repeat,
+  radial-gradient(circle, #FFE9C7 0 2.4px, rgba(255, 217, 160, .35) 3.6px, transparent 7px) 63% 6% / 16px 16px no-repeat,
+  radial-gradient(circle, #fff 0 1.6px, rgba(255, 255, 255, .3) 2.6px, transparent 5px) 88% 12% / 12px 12px no-repeat,
+  radial-gradient(circle, #fff 0 1.6px, rgba(255, 255, 255, .3) 2.6px, transparent 5px) 92% 44% / 12px 12px no-repeat,
+  radial-gradient(circle, #fff 0 1.6px, rgba(255, 255, 255, .3) 2.6px, transparent 5px) 6% 52% / 12px 12px no-repeat,
+  radial-gradient(circle, #FFE9C7 0 2.4px, rgba(255, 217, 160, .35) 3.6px, transparent 7px) 80% 78% / 16px 16px no-repeat,
+  radial-gradient(circle, #fff 0 1.6px, rgba(255, 255, 255, .3) 2.6px, transparent 5px) 16% 84% / 12px 12px no-repeat;
+  animation: vh3-mig-m 3.2s ease-in-out infinite; }
+@keyframes vh3-mig-m { 50% { opacity: .35; } }
+.vh3-tuchka { width: 150px; height: 72px; background: url(img/3d/tucha.webp) center / contain no-repeat; image-rendering: auto; opacity: .3; filter: brightness(.7) saturate(.7); }
+[data-vremya="utro"] .vh3-tuchka, [data-vremya="den"] .vh3-tuchka { opacity: .9; filter: none; }
+[data-vremya="vecher"] .vh3-tuchka { opacity: .55; filter: saturate(.8); }
+/* загрузка: из тучи падает коробка на поддон; шрифты сайта вместо моноширинного, полоска плавная */
+.zgr::before { opacity: .5; background: url(img/3d/tucha.webp) 12% 16% / 150px auto no-repeat, url(img/3d/tucha.webp) 86% 72% / 116px auto no-repeat; }
+.zgr-kv { display: block; position: relative; width: 170px; height: 190px; margin-bottom: 26px; }
+.zgr .zgr-kv i, .zgr-svet .zgr-kv i { position: absolute; display: block; background: none; animation: none; }
+/* 1 коробка вылетает из-за тучи и ложится на поддон, 2 поддон, 3 туча поверх коробки */
+.zgr .zgr-kv i:nth-child(1) { z-index: 1; left: 62px; top: 22px; width: 46px; height: 46px; background: url(img/3d/yaschik.webp) center / contain no-repeat;
+  transform-origin: 50% 100%; animation: zgr-padaet 1.4s linear infinite; }
+.zgr .zgr-kv i:nth-child(2) { left: 30px; bottom: 0; width: 110px; height: 45px; background: url(img/3d/palleta.webp) center bottom / contain no-repeat; }
+.zgr .zgr-kv i:nth-child(3) { z-index: 2; left: 10px; top: 0; width: 150px; height: 72px; background: url(img/3d/tucha.webp) center / contain no-repeat; }
+.zgr .zgr-kv i:nth-child(4) { display: none; }
+@keyframes zgr-padaet {
+  0% { transform: translateY(0); opacity: 1; animation-timing-function: cubic-bezier(.55, 0, 1, .45); }
+  45% { transform: translateY(84px); animation-timing-function: ease-out; }
+  52% { transform: translateY(84px) scale(1.12, .86); animation-timing-function: ease-out; }
+  62% { transform: translateY(84px) scale(1); opacity: 1; }
+  86% { transform: translateY(84px) scale(1); opacity: 1; }
+  100% { transform: translateY(84px) scale(1); opacity: 0; } }
+.zgr-z { font: 800 26px/1.15 var(--igr); letter-spacing: 0; text-transform: none; }
+.zgr-sh, .zgr-niz { font-family: "Golos Text", system-ui, sans-serif; }
+.zgr-sh { font-size: 15px; }
+.zgr-sh b { font-weight: 600; }
+.zgr-niz { font-size: 13px; letter-spacing: 0; }
+.zgr-pol { width: 200px; height: 8px; border-radius: 99px; overflow: hidden; }
+.zgr-pol i { border-radius: 99px; transition: width .45s cubic-bezier(.23, 1, .32, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .zgr .zgr-kv i:nth-child(1) { animation: none; transform: translateY(84px); }
+  .vh3-zv { animation: none; }
+}
