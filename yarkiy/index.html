@@ -92,8 +92,8 @@ header, section, footer { position: relative; z-index: 1; }
 .geroy-niz b { display: block; font: 800 22px/1.1 var(--zag); color: var(--navy); letter-spacing: -.01em; }
 .geroy-niz span { display: block; margin-top: 4px; font-size: 13px; color: var(--mute); }
 .geroy-art { position: relative; justify-self: center; width: min(430px, 82vw); }
-/* профессор Тучинский: вертикальная заставка «склад, дверь, Мир Тучи» */
-.geroy-art.vert { width: min(310px, 70vw); }
+/* проводник Тучи: вертикальная карточка */
+.geroy-art.vert { width: min(340px, 74vw); }
 .geroy-art.vert::before { width: 150%; aspect-ratio: 1; bottom: 12%; background: radial-gradient(closest-side, #E4D8FB, rgba(228, 216, 251, 0)); }
 .geroy-art.rost { display: flex; flex-direction: column; align-items: center; padding-bottom: 8px; }
 .geroy-art.rost::before { width: 118%; aspect-ratio: 1; bottom: 18%; background: linear-gradient(170deg, #E6DDFB 0%, #D9EBFA 55%, #FFE9D6 100%); }
@@ -132,10 +132,11 @@ header, section, footer { position: relative; z-index: 1; }
 .vert .plitka-1 { left: -46%; top: 4%; rotate: -3deg; }
 .vert .plitka-2 { left: -52%; top: 60%; bottom: auto; rotate: 2deg; }
 .vert .plitka-3 { right: -50%; top: 30%; max-width: 184px; rotate: -1.5deg; }
-@media (max-width: 1320px) { .vert .plitka { max-width: 150px; } .vert .plitka-1 { left: -40%; } .vert .plitka-2 { left: -44%; } .vert .plitka-3 { right: -40%; max-width: 160px; } }
-@media (max-width: 760px) {
+@media (max-width: 1320px) { .vert .plitka { max-width: 150px; } .vert .plitka-1 { left: -34%; } .vert .plitka-2 { left: -38%; } .vert .plitka-3 { right: -34%; max-width: 160px; } }
+@media (max-width: 1040px) { .vert .plitka { max-width: 170px; } .vert .plitka-1 { left: -62%; top: 6%; } .vert .plitka-2 { left: -66%; top: 60%; } .vert .plitka-3 { right: -64%; top: 34%; max-width: 184px; } }
+@media (max-width: 860px), (min-width: 1041px) and (max-width: 1220px) {
   .plitki { position: relative; inset: auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 18px; }
-  .plitka { position: static; max-width: none; }
+  .plitka, .vert .plitka { position: static; max-width: none; rotate: none; }
 }
 .plitka b { display: block; font: 900 22px/1 var(--zag); color: var(--navy); }
 .plitka span { font-size: 13px; color: var(--mute); }
@@ -401,8 +402,7 @@ header, section, footer { position: relative; z-index: 1; }
 <div class="geroy-niz"><div><b>+3 000</b><span>паллето-мест</span></div><div><b>от 16,42 ₽</b><span>за паллето-место в сутки, с НДС</span></div><div><b>20 минут</b><span>на договор</span></div><div><b>пн-пт</b><span>с 9:00 до 18:00</span></div></div>
 </div>
 <div class="geroy-art vert rost">
-<img class="professor-geroy" src="assets/img/p-mashet-0.webp" data-video="assets/video/professor-mashet.webm" alt="Профессор Тучинский, проводник Тучи, в жилетке с логотипом, машет рукой" width="458" height="900">
-<div class="imya-maskota"><b>Профессор Тучинский</b><span>проведёт по складу и Миру Тучи</span></div>
+<img class="professor-geroy" src="assets/img/p-zhivoy-0.webp" data-video="assets/video/professor-zhivoy.webm" alt="Проводник Тучи в жилетке с логотипом машет рукой" width="592" height="900">
 <div class="plitki">
 <div class="plitka plitka-1"><b>4,6</b><span>на Яндекс Картах</span></div>
 <div class="plitka plitka-2"><b>с 2017</b><span>года на своём складе</span></div>
@@ -538,7 +538,7 @@ header, section, footer { position: relative; z-index: 1; }
 </div></section>
 
 <section class="sek"><div class="wrap"><div class="stop">
-<div class="stop-art"><img class="professor" src="assets/img/p-profil-rost.webp" alt="Профессор Тучинский в жилетке Тучи" width="167" height="760" loading="lazy"></div>
+<div class="stop-art"><img class="professor" src="assets/img/p-profil-rost.webp" alt="Проводник Тучи в жилетке с логотипом" width="167" height="760" loading="lazy"></div>
 <div class="stop-t">
 <h2>Посчитаем <em>под ваш товар</em></h2>
 <p>Пришлите габариты и объём: расчёт придёт в тот же день. Договор за 20 минут, предоплата не нужна, склад можно приехать посмотреть.</p>
@@ -564,7 +564,7 @@ header, section, footer { position: relative; z-index: 1; }
     var mv = document.createElement('video');
     mv.className = pg.className; mv.muted = true; mv.loop = true; mv.autoplay = true; mv.playsInline = true;
     mv.setAttribute('muted', ''); mv.setAttribute('playsinline', ''); mv.setAttribute('aria-label', pg.alt);
-    mv.poster = pg.getAttribute('src'); mv.width = 458; mv.height = 900;
+    mv.poster = pg.getAttribute('src'); mv.width = 592; mv.height = 900;
     mv.src = pg.getAttribute('data-video');
     mv.addEventListener('canplay', function () { pg.replaceWith(mv); mv.play().catch(function () {}); }, { once: true });
     mv.load();
