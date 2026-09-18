@@ -67,6 +67,7 @@ header, section, footer { position: relative; z-index: 1; }
 .shapka .kn { padding: 13px 22px; font-size: 13px; white-space: nowrap; }
 .shapka-tel { white-space: nowrap; }
 @media (max-width: 1440px) { .shapka-tel { display: none; } .menu { gap: 18px; } }
+@media (max-width: 1100px) { .menu { display: none; } .shapka .kn-2 { margin-left: auto; } }
 @media (max-width: 760px) { .shapka .kn-2, .vhod-l { display: none; } .shapka .kn { padding: 11px 16px; font-size: 12px; } .shapka-g { gap: 12px; } }
 .shapka .kn-2 { margin-left: auto; }
 .shapka-tel { margin-left: auto; font: 800 17px/1 var(--zag); color: var(--navy); text-decoration: none; }
@@ -91,6 +92,21 @@ header, section, footer { position: relative; z-index: 1; }
 .geroy-niz b { display: block; font: 800 22px/1.1 var(--zag); color: var(--navy); letter-spacing: -.01em; }
 .geroy-niz span { display: block; margin-top: 4px; font-size: 13px; color: var(--mute); }
 .geroy-art { position: relative; justify-self: center; width: min(430px, 82vw); }
+/* профессор Тучинский: вертикальная заставка «склад, дверь, Мир Тучи» */
+.geroy-art.vert { width: min(310px, 70vw); }
+.geroy-art.vert::before { width: 150%; aspect-ratio: 1; bottom: 12%; background: radial-gradient(closest-side, #E4D8FB, rgba(228, 216, 251, 0)); }
+.geroy-art .maskot-vert { aspect-ratio: 9 / 16; border-radius: 30px; background: #1C2A3C; object-fit: cover; }
+.imya-maskota { position: absolute; left: 14px; right: 14px; bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: rgba(14, 36, 64, .78); backdrop-filter: blur(6px); color: #fff; border-radius: 16px; padding: 9px 10px 9px 14px; }
+.imya-maskota b { display: block; font: 800 14px/1.2 var(--zag); }
+.imya-maskota span { display: block; font-size: 12px; color: #C5D6EA; }
+.zvuk { flex: none; width: 38px; height: 38px; border-radius: 50%; border: 0; cursor: pointer; background: #fff; color: var(--navy);
+  display: grid; place-items: center; transition: transform .16s cubic-bezier(.23, 1, .32, 1); }
+.zvuk:active { transform: scale(.94); }
+.zvuk:focus-visible { outline: 3px solid var(--oran); outline-offset: 2px; }
+.zvuk svg { width: 18px; height: 18px; }
+.zvuk.vkl .krest { display: none; }
+.zvuk.vkl .volna { opacity: 1; }
 .geroy-art::before { content: ''; position: absolute; left: 50%; bottom: 2%; translate: -50% 0; width: 104%; aspect-ratio: 1;
   border-radius: 50%; background: linear-gradient(160deg, #CFE7F8, #EAF4FD); }
 .geroy-art .poza2 { position: absolute; left: 0; bottom: 0; opacity: 0; transition: opacity .45s ease; }
@@ -106,6 +122,11 @@ header, section, footer { position: relative; z-index: 1; }
 .plitka-1 { left: -17%; top: 7%; }
 .plitka-2 { left: -19%; bottom: 8%; }
 .plitka-3 { right: -18%; top: 62%; max-width: 218px; }
+.vert .plitka { max-width: 168px; }
+.vert .plitka-1 { left: -46%; top: 4%; rotate: -3deg; }
+.vert .plitka-2 { left: -52%; top: 60%; bottom: auto; rotate: 2deg; }
+.vert .plitka-3 { right: -50%; top: 30%; max-width: 184px; rotate: -1.5deg; }
+@media (max-width: 1320px) { .vert .plitka { max-width: 150px; } .vert .plitka-1 { left: -40%; } .vert .plitka-2 { left: -44%; } .vert .plitka-3 { right: -40%; max-width: 160px; } }
 @media (max-width: 760px) {
   .plitki { position: relative; inset: auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 18px; }
   .plitka { position: static; max-width: none; }
@@ -117,6 +138,7 @@ header, section, footer { position: relative; z-index: 1; }
 .maskot { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 36px;
   background: #BFDCE6; box-shadow: 0 34px 60px -34px rgba(22, 48, 79, .55); }
 .geroy-art .maskot { position: relative; animation: plyv 6s ease-in-out infinite; }
+.geroy-art.vert .maskot { animation: none; }
 .stop-art .maskot { max-width: 300px; border-radius: 28px; margin: 22px 0 22px 22px; }
 @media (prefers-reduced-motion: reduce) { .geroy-art .maskot { animation: none; } }
 
@@ -136,7 +158,9 @@ header, section, footer { position: relative; z-index: 1; }
 /* формат: просто или как в игре */
 .dva { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 44px; }
 .put { background: #fff; border-radius: 28px; padding: 28px 28px 30px; box-shadow: var(--teni); display: flex; flex-direction: column; gap: 12px; }
-.put-igra { background: linear-gradient(165deg, #1E3A5F, #16304F); color: #DCE9F6; }
+.put-igra { background: linear-gradient(165deg, #2A3F6E, #1B2C4E 55%, #16304F); color: #DCE9F6; }
+.put-oblozhka { margin: -28px -28px 0; height: 150px; border-radius: 28px 28px 0 0; background-size: cover; background-position: center; }
+.put-oblozhka + .krug { margin-top: -62px; position: relative; }
 .put h3 { font-size: 26px; font-weight: 900; text-transform: uppercase; }
 .put-igra h3 { color: #fff; }
 .put p { margin: 0; font-size: 16px; color: var(--mute); }
@@ -280,6 +304,9 @@ header, section, footer { position: relative; z-index: 1; }
   display: grid; grid-template-columns: minmax(0, 330px) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); align-items: end; overflow: hidden; }
 .stop-art { align-self: end; }
 .stop-art img { width: 100%; max-width: 320px; }
+.stop-art .professor { width: auto; height: 400px; max-width: none; margin: 26px auto 0; filter: drop-shadow(0 22px 26px rgba(22, 48, 79, .28));
+  animation: plyv 6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .stop-art .professor { animation: none; } }
 .stop-t { padding: clamp(28px, 4vw, 52px) clamp(24px, 4vw, 52px) clamp(28px, 4vw, 52px) 0; }
 .stop-t h2 { font-size: clamp(28px, 3.6vw, 46px); }
 .stop-t p { color: #46586E; max-width: 46ch; }
@@ -312,6 +339,7 @@ header, section, footer { position: relative; z-index: 1; }
   .sklad-foto { min-height: 240px; }
   .stop-t { padding: 0 24px 34px; }
   .stop-art { max-width: 260px; }
+  .stop-art .professor { height: 300px; }
 }
 @media (max-width: 760px) {
   .postroyka span, .postroyka button { flex-wrap: wrap; }
@@ -364,8 +392,10 @@ header, section, footer { position: relative; z-index: 1; }
 </div>
 <div class="geroy-niz"><div><b>+3 000</b><span>паллето-мест</span></div><div><b>от 16,42 ₽</b><span>за паллето-место в сутки, с НДС</span></div><div><b>20 минут</b><span>на договор</span></div><div><b>пн-пт</b><span>с 9:00 до 18:00</span></div></div>
 </div>
-<div class="geroy-art">
-<video class="maskot" src="assets/video/malchik.mp4" poster="assets/img/malchik-poster.jpg" width="640" height="640" autoplay muted loop playsinline aria-label="Рыжий помощник Тучи машет рукой"></video>
+<div class="geroy-art vert">
+<video class="maskot maskot-vert" src="assets/video/professor-zastavka.mp4" poster="assets/img/professor-zastavka-poster.jpg" width="540" height="960" autoplay muted loop playsinline aria-label="Профессор Тучинский машет рукой на складе, открывает дверь и приглашает в Мир Тучи"></video>
+<div class="imya-maskota"><div><b>Профессор Тучинский</b><span>проведёт по складу и Миру Тучи</span></div>
+<button class="zvuk" type="button" aria-label="Включить звук" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="volna" d="M17 9a4 4 0 0 1 0 6" opacity=".35"/><path class="krest" d="M16 9l5 6M21 9l-5 6"/></svg></button></div>
 <div class="plitki">
 <div class="plitka plitka-1"><b>4,6</b><span>на Яндекс Картах</span></div>
 <div class="plitka plitka-2"><b>с 2017</b><span>года на своём складе</span></div>
@@ -435,7 +465,8 @@ header, section, footer { position: relative; z-index: 1; }
 <p class="pod-zag"><b class="plashka">Для компаний, ИП и частных лиц</b> Условия, кабинет и общение в двух форматах разные.</p>
 <div class="dva">
 <article class="put">
-<video class="krug" src="assets/video/malchik-krug.mp4" poster="assets/img/malchik-poster.jpg" width="640" height="640" autoplay muted loop playsinline aria-hidden="true"></video>
+<div class="put-oblozhka" style="background-image:url(assets/img/oblozhka-sklad.jpg)" aria-hidden="true"></div>
+<video class="krug" src="assets/video/professor-krug-sklad.mp4" poster="assets/img/professor-krug-sklad-poster.jpg" width="240" height="240" autoplay muted loop playsinline aria-hidden="true"></video>
 <span class="yarl">Без тарифов</span>
 <h3>Всё просто</h3>
 <p>Классический формат: понятные условия и скидка за срок, без игры и заданий.</p>
@@ -444,7 +475,8 @@ header, section, footer { position: relative; z-index: 1; }
 <a class="kn kn-2" href="../novyy/start/prosto/">Заполнить форму</a>
 </article>
 <article class="put put-igra">
-<video class="krug" src="assets/video/tuchka-krug.mp4" poster="assets/img/tuchka-poster.jpg" width="640" height="640" autoplay muted loop playsinline aria-hidden="true"></video>
+<div class="put-oblozhka" style="background-image:url(assets/img/oblozhka-mir.jpg)" aria-hidden="true"></div>
+<video class="krug" src="assets/video/professor-krug-mir.mp4" poster="assets/img/professor-krug-mir-poster.jpg" width="240" height="240" autoplay muted loop playsinline aria-hidden="true"></video>
 <span class="yarl yarl-igra">Игровой формат</span>
 <h3>Мир Тучи</h3>
 <p>Игровой формат: привилегии за выполненные условия, склад собираете сами, как конструктор.</p>
@@ -501,7 +533,7 @@ header, section, footer { position: relative; z-index: 1; }
 </div></section>
 
 <section class="sek"><div class="wrap"><div class="stop">
-<div class="stop-art"><video class="maskot maskot-tuchka" src="assets/video/tuchka.mp4" poster="assets/img/tuchka-poster.jpg" width="640" height="640" autoplay muted loop playsinline aria-label="Тучка машет рукой"></video></div>
+<div class="stop-art"><img class="professor" src="assets/img/professor-rost.webp" alt="Профессор Тучинский в жилетке Тучи" width="153" height="520" loading="lazy"></div>
 <div class="stop-t">
 <h2>Посчитаем <em>под ваш товар</em></h2>
 <p>Пришлите габариты и объём: расчёт придёт в тот же день. Договор за 20 минут, предоплата не нужна, склад можно приехать посмотреть.</p>
@@ -519,6 +551,16 @@ header, section, footer { position: relative; z-index: 1; }
 <script>
 (function () {
   var tiho = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* звук заставки: по кнопке, видео по умолчанию без звука */
+  var kz = document.querySelector('.zvuk'), zv = document.querySelector('.maskot-vert');
+  if (kz && zv) kz.addEventListener('click', function () {
+    zv.muted = !zv.muted;
+    if (!zv.muted) { zv.currentTime = 0; zv.play(); }
+    kz.setAttribute('aria-pressed', String(!zv.muted));
+    kz.setAttribute('aria-label', zv.muted ? 'Включить звук' : 'Выключить звук');
+    kz.classList.toggle('vkl', !zv.muted);
+  });
+
   if (tiho || !('IntersectionObserver' in window)) return;
   var koren = document.documentElement;
   koren.classList.add('anim');
