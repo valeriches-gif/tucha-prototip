@@ -401,7 +401,7 @@ header, section, footer { position: relative; z-index: 1; }
 <div class="geroy-niz"><div><b>+3 000</b><span>паллето-мест</span></div><div><b>от 16,42 ₽</b><span>за паллето-место в сутки, с НДС</span></div><div><b>20 минут</b><span>на договор</span></div><div><b>пн-пт</b><span>с 9:00 до 18:00</span></div></div>
 </div>
 <div class="geroy-art vert rost">
-<img class="professor-geroy" src="assets/img/p-rost.webp" alt="Профессор Тучинский, проводник Тучи, в жилетке с логотипом" width="265" height="900">
+<img class="professor-geroy" src="assets/img/p-mashet-0.webp" data-video="assets/video/professor-mashet.webm" alt="Профессор Тучинский, проводник Тучи, в жилетке с логотипом, машет рукой" width="458" height="900">
 <div class="imya-maskota"><b>Профессор Тучинский</b><span>проведёт по складу и Миру Тучи</span></div>
 <div class="plitki">
 <div class="plitka plitka-1"><b>4,6</b><span>на Яндекс Картах</span></div>
@@ -556,6 +556,20 @@ header, section, footer { position: relative; z-index: 1; }
 <script>
 (function () {
   var tiho = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* профессор машет: прозрачное видео там, где браузер его умеет, иначе остаётся картинка */
+  var pg = document.querySelector('img.professor-geroy');
+  var ua = navigator.userAgent, safari = /Safari/.test(ua) && !/Chrome|Chromium|Edg|OPR|Firefox/.test(ua);
+  var vid0 = document.createElement('video');
+  if (pg && !tiho && !safari && vid0.canPlayType && vid0.canPlayType('video/webm; codecs="vp9"')) {
+    var mv = document.createElement('video');
+    mv.className = pg.className; mv.muted = true; mv.loop = true; mv.autoplay = true; mv.playsInline = true;
+    mv.setAttribute('muted', ''); mv.setAttribute('playsinline', ''); mv.setAttribute('aria-label', pg.alt);
+    mv.poster = pg.getAttribute('src'); mv.width = 458; mv.height = 900;
+    mv.src = pg.getAttribute('data-video');
+    mv.addEventListener('canplay', function () { pg.replaceWith(mv); mv.play().catch(function () {}); }, { once: true });
+    mv.load();
+  }
+
   if (tiho || !('IntersectionObserver' in window)) return;
   var koren = document.documentElement;
   koren.classList.add('anim');
