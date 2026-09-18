@@ -1123,6 +1123,10 @@ body.mir-final .mir-scena { box-shadow: 0 0 0 4px rgba(239, 127, 26, .25); }
 img, .ava-foto, .rech-mob::before, .pv, .hero-malchik .pv-anim img { image-rendering: auto !important; }
 .hero-malchik .geroy-v { height: 190px; width: auto; display: block; }
 @media (max-width: 760px) { .hero-malchik .geroy-v { height: 120px; } }
+/* на главной мальчик крупнее: стоит перед островом */
+[data-geroy-glavnaya] .hero-malchik .geroy-v { height: 330px; }
+@media (max-width: 1100px) { [data-geroy-glavnaya] .hero-malchik .geroy-v { height: 250px; } }
+@media (max-width: 760px) { [data-geroy-glavnaya] .hero-malchik .geroy-v { height: 170px; } }
 .ava-foto, .rech-mob::before { background-image: url(img/geroy-lico.webp) !important; background-size: cover !important;
   background-position: 50% 18% !important; }
 .provodnik img { transform: none; }
