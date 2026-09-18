@@ -1119,22 +1119,19 @@ body.mir-final .mir-scena { box-shadow: 0 0 0 4px rgba(239, 127, 26, .25); }
 @media (max-width: 760px) { .hero-malchik .pv-anim { height: 120px; } }
 @media (prefers-reduced-motion: reduce) { .hero-malchik .pv-anim, .hero-malchik .pv-anim.pv-pryg { animation: none; } }
 
-/* ===== версия с героем: вместо пикселей мальчик в 3D ===== */
+/* ===== версия с героем: та же вёрстка, цвета и шрифты, вместо пикселей объёмная графика ===== */
 img, .ava-foto, .rech-mob::before, .pv, .hero-malchik .pv-anim img { image-rendering: auto !important; }
-.hero-malchik .geroy-v { height: 220px; width: auto; display: block; animation: none;
-  filter: drop-shadow(0 16px 18px rgba(22, 48, 79, .28)); }
-@media (max-width: 760px) { .hero-malchik .geroy-v { height: 140px; } }
-.malchik { filter: drop-shadow(0 14px 16px rgba(22, 48, 79, .25)); }
+.hero-malchik .geroy-v { height: 190px; width: auto; display: block; }
+@media (max-width: 760px) { .hero-malchik .geroy-v { height: 120px; } }
 .ava-foto, .rech-mob::before { background-image: url(img/geroy-lico.webp) !important; background-size: cover !important;
   background-position: 50% 18% !important; }
 .provodnik img { transform: none; }
-.doroga-ill img { border-radius: 16px; object-fit: cover; aspect-ratio: 16 / 9; }
-.hero-malchik .geroy-v { height: 250px; }
-/* страница входа: вместо пиксельного неба мягкий мир Тучи, мальчик на мягкой тени */
-.vh3-art { background: radial-gradient(60% 50% at 50% 55%, #FFFFFF 0%, rgba(255, 255, 255, 0) 70%),
-  linear-gradient(175deg, #E7DEFA 0%, #D8EAFB 55%, #FFE7D1 100%) !important; }
-.vh3-art .vh3-zv, .vh3-art .vh3-svetilo, .vh3-art .vh3-tuchka, .vh3-art .vh3-korob, .vh3-palleta { display: none !important; }
-.vh3-geroy { animation: none !important; }
-.vh3-ten { background: rgba(22, 48, 79, .18) !important; filter: blur(6px); bottom: 13% !important; }
-.vh3-podp { color: var(--navy) !important; }
-.vh3-podp span { color: #52657D !important; }
+/* страница входа: те же места и цвета, но объёмные коробки, поддон и светило */
+.vh3-korob { background: url(img/3d/yaschik.webp) center / contain no-repeat !important; box-shadow: none !important; }
+.vh3-palleta { background: url(img/3d/palleta.webp) center bottom / auto 100% no-repeat !important; height: 66px !important; margin-top: -32px; }
+.vh3-palleta::after { background: radial-gradient(50% 100% at 50% 0, rgba(255, 170, 70, .9), rgba(255, 138, 31, 0)) !important;
+  height: 16px !important; bottom: -16px !important; animation: vh3-ogon-m .6s ease-in-out infinite !important; }
+@keyframes vh3-ogon-m { 50% { opacity: .55; } }
+.vh3-art .vh3-svetilo { clip-path: none !important; border-radius: 50% !important;
+  background-image: radial-gradient(circle at 34% 30%, rgba(255, 255, 255, .8), rgba(255, 255, 255, 0) 46%) !important;
+  box-shadow: inset -10px -12px 20px rgba(120, 70, 0, .18), 0 0 36px 6px rgba(255, 200, 100, .35) !important; }

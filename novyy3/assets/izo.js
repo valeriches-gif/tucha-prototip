@@ -274,3 +274,80 @@ window.TuchaIzo = (function () {
     el: el, txt: txt, P: P, pts: pts, poly: poly, boks: boks, granX: granX, granY: granY, defs: defs,
     ostrov: ostrov, doroga: doroga, dekor: dekor, tucha: tucha, yaschik: yaschik, gruzovik: gruzovik, RIS: RIS };
 })();
+
+/* ===== версия «С героем»: мир Тучи объёмными картинками вместо плоских фигур =====
+   Каждая деталь встаёт ровно в рамку, которую занимал её плоский рисунок, поэтому сцена,
+   конструктор и значки работают как раньше. Рост здания: картинка вырастает от основания. */
+(function (I) {
+  if (!I) return;
+  var NS = I.NS, P = I.P, el = I.el;
+  var KOREN = (window.TUCHA_ROOT || './') + 'assets/img/3d/';
+  /* рамки плоских рисунков в координатах сцены: x, y, ширина, высота */
+  var RAMKA = {
+    ostrov: [148, 236, 504, 303], sklad: [292, 250, 216, 171], masterskaya: [292, 233, 162, 125],
+    lavka: [346, 206, 162, 125], vitrina: [378, 226, 135, 103], teleport: [204, 274, 87, 102],
+    portal: [508, 247, 66, 115], tucha: [276, 44, 254, 119]
+  };
+  var ZAPAS = 0.1;                          /* объёмный рисунок чуть крупнее плоского: у него мягкие края */
+
+  function kartinka(g, imya, r, t) {
+    var dx = r[2] * ZAPAS, dy = r[3] * ZAPAS;
+    var x = r[0] - dx / 2, y = r[1] - dy, w = r[2] + dx, h = r[3] + dy;
+    var im = document.createElementNS(NS, 'image');
+    im.setAttribute('href', KOREN + imya + '.webp');
+    im.setAttribute('x', x.toFixed(1)); im.setAttribute('y', y.toFixed(1));
+    im.setAttribute('width', w.toFixed(1)); im.setAttribute('height', h.toFixed(1));
+    im.setAttribute('preserveAspectRatio', 'xMidYMax meet');
+    if (t !== undefined && t < 1) {
+      var niz = (y + h).toFixed(1), s = Math.max(.02, t).toFixed(3);
+      im.setAttribute('transform', 'translate(0,' + niz + ') scale(1,' + s + ') translate(0,-' + niz + ')');
+      im.setAttribute('opacity', Math.min(1, t * 1.6).toFixed(2));
+    }
+    g.appendChild(im);
+    return im;
+  }
+  /* рамка изометрического бруска на плоскости */
+  function ramkaBoksa(x, y, w, d, z, h) {
+    var l = P(x, y + d, z)[0], rr = P(x + w, y, z)[0], v = P(x, y, z + h)[1], n = P(x + w, y + d, z)[1];
+    return [l, v, rr - l, n - v];
+  }
+
+  I.ostrov = function (g) { kartinka(g, 'ostrov', RAMKA.ostrov); };
+  I.doroga = function () {};
+  I.tucha = function (g) { kartinka(g, 'tucha', RAMKA.tucha); };
+  I.yaschik = function (g, x, y, z, s) {
+    s = s || 0.66;
+    kartinka(g, 'yaschik', ramkaBoksa(x - s / 2, y - s / 2, s, s, z, 24 * s / 0.66));
+  };
+  I.dekor = function (g, ctx) {
+    [[0.6, 0.6], [1.3, 0.55], [0.6, 1.3]].forEach(function (p, i) {
+      I.yaschik(g, p[0], p[1], 0, 0.5);
+      if (i === 0) I.yaschik(g, p[0], p[1], 18, 0.5);
+    });
+    [[5.7, 3.3], [5.7, 3.9]].forEach(function (p) { I.yaschik(g, p[0], p[1], 0, 0.46); });
+    [[6.05, 2.4], [2.6, 6.05]].forEach(function (p) {
+      var b = P(p[0], p[1]);
+      el('line', { x1: b[0], y1: b[1], x2: b[0], y2: b[1] - 34, stroke: '#2B3B52', 'stroke-width': 2.6, 'stroke-linecap': 'round' }, g);
+      el('line', { x1: b[0], y1: b[1] - 34, x2: b[0] + 8, y2: b[1] - 37, stroke: '#2B3B52', 'stroke-width': 2.6, 'stroke-linecap': 'round' }, g);
+      var f = el('circle', { cx: b[0] + 9, cy: b[1] - 34, r: 3.6, fill: '#FFC983' }, g);
+      if (ctx) ctx.anim.push({ tip: 'fonar', el: f, faza: p[0] });
+    });
+  };
+  function zdanie(imya) {
+    return function (g, t, ctx) { kartinka(g, imya, RAMKA[imya], t); };
+  }
+  I.RIS.hranenie = zdanie('sklad');
+  I.RIS.obrabotka = zdanie('masterskaya');
+  I.RIS.lavka = zdanie('lavka');
+  I.RIS.vitrina = zdanie('vitrina');
+  I.RIS.dostavka = zdanie('teleport');
+  I.RIS.tamozhnya = zdanie('portal');
+  /* грузовик: едет вперёд (к зрителю) или обратно (от зрителя), вправо или влево */
+  var GRUZ = [370, 199.6, 60, 50.4];
+  I.gruzovik = function (g, os, napr) {
+    var ot = (os === 'x' && napr < 0) || (os === 'y' && napr < 0);
+    var zerk = (os === 'y' && napr > 0) || (os === 'x' && napr < 0);
+    var gg = el('g', zerk ? { transform: 'translate(800,0) scale(-1,1)' } : {}, g);
+    kartinka(gg, ot ? 'gruzovik-szadi' : 'gruzovik', GRUZ);
+  };
+})(window.TuchaIzo);
