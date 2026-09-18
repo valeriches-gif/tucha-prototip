@@ -95,10 +95,16 @@ header, section, footer { position: relative; z-index: 1; }
 /* профессор Тучинский: вертикальная заставка «склад, дверь, Мир Тучи» */
 .geroy-art.vert { width: min(310px, 70vw); }
 .geroy-art.vert::before { width: 150%; aspect-ratio: 1; bottom: 12%; background: radial-gradient(closest-side, #E4D8FB, rgba(228, 216, 251, 0)); }
+.geroy-art.rost { display: flex; flex-direction: column; align-items: center; padding-bottom: 8px; }
+.geroy-art.rost::before { width: 118%; aspect-ratio: 1; bottom: 18%; background: linear-gradient(170deg, #E6DDFB 0%, #D9EBFA 55%, #FFE9D6 100%); }
+.geroy-art .professor-geroy { position: relative; width: auto; height: min(560px, 62vh); min-height: 420px;
+  filter: drop-shadow(0 26px 30px rgba(22, 48, 79, .28)); animation: plyv 6s ease-in-out infinite; }
+.geroy-art.rost .imya-maskota { position: relative; left: auto; right: auto; bottom: auto; margin-top: -26px; display: block; text-align: center;
+  padding: 10px 18px; }
 .geroy-art .maskot-vert { aspect-ratio: 9 / 16; border-radius: 30px; background: #1C2A3C; object-fit: cover; }
 .imya-maskota { position: absolute; left: 14px; right: 14px; bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
   background: rgba(14, 36, 64, .78); backdrop-filter: blur(6px); color: #fff; border-radius: 16px; padding: 9px 10px 9px 14px; }
-.imya-maskota b { display: block; font: 800 14px/1.2 var(--zag); }
+.imya-maskota b { display: block; font: 800 15px/1.2 var(--zag); }
 .imya-maskota span { display: block; font-size: 12px; color: #C5D6EA; }
 .zvuk { flex: none; width: 38px; height: 38px; border-radius: 50%; border: 0; cursor: pointer; background: #fff; color: var(--navy);
   display: grid; place-items: center; transition: transform .16s cubic-bezier(.23, 1, .32, 1); }
@@ -161,6 +167,8 @@ header, section, footer { position: relative; z-index: 1; }
 .put-igra { background: linear-gradient(165deg, #2A3F6E, #1B2C4E 55%, #16304F); color: #DCE9F6; }
 .put-oblozhka { margin: -28px -28px 0; height: 150px; border-radius: 28px 28px 0 0; background-size: cover; background-position: center; }
 .put-oblozhka + .krug { margin-top: -62px; position: relative; }
+.krug-prof { object-fit: cover; object-position: 50% 0; background: linear-gradient(170deg, #D9E6F3, #EEF4FA); }
+.krug-mir { object-position: 40% 0; background: linear-gradient(170deg, #E6DDFB, #FFE3CC); }
 .put h3 { font-size: 26px; font-weight: 900; text-transform: uppercase; }
 .put-igra h3 { color: #fff; }
 .put p { margin: 0; font-size: 16px; color: var(--mute); }
@@ -366,7 +374,7 @@ header, section, footer { position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .oblaka { display: none; }
-  .geroy-art img { animation: none; }
+  .geroy-art img, .geroy-art .professor-geroy { animation: none; }
   .kn, .karta { transition: none; }
 }
 </style>
@@ -392,10 +400,9 @@ header, section, footer { position: relative; z-index: 1; }
 </div>
 <div class="geroy-niz"><div><b>+3 000</b><span>паллето-мест</span></div><div><b>от 16,42 ₽</b><span>за паллето-место в сутки, с НДС</span></div><div><b>20 минут</b><span>на договор</span></div><div><b>пн-пт</b><span>с 9:00 до 18:00</span></div></div>
 </div>
-<div class="geroy-art vert">
-<video class="maskot maskot-vert" src="assets/video/professor-privet.mp4" data-zastavka="assets/video/professor-zastavka.mp4" poster="assets/img/professor-privet-poster.jpg" width="540" height="960" autoplay muted loop playsinline aria-label="Профессор Тучинский машет рукой на складе"></video>
-<div class="imya-maskota"><div><b>Профессор Тучинский</b><span>проведёт по складу и Миру Тучи</span></div>
-<button class="zvuk" type="button" aria-label="Смотреть заставку со звуком" aria-pressed="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path class="pusk" d="M8 5.5v13l11-6.5z"/><path class="stop-z" d="M7 7h10v10H7z"/></svg></button></div>
+<div class="geroy-art vert rost">
+<img class="professor-geroy" src="assets/img/p-rost.webp" alt="Профессор Тучинский, проводник Тучи, в жилетке с логотипом" width="265" height="900">
+<div class="imya-maskota"><b>Профессор Тучинский</b><span>проведёт по складу и Миру Тучи</span></div>
 <div class="plitki">
 <div class="plitka plitka-1"><b>4,6</b><span>на Яндекс Картах</span></div>
 <div class="plitka plitka-2"><b>с 2017</b><span>года на своём складе</span></div>
@@ -465,8 +472,7 @@ header, section, footer { position: relative; z-index: 1; }
 <p class="pod-zag"><b class="plashka">Для компаний, ИП и частных лиц</b> Условия, кабинет и общение в двух форматах разные.</p>
 <div class="dva">
 <article class="put">
-<div class="put-oblozhka" style="background-image:url(assets/img/oblozhka-sklad.jpg)" aria-hidden="true"></div>
-<video class="krug" src="assets/video/professor-krug-sklad.mp4" poster="assets/img/professor-krug-sklad-poster.jpg" width="240" height="240" autoplay muted loop playsinline aria-hidden="true"></video>
+<img class="krug krug-prof" src="assets/img/p-byust.webp" alt="" width="240" height="240" aria-hidden="true">
 <span class="yarl">Без тарифов</span>
 <h3>Всё просто</h3>
 <p>Классический формат: понятные условия и скидка за срок, без игры и заданий.</p>
@@ -475,8 +481,7 @@ header, section, footer { position: relative; z-index: 1; }
 <a class="kn kn-2" href="../novyy/start/prosto/">Заполнить форму</a>
 </article>
 <article class="put put-igra">
-<div class="put-oblozhka" style="background-image:url(assets/img/oblozhka-mir.jpg)" aria-hidden="true"></div>
-<video class="krug" src="assets/video/professor-krug-mir.mp4" poster="assets/img/professor-krug-mir-poster.jpg" width="240" height="240" autoplay muted loop playsinline aria-hidden="true"></video>
+<img class="krug krug-prof krug-mir" src="assets/img/p-krug-profil.webp" alt="" width="240" height="240" aria-hidden="true">
 <span class="yarl yarl-igra">Игровой формат</span>
 <h3>Мир Тучи</h3>
 <p>Игровой формат: привилегии за выполненные условия, склад собираете сами, как конструктор.</p>
@@ -533,7 +538,7 @@ header, section, footer { position: relative; z-index: 1; }
 </div></section>
 
 <section class="sek"><div class="wrap"><div class="stop">
-<div class="stop-art"><img class="professor" src="assets/img/professor-rost.webp" alt="Профессор Тучинский в жилетке Тучи" width="153" height="520" loading="lazy"></div>
+<div class="stop-art"><img class="professor" src="assets/img/p-profil-rost.webp" alt="Профессор Тучинский в жилетке Тучи" width="167" height="760" loading="lazy"></div>
 <div class="stop-t">
 <h2>Посчитаем <em>под ваш товар</em></h2>
 <p>Пришлите габариты и объём: расчёт придёт в тот же день. Договор за 20 минут, предоплата не нужна, склад можно приехать посмотреть.</p>
@@ -551,27 +556,6 @@ header, section, footer { position: relative; z-index: 1; }
 <script>
 (function () {
   var tiho = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  /* звук заставки: по кнопке, видео по умолчанию без звука */
-  var kz = document.querySelector('.zvuk'), zv = document.querySelector('.maskot-vert');
-  if (kz && zv) {
-    var petlya = zv.getAttribute('src'), zast = zv.getAttribute('data-zastavka');
-    var sostoyanie = function (idet) {
-      kz.classList.toggle('vkl', idet);
-      kz.setAttribute('aria-pressed', String(idet));
-      kz.setAttribute('aria-label', idet ? 'Остановить заставку' : 'Смотреть заставку со звуком');
-    };
-    var vernut = function () {
-      zv.loop = true; zv.muted = true; zv.src = petlya; zv.play().catch(function () {});
-      sostoyanie(false);
-    };
-    kz.addEventListener('click', function () {
-      if (kz.classList.contains('vkl')) { vernut(); return; }
-      zv.loop = false; zv.src = zast; zv.muted = false; zv.play().catch(function () {});
-      sostoyanie(true);
-    });
-    zv.addEventListener('ended', function () { if (kz.classList.contains('vkl')) vernut(); });
-  }
-
   if (tiho || !('IntersectionObserver' in window)) return;
   var koren = document.documentElement;
   koren.classList.add('anim');
