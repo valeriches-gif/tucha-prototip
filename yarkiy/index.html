@@ -105,8 +105,8 @@ header, section, footer { position: relative; z-index: 1; }
 .zvuk:active { transform: scale(.94); }
 .zvuk:focus-visible { outline: 3px solid var(--oran); outline-offset: 2px; }
 .zvuk svg { width: 18px; height: 18px; }
-.zvuk.vkl .krest { display: none; }
-.zvuk.vkl .volna { opacity: 1; }
+.zvuk .stop-z, .zvuk.vkl .pusk { display: none; }
+.zvuk.vkl .stop-z { display: inline; }
 .geroy-art::before { content: ''; position: absolute; left: 50%; bottom: 2%; translate: -50% 0; width: 104%; aspect-ratio: 1;
   border-radius: 50%; background: linear-gradient(160deg, #CFE7F8, #EAF4FD); }
 .geroy-art .poza2 { position: absolute; left: 0; bottom: 0; opacity: 0; transition: opacity .45s ease; }
@@ -393,9 +393,9 @@ header, section, footer { position: relative; z-index: 1; }
 <div class="geroy-niz"><div><b>+3 000</b><span>паллето-мест</span></div><div><b>от 16,42 ₽</b><span>за паллето-место в сутки, с НДС</span></div><div><b>20 минут</b><span>на договор</span></div><div><b>пн-пт</b><span>с 9:00 до 18:00</span></div></div>
 </div>
 <div class="geroy-art vert">
-<video class="maskot maskot-vert" src="assets/video/professor-zastavka.mp4" poster="assets/img/professor-zastavka-poster.jpg" width="540" height="960" autoplay muted loop playsinline aria-label="Профессор Тучинский машет рукой на складе, открывает дверь и приглашает в Мир Тучи"></video>
+<video class="maskot maskot-vert" src="assets/video/professor-privet.mp4" data-zastavka="assets/video/professor-zastavka.mp4" poster="assets/img/professor-privet-poster.jpg" width="540" height="960" autoplay muted loop playsinline aria-label="Профессор Тучинский машет рукой на складе"></video>
 <div class="imya-maskota"><div><b>Профессор Тучинский</b><span>проведёт по складу и Миру Тучи</span></div>
-<button class="zvuk" type="button" aria-label="Включить звук" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="volna" d="M17 9a4 4 0 0 1 0 6" opacity=".35"/><path class="krest" d="M16 9l5 6M21 9l-5 6"/></svg></button></div>
+<button class="zvuk" type="button" aria-label="Смотреть заставку со звуком" aria-pressed="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path class="pusk" d="M8 5.5v13l11-6.5z"/><path class="stop-z" d="M7 7h10v10H7z"/></svg></button></div>
 <div class="plitki">
 <div class="plitka plitka-1"><b>4,6</b><span>на Яндекс Картах</span></div>
 <div class="plitka plitka-2"><b>с 2017</b><span>года на своём складе</span></div>
@@ -553,13 +553,24 @@ header, section, footer { position: relative; z-index: 1; }
   var tiho = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   /* звук заставки: по кнопке, видео по умолчанию без звука */
   var kz = document.querySelector('.zvuk'), zv = document.querySelector('.maskot-vert');
-  if (kz && zv) kz.addEventListener('click', function () {
-    zv.muted = !zv.muted;
-    if (!zv.muted) { zv.currentTime = 0; zv.play(); }
-    kz.setAttribute('aria-pressed', String(!zv.muted));
-    kz.setAttribute('aria-label', zv.muted ? 'Включить звук' : 'Выключить звук');
-    kz.classList.toggle('vkl', !zv.muted);
-  });
+  if (kz && zv) {
+    var petlya = zv.getAttribute('src'), zast = zv.getAttribute('data-zastavka');
+    var sostoyanie = function (idet) {
+      kz.classList.toggle('vkl', idet);
+      kz.setAttribute('aria-pressed', String(idet));
+      kz.setAttribute('aria-label', idet ? 'Остановить заставку' : 'Смотреть заставку со звуком');
+    };
+    var vernut = function () {
+      zv.loop = true; zv.muted = true; zv.src = petlya; zv.play().catch(function () {});
+      sostoyanie(false);
+    };
+    kz.addEventListener('click', function () {
+      if (kz.classList.contains('vkl')) { vernut(); return; }
+      zv.loop = false; zv.src = zast; zv.muted = false; zv.play().catch(function () {});
+      sostoyanie(true);
+    });
+    zv.addEventListener('ended', function () { if (kz.classList.contains('vkl')) vernut(); });
+  }
 
   if (tiho || !('IntersectionObserver' in window)) return;
   var koren = document.documentElement;
